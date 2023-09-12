@@ -13,26 +13,28 @@ const Home = Loadable({ loader: () => import('../pages/home/Home') })
 
 const routes: RouteObject[] = [
   {
+    //public
     path: 'authentication',
+    element: <GuestGuard />,
     children: [
       {
         path: 'login',
-        element: <GuestGuard>{Login}</GuestGuard>
+        element: Login
       },
       {
         path: 'register',
-        element: <GuestGuard>{Register}</GuestGuard>
+        element: Register
       }
     ]
   },
-
   {
-    path: '*',
+    path: '/home',
     element: <MainLayout />,
     children: [
       {
-        index: true,
-        element: <AuthGuard>{Home}</AuthGuard>
+        //private
+        element: <AuthGuard />,
+        children: [{ index: true, element: Home }]
       }
     ]
   }

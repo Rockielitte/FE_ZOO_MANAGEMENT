@@ -3,7 +3,7 @@ import { FC } from 'react'
 interface HomeProps {}
 
 const Home: FC<HomeProps> = () => {
-  console.log('Register')
+  console.log('Home')
 
   return <div>Home</div>
 }
