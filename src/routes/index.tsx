@@ -1,5 +1,5 @@
 import type { RouteObject } from 'react-router'
-import MainLayout from '../layout/MainLayout'
+import MainLayout from '../layouts/MainLayout'
 import AuthGuard from './AuthGuard'
 import GuestGuard from './GuestGuard'
 import Loadable from './Loadable'
@@ -37,6 +37,10 @@ const routes: RouteObject[] = [
         children: [{ index: true, element: Home }]
       }
     ]
+  },
+  {
+    path: '*',
+    element: '404'
   }
 ]
 
