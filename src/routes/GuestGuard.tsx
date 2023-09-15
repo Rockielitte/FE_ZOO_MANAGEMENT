@@ -14,7 +14,7 @@ const GuestGuard: FC<GuestGuardProps> = () => {
   //     return <Navigate to='/' />
   //   }
 
-  return <>{<Outlet />}</>
+  return <div className='bg-orange-400'>{<Outlet />}</div>
 }
 
 // GuestGuard.propTypes = {

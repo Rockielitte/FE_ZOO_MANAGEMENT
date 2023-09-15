@@ -3,13 +3,25 @@ import MainLayout from '../layout/MainLayout'
 import AuthGuard from './AuthGuard'
 import GuestGuard from './GuestGuard'
 import Loadable from './Loadable'
-
+import { QueryClient } from 'react-query'
+import { loaderLeaderBoard } from '../lib/loader'
+import { createBrowserRouter } from 'react-router-dom'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
+const Test = Loadable({ loader: () => import('../test') })
+
 const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 10
+    }
+  }
+})
 
 const routes: RouteObject[] = [
   {
@@ -24,11 +36,16 @@ const routes: RouteObject[] = [
       {
         path: 'register',
         element: Register
+      },
+      {
+        path: 'test',
+        element: Test,
+        loader: loaderLeaderBoard(queryClient)
       }
     ]
   },
   {
-    path: '/home',
+    path: '/',
     element: <MainLayout />,
     children: [
       {
@@ -39,5 +56,5 @@ const routes: RouteObject[] = [
     ]
   }
 ]
-
-export default routes
+const router = createBrowserRouter(routes)
+export default router

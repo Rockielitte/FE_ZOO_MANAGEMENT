@@ -1,8 +1,12 @@
-import routes from './routes'
-import { useRoutes } from 'react-router-dom'
+import { QueryClientProvider } from 'react-query'
+import router, { queryClient } from './routes'
+import { RouterProvider } from 'react-router-dom'
 
 const App = () => {
-  const content = useRoutes(routes)
-  return content
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  )
 }
 export default App
