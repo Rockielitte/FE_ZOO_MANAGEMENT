@@ -9,8 +9,8 @@ export const useUserStore = create<userState>()(
   devtools(
     persist(
       (set) => ({
-        user: {},
-        increase: (user) => set(() => user)
+        user: { name: '', age: 0 },
+        increase: (us) => set({ user: us })
       }),
       {
         name: 'user-storage'

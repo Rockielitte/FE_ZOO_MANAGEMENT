@@ -7,7 +7,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
-  return <div className='bg-slate-700'>{children || <Outlet />}</div>
+  return <div className=''>{children || <Outlet />}</div>
 }
 
 export default MainLayout

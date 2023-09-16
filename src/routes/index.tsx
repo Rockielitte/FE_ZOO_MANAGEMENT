@@ -4,6 +4,7 @@ import AuthGuard from './AuthGuard'
 import GuestGuard from './GuestGuard'
 import Loadable from './Loadable'
 import { QueryClient } from 'react-query'
+
 import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
 // *  AUTHENTICATION PAGES
