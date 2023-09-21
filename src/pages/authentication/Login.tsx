@@ -2,26 +2,86 @@ import { FC } from 'react'
 import { GoogleLogin } from '@react-oauth/google'
 import videoBg from '@/assets/bg-video.mp4'
 import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { HiChevronDoubleDown } from 'react-icons/hi'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import ZooLogo from '@/assets/logo.webp'
+import jwt_decode from 'jwt-decode'
+import { useNavigate } from 'react-router-dom'
+import { useMutation } from 'react-query'
+import { IUser, dataCredential } from '@/types'
+import { apiCaller } from '@/utils'
+import { useUserStore } from '@/stores'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 const Login: FC = () => {
+  const setUser = useUserStore((state) => state.setUser)
+  const navigate = useNavigate()
+  const usMutation = useMutation({
+    retry: 3,
+    mutationFn: (user: Omit<IUser, 'token'>) => {
+      return apiCaller.post<IUser>('/endpoint', user)
+    },
+    onSuccess: (data) => {
+      setUser(data.data)
+      navigate('/')
+    },
+    onError: (error) => {
+      if (error instanceof Error)
+        toast.error(
+          <div className='font-luck text-base text-red-600'>
+            {error.message}.<div>Try again!</div>
+          </div>
+        )
+    }
+  })
   return (
-    <div className='w-screen h-screen flex relative justify-center items-center bg-white'>
-      <div className='absolute  inset-0 opacity-50'>
+    <div className='font-ime w-screen h-screen flex relative justify-center items-center bg-white'>
+      <div className='absolute  inset-0 '>
         <video src={videoBg} className='w-full h-full object-cover' autoPlay muted loop />
       </div>
-      <div className='z-10 flex flex-col gap-5'>
-        <h1 className='bg-gradient-to-tr from-orange-600 to-slate-50 text-transparent bg-clip-text '>
-          <span className=' text-black font-sans text-5xl font-extrabold'>Sign in to join </span>
-          <span className='uppercase text-7xl font-extrabold '>zoocamp</span>
+      <div className='z-10 flex flex-col gap- items-center backdrop-blur-md shadow-2xl  p-4  md:p-10 rounded-xl min-h-1/2 max-w-lg justify-between'>
+        <h1 className='flex flex-col  items-center gap-8 mb-10'>
+          <div
+            className='scale-150 animate-fade animate-once animate-duration-[5000ms]
+'
+          >
+            <Avatar>
+              <AvatarImage src={ZooLogo} className='object-cover' />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          </div>
+          <span className=' animate-pulse animate-infinite animate-duration-[3000ms] uppercase text-5xl md:text-7xl font-extrabold bg-gradient-to-tr from-gray-200 to-slate-50  text-transparent bg-clip-text  '>
+            zoocamp
+          </span>
+          {/* <span className=' text-white italic font-sans text-4xl font-extrabold capitalize'>welcome</span> */}
         </h1>
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse)
-          }}
-          onError={() => {
-            console.log('Login Failed')
-          }}
-        />
+        {!usMutation.isLoading ? (
+          <div className='flex gap-3 flex-col items-center'>
+            <p className='font-medium text-lg text-white'>Sign in to continue</p>
+            <HiChevronDoubleDown color={'white'} className='animate-bounce animate-infinite' />
+            <div className='shadow-2xl'>
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
+                  usMutation.mutate({ email: usProfile?.email, name: usProfile.name, image: usProfile.picture })
+                }}
+                onError={() => {
+                  console.log('Login Failed')
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <Button disabled variant={'ghost'} size={'lg'}>
+            <div className='font-ime flex items-center text-white'>
+              <AiOutlineLoading3Quarters className='mr-2 h-4 w-4 animate-spin' />
+              <span className='font-ultra text-white'>Please wait . . .</span>
+            </div>
+          </Button>
+        )}
       </div>
+      <ToastContainer />
     </div>
   )
 }

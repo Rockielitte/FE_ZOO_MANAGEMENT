@@ -4,7 +4,7 @@ import AuthGuard from './AuthGuard'
 import GuestGuard from './GuestGuard'
 import Loadable from './Loadable'
 import { QueryClient } from 'react-query'
-
+import Error from '@/pages/Error'
 import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
 // *  AUTHENTICATION PAGES
@@ -58,7 +58,7 @@ const routes: RouteObject[] = [
   },
   {
     path: '*',
-    element: '404'
+    element: <Error />
   }
 ]
 const router = createBrowserRouter(routes)

@@ -2,15 +2,15 @@ import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 import { IUser } from '../types'
 interface userState {
-  user: IUser
-  increase: (user: IUser) => void
+  user: IUser | null
+  setUser: (user: IUser) => void
 }
 export const useUserStore = create<userState>()(
   devtools(
     persist(
       (set) => ({
-        user: { name: '', age: 0 },
-        increase: (us) => set({ user: us })
+        user: null,
+        setUser: (us) => set({ user: us })
       }),
       {
         name: 'user-storage'
