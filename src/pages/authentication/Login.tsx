@@ -40,7 +40,7 @@ const Login: FC = () => {
       <div className='absolute  inset-0 '>
         <video src={videoBg} className='w-full h-full object-cover' autoPlay muted loop />
       </div>
-      <div className='z-10 flex flex-col gap- items-center backdrop-blur-md shadow-2xl  p-4  md:p-10 rounded-xl min-h-1/2 max-w-lg justify-between'>
+      <div className='z-10 flex flex-col gap- items-center backdrop-blur-3xl bg-slate-200 bg-opacity-20  shadow-2xl  p-4  md:p-10 rounded-xl min-h-1/2 max-w-lg justify-between'>
         <h1 className='flex flex-col  items-center gap-8 mb-10'>
           <div
             className='scale-150 animate-fade animate-once animate-duration-[5000ms]
@@ -51,7 +51,7 @@ const Login: FC = () => {
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </div>
-          <span className=' animate-pulse animate-infinite animate-duration-[3000ms] uppercase text-5xl md:text-7xl font-extrabold bg-gradient-to-tr from-gray-200 to-slate-50  text-transparent bg-clip-text  '>
+          <span className='drop-shadow-lg animate-pulse animate-infinite animate-duration-[3000ms] uppercase text-5xl md:text-7xl font-extrabold bg-gradient-to-tr from-gray-200 to-slate-50  text-transparent bg-clip-text  '>
             zoocamp
           </span>
           {/* <span className=' text-white italic font-sans text-4xl font-extrabold capitalize'>welcome</span> */}
