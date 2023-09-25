@@ -1,5 +1,5 @@
 import type { RouteObject } from 'react-router'
-import MainLayout from '../layouts/MainLayout'
+// import MainLayout from '../layouts/MainLayout'
 import AuthGuard from './AuthGuard'
 import GuestGuard from './GuestGuard'
 import Loadable from './Loadable'
@@ -7,6 +7,7 @@ import { QueryClient } from 'react-query'
 import Error from '@/pages/Error'
 import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
+import HomeLayout from '@/layouts/HomeLayout'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
@@ -47,7 +48,7 @@ const routes: RouteObject[] = [
   },
   {
     path: '/',
-    element: <MainLayout />,
+    element: <HomeLayout />,
     children: [
       {
         //private
