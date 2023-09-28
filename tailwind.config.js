@@ -3,6 +3,9 @@ module.exports = {
   darkMode: ['class'],
   content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   theme: {
+    screens: {
+      xsm: '376px'
+    },
     container: {
       center: true,
       padding: '2rem',

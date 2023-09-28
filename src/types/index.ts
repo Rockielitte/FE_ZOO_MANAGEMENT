@@ -1,8 +1,8 @@
 export interface IUser {
-  name: string
-  email: string
-  image: string
-  token: string
+  name?: string
+  email?: string
+  image?: string
+  token?: string
 }
 export type dataCredential = {
   aud: string
