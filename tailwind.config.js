@@ -4,7 +4,9 @@ module.exports = {
   content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   theme: {
     screens: {
-      xsm: '376px'
+      '2xl': '1400px',
+      '2lg': '376px',
+      '2lf': '120px'
     },
     container: {
       center: true,
