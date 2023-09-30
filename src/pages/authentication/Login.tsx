@@ -64,9 +64,16 @@ const Login: FC = () => {
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
                   console.log('credentialResponse: ', credentialResponse)
-
-                  const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
-                  usMutation.mutate({ email: usProfile?.email, name: usProfile.name, image: usProfile.picture })
+                  apiCaller
+                    .post('/test-login-google', credentialResponse)
+                    .then((data) => {
+                      console.log('success: ', data)
+                    })
+                    .catch((err) => {
+                      console.log('failure: ', err)
+                    })
+                  // const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
+                  // usMutation.mutate({ email: usProfile?.email, name: usProfile.name, image: usProfile.picture })
                 }}
                 onError={() => {
                   console.log('Login Failed')

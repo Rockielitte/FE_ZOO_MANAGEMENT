@@ -9,11 +9,7 @@ module.exports = {
       screens: {
         '2xl': '1400px'
       },
-      extend: {
-        backgroundImage: {
-          'landing-full': "url('/src/assets/background/FullBg.png')"
-        }
-      }
+      extend: {}
     },
     extend: {
       colors: {
