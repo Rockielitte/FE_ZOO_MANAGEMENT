@@ -12,9 +12,10 @@ const Home: FC<HomeProps> = () => {
 
   return (
     <div className='min-h-[1280px]'>
-      <h1 className='bg-red-500 xsm:bg-green-500'>hhd</h1>
+      <h1 className='bg-red-50 xsm:bg-green-500 md:bg-blue-300'>dasf</h1>
+
       <div>
-        <Button className={cn(buttonVariants({ variant: 'ghost', size: 'lg' }))}>tesst</Button>
+        <Button>tesst</Button>
       </div>
 
       <button type='button' onClick={() => setTheme('light')}>
