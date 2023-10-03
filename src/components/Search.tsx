@@ -16,7 +16,11 @@ const Search = () => {
           <AiOutlineSearch className='text-3xl' />
         </button>
         <div className='flex-1'>
-          <Input placeholder='Search everything here . . .' className='tracking-wide' {...register('searchQuery')} />
+          <Input
+            placeholder='Search everything here . . .'
+            className='tracking-wide'
+            {...register('searchQuery', { required: true })}
+          />
         </div>
       </form>
       <div className='pl-4 border-l-2'>

@@ -27,7 +27,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
               className='min-w-[300px] h-full shadow-md border-r-2 absolute inset-0  backdrop-blur-md  z-20 sm:block sm:relative '
             >
               <div className='w-5/6 sm:w-full bg-background '>
-                <h1 className='p-4 bg-background flex gap-2 items-center   '>
+                <h1 className='p-4 bg-background flex gap-2 items-center shadow-md   '>
                   <img
                     src={logo}
                     className='w-10 sm:w-16 transition-all  object-contain bg-clip-padding bg-black py-1 px-0.5 sm:p-1 sm:py-2 rounded-full shadow-md'
