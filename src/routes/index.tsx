@@ -57,6 +57,23 @@ const routes: RouteObject[] = [
     ]
   },
   {
+    path: 'test',
+    element: <MainLayout />,
+    children: [
+      {
+        //private
+        element: <AuthGuard />,
+        children: [
+          { index: true, element: Home },
+          {
+            path: '*',
+            element: Home
+          }
+        ]
+      }
+    ]
+  },
+  {
     path: '*',
     element: <Error />
   }

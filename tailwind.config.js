@@ -3,7 +3,6 @@ module.exports = {
   darkMode: ['class'],
   content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   theme: {
-    
     container: {
       center: true,
       padding: '2rem',
@@ -12,9 +11,9 @@ module.exports = {
       }
     },
     extend: {
-      screens:{
-        'xsm':"376px",
-        '3xl':"1920px"
+      screens: {
+        xsm: '376px',
+        '3xl': '1920px'
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -73,7 +72,10 @@ module.exports = {
       fontFamily: {
         ultra: ['Ultra'],
         luck: ['Luckiest Guy'],
-        ime: ['IM Fell English']
+        ime: ['IM Fell English'],
+        roboto: ['Roboto'],
+        bakervilla: ['Libre Baskerville'],
+        monster: ['Montserrat']
       }
     }
   },
