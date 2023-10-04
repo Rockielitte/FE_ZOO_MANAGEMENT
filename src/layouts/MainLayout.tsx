@@ -53,7 +53,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                         return clsx(
                           '  border-l-4  rounded-sm transition-all duration-500 ease-out hover:bg-slate-300 dark:hover:text-black hover:scale-110',
                           isActive
-                            ? 'shadow-lg  border-l-primary bg-slate-200 dark:text-black '
+                            ? 'shadow-lg  border-l-secondary-foreground bg-primary  text-secondary '
                             : 'border-l-transparent '
                         )
                       }}

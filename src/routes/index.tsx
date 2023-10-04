@@ -15,6 +15,7 @@ const Register = Loadable({ loader: () => import('../pages/authentication/Regist
 
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
+const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,14 +58,15 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: 'test',
-    element: <MainLayout />,
+    path: 'dashboard',
+    element: <AuthGuard />,
     children: [
       {
         //private
-        element: <AuthGuard />,
+        element: <MainLayout />,
         children: [
           { index: true, element: Home },
+          { path: 'staffs', element: Staff },
           {
             path: '*',
             element: Home
