@@ -24,9 +24,9 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           item && (
             <animated.div
               style={style}
-              className='min-w-[300px] h-full shadow-md border-r-2 absolute inset-0  backdrop-blur-md  z-20 sm:block sm:relative '
+              className='min-w-[300px] h-full shadow-md border-r-2 absolute inset-0  backdrop-blur-md  z-50 sm:block sm:relative '
             >
-              <div className='w-5/6 sm:w-full bg-background '>
+              <div className='w-5/6 sm:w-full bg-background h-full flex flex-col'>
                 <h1 className='p-4 bg-background flex gap-2 items-center shadow-md   '>
                   <img
                     src={logo}
@@ -44,7 +44,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                     </span>
                   )}
                 </h1>
-                <div className='flex flex-col  py-2 px-2 pl-4'>
+                <div className='flex flex-col  py-2 px-2 pl-4 flex-1 overflow-y-auto overflow-x-hidden'>
                   {routeList.map((route) => (
                     <NavLink
                       key={route.name}
