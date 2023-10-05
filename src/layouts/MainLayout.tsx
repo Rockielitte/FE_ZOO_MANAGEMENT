@@ -92,7 +92,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             <Search />
           </div>
         </div>
-        <div className='flex-1'>{children || <Outlet />}</div>
+        <div className='flex-1 overflow-auto'>{children || <Outlet />}</div>
       </div>
     </div>
   )
