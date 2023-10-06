@@ -460,8 +460,10 @@ const columns: ColumnDef<DataType>[] = [
   },
   {
     accessorKey: 'email',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    cell: defaultColumn<DataType>('input', ['.com', '.fpt.vn']).cell
   },
+
   {
     accessorKey: 'birthday',
     header: 'Birthday',

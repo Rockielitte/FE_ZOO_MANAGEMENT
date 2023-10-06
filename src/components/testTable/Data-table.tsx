@@ -24,6 +24,7 @@ import { format } from 'date-fns'
 import { BsFillCalendar2WeekFill } from 'react-icons/bs'
 import { Calendar } from '../ui/calendar'
 import { SelectSingleEventHandler } from 'react-day-picker'
+import { AiFillDelete } from 'react-icons/ai'
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -43,7 +44,6 @@ export const defaultColumn = <T extends object>(type?: string, options?: string[
     const onBlur = () => {
       table.options.meta?.updateData(index, id, value)
     }
-
     // If the initialValue is changed externally, sync it up with our state
     useEffect(() => {
       setValue(initialValue)
@@ -53,9 +53,9 @@ export const defaultColumn = <T extends object>(type?: string, options?: string[
       <Input value={value as string} onChange={(e) => setValue(e.target.value)} onBlur={onBlur} />
     ) : type == 'select' ? (
       <Select
-        onValueChange={(svalue) => {
-          setValue(svalue)
-          onBlur()
+        onValueChange={(e) => {
+          console.log()
+          table.options.meta?.updateData(index, id, e)
         }}
         value={value}
       >
@@ -116,6 +116,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const [rowSelection, setRowSelection] = useState({})
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
   const [tableData, setTableData] = useState(data)
+  console.log(tableData, 'rerder')
+
   const table = useReactTable({
     data: tableData,
     columns,
@@ -156,14 +158,19 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
   return (
     <div className='h-full flex flex-col'>
-      <div className='flex items-center py-4 gap-2 '>
+      <div className='flex items-center py-2 gap-2 '>
         <Input
           placeholder='Filter emails...'
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
           onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
           className='max-w-sm'
         />
-        {table.getFilteredSelectedRowModel().rows.length > 0 && <Button>Delete</Button>}
+        {table.getFilteredSelectedRowModel().rows.length > 0 && (
+          <Button variant={'destructive'} className='flex items-center gap-1 hover:scale-110 transition-all'>
+            <AiFillDelete />
+            <span>Delete</span>
+          </Button>
+        )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant='outline' className='ml-auto'>
