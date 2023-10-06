@@ -84,6 +84,11 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
 .sticky {
   position: sticky;
   position: -webkit-sticky;

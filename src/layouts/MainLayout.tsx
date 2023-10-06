@@ -79,7 +79,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           )
       )}
       <div className='flex flex-col w-full h-full p-2 md:p-4 transition-all duration-300 ease-linear'>
-        <div className=' pb-2 flex gap-2 items-center w-full '>
+        <div className=' pb-6 flex gap-2 items-center w-full '>
           <span
             className='text-xl sm:text-4xl block  sm:pr-3 pr-1 cursor-pointer'
             onClick={() => {
@@ -92,7 +92,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             <Search />
           </div>
         </div>
-        <div className='flex-1 overflow-auto'>{children || <Outlet />}</div>
+        <div className='flex-1 overflow-auto '>{children || <Outlet />}</div>
       </div>
     </div>
   )

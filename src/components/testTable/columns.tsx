@@ -4,6 +4,7 @@ import { Button } from '../ui/button'
 import { Checkbox } from '../ui/checkbox'
 import { DataTableColumnHeader } from './TableHeader'
 import { Skeleton } from '../ui/skeleton'
+import { defaultColumn } from './Data-table'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -38,7 +39,7 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
-    cell: ({ row }) => <Skeleton className='w-full h-4 ' />
+    cell: ({ row }) => <span>{row.getValue('status')}</span>
   },
   {
     accessorKey: 'email',
@@ -54,6 +55,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: 'amount',
-    header: 'Amount'
+    header: 'Amount',
+    cell: defaultColumn<Payment>().cell
   }
 ]

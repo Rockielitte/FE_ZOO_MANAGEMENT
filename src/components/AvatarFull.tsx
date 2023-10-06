@@ -23,7 +23,7 @@ const AvatarFull = (props: Props) => {
           <DropdownMenuTrigger>
             <AiFillCaretDown />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='min-w-[250px] '>
+          <DropdownMenuContent className='min-w-[250px] relative -left-[15px] top-[20px] '>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Profile</DropdownMenuItem>
