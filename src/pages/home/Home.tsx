@@ -11,7 +11,7 @@ const Home: FC<HomeProps> = () => {
   const { setTheme } = useTheme()
 
   return (
-    <div className='min-h-[1280px]'>
+    <div className='w-full h-full'>
       <h1 className='bg-red-50 xsm:bg-green-500 md:bg-blue-300'>dasf</h1>
 
       <div>

@@ -11,10 +11,11 @@ import { createBrowserRouter } from 'react-router-dom'
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
 
-const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
+// const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
+const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,10 +35,7 @@ const routes: RouteObject[] = [
         path: 'login',
         element: Login
       },
-      {
-        path: 'register',
-        element: Register
-      },
+
       {
         path: 'test',
         element: Test,
@@ -53,6 +51,24 @@ const routes: RouteObject[] = [
         //private
         element: <AuthGuard />,
         children: [{ index: true, element: Home }]
+      }
+    ]
+  },
+  {
+    path: 'dashboard',
+    element: <AuthGuard />,
+    children: [
+      {
+        //private
+        element: <MainLayout />,
+        children: [
+          { index: true, element: Home },
+          { path: 'staffs', element: Staff },
+          {
+            path: '*',
+            element: Home
+          }
+        ]
       }
     ]
   },
