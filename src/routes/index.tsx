@@ -12,7 +12,7 @@ import HomeLayout from '@/layouts/HomeLayout'
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
 
-const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
+// const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
@@ -37,10 +37,7 @@ const routes: RouteObject[] = [
         path: 'login',
         element: Login
       },
-      {
-        path: 'register',
-        element: Register
-      },
+
       {
         path: 'test',
         element: Test,
