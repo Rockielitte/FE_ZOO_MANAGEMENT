@@ -18,7 +18,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     enter: { opacity: 1, x: 0 }
   })
   return (
-    <div className='w-screen h-screen flex relative font-roboto  '>
+    <div className='  flex relative font-roboto  '>
       {transitions(
         (style, item) =>
           item && (
@@ -78,7 +78,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             </animated.div>
           )
       )}
-      <div className='flex flex-col w-full h-full p-2 md:p-4 transition-all duration-300 ease-linear'>
+      <div className='flex flex-col w-full h-full p-2  transition-all duration-300 ease-linear'>
         <div className=' pb-6 flex gap-2 items-center w-full '>
           <span
             className='text-xl sm:text-4xl block  sm:pr-3 pr-1 cursor-pointer'
@@ -92,7 +92,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             <Search />
           </div>
         </div>
-        <div className='flex-1 overflow-auto '>{children || <Outlet />}</div>
+        <div className='overflow-auto  '>{children || <Outlet />}</div>
       </div>
     </div>
   )

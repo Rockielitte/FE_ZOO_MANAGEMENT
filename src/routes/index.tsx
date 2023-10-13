@@ -16,6 +16,7 @@ const Register = Loadable({ loader: () => import('../pages/authentication/Regist
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
 const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
+const Accounts = Loadable({ loader: () => import('../pages/accounts/index') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,6 +68,9 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: Home },
           { path: 'staffs', element: Staff },
+
+          { path: 'accounts', element: Accounts },
+
           {
             path: '*',
             element: Home

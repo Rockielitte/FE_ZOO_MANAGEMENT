@@ -157,8 +157,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   })
 
   return (
-    <div className='h-full flex flex-col'>
-      <div className='flex items-center py-2 gap-2 '>
+    <div className=' flex flex-col space-y-4'>
+      <div className='flex items-center'>
         <Input
           placeholder='Filter emails...'
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
@@ -174,7 +174,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant='outline' className='ml-auto'>
-              Columns
+              View
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
@@ -196,12 +196,12 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className='rounded-md border'></div>
-      <div className='flex-1 overflow-auto h-full'>
+
+      <div className='rounded-md border'>
         <Table className=''>
-          <TableHeader className='sticky top-0 z-20'>
+          <TableHeader className=''>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className=' bg-primary hover:bg-gray-400 '>
+              <TableRow key={headerGroup.id} className=' '>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id} className='text-foreground '>
