@@ -63,6 +63,8 @@ const Login: FC = () => {
             <div className='shadow-2xl'>
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
+                  console.log('credentialResponse: ', credentialResponse)
+
                   const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
                   usMutation.mutate({ email: usProfile?.email, name: usProfile.name, image: usProfile.picture })
                 }}

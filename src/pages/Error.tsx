@@ -1,4 +1,4 @@
-type Props = {}
+// type Props = {}
 import bgImage from '@/assets/su-san-lee-g3PyXO4A0yc-unsplash.jpg'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
@@ -11,7 +11,7 @@ const errorQuoteMap = {
   // Add more error status codes and corresponding quotes as needed
 }
 const defaultQuote = 'Unknown Error: An unexpected error occurred.'
-const Error = (props: Props) => {
+const Error = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
