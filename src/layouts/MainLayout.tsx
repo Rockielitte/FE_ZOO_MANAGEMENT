@@ -6,6 +6,8 @@ import clsx from 'clsx'
 import Search from '@/components/Search'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { useTransition, animated } from '@react-spring/web'
+import { BreadcrumbDemo } from '@/components/Appbreadcrumb'
+
 interface MainLayoutProps {
   children?: ReactNode
 }
@@ -79,16 +81,18 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           )
       )}
       <div className='flex flex-col w-full h-full p-2 md:p-4 transition-all duration-300 ease-linear'>
-        <div className=' pb-6 flex gap-2 items-center w-full '>
-          <span
-            className='text-xl sm:text-4xl block  sm:pr-3 pr-1 cursor-pointer'
-            onClick={() => {
-              setIsShow(!isShow)
-            }}
-          >
-            <AiOutlineMenu />
+        <div className=' pb-6 flex gap-2 items-center w-full  justify-between'>
+          <span className='text-xl sm:text-4xl   sm:pr-3 pr-1 cursor-pointer flex gap-4 items-center '>
+            <AiOutlineMenu
+              onClick={() => {
+                setIsShow(!isShow)
+              }}
+            />
+            <div className=''>
+              <BreadcrumbDemo />
+            </div>
           </span>
-          <div className='flex-1'>
+          <div className=''>
             <Search />
           </div>
         </div>

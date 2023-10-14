@@ -10,6 +10,8 @@ import { createBrowserRouter } from 'react-router-dom'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
+const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
+const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
 
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
@@ -64,6 +66,13 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: Home },
           { path: 'staffs', element: Staff },
+          {
+            path: 'animals',
+            children: [
+              { index: true, element: Animal },
+              { path: ':id', element: AnimalDetail }
+            ]
+          },
           {
             path: '*',
             element: Home
