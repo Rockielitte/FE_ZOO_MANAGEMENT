@@ -73,12 +73,12 @@ const AnimalDetail = () => {
   }
   return (
     <div className='w-full h-full border shadow-xl rounded-lg p-2 overflow-auto flex-col flex '>
-      <div className=' flex flex-col border-b-2  border-secondary-foreground bg-primary px-2 leading-tight -m-2 text-primary-foreground rounded-md'>
+      <div className=' flex flex-col border-b-2  border-secondary-foreground bg-primary px-5 sm:-m-2 leading-tight text-primary-foreground rounded-md'>
         <span className='text-xl uppercase font-bold tracking-wider pt-1 font-luck'>{animal.name}</span>
         <span className='font-normal text-base'>{animal.species}</span>
       </div>
-      <div className='flex-1 flex flex-col md:flex-row  overflow-auto pt-4'>
-        <form className='w-full md:w-3/5 md:h-full relative' onSubmit={handleSubmit(onSubmit)}>
+      <div className='flex-1 flex flex-col-reverse sm:flex-row gap-2  sm:overflow-auto pt-4  sm:px-0'>
+        <form className='w-full md:w-3/5 md:h-full relative  ' onSubmit={handleSubmit(onSubmit)}>
           <Button
             type='submit'
             className='absolute flex z-20 items-center gap-1 bottom-3 right-3 opacity-70  font-bold hover:opacity-100 hover:scale-110 transition-all'
@@ -87,7 +87,7 @@ const AnimalDetail = () => {
             <RiSendPlaneLine className='text-xl' />
             Submit
           </Button>
-          <div className='w-full  md:border-r  flex flex-col gap-7 pr-2 overflow-auto h-full py-2'>
+          <div className='w-full  md:border-r  flex flex-col gap-7 px-6 overflow-auto h-full py-2 '>
             {Object.keys(animal).map(
               (item) =>
                 item != 'images' && (
@@ -164,8 +164,8 @@ const AnimalDetail = () => {
             )}
           </div>
         </form>
-
-        <div className='w-full md:w-2/5 px-2 flex flex-col gap-4 overflow-auto'>
+        <div className='border-2 border-dashed my-2'></div>
+        <div className='w-full md:w-2/5 px-6 flex flex-col gap-4 overflow-auto'>
           <div className='flex items-center gap-1 text-xl font-bold'>
             <Button
               className='flex-1 transition-all duration-500 flex items-center gap-2'
@@ -186,13 +186,13 @@ const AnimalDetail = () => {
           </div>
           {imageShow == 'images' ? (
             <div>
-              <div className='w-full pt-2 h-[200px]'>
+              <div className='w-full pt-2 h-[400px]'>
                 <Carousel images={animal.images as string[]} />
               </div>
               <div>jkasedhf</div>
             </div>
           ) : (
-            <div className='flex items-center flex-col justify-center w-full bg-background'>
+            <div className='flex items-center flex-col justify-center w-full bg-background  h-[400px]'>
               <label
                 htmlFor='dropzone-file'
                 className='flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer transition-all hover:bg-slate-100 dark:hover:bg-slate-500'

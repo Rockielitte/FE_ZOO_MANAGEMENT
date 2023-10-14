@@ -88,7 +88,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                 setIsShow(!isShow)
               }}
             />
-            <div className=''>
+            <div className='hidden sm:block'>
               <BreadcrumbDemo />
             </div>
           </span>
