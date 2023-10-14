@@ -8,6 +8,7 @@ import Error from '@/pages/Error'
 import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
 import HomeLayout from '@/layouts/HomeLayout'
+import MainLayout from '@/layouts/MainLayout'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })

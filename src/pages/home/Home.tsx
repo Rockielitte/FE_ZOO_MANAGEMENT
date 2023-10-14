@@ -10,20 +10,7 @@ const Home: FC<HomeProps> = () => {
 
   return (
     <div className='w-full h-full'>
-      <h1 className='bg-red-50 xsm:bg-green-500 md:bg-blue-300'>dasf</h1>
-
-      <div>
-        <Button>tesst</Button>
-      </div>
-
-      <button type='button' onClick={() => setTheme('light')}>
-        light
-      </button>
-      <br />
-      <button type='button' onClick={() => setTheme('dark')}>
-        dark
-      </button>
-        <Banner />
+      <Banner />
     </div>
   )
 }

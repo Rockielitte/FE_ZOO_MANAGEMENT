@@ -18,7 +18,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     enter: { opacity: 1, x: 0 }
   })
   return (
-    <div className='  flex relative font-roboto  '>
+    <div className='w-screen h-screen  flex relative font-roboto  '>
       {transitions(
         (style, item) =>
           item && (
