@@ -80,7 +80,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             </animated.div>
           )
       )}
-      <div className='flex flex-col w-full h-full p-2 md:p-4 transition-all duration-300 ease-linear'>
+      <div className='flex-1 flex flex-col w-full h-full p-2 md:p-4 transition-all duration-300 ease-linear'>
         <div className=' pb-6 flex gap-2 items-center w-full  justify-between'>
           <span className='text-xl sm:text-4xl   sm:pr-3 pr-1 cursor-pointer flex gap-4 items-center '>
             <AiOutlineMenu

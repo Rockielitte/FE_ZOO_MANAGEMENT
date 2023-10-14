@@ -103,21 +103,15 @@ const Accounts: FC<Accounts> = () => {
     }
   ]
   return (
-    <section className='w-full p-10'>
-      {/* border rounded here */}
-      <div className='overflow-hidden rounded-[0.5rem] border bg-background   shadow-inner'>
-        <div className='hidden h-full flex-1 flex-col space-y-8 p-8 md:flex'>
-          {/* title of border here  */}
-          <div className='flex items-start justify-between space-y-2 flex-col'>
-            <div>
-              <h2 className='text-2xl font-bold tracking-tight'>Welcome back!</h2>
-              <p className='text-muted-foreground'>Here's a list of your tasks for this month!</p>
-            </div>
-            <Separator className='' />
-          </div>
-          <DataTable columns={columnsAccount} data={ACCOUNTS} />
-        </div>
+    <section className='w-full  h-full flex flex-col shadow-2xl rounded-[0.5rem] border bg-background   '>
+      {/* title of border here  */}
+
+      {/* table here */}
+      <div className='flex-1 overflow-auto p-5'>
+        <DataTable columns={columnsAccount} data={ACCOUNTS} />
       </div>
+
+      {/* border rounded here */}
     </section>
   )
 }
