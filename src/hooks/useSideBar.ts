@@ -3,7 +3,6 @@ import { AiFillHome, AiFillSchedule, AiOutlineSchedule } from 'react-icons/ai'
 import { GiCaveman, GiBirdCage, GiElephant, GiNestBirds } from 'react-icons/gi'
 import { ImManWoman } from 'react-icons/im'
 import { BsFillPinMapFill } from 'react-icons/bs'
-type Props = {}
 
 const useSideBar = () => {
   const routeList = useMemo(
@@ -11,7 +10,7 @@ const useSideBar = () => {
       {
         name: 'Dashboard',
         Icon: AiFillHome,
-        href: 'dashboard'
+        href: 'index'
       },
       {
         name: 'Zoo trainer',
