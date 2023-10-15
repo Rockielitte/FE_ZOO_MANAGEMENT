@@ -3,19 +3,12 @@ import { FC } from 'react'
 import mockData from '@/test/MOCK_DATA.json'
 import ACCOUNTS from '@/test/ACCOUNT_DATA.json'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import { Checkbox } from '@/components/ui/checkbox'
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { MdOutlineMore } from 'react-icons/md'
-import { Separator } from '@/components/ui/separator'
+import CreateAccount from './components/CreateAccount'
 interface Accounts {}
 type DataType = (typeof mockData)[0]
 type AccountType = (typeof ACCOUNTS)[0]
@@ -105,7 +98,7 @@ const Accounts: FC<Accounts> = () => {
   return (
     <section className='w-full  h-full flex flex-col shadow-2xl rounded-[0.5rem] border bg-background   '>
       {/* title of border here  */}
-
+      <CreateAccount />
       {/* table here */}
       <div className='flex-1 overflow-auto p-5'>
         <DataTable columns={columnsAccount} data={ACCOUNTS} />

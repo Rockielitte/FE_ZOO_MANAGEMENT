@@ -1,4 +1,4 @@
-import { LucideProps } from 'lucide-react'
+import { LucideProps, PlusCircleIcon } from 'lucide-react'
 
 export const Icons = {
   darkLogo: (props: LucideProps) => (
@@ -154,5 +154,6 @@ export const Icons = {
         />
       </g>
     </svg>
-  )
+  ),
+  PlusCircleIcon: PlusCircleIcon
 }
