@@ -1,9 +1,9 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
-import { IUser } from '../types'
+import { Jwt } from '../types'
 interface userState {
-  user: IUser | null
-  setUser: (user: IUser) => void
+  user: Jwt | null
+  setUser: (user: Jwt) => void
 }
 export const useUserStore = create<userState>()(
   devtools(

@@ -9,6 +9,7 @@ import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
+import { loaderAccount } from '@/lib/loader/AccountsLoader'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
@@ -70,7 +71,7 @@ const routes: RouteObject[] = [
           { index: true, element: Home },
           { path: 'staffs', element: Staff },
 
-          { path: 'accounts', element: Accounts },
+          { path: 'accounts', element: Accounts, loader: loaderAccount(queryClient) },
 
           {
             path: 'animals',

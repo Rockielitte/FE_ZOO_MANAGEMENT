@@ -4,6 +4,10 @@ export interface IUser {
   image?: string
   token?: string
 }
+
+export interface Jwt {
+  token?: string
+}
 export type dataCredential = {
   aud: string
   azp: string
@@ -18,4 +22,13 @@ export type dataCredential = {
   nbf: number
   picture: string
   sub: string
+}
+export type AccountType = {
+  id: string
+  email: string
+  name: string
+  avatar: string
+  phoneNumber: string
+  gender: string
+  role: string
 }

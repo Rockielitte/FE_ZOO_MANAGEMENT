@@ -1,6 +1,6 @@
 import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
 import { FC } from 'react'
-import mockData from '@/test/MOCK_DATA.json'
+
 import ACCOUNTS from '@/test/ACCOUNT_DATA.json'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 
@@ -9,16 +9,19 @@ import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { MdOutlineMore } from 'react-icons/md'
 import CreateAccount from './components/CreateAccount'
+import { useLoaderData } from 'react-router'
+import { AccountType } from '@/types'
 interface Accounts {}
-type DataType = (typeof mockData)[0]
-type AccountType = (typeof ACCOUNTS)[0]
 
 const Accounts: FC<Accounts> = () => {
+  const data: AccountType = useLoaderData()
+  console.log('data account: ', data)
+
   const columnsAccount: ColumnDef<AccountType>[] = [
     {
       accessorKey: 'id',
       header: 'ID',
-      cell: ({ row }) => <span>{row.getValue('id')}</span>
+      cell: ({ row }) => <span>{parseInt(row.id) + 1}</span>
     },
     {
       accessorKey: 'name',
@@ -36,10 +39,6 @@ const Accounts: FC<Accounts> = () => {
       },
       cell: ({ row }) => (
         <div className='flex items-center space-x-2 '>
-          {/* <Avatar>
-            <AvatarImage src={row.getValue('avatar')} />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar> */}
           <span>{row.getValue('name')}</span>
         </div>
       )
@@ -51,15 +50,15 @@ const Accounts: FC<Accounts> = () => {
     },
 
     {
-      accessorKey: 'phone',
+      accessorKey: 'phoneNumber',
       header: 'Phone Number',
-      cell: ({ row }) => <span>{row.getValue('phone')}</span>
+      cell: ({ row }) => <span>{row.getValue('phoneNumber')}</span>
     },
     {
       accessorKey: 'gender',
       header: 'Gender',
       cell: ({ row }) => {
-        return row.getValue('gender') == 'Male' ? (
+        return row.getValue('gender') == 'MALE' ? (
           <span className='p-1 rounded-[0.5rem] bg-blue-200 border-blue-400 border-2 text-blue-700 '>
             {row.getValue('gender')}
           </span>
@@ -101,7 +100,7 @@ const Accounts: FC<Accounts> = () => {
       <CreateAccount />
       {/* table here */}
       <div className='flex-1 overflow-auto p-5'>
-        <DataTable columns={columnsAccount} data={ACCOUNTS} />
+        <DataTable columns={columnsAccount} data={data} />
       </div>
 
       {/* border rounded here */}
