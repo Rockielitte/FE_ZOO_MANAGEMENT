@@ -16,6 +16,7 @@ const Test = Loadable({ loader: () => import('../test') })
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
 const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
+const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,6 +65,7 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: Home },
           { path: 'staffs', element: Staff },
+          { path: 'species', element: Species },
           {
             path: '*',
             element: Home
