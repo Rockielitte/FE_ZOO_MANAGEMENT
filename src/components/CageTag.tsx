@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { HiLocationMarker } from 'react-icons/hi'
 import {
   DropdownMenu,
@@ -27,7 +27,7 @@ const CageTag = ({ cage }: { cage: cage }) => {
     <div
       className='border-2 rounded-md shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all'
       //   onClick={() => {
-      //     route(`${cage}`)
+      //     route(`/dashboard/areas/${cage.cageID}`)
       //   }}
     >
       <div className='px-4 py-2 flex items-center w-full gap-4 bg-secondary  border-primary rounded-md'>
