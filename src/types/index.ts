@@ -23,6 +23,12 @@ export type dataCredential = {
   picture: string
   sub: string
 }
+
+export type credential = {
+  clientId: string
+  credential: string
+  select_by: string
+}
 export type AccountType = {
   id: string
   email: string

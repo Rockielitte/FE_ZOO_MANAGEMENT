@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
-
+import Account from '@/utils/api/Account'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -32,7 +32,7 @@ const accountFormSchema = z.object({
     .max(100, {
       message: 'Name must not be longer than 30 characters.'
     }),
-  phone: z
+  phoneNumber: z
     .string()
     .regex(/^(\+84|0)(3[2-9]|5[2689]|7[06789]|8[1-689]|9[0-9])[0-9]{7}$/, 'your phone number is invalid'),
   role: z.string({
@@ -43,7 +43,7 @@ const accountFormSchema = z.object({
   })
 })
 
-type AccountFormValues = z.infer<typeof accountFormSchema>
+export type AccountFormValues = z.infer<typeof accountFormSchema>
 
 // This can come from your database or API.
 // const defaultValues: Partial<AccountFormValues> = {
@@ -55,15 +55,27 @@ export function AccountForm() {
     resolver: zodResolver(accountFormSchema)
   })
 
-  function onSubmit(data: AccountFormValues) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      )
-    })
+  async function onSubmit(data: AccountFormValues) {
+    const response = await Account.createAccount(data)
+    if (response.email) {
+      toast({
+        title: 'You submitted the following values:',
+        description: (
+          <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+            <code className='text-white'>{JSON.stringify(response, null, 2)}</code>
+          </pre>
+        )
+      })
+    } else {
+      toast({
+        title: 'You submitted the following values:',
+        description: (
+          <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+            <code className='text-white'>error</code>
+          </pre>
+        )
+      })
+    }
   }
 
   return (
@@ -99,7 +111,7 @@ export function AccountForm() {
         />
         <FormField
           control={form.control}
-          name='phone'
+          name='phoneNumber'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Phone number</FormLabel>
