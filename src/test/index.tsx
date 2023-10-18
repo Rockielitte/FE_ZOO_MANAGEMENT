@@ -1,4 +1,4 @@
-import { FC, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect } from 'react'
+import { FC, Key } from 'react'
 // import { useQuery } from 'react-query'
 // import { get } from '../utils/apiCaller'
 import { useLoaderData } from 'react-router-dom'

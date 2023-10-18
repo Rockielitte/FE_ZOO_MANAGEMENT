@@ -159,7 +159,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
   return (
     <div className='h-full flex flex-col'>
-      <div className='flex items-center py-2 gap-2 '>
+      <div className='flex items-center py-2 gap-2 space-y-2 '>
         <Input
           placeholder='Filter emails...'
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
@@ -197,8 +197,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className='rounded-md border'></div>
-      <div className='flex-1 overflow-auto h-full border rounded-md'>
+      {/* <div className='rounded-md border'></div> */}
+      <div className='flex-1 overflow-auto h-full rounded-[0.5rem] border'>
         <Table className=''>
           <TableHeader className='sticky top-0 z-20'>
             {table.getHeaderGroups().map((headerGroup) => (
