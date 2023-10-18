@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command'
+import { Command, CommandGroup, CommandItem } from '@/components/ui/command'
 import { DialogFooter } from '@/components/ui/dialog'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -57,7 +57,7 @@ export function AccountForm() {
 
   async function onSubmit(data: AccountFormValues) {
     const response = await Account.createAccount(data)
-    if (response.email) {
+    if (response) {
       toast({
         title: 'You submitted the following values:',
         description: (

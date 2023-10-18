@@ -9,12 +9,13 @@ import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
-import { loaderAccount } from '@/lib/loader/AccountsLoader'
+import { loaderAllAccount } from '@/lib/loader/AccountsLoader'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
 const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
+const AccountDetail = Loadable({ loader: () => import('../pages/accounts/components/AccountDetail') })
 
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
@@ -71,7 +72,17 @@ const routes: RouteObject[] = [
           { index: true, element: Home },
           { path: 'staffs', element: Staff },
 
-          { path: 'accounts', element: Accounts, loader: loaderAccount(queryClient) },
+          {
+            path: 'accounts',
+            children: [
+              { index: true, element: Accounts, loader: loaderAllAccount(queryClient) },
+              {
+                path: ':id',
+                element: AccountDetail
+                // loader: loaderAllAccount(queryClient)
+              }
+            ]
+          },
 
           {
             path: 'animals',

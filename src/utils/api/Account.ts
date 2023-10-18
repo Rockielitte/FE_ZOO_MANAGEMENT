@@ -1,4 +1,3 @@
-import { AccountType } from '@/types'
 import { get, post } from '../apiCaller'
 import { AccountFormValues } from '@/pages/accounts/components/AccountForm'
 
@@ -27,7 +26,7 @@ const Account = {
     const endpoint = `/accounts/create`
 
     try {
-      const response = await post(
+      const response = (await post)<AccountFormValues>(
         endpoint,
         data,
         {},
@@ -36,9 +35,9 @@ const Account = {
             'Bearer ' +
             'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RBRkYiLCJzdWIiOiJtaW5ocGhhbTM0NDZAZ21haWwuY29tIiwiaWF0IjoxNjk3NTA3OTQ3LCJleHAiOjE2OTc1MjU5NDd9.h1LzaJTOs-HQ0tkgYn35qSLC6lRw_OD9Fhm8x1TGygM'
         }
-      )
+      ).then((res) => res.data)
 
-      return response.data
+      return response
     } catch (error) {
       console.log(error)
       return null

@@ -14,7 +14,7 @@ import { AccountType } from '@/types'
 interface Accounts {}
 
 const Accounts: FC<Accounts> = () => {
-  const data: AccountType = useLoaderData()
+  const data = useLoaderData() as AccountType
   console.log('data account: ', data)
 
   const columnsAccount: ColumnDef<AccountType>[] = [
@@ -100,7 +100,7 @@ const Accounts: FC<Accounts> = () => {
       <CreateAccount />
       {/* table here */}
       <div className='flex-1 overflow-auto p-5'>
-        <DataTable columns={columnsAccount} data={data} />
+        <DataTable columns={columnsAccount} data={ACCOUNTS} />
       </div>
 
       {/* border rounded here */}
