@@ -9,7 +9,7 @@ import { Toaster } from '@/components/ui/toaster'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId='949635241718-0qudmklc1b9ts3e4i8ldcui54l12hmuk.apps.googleusercontent.com'>
+    <GoogleOAuthProvider clientId='934045492148-r2m81eqq4724ukrj1bs8jlp5gn585pc8.apps.googleusercontent.com'>
       <App />
       {/* <ToastContainer /> */}
       <Toaster />

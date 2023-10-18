@@ -19,3 +19,8 @@ export type dataCredential = {
   picture: string
   sub: string
 }
+export type dataSpecies = {
+  name: string
+  description: string
+  image: string
+}

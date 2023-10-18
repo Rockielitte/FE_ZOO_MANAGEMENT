@@ -19,11 +19,13 @@ const Login: FC = () => {
   const navigate = useNavigate()
   const usMutation = useMutation({
     retry: 3,
-    mutationFn: (user: Omit<IUser, 'token'>) => {
-      return apiCaller.post<IUser>('/endpoint', user)
+    mutationFn: (user) => {
+      return apiCaller.post('/test-login-google', user)
     },
     onSuccess: (data) => {
-      setUser(data.data)
+      console.log("data: ",data);
+      
+      // setUser(data.data)
       navigate('/')
     },
     onError: (error) => {
@@ -63,8 +65,8 @@ const Login: FC = () => {
             <div className='shadow-2xl'>
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
-                  const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
-                  usMutation.mutate({ email: usProfile?.email, name: usProfile.name, image: usProfile.picture })
+                  // const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
+                  usMutation.mutate(credentialResponse)
                 }}
                 onError={() => {
                   console.log('Login Failed')

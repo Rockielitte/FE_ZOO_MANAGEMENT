@@ -7,6 +7,8 @@ import { QueryClient } from 'react-query'
 import Error from '@/pages/Error'
 import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
+import { loaderSpecies } from '@/lib/loader/loaderSpecies'
+import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
@@ -19,6 +21,8 @@ const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
 const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
 const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
+const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
+
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,7 +71,8 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: Home },
           { path: 'staffs', element: Staff },
-          { path: 'species', element: Species },
+          { path: 'animal_species', element: Species, loader: loaderSpecies(queryClient)},
+          { path: 'animal_species/:id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient)},
           {
             path: 'animals',
             children: [
