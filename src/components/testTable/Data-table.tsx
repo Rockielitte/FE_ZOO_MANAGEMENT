@@ -25,6 +25,14 @@ import { BsFillCalendar2WeekFill } from 'react-icons/bs'
 import { Calendar } from '../ui/calendar'
 import { SelectSingleEventHandler } from 'react-day-picker'
 import { AiFillDelete } from 'react-icons/ai'
+import { getFacetedUniqueValues } from '@tanstack/react-table'
+import { getFacetedRowModel } from '@tanstack/react-table'
+import { Badge } from '../ui/badge'
+import clsx from 'clsx'
+import Filter from './Filter'
+import { BiFilterAlt } from 'react-icons/bi'
+import { useNavigate } from 'react-router-dom'
+import { IoMdCreate } from 'react-icons/io'
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -35,6 +43,32 @@ declare module '@tanstack/react-table' {
   }
 }
 
+export function DebouncedInput({
+  value: initialValue,
+  onChange,
+  debounce = 500,
+  ...props
+}: {
+  value: string | number
+  onChange: (value: string | number) => void
+  debounce?: number
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
+  const [value, setValue] = useState(initialValue)
+
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (value != initialValue) onChange(value)
+    }, debounce)
+
+    return () => clearTimeout(timeout)
+  }, [value])
+
+  return <Input {...props} value={value} onChange={(e) => setValue(e.target.value)} />
+}
 export const defaultColumn = <T extends object>(type?: string, options?: string[]): Partial<ColumnDef<T>> => ({
   cell: ({ getValue, row: { index }, column: { id }, table }) => {
     const initialValue = getValue() as string
@@ -60,13 +94,29 @@ export const defaultColumn = <T extends object>(type?: string, options?: string[
         }}
         value={value}
       >
-        <SelectTrigger className='w-fit'>
+        <SelectTrigger className='w-fit border-none'>
           <SelectValue placeholder='Select' />
         </SelectTrigger>
         <SelectContent defaultValue={value}>
-          {options?.map((option) => (
-            <SelectItem className='w-fit' value={option}>
-              <span className='capitalize'>{option}</span>
+          {options?.map((option, key) => (
+            <SelectItem className='' value={option} key={option}>
+              <Badge
+                className={clsx(
+                  'px-2 py-1 min-w-[80px] text-center flex justify-center gap-1 items-center uppercase ',
+                  option == 'Good' && 'bg-green-400 ',
+                  option == 'Problem' && 'bg-yellow-400',
+                  option == 'Died' && 'bg-red-400'
+                )}
+              >
+                {/* {option == 'Male' ? (
+          <BsGenderMale className='text-xl'></BsGenderMale>
+        ) :option == 'Female' ? (
+          <BsGenderFemale className='text-xl'></BsGenderFemale>
+        ) : (
+          <IoMaleFemale className='text-xl'></IoMaleFemale>
+        )} */}
+                {option}
+              </Badge>
             </SelectItem>
           ))}
         </SelectContent>
@@ -116,8 +166,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
+  const [globalFilter, setGlobalFilter] = useState('')
   const [tableData, setTableData] = useState(data)
-  console.log(tableData, 'rerder')
+  const navigate = useNavigate()
 
   const table = useReactTable({
     data: tableData,
@@ -130,10 +181,14 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    onGlobalFilterChange: setGlobalFilter,
     state: {
       sorting,
       columnFilters,
-      rowSelection
+      rowSelection,
+      globalFilter
     },
     autoResetPageIndex,
     // Provide our updateData function to our table meta
@@ -156,27 +211,30 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     },
     debugTable: true
   })
+  console.log(columnFilters, 'hjsadjfk')
 
   return (
-    <div className='h-full flex flex-col'>
+    <div className='w-full h-full flex flex-col '>
       <div className='flex items-center py-2 gap-2 '>
-        <Input
-          placeholder='Filter emails...'
-          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
-          onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
-          className='max-w-sm'
+        <DebouncedInput
+          value={globalFilter ?? ''}
+          onChange={(value) => setGlobalFilter(String(value))}
+          className='max-w-md'
+          placeholder='Search all columns...'
         />
-        {table.getFilteredSelectedRowModel().rows.length > 0 && (
-          <Button variant={'destructive'} className='flex items-center gap-1 hover:scale-110 transition-all'>
-            <AiFillDelete />
-            <span>Delete</span>
-          </Button>
-        )}
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button variant={'outline'} className='flex gap-2 items-center'>
+              <BiFilterAlt /> More filter
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className='backdrop-blur-xl bg-transparent border-transparent shadow-lg py-3'>
+            <Filter table={table} />
+          </DropdownMenuContent>
+        </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='ml-auto'>
-              Columns
-            </Button>
+            <Button variant='outline'>Columns</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             {table
@@ -196,16 +254,40 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        {table.getFilteredSelectedRowModel().rows.length > 0 && (
+          <Button
+            variant={'secondary'}
+            className='flex items-center gap-1 hover:scale-110 transition-all text-red-600 border-red-300 border font-bold'
+          >
+            <AiFillDelete />
+            <span>Delete</span>
+          </Button>
+        )}
+        <Button
+          className='flex items-center gap-1 hover:scale-110 transition-all ml-auto'
+          onClick={() => {
+            navigate('create')
+          }}
+        >
+          <IoMdCreate />
+          <span>Create</span>
+        </Button>
       </div>
       <div className='rounded-md border'></div>
-      <div className='flex-1 overflow-auto h-full border rounded-md'>
+      <div className='flex-1 overflow-auto  border rounded-md '>
         <Table className=''>
           <TableHeader className='sticky top-0 z-20'>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className=' bg-primary hover:bg-primary text-foreground'>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className='text-white '>
+                    <TableHead
+                      key={header.id}
+                      className='text-white '
+                      onClick={() => {
+                        console.log(header.column.getFacetedUniqueValues())
+                      }}
+                    >
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   )
@@ -217,7 +299,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <TableBody className='flex-1'>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => {
+                    navigate(`${row.getValue('id')}`)
+                  }}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
