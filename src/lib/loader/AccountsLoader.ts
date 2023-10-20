@@ -1,5 +1,4 @@
 import Account from '@/utils/api/Account'
-import { useParams } from 'react-router-dom'
 
 export const loaderAllAccount = (queryClient: any) => async () => {
   try {
