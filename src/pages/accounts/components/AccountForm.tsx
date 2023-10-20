@@ -66,6 +66,7 @@ export function AccountForm() {
           </pre>
         )
       })
+      window.location.reload()
     } else {
       toast({
         title: 'You submitted the following values:',
@@ -175,7 +176,7 @@ export function AccountForm() {
           name='gender'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
-              <FormLabel>Role</FormLabel>
+              <FormLabel>Gender</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
