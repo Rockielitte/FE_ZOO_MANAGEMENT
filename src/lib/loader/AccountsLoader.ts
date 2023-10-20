@@ -5,7 +5,7 @@ export const loaderAllAccount = (queryClient: any) => async () => {
     const data = await queryClient.fetchQuery({
       queryKey: ['account'],
       queryFn: Account.getAllAccount,
-      staleTime: 10000
+      staleTime: 100
     })
 
     return data

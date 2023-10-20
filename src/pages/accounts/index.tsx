@@ -100,7 +100,7 @@ const Accounts: FC<Accounts> = () => {
       <CreateAccount />
       {/* table here */}
       <div className='flex-1 overflow-auto p-5'>
-        <DataTable columns={columnsAccount} data={ACCOUNTS} />
+        <DataTable columns={columnsAccount} data={data} />
       </div>
 
       {/* border rounded here */}

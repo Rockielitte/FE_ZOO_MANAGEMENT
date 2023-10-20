@@ -41,6 +41,7 @@ export const defaultColumn = <T extends object>(type?: string, options?: string[
     // We need to keep and update the state of the cell normally
     const [value, setValue] = useState(initialValue)
     const [date, setDate] = useState<Date>(new Date(initialValue))
+
     const onBlur = () => {
       table.options.meta?.updateData(index, id, value)
     }
@@ -201,10 +202,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         <Table className=''>
           <TableHeader className='sticky top-0 z-20'>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className=' bg-primary hover:bg-gray-400 '>
+              <TableRow key={headerGroup.id} className=' bg-primary hover:bg-primary text-foreground'>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className='text-foreground '>
+                    <TableHead key={header.id} className='text-white '>
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   )

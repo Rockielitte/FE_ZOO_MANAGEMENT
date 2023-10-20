@@ -16,7 +16,8 @@ const Test = Loadable({ loader: () => import('../test') })
 const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
 const AccountDetail = Loadable({ loader: () => import('../pages/accounts/components/AccountDetail') })
-
+const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
+const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 //  * HOME PAGE
@@ -89,6 +90,13 @@ const routes: RouteObject[] = [
             children: [
               { index: true, element: Animal },
               { path: ':id', element: AnimalDetail }
+            ]
+          },
+          {
+            path: 'areas',
+            children: [
+              { index: true, element: Area },
+              { path: ':id', element: AreaDetail }
             ]
           },
           {

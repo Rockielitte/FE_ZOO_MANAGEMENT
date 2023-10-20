@@ -35,7 +35,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                     src={logo}
                     className='w-10 sm:w-16 transition-all  object-contain bg-clip-padding bg-black py-1 px-0.5 sm:p-1 sm:py-2 rounded-full shadow-md'
                   />
-                  <span className='font-luck text-2xl sm:text-4xl '>ZooCam</span>
+                  <span className='font-luck text-2xl sm:text-5xl '>TheZoo</span>
                   {item && (
                     <span
                       className='text-xl sm:text-4xl   pr-3 cursor-pointer sm:hidden flex-1 flex justify-end '
@@ -89,7 +89,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                 setIsShow(!isShow)
               }}
             />
-            <div className=''>
+            <div className='hidden sm:block'>
               <BreadcrumbDemo />
             </div>
           </span>

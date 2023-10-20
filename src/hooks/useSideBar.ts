@@ -20,7 +20,7 @@ const useSideBar = () => {
       {
         name: 'Staff',
         Icon: ImManWoman,
-        href: 'staffs'
+        href: 'accounts'
       },
       {
         name: 'Animal',
