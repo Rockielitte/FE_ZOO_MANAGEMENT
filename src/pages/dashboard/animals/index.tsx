@@ -22,8 +22,14 @@ import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { MdOutlineMore } from 'react-icons/md'
 import { IoMaleFemale } from 'react-icons/io5'
 import { format } from 'date-fns'
+import { useUserStore } from '@/stores'
+import { useQuery } from 'react-query'
+import { request as requestCall } from '@/utils/apiCaller'
+import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
+import { AxiosResponse } from 'axios'
+import { FaGenderless } from 'react-icons/fa'
 type DataType = (typeof animalData)[0]
-const columns: ColumnDef<DataType>[] = [
+const columns: ColumnDef<Animal>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -50,19 +56,19 @@ const columns: ColumnDef<DataType>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => <DataTableColumnHeader column={column} title='ID' />,
-    cell: defaultColumn<DataType>('text').cell,
+    cell: defaultColumn<Animal>('text').cell,
     filterFn: 'includesString'
   },
   {
-    accessorFn: ({ avatar }) => ({ avatar }),
+    accessorFn: ({ imageList }) => imageList[0],
     id: 'avatar',
     header: 'Avatar',
     cell: ({ row, column }) => {
       // console.log(row.getValue);
-      const value: { avatar: string } = row.getValue(column.id)
+      const value: string = row.getValue(column.id)
       return (
         <Avatar>
-          <AvatarImage src={value.avatar} />
+          <AvatarImage src={value} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       )
@@ -73,48 +79,58 @@ const columns: ColumnDef<DataType>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => <DataTableColumnHeader column={column} title='Name' />,
-    cell: defaultColumn<DataType>('text').cell
+    cell: defaultColumn<Animal>('text').cell
   },
   {
-    accessorKey: 'species',
+    accessorFn: ({ species }) => species.name,
+    id: 'Species',
     header: ({ column }) => <DataTableColumnHeader column={column} title='Species' />,
-    cell: defaultColumn<DataType>('text').cell
+    cell: defaultColumn<Animal>('text').cell
   },
 
   {
-    accessorKey: 'nation',
+    accessorFn: ({ nation }) => nation,
+    id: 'Nation',
     header: ({ column }) => <DataTableColumnHeader column={column} title='Nation' />,
-    cell: defaultColumn<DataType>('text').cell
+    cell: defaultColumn<Animal>('text').cell
   },
   {
     accessorKey: 'gender',
     header: ({ column }) => <DataTableColumnHeader column={column} title='Gender' />,
-    cell: ({ row, column }) => (
-      <Badge
-        className={clsx(
-          'px-2 py-1 min-w-[70px] text-center flex justify-center gap-1 items-center  ',
-          row.getValue(column.id) == 'Male' && 'bg-blue-400 ',
-          row.getValue(column.id) == 'Female' && 'bg-pink-400',
-          row.getValue(column.id) == 'Bisexsual' && 'bg-slate-400'
-        )}
-      >
-        {row.getValue(column.id) == 'Male' ? (
-          <BsGenderMale className='text-xl'></BsGenderMale>
-        ) : row.getValue(column.id) == 'Female' ? (
-          <BsGenderFemale className='text-xl'></BsGenderFemale>
-        ) : (
-          <IoMaleFemale className='text-xl'></IoMaleFemale>
-        )}
-        {row.getValue(column.id)}
-      </Badge>
-    ),
+    cell: ({ row, column }) => {
+      const value: AnimalGenderEnum = row.getValue(column.id)
+      return (
+        <Badge
+          className={clsx(
+            'px-2 py-1 min-w-[70px] text-center flex justify-center gap-1 items-center  ',
+            value == AnimalGenderEnum.MALE && 'bg-blue-400 ',
+            value == AnimalGenderEnum.FEMALE && 'bg-pink-400',
+            value == AnimalGenderEnum.HERMAPHRODITE && 'bg-orange-400',
+            value == AnimalGenderEnum.ASEXUAL && 'bg-slate-400'
+          )}
+        >
+          {value == AnimalGenderEnum.MALE ? (
+            <BsGenderMale className='text-xl'></BsGenderMale>
+          ) : value == AnimalGenderEnum.FEMALE ? (
+            <BsGenderFemale className='text-xl'></BsGenderFemale>
+          ) : value == AnimalGenderEnum.HERMAPHRODITE ? (
+            <IoMaleFemale className='text-xl'></IoMaleFemale>
+          ) : (
+            <FaGenderless className='text-xl' />
+          )}
+          {value}
+        </Badge>
+      )
+    },
     enableSorting: false,
     filterFn: 'equalsString'
   },
   {
-    accessorKey: 'birthday',
+    accessorKey: 'dob',
     header: ({ column }) => <DataTableColumnHeader column={column} title='Birthday' />,
     cell: ({ row, column }) => {
+      console.log(row.getValue(column.id), 'jhkasdfhkjsadfhkjasd')
+
       const date = new Date(row.getValue(column.id))
       return date ? <span className='text-ellipsis'>{format(date, 'PPP')}</span> : <span>N/A</span>
     }
@@ -123,7 +139,7 @@ const columns: ColumnDef<DataType>[] = [
   {
     accessorKey: 'status',
     header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
-    cell: defaultColumn<DataType>('select', ['Good', 'Problem', 'Died']).cell
+    cell: defaultColumn<Animal>('select', [...Object.values(AnimalStatusEnum)]).cell
   },
   {
     id: 'action',
@@ -153,11 +169,33 @@ const columns: ColumnDef<DataType>[] = [
 ]
 
 export default function DemoPage() {
-  // const data = getData()
+  const token = useUserStore((state) => state.user)
+  const animal_data = useQuery<AxiosResponse<Animal[]>, unknown, Animal[]>({
+    queryKey: ['dashboad', 'animal', token],
+    queryFn: () => {
+      return requestCall<Animal[]>('/animal/', 'GET', {
+        Authorization: `Bearer ${token} `
+      })
+    },
+    onSuccess: (data) => {},
+    onError: (error) => {
+      if (error instanceof Error) {
+        console.log(error.message)
+      }
+    },
+    select: (data) => {
+      return data.data
+    }
+  })
+  console.log("asd';kf", animal_data.data)
 
   return (
     <div className='w-full p-2  py-2 h-full shadow-2xl border rounded-md '>
-      <DataTable columns={columns} data={animalData} />
+      <DataTable
+        columns={columns}
+        data={animal_data.isLoading ? [] : (animal_data.data as Animal[])}
+        isLoading={animal_data.isLoading}
+      />
     </div>
   )
 }

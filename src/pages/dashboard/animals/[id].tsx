@@ -15,40 +15,91 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 import { toast } from '@/components/ui/use-toast'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 import { BsImages, BsUpload } from 'react-icons/bs'
 import Carousel from '@/components/Carousel'
+import { useUserStore } from '@/stores'
+import { AxiosResponse } from 'axios'
+import { Animal, AnimalGenderEnum } from '@/types'
+import { request } from '@/utils/apiCaller'
+import { useQuery } from 'react-query'
+import { useParams, useSearchParams } from 'react-router-dom'
 const animalSchema = z.object({
   name: z.string().min(1, { message: "This field can't be empty" }),
   species: z.string().min(1, { message: "This field can't be empty" }),
   cage: z.string().min(1, { message: "This field can't be empty" }),
-  gender: z.enum(['Male', 'Female', 'Bisexual']),
-  birthday: z.date().max(new Date(), { message: 'Please choose before current time' }),
+  gender: z.nativeEnum(AnimalGenderEnum),
+  dob: z.date().max(new Date(), { message: 'Please choose before current time' }),
   nation: z.string().min(1, { message: "This field can't be empty" }),
-  description: z.string().optional(),
-  note: z.string().optional(),
+  description: z
+    .string()
+    .max(255, {
+      message: "Description can't be exccess 255 characters"
+    })
+    .optional(),
+  note: z
+    .string()
+    .max(255, {
+      message: "Note can't be exccess 255 characters"
+    })
+    .optional(),
   images: z.string().array().optional()
 })
 type AnimalSchemaType = z.infer<typeof animalSchema>
-const animal: AnimalSchemaType = {
-  name: 'Lion',
-  species: 'Lion',
-  cage: 'A12',
-  gender: 'Male',
-  birthday: new Date('9/11/2022'),
-  nation: 'Africa',
-  description:
-    'The lion is a large predator that belongs to the cat family. It is known for its majestic appearance, with a golden mane surrounding its head. Lions are primarily found in Africa and are known for their impressive hunting skills. They live in social groups called prides, consisting of multiple lionesses and a few male lions. Lions are carnivorous, feeding on a variety of prey animals such as wildebeests, zebras, and antelopes. They are powerful and agile hunters, capable of bringing down large animals. Lions have a lifespan of around 10 to 14 years in the wild. They are often regarded as a symbol of strength and royalty. However, due to habitat loss and poaching, lions are listed as a vulnerable species by conservation organizations.',
-  note: 'Handle with caution',
-  images: [
-    'https://s28164.pcdn.co/files/African-Lion-0436-7843-600x400.jpg',
-    'https://s28164.pcdn.co/files/African-Lion-Hasani-0003-9013-3-1280x720.jpg',
-    'https://i2-prod.dailystar.co.uk/incoming/article29032374.ece/ALTERNATES/s615b/2_Worlds-loneliest-lion-loses-its-roar-after-being-left-alone-in-abandoned-zoo-for-5-years.jpg'
-  ]
-}
+// const animal: AnimalSchemaType = {
+//   name: 'Lion',
+//   species: 'Lion',
+//   cage: 'A12',
+//   gender: 'Male',
+//   birthday: new Date('9/11/2022'),
+//   nation: 'Africa',
+//   description:
+//     'The lion is a large predator that belongs to the cat family. It is known for its majestic appearance, with a golden mane surrounding its head. Lions are primarily found in Africa and are known for their impressive hunting skills. They live in social groups called prides, consisting of multiple lionesses and a few male lions. Lions are carnivorous, feeding on a variety of prey animals such as wildebeests, zebras, and antelopes. They are powerful and agile hunters, capable of bringing down large animals. Lions have a lifespan of around 10 to 14 years in the wild. They are often regarded as a symbol of strength and royalty. However, due to habitat loss and poaching, lions are listed as a vulnerable species by conservation organizations.',
+//   note: 'Handle with caution',
+//   images: [
+//     'https://s28164.pcdn.co/files/African-Lion-0436-7843-600x400.jpg',
+//     'https://s28164.pcdn.co/files/African-Lion-Hasani-0003-9013-3-1280x720.jpg',
+//     'https://i2-prod.dailystar.co.uk/incoming/article29032374.ece/ALTERNATES/s615b/2_Worlds-loneliest-lion-loses-its-roar-after-being-left-alone-in-abandoned-zoo-for-5-years.jpg'
+//   ]
+// }
 const AnimalDetail = () => {
-  console.log('render')
+  const token = useUserStore((state) => state.user)
+  const id = useParams().id
+  const animal_data = useQuery<AxiosResponse<Animal>, unknown, Animal>({
+    queryKey: ['dashboad', 'animal', Number(id)],
+    queryFn: () => {
+      return request<Animal>(`/animal/${id}`, 'GET', {
+        Authorization: `Bearer ${token} `
+      })
+    },
+    onSuccess: (data) => {},
+    onError: (error) => {
+      if (error instanceof Error) {
+        console.log(error.message)
+      }
+    },
+    select: (data) => {
+      return data.data
+    }
+  })
+  const animalDataForm = useMemo(() => {
+    if (animal_data.data) {
+      const animal: AnimalSchemaType = {
+        name: animal_data.data.name,
+        species: animal_data.data.species.name,
+        cage: String(animal_data.data.cage.code),
+        gender: animal_data.data.gender,
+        dob: new Date(animal_data.data.dob),
+        nation: animal_data.data.nation,
+        description: animal_data.data.description,
+        note: animal_data.data.note,
+        images: animal_data.data.imageList
+      }
+      return animal
+    }
+  }, [animal_data.data])
+
   const [imageShow, setImageShow] = useState('images')
   const {
     register,
@@ -57,7 +108,10 @@ const AnimalDetail = () => {
     setValue,
     getValues,
     watch
-  } = useForm<AnimalSchemaType>({ resolver: zodResolver(animalSchema), defaultValues: animal })
+  } = useForm<AnimalSchemaType>({
+    resolver: zodResolver(animalSchema),
+    defaultValues: !animal_data.isLoading ? animalDataForm : undefined
+  })
   const onSubmit: SubmitHandler<AnimalSchemaType> = async (data) => {
     await new Promise((resolve) => {
       setTimeout(resolve, 1000)
@@ -74,8 +128,8 @@ const AnimalDetail = () => {
   return (
     <div className='w-full h-full border shadow-xl rounded-lg p-2 overflow-auto flex-col flex '>
       <div className=' text-white flex flex-col border-b-2  border-secondary shadow-lg bg-primary px-5 sm:-m-2 leading-tight rounded-md'>
-        <span className='text-xl uppercase font-bold tracking-wider pt-1 font-luck'>{animal.name}</span>
-        <span className='font-normal text-base'>{animal.species}</span>
+        <span className='text-xl uppercase font-bold tracking-wider pt-1 font-luck'>{animalDataForm?.name}</span>
+        <span className='font-normal text-base'>{animalDataForm?.species}</span>
       </div>
       <div className='flex-1 flex flex-col-reverse sm:flex-row gap-2  sm:overflow-auto pt-4  sm:px-0'>
         <form className='w-full md:w-3/5 md:h-full relative  ' onSubmit={handleSubmit(onSubmit)}>
@@ -88,81 +142,83 @@ const AnimalDetail = () => {
             Submit
           </Button>
           <div className='w-full  md:border-r  flex flex-col sm:flex-row  justify-between flex-wrap gap-7 px-6 overflow-auto h-full py-2 '>
-            {Object.keys(animal).map(
-              (item) =>
-                item != 'images' && (
-                  <div className='w-full  flex  relative ' key={item}>
-                    <div className='flex w-full  justify-center  items-center gap-2'>
-                      <Label htmlFor={item} className='min-w-[80px] capitalize text-base'>
-                        {item}
-                      </Label>
+            {animalDataForm &&
+              Object.keys(animalDataForm).map(
+                (item) =>
+                  item != 'images' && (
+                    <div className='w-full  flex  relative ' key={item}>
+                      <div className='flex w-full  justify-center  items-center gap-2'>
+                        <Label htmlFor={item} className='min-w-[80px] capitalize text-base'>
+                          {item}
+                        </Label>
 
-                      {item != 'description' && item != 'note' && item != 'gender' && item != 'birthday' ? (
-                        <Input
-                          type='text'
-                          id={item}
-                          placeholder={item}
-                          className='w-full'
-                          {...register(item as keyof AnimalSchemaType)}
-                        />
-                      ) : item != 'birthday' && item != 'gender' ? (
-                        <Textarea
-                          {...register(item as keyof AnimalSchemaType)}
-                          placeholder='Type your content here ....'
-                          id={item}
-                          rows={5}
-                          className='flex-1'
-                        />
-                      ) : item != 'birthday' ? (
-                        <Select
-                          onValueChange={(value) => {
-                            setValue(item, value as 'Male' | 'Female' | 'Bisexual')
-                          }}
-                          defaultValue={getValues(item)}
-                        >
-                          <SelectTrigger className='w-full' id={item}>
-                            <SelectValue placeholder={item} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value='Male'>Male</SelectItem>
-                            <SelectItem value='Female'>Female</SelectItem>
-                            <SelectItem value='Bisexual'>Bisexual</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      ) : (
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              id={item}
-                              variant={'outline'}
-                              className={cn(
-                                'w-full justify-start text-left font-normal',
-                                !watch(item) && 'text-muted-foreground'
-                              )}
-                            >
-                              <CalendarIcon className='mr-2 h-4 w-4' />
-                              {watch(item) ? format(watch(item), 'PPP') : <span>Pick a date</span>}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className='w-auto p-0'>
-                            <Calendar
-                              mode='single'
-                              selected={watch(item)}
-                              onSelect={(value) => {
-                                setValue(item, value as Date, { shouldValidate: true })
-                              }}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      )}
+                        {item != 'description' && item != 'note' && item != 'gender' && item != 'dob' ? (
+                          <Input
+                            type='text'
+                            id={item}
+                            placeholder={item}
+                            className='w-full'
+                            {...register(item as keyof AnimalSchemaType)}
+                          />
+                        ) : item != 'dob' && item != 'gender' ? (
+                          <Textarea
+                            {...register(item as keyof AnimalSchemaType)}
+                            placeholder='Type your content here ....'
+                            id={item}
+                            className='flex-1'
+                          />
+                        ) : item != 'dob' ? (
+                          <Select
+                            onValueChange={(value) => {
+                              setValue(item, value as AnimalGenderEnum)
+                            }}
+                            defaultValue={getValues(item)}
+                          >
+                            <SelectTrigger className='w-full' id={item}>
+                              <SelectValue placeholder={item} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.values(AnimalGenderEnum).map((item) => (
+                                <SelectItem value={item} key={item}>
+                                  {item}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                id={item}
+                                variant={'outline'}
+                                className={cn(
+                                  'w-full justify-start text-left font-normal',
+                                  !watch(item) && 'text-muted-foreground'
+                                )}
+                              >
+                                <CalendarIcon className='mr-2 h-4 w-4' />
+                                {watch(item) ? format(watch(item), 'PPP') : <span>Pick a date</span>}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className='w-auto p-0'>
+                              <Calendar
+                                mode='single'
+                                selected={watch(item)}
+                                onSelect={(value) => {
+                                  setValue(item, value as Date, { shouldValidate: true })
+                                }}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                        )}
+                      </div>
+                      <span className='right-0 text-sm font-normal text-red-500 absolute -bottom-6'>
+                        {errors[item as keyof AnimalSchemaType] && errors[item as keyof AnimalSchemaType]?.message}
+                      </span>
                     </div>
-                    <span className='right-0 text-sm font-normal text-red-500 absolute -bottom-6'>
-                      {errors[item as keyof AnimalSchemaType] && errors[item as keyof AnimalSchemaType]?.message}
-                    </span>
-                  </div>
-                )
-            )}
+                  )
+              )}
           </div>
         </form>
         <div className='border-2 border-dashed my-2 block sm:hidden'></div>
@@ -189,7 +245,7 @@ const AnimalDetail = () => {
             {imageShow == 'images' ? (
               <div className='w-full h-full flex justify-center  gap-2 flex-col'>
                 <div className='w-full  h-[200px]'>
-                  <Carousel images={animal.images as string[]} />
+                  <Carousel images={animalDataForm?.images as string[]} />
                 </div>
                 <div>jkasedhf</div>
               </div>

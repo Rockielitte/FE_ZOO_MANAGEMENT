@@ -21,7 +21,7 @@ export function Filter<TData>({ table }: Props<TData>) {
       {columnFiter.map((col) => (
         <div key={col.id} className='w-full flex items-center justify-between gap-4'>
           <Label htmlFor={col.id} className='capitalize min-w-[100px]'>
-            <Button className='w-full uppercase text-xs font-semibold flex gap-2 p-1  items-center'>
+            <Button className='w-full uppercase text-xs font-bold flex gap-2 p-1  items-center'>
               <IoMdColorFilter className='text-xl'></IoMdColorFilter>
               {col.id}
             </Button>
@@ -34,8 +34,8 @@ export function Filter<TData>({ table }: Props<TData>) {
             id={col.id}
             className='flex-1 text-sm'
             placeholder={
-              col.id == 'birthday'
-                ? `Format MM/DD/YY . . . (${col.getFacetedUniqueValues().size})`
+              col.id == 'dob'
+                ? `Format YY-MM-DD . . . (${col.getFacetedUniqueValues().size})`
                 : `Seach your ${col.id} here . . . (${col.getFacetedUniqueValues().size})`
             }
           />

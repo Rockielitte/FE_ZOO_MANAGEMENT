@@ -13,7 +13,7 @@ import {
 import { Payment } from './columns'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '../ui/button'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Input } from '../ui/input'
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { DataTablePagination } from './Pagination'
@@ -31,11 +31,16 @@ import { Badge } from '../ui/badge'
 import clsx from 'clsx'
 import Filter from './Filter'
 import { BiFilterAlt } from 'react-icons/bi'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { IoMdCreate } from 'react-icons/io'
+import { Skeleton } from '../ui/skeleton'
+import { useQueryClient } from 'react-query'
+import { request } from '@/utils/apiCaller'
+import { useUserStore } from '@/stores'
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  isLoading?: boolean
 }
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -98,14 +103,15 @@ export const defaultColumn = <T extends object>(type?: string, options?: string[
           <SelectValue placeholder='Select' />
         </SelectTrigger>
         <SelectContent defaultValue={value}>
-          {options?.map((option, key) => (
+          {options?.map((option, index) => (
             <SelectItem className='' value={option} key={option}>
               <Badge
                 className={clsx(
                   'px-2 py-1 min-w-[80px] text-center flex justify-center gap-1 items-center uppercase ',
-                  option == 'Good' && 'bg-green-400 ',
-                  option == 'Problem' && 'bg-yellow-400',
-                  option == 'Died' && 'bg-red-400'
+                  index == 0 && 'bg-green-400 ',
+                  index == 1 && 'bg-yellow-400',
+                  index == 2 && 'bg-red-400',
+                  index == 3 && 'bg-slate-400'
                 )}
               >
                 {/* {option == 'Male' ? (
@@ -161,7 +167,7 @@ function useSkipper() {
   return [shouldSkip, skip] as const
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
@@ -169,7 +175,30 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const [globalFilter, setGlobalFilter] = useState('')
   const [tableData, setTableData] = useState(data)
   const navigate = useNavigate()
-
+  const queryClient = useQueryClient()
+  const path = useLocation().pathname
+  const token = useUserStore((state) => state.user)
+  const segmentEndpoint = useMemo(() => {
+    if (path.includes('animals')) return { segment: 'animal' }
+  }, [path])
+  const prefetchId = useCallback(
+    (id: number) => {
+      if (Number.isInteger(id) && id >= 0 && segmentEndpoint?.segment)
+        queryClient.prefetchQuery({
+          queryKey: ['dashboad', `${segmentEndpoint.segment}`, id],
+          queryFn: () => {
+            return request(`/${segmentEndpoint?.segment}/${id}`, 'GET', {
+              Authorization: `Bearer ${token} `
+            })
+          },
+          staleTime: 3000
+        })
+    },
+    [segmentEndpoint]
+  )
+  useEffect(() => {
+    setTableData(data)
+  }, [data])
   const table = useReactTable({
     data: tableData,
     columns,
@@ -196,22 +225,23 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       updateData: (rowIndex, columnId, value) => {
         // Skip page index reset until after next rerender
         skipAutoResetPageIndex()
-        setTableData((old) =>
-          old.map((row, index) => {
-            if (index === rowIndex) {
-              return {
-                ...old[rowIndex]!,
-                [columnId]: value
+        setTableData(
+          (old) =>
+            old?.map((row, index) => {
+              if (index === rowIndex) {
+                return {
+                  ...old[rowIndex]!,
+                  [columnId]: value
+                }
               }
-            }
-            return row
-          })
+              return row
+            })
         )
       }
     },
     debugTable: true
   })
-  console.log(columnFilters, 'hjsadjfk')
+  // console.log(isLoading, 'loadie')
 
   return (
     <div className='w-full h-full flex flex-col '>
@@ -297,7 +327,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           </TableHeader>
 
           <TableBody className='flex-1'>
-            {table.getRowModel().rows?.length ? (
+            {!isLoading && table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -305,12 +335,27 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                   onClick={() => {
                     navigate(`${row.getValue('id')}`)
                   }}
+                  onMouseEnter={() => {
+                    prefetchId(Number(row.getValue('id')))
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
               ))
+            ) : isLoading && data.length == 0 ? (
+              <>
+                {[1, 1, 1, 1, 1, 1].map((i, index) => (
+                  <TableRow key={index} className='gap-2'>
+                    {table.getVisibleLeafColumns().map((col, index) => (
+                      <TableCell key={index}>
+                        <Skeleton className='h-8 min-w-[20px]' />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </>
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className='h-24 text-center'>
@@ -321,7 +366,14 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      {!isLoading && <DataTablePagination table={table} />}
+      {/* {isLoading && (
+        <>
+          {[1].map(() => (
+            <div key={1}>ádkf</div>
+          ))}
+        </>
+      )} */}
     </div>
   )
 }
