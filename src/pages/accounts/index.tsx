@@ -26,14 +26,14 @@ const Accounts: FC<Accounts> = () => {
     {
       accessorKey: 'name',
       header: 'Name',
-      accessorFn: ({ avatar, name }) => {
+      accessorFn: ({ avt, fname, lname }) => {
         return (
           <div className='flex items-center space-x-2 '>
             <Avatar>
-              <AvatarImage src={avatar} />
+              <AvatarImage src={avt} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <span>{name}</span>
+            <span>{fname + ' ' + lname}</span>
           </div>
         )
       },
@@ -50,9 +50,9 @@ const Accounts: FC<Accounts> = () => {
     },
 
     {
-      accessorKey: 'phoneNumber',
+      accessorKey: 'phone',
       header: 'Phone Number',
-      cell: ({ row }) => <span>{row.getValue('phoneNumber')}</span>
+      cell: ({ row }) => <span>{row.getValue('phone')}</span>
     },
     {
       accessorKey: 'gender',

@@ -32,9 +32,10 @@ export type credential = {
 export type AccountType = {
   id: string
   email: string
-  name: string
-  avatar: string
-  phoneNumber: string
+  lname: string
+  fname: string
+  avt: string
+  phone: string
   gender: string
   role: string
 }
