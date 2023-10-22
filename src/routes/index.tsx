@@ -25,6 +25,7 @@ const AccountDetail = Loadable({ loader: () => import('../pages/accounts/compone
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
 const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
 const Accounts = Loadable({ loader: () => import('../pages/accounts/index') })
+const Ticket = Loadable({ loader: () => import('../pages/tickets/index') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,6 +61,14 @@ const routes: RouteObject[] = [
         //private
         element: <AuthGuard />,
         children: [{ index: true, element: Home }]
+      }
+    ]
+  },
+  {
+    path: 'price_tickets',
+    children: [
+      {
+        children: [{ index: true, element: Ticket }]
       }
     ]
   },
