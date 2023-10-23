@@ -20,11 +20,11 @@ const Login: FC = () => {
   const usMutation = useMutation({
     retry: 3,
     mutationFn: (credentialResponse: CredentialResponse) => {
-      return apiCaller.post<credential>('/test-login-google', credentialResponse)
+      return apiCaller.get<credential>(`/auth/login-google?credential=${credentialResponse.credential}`)
     },
     onSuccess: (data) => {
       console.log('data: ', data)
-      setUser({ token: data.data })
+      setUser({ token: data.data.accessToken })
       // setUser(data.data)
       navigate('/dashboard')
     },

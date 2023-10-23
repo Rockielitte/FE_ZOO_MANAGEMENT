@@ -77,9 +77,9 @@ const index = (props: Props) => {
   const token = useUserStore((state) => state.user)?.token
   const queryClient = useQueryClient()
   const area_data = useQuery<AxiosResponse<Area[]>, unknown, Area[]>({
-    queryKey: ['areas'],
+    queryKey: ['area'],
     queryFn: () => {
-      return request<Area[]>('/areas/', 'GET', {
+      return request<Area[]>('/area/', 'GET', {
         Authorization: `Bearer ${token} `
       })
     },
@@ -94,10 +94,10 @@ const index = (props: Props) => {
     }
   })
   const formMutation = useMutation({
-    mutationKey: ['dashboard', 'areas'],
+    mutationKey: ['dashboard', 'area'],
     mutationFn: (data: formSchemaType) => {
       return request<Area>(
-        '/areas/',
+        '/area/',
         'POST',
         {
           Authorization: `Bearer ${token} `,
@@ -111,7 +111,7 @@ const index = (props: Props) => {
       console.log(data.data)
       toast.success('Send sucessfully')
       form.reset({ code: '', name: '', location: '' })
-      queryClient.invalidateQueries({ queryKey: ['areas'], exact: true })
+      queryClient.invalidateQueries({ queryKey: ['area'], exact: true })
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {

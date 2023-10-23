@@ -76,7 +76,7 @@ export type User = {
 export type Cage = {
   animalList: Animal[]
   animalSpecies: any | null
-  area: any | null
+  area: Area | null
   cageMealList: any | null
   code: string
   createdBy: User | null
@@ -122,4 +122,12 @@ export type Animal = {
   updatedAt: string
   updatedBy: User | null
   description: string
+}
+export type Area = {
+  id: number
+  code: string
+  name: string
+  location: string
+  createdBy: User
+  cageList: Cage[]
 }

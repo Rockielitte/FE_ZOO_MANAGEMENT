@@ -40,7 +40,6 @@ import { useUserStore } from '@/stores'
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  isLoading?: boolean
 }
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -167,7 +166,7 @@ function useSkipper() {
   return [shouldSkip, skip] as const
 }
 
-export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
@@ -327,7 +326,7 @@ export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTable
           </TableHeader>
 
           <TableBody className='flex-1'>
-            {!isLoading && table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -344,18 +343,6 @@ export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTable
                   ))}
                 </TableRow>
               ))
-            ) : isLoading && data.length == 0 ? (
-              <>
-                {[1, 1, 1, 1, 1, 1].map((i, index) => (
-                  <TableRow key={index} className='gap-2'>
-                    {table.getVisibleLeafColumns().map((col, index) => (
-                      <TableCell key={index}>
-                        <Skeleton className='h-8 min-w-[20px]' />
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </>
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className='h-24 text-center'>
@@ -366,7 +353,7 @@ export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTable
           </TableBody>
         </Table>
       </div>
-      {!isLoading && <DataTablePagination table={table} />}
+      {<DataTablePagination table={table} />}
       {/* {isLoading && (
         <>
           {[1].map(() => (
