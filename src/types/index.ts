@@ -123,3 +123,17 @@ export type Animal = {
   updatedBy: User | null
   description: string
 }
+
+export type Order = {
+  email: string
+  phone: string
+  name: string
+  total: number
+  visitDate: Date
+  details: OrderDetail[]
+}
+
+export type OrderDetail = {
+  quantity: number
+  ticketId: number
+}
