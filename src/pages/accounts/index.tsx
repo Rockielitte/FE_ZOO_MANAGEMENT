@@ -1,9 +1,5 @@
-import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
 import { FC } from 'react'
-
-import ACCOUNTS from '@/test/ACCOUNT_DATA.json'
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-
+import { ColumnDef } from '@tanstack/react-table'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
@@ -11,10 +7,23 @@ import { MdOutlineMore } from 'react-icons/md'
 import CreateAccount from './components/CreateAccount'
 import { useLoaderData } from 'react-router'
 import { AccountType } from '@/types'
+import { useQuery, useQueryClient } from 'react-query'
+import Account from '@/utils/api/Account'
+import { AccountTable } from './components/AccountTable'
+
 interface Accounts {}
 
 const Accounts: FC<Accounts> = () => {
-  const data = useLoaderData() as AccountType
+  const queryClient = useQueryClient()
+  const initData = useLoaderData() as AccountType
+  const { data } = useQuery({
+    queryKey: ['account'],
+    queryFn: Account.getAllAccount,
+    // initialData: initData,
+    staleTime: 10000
+    // initialDataUpdatedAt: () => queryClient.getQueryState(['account'])?.dataUpdatedAt
+  })
+
   console.log('data account: ', data)
 
   const columnsAccount: ColumnDef<AccountType>[] = [
@@ -100,7 +109,12 @@ const Accounts: FC<Accounts> = () => {
       <CreateAccount />
       {/* table here */}
       <div className='flex-1 overflow-auto p-5'>
-        <DataTable columns={columnsAccount} data={data} />
+        {data && (
+          <AccountTable
+            columns={columnsAccount}
+            data={data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))}
+          />
+        )}
       </div>
 
       {/* border rounded here */}

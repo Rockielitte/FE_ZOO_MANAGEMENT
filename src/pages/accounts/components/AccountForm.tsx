@@ -1,20 +1,21 @@
 import { Button } from '@/components/ui/button'
-
-import { Command, CommandGroup, CommandItem } from '@/components/ui/command'
+import { useCreateAccount } from '@/hooks/useCreateAccount'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command'
 import { DialogFooter } from '@/components/ui/dialog'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { toast } from '@/components/ui/use-toast'
+
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
-import Account from '@/utils/api/Account'
+
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { FC } from 'react'
+
 export type AccountProps = {
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -26,6 +27,7 @@ const genders = [
   { label: 'Male', value: 'MALE' },
   { label: 'Female', value: 'FEMALE' }
 ] as const
+
 const accountFormSchema = z.object({
   email: z.string().email(),
   fname: z
@@ -62,9 +64,9 @@ const defaultValues: Partial<AccountFormValues> = {
   email: '',
   fname: '',
   lname: '',
-  phone: '',
-  role: '',
-  gender: ''
+  phone: ''
+  // role: '',
+  // gender: ''
 }
 
 export const AccountForm: FC<AccountProps> = ({ setOpenDialog }) => {
@@ -72,29 +74,10 @@ export const AccountForm: FC<AccountProps> = ({ setOpenDialog }) => {
     resolver: zodResolver(accountFormSchema),
     defaultValues: defaultValues
   })
+  const { createAccount } = useCreateAccount(form, setOpenDialog)
 
   async function onSubmit(data: AccountFormValues) {
-    const response = await Account.createAccount(data)
-    console.log('response ' + response)
-
-    if (response.status == 200) {
-      setOpenDialog(false)
-      toast({
-        title: 'You submitted the following values:',
-        description: (
-          <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-            <code className='text-white'>{JSON.stringify(response.data, null, 2)}</code>
-          </pre>
-        )
-      })
-    } else {
-      form.reset()
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: response.data.message
-      })
-    }
+    createAccount(data)
   }
 
   return (
@@ -159,6 +142,7 @@ export const AccountForm: FC<AccountProps> = ({ setOpenDialog }) => {
             </FormItem>
           )}
         />
+
         <div className='flex items-center justify-center gap-3'>
           <FormField
             control={form.control}
@@ -253,6 +237,7 @@ export const AccountForm: FC<AccountProps> = ({ setOpenDialog }) => {
             )}
           />
         </div>
+
         <DialogFooter>
           <Button type='submit'>Save</Button>
         </DialogFooter>
