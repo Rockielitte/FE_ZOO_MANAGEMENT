@@ -7,13 +7,12 @@ import {
   getCoreRowModel,
   useReactTable,
   ColumnFiltersState,
-  getFilteredRowModel,
-  RowData
+  getFilteredRowModel
 } from '@tanstack/react-table'
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import {
   DropdownMenu,

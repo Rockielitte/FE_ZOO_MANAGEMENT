@@ -1,6 +1,9 @@
+import { accountDetailQuery } from '@/pages/dashboard/accounts/components/AccountDetail'
 import Account from '@/utils/api/Account'
+import { QueryClient } from 'react-query'
+import { LoaderFunctionArgs } from 'react-router-dom'
 
-export const loaderAllAccount = (queryClient: any) => async () => {
+export const loaderAllAccount = (queryClient: QueryClient) => async () => {
   try {
     const data = await queryClient.fetchQuery({
       queryKey: ['account'],
@@ -14,3 +17,10 @@ export const loaderAllAccount = (queryClient: any) => async () => {
   }
   return null
 }
+export const loaderAccountDetail =
+  (queryClient: QueryClient) =>
+  async ({ params }: LoaderFunctionArgs) => {
+    const query = accountDetailQuery(params.id)
+    // ⬇️ return data or fetch it
+    return queryClient.getQueryData(query.queryKey) ?? (await queryClient.fetchQuery(query))
+  }

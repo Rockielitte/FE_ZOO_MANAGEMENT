@@ -10,6 +10,7 @@ import { AccountType } from '@/types'
 import { useQuery, useQueryClient } from 'react-query'
 import Account from '@/utils/api/Account'
 import { AccountTable } from './components/AccountTable'
+import { Link } from 'react-router-dom'
 
 interface Accounts {}
 
@@ -93,6 +94,9 @@ const Accounts: FC<Accounts> = () => {
               <MdOutlineMore className='text-xl hover:scale-150 transition-all' />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <Link to='/dashboard/accounts/0ac03da8-9d62-484a-b58b-ca78f3c0e3a2'>
+                <DropdownMenuItem>View Info</DropdownMenuItem>
+              </Link>
               <DropdownMenuItem>Update Role</DropdownMenuItem>
               <DropdownMenuItem>View News</DropdownMenuItem>
             </DropdownMenuContent>
