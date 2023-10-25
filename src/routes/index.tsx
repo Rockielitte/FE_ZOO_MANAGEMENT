@@ -15,11 +15,14 @@ const Login = Loadable({ loader: () => import('../pages/authentication/Login') }
 const Test = Loadable({ loader: () => import('../test') })
 const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
+const AnimalCreate = Loadable({ loader: () => import('../pages/dashboard/animals/create') })
 const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
 const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
 const AccountDetail = Loadable({ loader: () => import('../pages/accounts/components/AccountDetail') })
-
-// const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
+const Cage = Loadable({ loader: () => import('../pages/dashboard/cages/index') })
+const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id]') })
+const Species = Loadable({ loader: () => import('../pages/dashboard/animal_species/index') })
+const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/animal_species/[id]') })
 
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
@@ -64,6 +67,7 @@ const routes: RouteObject[] = [
       }
     ]
   },
+
   {
     path: 'price_tickets',
     // element: <HomeLayout />,
@@ -82,10 +86,10 @@ const routes: RouteObject[] = [
         element: <MainLayout />,
         children: [
           { index: true, element: Home },
-          { path: 'staffs', element: Staff },
+          // { path: 'staffs', element: Staff },
 
           {
-            path: 'accounts',
+            path: 'staffs',
             children: [
               { index: true, element: Accounts, loader: loaderAllAccount(queryClient) },
               {
@@ -100,6 +104,7 @@ const routes: RouteObject[] = [
             path: 'animals',
             children: [
               { index: true, element: Animal },
+              { path: 'create', element: AnimalCreate },
               { path: ':id', element: AnimalDetail }
             ]
           },
@@ -108,6 +113,20 @@ const routes: RouteObject[] = [
             children: [
               { index: true, element: Area },
               { path: ':id', element: AreaDetail }
+            ]
+          },
+          {
+            path: 'cages',
+            children: [
+              { index: true, element: Cage },
+              { path: ':id', element: CageDetail }
+            ]
+          },
+          {
+            path: 'animal_species',
+            children: [
+              { index: true, element: Species },
+              { path: ':id', element: SpeciesDetail }
             ]
           },
           {

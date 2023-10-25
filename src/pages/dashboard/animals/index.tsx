@@ -26,8 +26,10 @@ import { useUserStore } from '@/stores'
 import { useQuery } from 'react-query'
 import { request as requestCall } from '@/utils/apiCaller'
 import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
-import { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { FaGenderless } from 'react-icons/fa'
+import LoadingScreen from '@/components/Loading'
+import Error from '@/pages/Error'
 type DataType = (typeof animalData)[0]
 const columns: ColumnDef<Animal>[] = [
   {
@@ -129,8 +131,6 @@ const columns: ColumnDef<Animal>[] = [
     accessorKey: 'dob',
     header: ({ column }) => <DataTableColumnHeader column={column} title='Birthday' />,
     cell: ({ row, column }) => {
-      console.log(row.getValue(column.id), 'jhkasdfhkjsadfhkjasd')
-
       const date = new Date(row.getValue(column.id))
       return date ? <span className='text-ellipsis'>{format(date, 'PPP')}</span> : <span>N/A</span>
     }
@@ -171,7 +171,7 @@ const columns: ColumnDef<Animal>[] = [
 export default function DemoPage() {
   const token = useUserStore((state) => state.user)
   const animal_data = useQuery<AxiosResponse<Animal[]>, unknown, Animal[]>({
-    queryKey: ['dashboad', 'animal', token],
+    queryKey: ['animal', token],
     queryFn: () => {
       return requestCall<Animal[]>('/animal/', 'GET', {
         Authorization: `Bearer ${token} `
@@ -179,7 +179,7 @@ export default function DemoPage() {
     },
     onSuccess: (data) => {},
     onError: (error) => {
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
         console.log(error.message)
       }
     },
@@ -187,15 +187,15 @@ export default function DemoPage() {
       return data.data
     }
   })
-  console.log("asd';kf", animal_data.data)
-
   return (
     <div className='w-full p-2  py-2 h-full shadow-2xl border rounded-md '>
-      <DataTable
-        columns={columns}
-        data={animal_data.isLoading ? [] : (animal_data.data as Animal[])}
-        isLoading={animal_data.isLoading}
-      />
+      {animal_data.isError ? (
+        <Error />
+      ) : !animal_data.isLoading ? (
+        <DataTable columns={columns} data={!animal_data.data ? [] : (animal_data.data as Animal[])} />
+      ) : (
+        <LoadingScreen></LoadingScreen>
+      )}
     </div>
   )
 }
