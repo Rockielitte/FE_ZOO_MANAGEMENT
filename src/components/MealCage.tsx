@@ -1,44 +1,30 @@
-import React, { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from './ui/dialog'
-import { MdCreate } from 'react-icons/md'
-import { Button } from './ui/button'
+import React from 'react'
 import { FieldValues, Path, SubmitHandler, UseFormReturn } from 'react-hook-form'
 import { UseMutationResult } from 'react-query'
-import { Label } from 'flowbite-react'
+import { Label } from './ui/label'
 import { Input } from './ui/input'
-import LoadingScreen from './Loading'
 import { AxiosError } from 'axios'
+import { Button } from './ui/button'
+import { Popover, PopoverTrigger } from './ui/popover'
+import { CalendarIcon } from '@radix-ui/react-icons'
+import { cn } from '@/lib/utils'
+import CageMealTabe from './CageMealTabe'
 import { SelectSearch } from './SelectSearch'
 
-export type PropsFormModal<X, T extends FieldValues> = {
+type Props<X, T extends FieldValues> = {
   form: UseFormReturn<T>
   formMutation: UseMutationResult<X, unknown, T, unknown>
-  action?: string
-  Trigger?: React.ReactNode
-  title: string
   fields: Path<T>[]
 }
 
-const ModalForm = <X, T extends FieldValues>({
-  form,
-  formMutation,
-  action,
-  title,
-  fields,
-  Trigger
-}: PropsFormModal<X, T>) => {
+const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Props<X, T>) => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting }
+  } = form
   const onSubmit: SubmitHandler<T> = async (data) => {
-    console.log('reload ne')
-
-    console.log('submit data')
+    console.log('submit data', data)
     formMutation.mutate(data, {
       onSettled: () => {
         setTimeout(() => {
@@ -48,43 +34,11 @@ const ModalForm = <X, T extends FieldValues>({
     })
     console.log(data)
   }
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    getValues,
-    setValue,
-    watch
-  } = form
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        {action ? (
-          <Button
-            type='submit'
-            className='uppercase text-white flex  items-center gap-1 opacity-90  font-bold hover:opacity-100 hover:scale-110 transition-all'
-          >
-            <>
-              <MdCreate className='text-xl ' />
-              {action}
-            </>
-          </Button>
-        ) : Trigger ? (
-          <button className='flex items-center w-full'>{Trigger}</button>
-        ) : (
-          <MdCreate className='text-xl ' />
-        )}
-      </DialogTrigger>
-      <DialogContent className='max-h-[400px] w-[400px] shadow-xl border-secondary flex flex-col gap-1'>
-        {formMutation.isLoading && <LoadingScreen label='Submitting'></LoadingScreen>}
-        <DialogHeader>
-          <DialogTitle className='uppercase pb-2'>{title}</DialogTitle>
-          <DialogDescription>
-            Fill below form fields to complete this proccess. Click submit when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className='flex-1 overflow-auto flex flex-col gap-1 '>
-          <div className='grid gap-4 py-4 w-full h-full flex-1 overflow-auto px-2'>
+    <div className='border w-full h-full rounded-xl shadow-md p-2 flex flex-col-reverse md:flex-row  gap-2 overflow-auto'>
+      <div className='h-full w-full md:w-1/2  border p-2 shadow-xl rounded-lg'>
+        <form onSubmit={handleSubmit(onSubmit)} className='overflow-auto flex flex-col gap-1 w-full h-full '>
+          <div className='flex flex-col gap-4 py-4 w-full flex-1 overflow-auto px-2'>
             {fields.map((item) => {
               switch (item) {
                 case 'areaId':
@@ -243,21 +197,25 @@ const ModalForm = <X, T extends FieldValues>({
               </div>
             </div>
           )}
-          <DialogFooter className=''>
-            <Button
-              type='submit'
-              disabled={isSubmitting}
-              onClick={() => {
-                console.log('click ne'), handleSubmit(onSubmit)
-              }}
-            >
-              Submit
-            </Button>
-          </DialogFooter>
+
+          <Button
+            type='submit'
+            disabled={isSubmitting}
+            onClick={() => {
+              console.log('click ne'), handleSubmit(onSubmit)
+            }}
+          >
+            Submit
+          </Button>
         </form>
-      </DialogContent>
-    </Dialog>
+      </div>
+      <div className='h-full md:w-1/2 w-full p-2 shadow-2xl border rounded-lg '>
+        <div className='flex w-full h-full flex-col gap-2 '>
+          <CageMealTabe />
+        </div>
+      </div>
+    </div>
   )
 }
 
-export default ModalForm
+export default MealCage

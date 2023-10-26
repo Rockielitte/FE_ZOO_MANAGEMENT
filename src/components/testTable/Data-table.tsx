@@ -40,6 +40,7 @@ import { useUserStore } from '@/stores'
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  pathName?: string
 }
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -166,7 +167,7 @@ function useSkipper() {
   return [shouldSkip, skip] as const
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, pathName }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
@@ -178,13 +179,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const path = useLocation().pathname
   const token = useUserStore((state) => state.user)
   const segmentEndpoint = useMemo(() => {
-    if (path.includes('animals')) return { segment: 'animal' }
+    if (path.includes('animals')) return { segment: 'animals' }
   }, [path])
   const prefetchId = useCallback(
     (id: number) => {
       if (Number.isInteger(id) && id >= 0 && segmentEndpoint?.segment)
         queryClient.prefetchQuery({
-          queryKey: ['dashboad', `${segmentEndpoint.segment}`, id],
+          queryKey: [`${segmentEndpoint.segment}`, id],
           queryFn: () => {
             return request(`/${segmentEndpoint?.segment}/${id}`, 'GET', {
               Authorization: `Bearer ${token} `
@@ -295,7 +296,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         <Button
           className='flex items-center gap-1 hover:scale-110 transition-all ml-auto'
           onClick={() => {
-            navigate('create')
+            navigate(pathName ? `${pathName}/create` : 'create')
           }}
         >
           <IoMdCreate />
@@ -310,13 +311,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
               <TableRow key={headerGroup.id} className=' bg-primary hover:bg-primary text-foreground'>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead
-                      key={header.id}
-                      className='text-white '
-                      onClick={() => {
-                        console.log(header.column.getFacetedUniqueValues())
-                      }}
-                    >
+                    <TableHead key={header.id} className='text-white '>
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   )
@@ -332,7 +327,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   onClick={() => {
-                    navigate(`${row.getValue('id')}`)
+                    navigate(pathName ? `${pathName}/${row.getValue('id')}` : `${row.getValue('id')}`)
                   }}
                   onMouseEnter={() => {
                     prefetchId(Number(row.getValue('id')))
@@ -354,13 +349,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         </Table>
       </div>
       {<DataTablePagination table={table} />}
-      {/* {isLoading && (
-        <>
-          {[1].map(() => (
-            <div key={1}>ádkf</div>
-          ))}
-        </>
-      )} */}
     </div>
   )
 }

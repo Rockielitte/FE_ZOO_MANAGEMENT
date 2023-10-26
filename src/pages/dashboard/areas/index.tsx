@@ -64,13 +64,10 @@ export const columns: ColumnDef<Area>[] = [
   },
 
   {
-    accessorFn: ({ cageList }) => cageList?.length,
-    id: 'cageNum'
+    accessorKey: 'noAnimals'
   },
   {
-    accessorKey: 'cageList',
-    enableGlobalFilter: false,
-    enableColumnFilter: false
+    accessorKey: 'noCages'
   }
 ]
 const index = (props: Props) => {
@@ -83,7 +80,9 @@ const index = (props: Props) => {
         Authorization: `Bearer ${token} `
       })
     },
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      console.log(data, 'aerea')
+    },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         console.log(error.message)
@@ -94,7 +93,7 @@ const index = (props: Props) => {
     }
   })
   const formMutation = useMutation({
-    mutationKey: ['dashboard', 'areas'],
+    mutationKey: ['areas'],
     mutationFn: (data: formSchemaType) => {
       return request<Area>(
         '/areas/',
@@ -125,11 +124,11 @@ const index = (props: Props) => {
   })
 
   return (
-    <div className='w-full h-full'>
+    <div className='w-full h-full shadow-2xl'>
       {area_data.isError ? (
         <Error />
       ) : !area_data.isLoading ? (
-        <div className='w-full h-full p-2 overflow-auto border shadow-lg rounded-sm'>
+        <div className='w-full h-full p-2 overflow-auto border shadow-2xl rounded-sm'>
           <GridShow
             columns={columns}
             data={!area_data.data ? [] : (area_data.data as Area[])}

@@ -40,7 +40,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 export const columns: ColumnDef<Cage>[] = [
   {
     accessorKey: 'id',
-    filterFn: 'includesString'
+    filterFn: 'includesString',
+    enableGlobalFilter: false,
+    enableColumnFilter: false
   },
   {
     accessorKey: 'code'
@@ -62,7 +64,8 @@ export const columns: ColumnDef<Cage>[] = [
   },
   {
     accessorFn: ({ managedBy }) => managedBy?.fname,
-    id: 'manager'
+    id: 'manager',
+    filterFn: 'includesString'
   },
   {
     accessorFn: ({ animalSpecies }) => animalSpecies.id,
@@ -71,7 +74,7 @@ export const columns: ColumnDef<Cage>[] = [
     enableColumnFilter: false
   },
   {
-    accessorFn: ({ animalList }) => animalList?.length,
+    accessorFn: ({ animals }) => animals?.length,
     id: 'animalNum',
     enableGlobalFilter: false,
     enableColumnFilter: false
@@ -88,7 +91,7 @@ const formSchema = z.object({
   code: z.string().regex(regexPattern),
   areaId: z.coerce.number(),
   animalSpeciesId: z.coerce.number(),
-  managedBy: z.string().min(1),
+  managedById: z.string().min(1),
   description: z.string().optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
@@ -96,13 +99,15 @@ export default function DemoPage() {
   const token = useUserStore((state) => state.user)?.token
   const queryClient = useQueryClient()
   const cage_data = useQuery<AxiosResponse<Cage[]>, unknown, Cage[]>({
-    queryKey: ['cage'],
+    queryKey: ['cages'],
     queryFn: () => {
-      return requestCall<Cage[]>('/cage/', 'GET', {
+      return requestCall<Cage[]>('/cages/', 'GET', {
         Authorization: `Bearer ${token} `
       })
     },
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      form.reset()
+    },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         console.log(error.message)
@@ -113,10 +118,10 @@ export default function DemoPage() {
     }
   })
   const formMutation = useMutation({
-    mutationKey: ['dashboard', 'cage'],
+    mutationKey: ['cages'],
     mutationFn: (data: formSchemaType) => {
       return request<Cage>(
-        '/cage/',
+        '/cages/',
         'POST',
         {
           Authorization: `Bearer ${token} `,
@@ -130,7 +135,7 @@ export default function DemoPage() {
       console.log(data.data)
       toast.success('Send sucessfully')
       form.reset()
-      queryClient.invalidateQueries({ queryKey: ['cage'], exact: true })
+      queryClient.invalidateQueries({ queryKey: ['cages'], exact: true })
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
@@ -140,11 +145,9 @@ export default function DemoPage() {
     }
   })
   const form = useForm<formSchemaType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      managedBy: '432bdd34-fd6d-4018-be48-3f8878feece5'
-    }
+    resolver: zodResolver(formSchema)
   })
+
   return (
     <div className='w-full  h-full '>
       {cage_data.isError ? (
@@ -160,7 +163,7 @@ export default function DemoPage() {
               title: 'Create new cage',
               form,
               formMutation,
-              fields: ['code', 'areaId', 'animalSpeciesId', 'managedBy', 'description']
+              fields: ['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']
             }}
           />
         </div>

@@ -41,12 +41,12 @@ const useSideBar = () => {
         name: 'Area',
         Icon: BsFillPinMapFill,
         href: 'areas'
-      },
-      {
-        name: 'Meal schedule',
-        Icon: AiFillSchedule,
-        href: 'meal_schedule'
       }
+      // {
+      //   name: 'Meal schedule',
+      //   Icon: AiFillSchedule,
+      //   href: 'meal_schedule'
+      // }
     ],
     []
   )

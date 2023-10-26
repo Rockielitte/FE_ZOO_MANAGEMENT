@@ -30,7 +30,7 @@ const formSchema = z.object({
   code: z.string().regex(regexPattern),
   areaId: z.coerce.number(),
   animalSpeciesId: z.coerce.number(),
-  managedBy: z.string().min(1),
+  managedById: z.string().min(1),
   description: z.string().optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
@@ -39,10 +39,10 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
   const route = useNavigate()
   const token = useUserStore((state) => state.user)?.token
   const formMutation = useMutation({
-    mutationKey: ['dashboard', 'area'],
+    mutationKey: ['cages'],
     mutationFn: (data: formSchemaType) => {
       return request<Cage>(
-        `/cage/${row.getValue('id')}`,
+        `/cages/${row.getValue('id')}`,
         'PUT',
         {
           Authorization: `Bearer ${token} `,
@@ -55,7 +55,7 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
     onSuccess: (data) => {
       console.log(data.data)
       toast.success('Send sucessfully')
-      queryClient.invalidateQueries({ queryKey: ['cage'], exact: true })
+      queryClient.invalidateQueries({ queryKey: ['cages'], exact: true })
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
@@ -70,7 +70,7 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
       code: row.getValue('code'),
       areaId: row.getValue('areaId'),
       animalSpeciesId: row.getValue('animalSpeciesId'),
-      managedBy: row.getValue('manageBy'),
+      managedById: row.getValue('manageBy'),
       description: row.getValue('infor')
     }
   })
@@ -106,11 +106,11 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
                 title='Edit cage'
                 form={form}
                 formMutation={formMutation}
-                fields={['code', 'areaId', 'animalSpeciesId', 'managedBy', 'description']}
+                fields={['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']}
                 Trigger={
                   <>
                     <AiFillEdit className='text-2xl pr-2' />
-                    Edit area
+                    Edit cage
                   </>
                 }
               />
@@ -127,7 +127,7 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
         <div className='flex items-center justify-between px-4 py-1 b border-b font-normal'>
           <span>Number of animals:</span>
           <span className='px-2 text-md rounded-full border-2 bg-primary text-white'>
-            {row.getValue('animalNum') || 'N/A'}
+            {row.getValue('animalNum') || '0'}
           </span>
         </div>
         <div className='flex items-center justify-between px-4 py-1 text-sm  '>

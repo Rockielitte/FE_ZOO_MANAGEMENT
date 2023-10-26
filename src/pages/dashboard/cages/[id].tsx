@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
@@ -22,83 +22,125 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import CageTag from '@/components/CageTag'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import CageAnimalTable from '@/components/CageAnimalTable'
+import MealCage from '@/components/MealCage'
+import { z } from 'zod'
+import { useUserStore } from '@/stores'
+import { useParams } from 'react-router-dom'
+import axios, { AxiosResponse } from 'axios'
+import { Animal, Cage } from '@/types'
+import { QueryClient, useMutation, useQuery } from 'react-query'
+import { request } from '@/utils/apiCaller'
+import { toast } from 'react-toastify'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 type Props = {}
+const regexPattern = /^[A-Za-z][0-9]{4}$/
+const formSchema = z.object({
+  code: z.string().regex(regexPattern),
+  areaId: z.coerce.number(),
+  animalSpeciesId: z.coerce.number(),
+  managedById: z.string().min(1),
+  description: z.string().optional()
+})
+export type formSchemaType = z.infer<typeof formSchema>
+const DetailCage = (props: Props) => {
+  const token = useUserStore((state) => state.user)
+  const cageId = useParams().id
 
-const DetailArea = (props: Props) => {
+  const cage_data = useQuery<AxiosResponse<Cage>, unknown, Cage>({
+    queryKey: ['cages', cageId],
+    queryFn: () => {
+      return request<Cage>(`/cages/${cageId}`, 'GET', {
+        Authorization: `Bearer ${token} `
+      })
+    },
+    onSuccess: (data) => {
+      console.log(data)
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message)
+      }
+    },
+    select: (data) => {
+      return data.data
+    }
+  })
+  const formMutation = useMutation({
+    mutationKey: ['cages', cageId],
+    mutationFn: (data: formSchemaType) => {
+      return request<Cage>(
+        `/cages/${cageId}`,
+        'PUT',
+        {
+          Authorization: `Bearer ${token} `,
+          Headers: { 'Content-Type': 'application/json' }
+        },
+        {},
+        data
+      )
+    },
+    onSuccess: (data) => {
+      console.log(data.data)
+      toast.success('Send sucessfully')
+
+      // QueryClient.invalidateQueries({ queryKey: ['cages'], exact: true })
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message, 'dasklfj')
+        toast.error(error.message)
+      }
+    }
+  })
+  const defaultValues = useMemo(() => {
+    if (cage_data.data)
+      return {
+        code: cage_data.data.code,
+        areaId: cage_data.data.area?.id,
+        animalSpeciesId: cage_data.data.animalSpecies.id,
+        managedById: cage_data.data.managedBy?.id,
+        description: cage_data.data.description
+      }
+  }, [cage_data.data])
+  useEffect(() => {
+    if (cage_data.data) form.reset(defaultValues)
+  }, [defaultValues])
+  const form = useForm<formSchemaType>({
+    resolver: zodResolver(formSchema)
+  })
   return (
-    <div className='w-full h-full border rounded-md shadow-md flex flex-col p-2 gap-2'>
-      <div className='flex justify-between gap-2'>
-        <Input type='text' placeholder='Search your cage here . . . ' className='tracking-wide' />
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              type='submit'
-              className=' text-white flex  items-center gap-1 opacity-90  font-bold hover:opacity-100 hover:scale-110 transition-all'
-            >
-              <MdCreate className='text-xl' />
-              Create
-            </Button>
-          </DialogTrigger>
-          <DialogContent className='sm:max-w-[425px]'>
-            <DialogHeader>
-              <DialogTitle className='uppercase pb-2'>Create new cage</DialogTitle>
-              <DialogDescription>
-                Fill all below form fields to complete this proccess. Click save when you're done.
-              </DialogDescription>
-            </DialogHeader>
-            <div className='grid gap-4 py-4'>
-              <div className='grid grid-cols-4 items-center gap-4'>
-                <Label htmlFor='name' className='text-right'>
-                  Name
-                </Label>
-                <Input id='name' defaultValue='Pedro Duarte' className='col-span-3' />
-              </div>
-              <div className='grid grid-cols-4 items-center gap-4'>
-                <Label htmlFor='username' className='text-right'>
-                  Username
-                </Label>
-                <Input id='username' defaultValue='@peduarte' className='col-span-3' />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button type='submit'>Save</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-      <div className='flex-1 w-full  grid grid-cols-1 overflow-auto gap-8 '>
-        {/* {cage.map((item) => (
-          <CageTag key={item.cageID} cage={item} />
-        ))} */}
-      </div>
-      <div className='justify-end flex'>
-        <div className='flex items-center space-x-2'>
-          <Button variant='outline' className='hidden h-8 w-8 p-0 lg:flex'>
-            <span className='sr-only'>Go to first page</span>
-            <MdKeyboardDoubleArrowLeft className='h-4 w-4' />
-          </Button>
-          <Button variant='outline' className='h-8 w-8 p-0'>
-            <span className='sr-only'>Go to previous page</span>
-            <MdChevronLeft className='h-4 w-4' />
-          </Button>
-          {[1, 2, 3, 4, 5].map((item, index) => (
-            <Button variant='outline' className='h-8 w-8 p-0' key={index}>
-              <span className='sr-only'>Page {item}</span>
-              {item}
-            </Button>
-          ))}
-          <Button variant='outline' className='h-8 w-8 p-0'>
-            <span className='sr-only'>Go to next page</span>
-            <MdChevronRight className='h-4 w-4' />
-          </Button>
-          <Button variant='outline' className='hidden h-8 w-8 p-0 lg:flex'>
-            <span className='sr-only'>Go to last page</span>
-            <MdKeyboardDoubleArrowRight className='h-4 w-4' />
-          </Button>
-        </div>
-      </div>
+    <div className='w-full h-full rounded-md  flex flex-col p-1 gap-2'>
+      <Tabs defaultValue='animals' className='w-full  h-full flex-col flex  '>
+        <TabsList className='w-fit'>
+          <TabsTrigger
+            value='animals'
+            className='uppercase  data-[state=active]:bg-primary data-[state=active]:text-white'
+          >
+            Animals
+          </TabsTrigger>
+          <TabsTrigger
+            value='meals'
+            className=' uppercase data-[state=active]:bg-primary data-[state=active]:text-white'
+          >
+            Infor&meals
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value='animals' className='w-full flex-1 overflow-auto'>
+          <CageAnimalTable cage_data={cage_data} />
+        </TabsContent>
+        <TabsContent value='meals' className='w-full flex-1 overflow-auto'>
+          <MealCage
+            form={form}
+            formMutation={formMutation}
+            fields={['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
 
-export default DetailArea
+export default DetailCage

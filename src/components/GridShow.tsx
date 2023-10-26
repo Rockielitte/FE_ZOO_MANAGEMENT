@@ -91,27 +91,6 @@ export function GridShow<TData, TValue, X, T extends FieldValues>({
   const [globalFilter, setGlobalFilter] = useState('')
   const [tableData, setTableData] = useState(data)
   const navigate = useNavigate()
-  // const queryClient = useQueryClient()
-  // const path = useLocation().pathname
-  // const token = useUserStore((state) => state.user)
-  // const segmentEndpoint = useMemo(() => {
-  //   if (path.includes('animals')) return { segment: 'animal' }
-  // }, [path])
-  // const prefetchId = useCallback(
-  //   (id: number) => {
-  //     if (Number.isInteger(id) && id >= 0 && segmentEndpoint?.segment)
-  //       queryClient.prefetchQuery({
-  //         queryKey: ['dashboad', `${segmentEndpoint.segment}`, id],
-  //         queryFn: () => {
-  //           return request(`/${segmentEndpoint?.segment}/${id}`, 'GET', {
-  //             Authorization: `Bearer ${token} `
-  //           })
-  //         },
-  //         staleTime: 3000
-  //       })
-  //   },
-  //   [segmentEndpoint]
-  // )
   useEffect(() => {
     setTableData(data)
   }, [data])

@@ -21,18 +21,14 @@ const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id
 const AccountDetail = Loadable({ loader: () => import('../pages/accounts/components/AccountDetail') })
 const Cage = Loadable({ loader: () => import('../pages/dashboard/cages/index') })
 const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id]') })
-const Species = Loadable({ loader: () => import('../pages/dashboard/animal_species/index') })
-const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/animal_species/[id]') })
-
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
 const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
 const Accounts = Loadable({ loader: () => import('../pages/accounts/index') })
-
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 10
+      staleTime: 1000
     }
   }
 })
@@ -112,13 +108,17 @@ const routes: RouteObject[] = [
               { path: ':id', element: CageDetail }
             ]
           },
-          {
-            path: 'animal_species',
-            children: [
-              { index: true, element: Species },
-              { path: ':id', element: SpeciesDetail }
-            ]
-          },
+          // {
+          //   path: 'animal_species',
+          //   children: [
+          //     { index: true, element: Species },
+          //     { path: ':id', element: SpeciesDetail }
+          //   ]
+          // },
+          // {
+          //   path: 'meal_schedule',
+          //   children: [{ index: true, element: Meal_schedule }]
+          // },
           {
             path: '*',
             element: Home

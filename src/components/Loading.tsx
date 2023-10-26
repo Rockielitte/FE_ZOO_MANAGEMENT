@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 const LoadingScreen = ({ label }: { label?: string }) => {
   return (
-    <div className='w-full h-full z-20  justify-center items-center flex flex-col gap-4 absolute inset-0  backdrop-blur-md  shadow-md rounded-lg'>
+    <div className='w-full h-full z-40  justify-center items-center flex flex-col gap-4 absolute inset-0  backdrop-blur-md  shadow-md rounded-lg'>
       <svg
         aria-hidden='true'
         className='w-8 h-8   animate-spin  fill-primary '

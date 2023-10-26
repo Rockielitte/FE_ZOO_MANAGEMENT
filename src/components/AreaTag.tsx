@@ -38,10 +38,10 @@ const AreaTag: React.FC<{ row: Row<Area> }> = ({ row }) => {
   const queryClient = useQueryClient()
   const token = useUserStore((state) => state.user)?.token
   const formMutation = useMutation({
-    mutationKey: ['dashboard', 'area'],
+    mutationKey: ['areas', row.getValue('id')],
     mutationFn: (data: formSchemaType) => {
       return request<Area>(
-        `/area/${row.getValue('id')}`,
+        `/areas/${row.getValue('id')}`,
         'PUT',
         {
           Authorization: `Bearer ${token} `,
@@ -54,7 +54,7 @@ const AreaTag: React.FC<{ row: Row<Area> }> = ({ row }) => {
     onSuccess: (data) => {
       console.log(data.data)
       toast.success('Send sucessfully')
-      queryClient.invalidateQueries({ queryKey: ['area'], exact: true })
+      queryClient.invalidateQueries({ queryKey: ['areas'], exact: true })
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
@@ -122,15 +122,11 @@ const AreaTag: React.FC<{ row: Row<Area> }> = ({ row }) => {
       <div className='flex flex-col gap-2 font-light py-2 text-sm'>
         <div className='flex items-center justify-between px-4 py-1 b border-b'>
           <span>Number of cages</span>
-          <span className=''>{row.getValue('cageNum')}</span>
+          <span className=''>{row.getValue('noCages')}</span>
         </div>
         <div className='flex items-center justify-between px-4 py-1  '>
           <span>Number of animals</span>
-          <span>
-            {(row.getValue('cageList') as Cage[])?.reduce((pre, nex, index) => {
-              return pre + nex.animalList.length
-            }, 0)}
-          </span>
+          <span>{row.getValue('noAnimals')}</span>
         </div>
       </div>
     </div>
