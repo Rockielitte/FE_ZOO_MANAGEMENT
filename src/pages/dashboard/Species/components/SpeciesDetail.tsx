@@ -2,14 +2,17 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import * as React from 'react';
-import Lin from '@/assets/lin.jpg';
+import Lin from '@/assets/image14.png';
 import { EyeIcon } from 'lucide-react'
 import AnimalSpecies from '@/utils/api/AnimalSpecies';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { LandmarkIcon } from 'lucide-react';
 import { LucideMoreHorizontal } from 'lucide-react';
-
+import { SpeciesTable } from './SpeciesTable';
+import GridAnimal from './GridAnimal';
+import axios from 'axios';
+import GridCage from './GridCage';
 export interface IAppProps {
 }
 export const animalList = [{ id: 1, name: 'meow', description: 'asdfg.....', image: Lin },
@@ -23,6 +26,7 @@ export const cageList = [{ id: 1, code: 'A1000', description: 'asdfg.....' },
 { id: 4, code: 'A4000', description: 'asdfg.....' }]
 
 export const speciesDetailQuery = (id: string) => ({
+
     queryKey: ['species', 'detail', id],
     queryFn: async () => {
         const species = await AnimalSpecies.getById(id)
@@ -36,11 +40,100 @@ export const speciesDetailQuery = (id: string) => ({
     },
 })
 export default function SpeciesDetail(props: IAppProps) {
+
+    const columnsAnimal: ColumnDef<dataSpecies>[] = [
+        {
+            accessorKey: 'id',
+            header: 'ID',
+            cell: ({ row }) => <span>{parseInt(row.id) + 1}</span>
+        },
+        {
+            accessorKey: 'name',
+            header: 'Name',
+            // accessorFn: ({ avt, fname, lname }) => {
+            //   return (
+            //     <div className='flex items-center space-x-2 '>
+            //       <Avatar>
+            //         <AvatarImage src={avt} />
+            //         <AvatarFallback>CN</AvatarFallback>
+            //       </Avatar>
+            //       <span>{fname + ' ' + lname}</span>
+            //     </div>
+            //   )
+            // },
+            cell: ({ row }) => (
+                <div className='flex items-center space-x-2 '>
+                    <span>{row.getValue('name')}</span>
+                </div>
+            )
+        },
+        {
+            accessorKey: 'description',
+            header: 'Description',
+            cell: ({ row }) => <span>{row.getValue('description')}</span>
+        },
+        {
+            accessorKey: 'image',
+            header: 'Image',
+            cell: ({ row }) => <span>{row.getValue('image')}</span>
+        },
+
+    ]
+
+    const columnsCage: ColumnDef<dataSpecies>[] = [
+        {
+            accessorKey: 'id',
+            header: 'ID',
+            cell: ({ row }) => <span>{parseInt(row.id) + 1}</span>
+        },
+        {
+            accessorKey: 'code',
+            header: 'Code',
+            // accessorFn: ({ avt, fname, lname }) => {
+            //   return (
+            //     <div className='flex items-center space-x-2 '>
+            //       <Avatar>
+            //         <AvatarImage src={avt} />
+            //         <AvatarFallback>CN</AvatarFallback>
+            //       </Avatar>
+            //       <span>{fname + ' ' + lname}</span>
+            //     </div>
+            //   )
+            // },
+            cell: ({ row }) => (
+                <div className='flex items-center space-x-2 '>
+                    <span>{row.getValue('code')}</span>
+                </div>
+            )
+        },
+        {
+            accessorKey: 'description',
+            header: 'Description',
+            cell: ({ row }) => <span>{row.getValue('description')}</span>
+        },
+
+    ]
     const { id } = useParams()
+    const { data: cage_data } = useQuery({
+        queryKey: ['cages', 'speciesId', id],
+        queryFn: () => {
+            return AnimalSpecies.getCageBySpeciesId(id)
+        },
+        onSuccess: (data) => { },
+        onError: (error) => {
+            if (axios.isAxiosError(error)) {
+                console.log(error.message)
+            }
+        },
+        select: (data) => {
+            return data
+        }
+    })
+    console.log('cage_data: ', cage_data)
     const { data: species } = useQuery(speciesDetailQuery(id))
     console.log(species)
     return (
-        <div className='w-full p-5 py-2 h-full shadow-2xl border rounded-[0.5rem] overflow-auto '>
+        <div className='w-full p-5 py-2 h-full flex  flex-col  shadow-2xl border rounded-[0.5rem]  '>
 
             <div className='p-5'>
                 <h1 className='font-medium text-4xl'>{species.name}</h1>
@@ -48,74 +141,20 @@ export default function SpeciesDetail(props: IAppProps) {
                 <Separator />
             </div>
 
-            <div className='p-5 flex flex-col gap-5'>
-                <Input
-                    placeholder='Filter emails...'
-                    // value="Animal Species..."
-                    //   onChange={(event) => {
-                    //     let newData = species.filter((el) => {
-                    //       if (el.name.includes(event.target.value) ) {
-                    //         return el;
-                    //       }
-                    //     })
-                    //     console.log(newData)
-                    //     console.log(event.target.value)
-                    //     if(event.target.value.length == 0){setSpecies([...data.data])}
-                    //     else{
-                    //       setSpecies(newData);
-                    //     }
-                    //   }
-                    //   }
-                    className='max-w-sm'
-                />
-                <Tabs defaultValue="animal" className="w-full">
+                <Tabs defaultValue="animal" className=" flex-1 flex-col flex overflow-auto">
                     <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="animal">Animal</TabsTrigger>
                         <TabsTrigger value="cage">Cage</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="animal">
-                        {species.animalList.length == 0 ? <p>The List is Empty</p> : species.animalList.map((animal) => {
-                            return <div className='flex justify-start align-middle border-2 rounded-[0.5rem] gap-3 overflow-hidden'>
-                                <div className=''>
-                                    <img width='300px' height='200px' src={animal.image} alt='' />
-                                </div>
-                                <div className='p-6'>
-                                    <h3 className='font-normal text-4xl flex items-center gap-3'>{animal.name} <EyeIcon /></h3>
-                                    <p className='truncate w-[50rem] pt-2'>{animal.description}</p>
-                                </div>
-                            </div>
-                        })}
+                    <TabsContent value="animal" className="w-full h-full flex-auto flex-col overflow-auto">
+                        <SpeciesTable columns={columnsAnimal} data={species.animals} GridBox={GridAnimal} />
                     </TabsContent>
 
-                    <TabsContent value="cage">
-                        <div className='grid grid-cols-2 gap-10 justify-center items-center p-7'>
-                            {species.cageList.length == 0 ? <p>The cage list is empty</p> : species.cageList.map((cage) => {
-                                return <div className='box-content w-full min-h-[150px] border-4 rounded-[1rem] flex flex-col'>
-
-                                    <div className='bg-slate-100 dark:bg-slate-800 p-4 flex justify-between gap-4'>
-                                        <div className='flex justify-between gap-4'>
-                                            <div className='p-4 bg-white dark:bg-slate-600 flex justify-center items-center'><LandmarkIcon /></div>
-                                            <div>
-                                                <h3 className='font-normal text-4xl '>{cage.code}</h3>
-                                                <p className="font-extralight">Cage for {species.name}</p>
-                                            </div>
-                                        </div>
-                                        <div className='p-4 justify-self-end'><LucideMoreHorizontal /></div>
-                                    </div>
-                                    <Separator />
-                                    <div className='p-4'>
-                                        <p>{cage.description}</p>
-                                    </div>
-
-                                </div>
-
-                            })}
-                        </div>
-
-
+                    <TabsContent value="cage" className="w-full h-full flex-auto flex-col overflow-auto">
+                        <SpeciesTable columns={columnsCage} data={cage_data} GridBox={GridCage} />
                     </TabsContent>
                 </Tabs>
-            </div>
+       
 
         </div>
     );

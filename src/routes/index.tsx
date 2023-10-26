@@ -71,8 +71,11 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: Home },
           { path: 'staffs', element: Staff },
-          { path: 'animal_species', element: Species, loader: loaderSpecies(queryClient)},
-          { path: 'animal_species/:id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient)},
+          {
+            path: 'animal_species', element: Species,
+            loader: loaderSpecies(queryClient)
+          },
+          { path: 'animal_species/:id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) },
           {
             path: 'animals',
             children: [

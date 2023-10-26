@@ -19,8 +19,8 @@ const Login: FC = () => {
   const navigate = useNavigate()
   const usMutation = useMutation({
     retry: 3,
-    mutationFn: (user) => {
-      return apiCaller.post('/test-login-google', user)
+    mutationFn: (credentialResponse) => {
+      return apiCaller.get('/auth/login-google', credentialResponse)
     },
     onSuccess: (data) => {
       console.log("data: ",data);

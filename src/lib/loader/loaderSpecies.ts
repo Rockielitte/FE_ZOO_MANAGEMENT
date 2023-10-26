@@ -6,6 +6,7 @@ export const loaderSpecies = (queryClient: any) => async () => {
     const data = await queryClient.fetchQuery({
       queryKey: ['repoData'],
       queryFn: AnimalSpecies.getAllSpecies,
+      keepPreviousData: true,
       staleTime: 10000
     })
 

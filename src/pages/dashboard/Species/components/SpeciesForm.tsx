@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import AnimalSpecies from "@/utils/api/AnimalSpecies"
 import { DialogFooter } from "@/components/ui/dialog"
 import { dataSpecies } from "@/types"
+import axios from "axios"
 
 interface Species {id ? : number, species ? : dataSpecies}
 const animalSpeciesFormSchema = z.object({
@@ -25,13 +26,13 @@ const animalSpeciesFormSchema = z.object({
         }),
 
     description: z.string()
-        .max(500, {
-            message: "Name must not be longer than 30 characters.",
+        .max(255, {
+            message: "Description must not be longer than 255 characters.",
         }),
 
     image: z.string()
-        .max(500, {
-            message: "Name must not be longer than 30 characters.",
+        .max(255, {
+            message: "Image must not be longer than 255 characters.",
         }),
 })
 
@@ -94,7 +95,10 @@ export function SpeciesForm(props: Species) {
                     ),
                 })
             } else if (res.status == 400) {
+                
+                res.data.data.forEach(({ field, message }) => form.setError(field, { type: 'focus', message }))
                 toast({
+                    variant: 'destructive',
                     title: "Create Failed!!",
                     description: (
                         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">

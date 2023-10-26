@@ -20,6 +20,7 @@ export type dataCredential = {
   sub: string
 }
 export type dataSpecies = {
+  id: number
   name: string
   description: string
   image: string

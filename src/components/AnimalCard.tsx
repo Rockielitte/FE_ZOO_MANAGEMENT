@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Lin from '@/assets/lin.jpg';
+import Lin from '@/assets/image14.png';
 import { EyeIcon } from 'lucide-react'
 
 export interface IAppProps {
