@@ -1,5 +1,5 @@
 import type { RouteObject } from 'react-router'
-import MainLayout from '../layouts/MainLayout'
+// import MainLayout from '../layouts/MainLayout'
 import AuthGuard from './AuthGuard'
 import GuestGuard from './GuestGuard'
 import Loadable from './Loadable'
@@ -9,12 +9,17 @@ import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
 import { loaderSpecies } from '@/lib/loader/loaderSpecies'
 import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
+import HomeLayout from '@/layouts/HomeLayout'
+import MainLayout from '@/layouts/MainLayout'
+import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoader'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
 const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
-
+const AccountDetail = Loadable({ loader: () => import('../pages/dashboard/accounts/components/AccountDetail') })
+const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
+const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 //  * HOME PAGE
@@ -23,6 +28,7 @@ const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
 const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
 
+const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/index') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,7 +58,7 @@ const routes: RouteObject[] = [
   },
   {
     path: '/',
-    element: <MainLayout />,
+    element: <HomeLayout />,
     children: [
       {
         //private
@@ -71,6 +77,19 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: Home },
           { path: 'staffs', element: Staff },
+
+          {
+            path: 'accounts',
+            children: [
+              { index: true, element: Accounts, loader: loaderAllAccount(queryClient) },
+              {
+                path: ':id',
+                element: AccountDetail,
+                loader: loaderAccountDetail(queryClient)
+              }
+            ]
+          },
+
           {
             path: 'animal_species', element: Species,
             loader: loaderSpecies(queryClient)
@@ -81,6 +100,13 @@ const routes: RouteObject[] = [
             children: [
               { index: true, element: Animal },
               { path: ':id', element: AnimalDetail }
+            ]
+          },
+          {
+            path: 'areas',
+            children: [
+              { index: true, element: Area },
+              { path: ':id', element: AreaDetail }
             ]
           },
           {

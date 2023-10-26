@@ -1,0 +1,122 @@
+[
+  {
+    "areaId": 1,
+    "location": "Savanna",
+    "numberOfCages": 10,
+    "numberOfAnimals": 50
+  },
+  {
+    "areaId": 2,
+    "location": "Rainforest",
+    "numberOfCages": 8,
+    "numberOfAnimals": 40
+  },
+  {
+    "areaId": 3,
+    "location": "Aquarium",
+    "numberOfCages": 5,
+    "numberOfAnimals": 30
+  },
+  {
+    "areaId": 4,
+    "location": "Penguin Enclosure",
+    "numberOfCages": 3,
+    "numberOfAnimals": 15
+  },
+  {
+    "areaId": 5,
+    "location": "Reptile House",
+    "numberOfCages": 6,
+    "numberOfAnimals": 35
+  },
+  {
+    "areaId": 6,
+    "location": "Monkey Island",
+    "numberOfCages": 7,
+    "numberOfAnimals": 45
+  },
+  {
+    "areaId": 7,
+    "location": "Bird Aviary",
+    "numberOfCages": 4,
+    "numberOfAnimals": 25
+  },
+  {
+    "areaId": 8,
+    "location": "Lion Enclosure",
+    "numberOfCages": 2,
+    "numberOfAnimals": 10
+  },
+  {
+    "areaId": 9,
+    "location": "Giraffe Habitat",
+    "numberOfCages": 3,
+    "numberOfAnimals": 12
+  },
+  {
+    "areaId": 10,
+    "location": "Elephant Sanctuary",
+    "numberOfCages": 4,
+    "numberOfAnimals": 20
+  },
+  {
+    "areaId": 11,
+    "location": "Zebra Plains",
+    "numberOfCages": 5,
+    "numberOfAnimals": 30
+  },
+  {
+    "areaId": 12,
+    "location": "Kangaroo Outback",
+    "numberOfCages": 3,
+    "numberOfAnimals": 18
+  },
+  {
+    "areaId": 13,
+    "location": "Tropical Birds",
+    "numberOfCages": 6,
+    "numberOfAnimals": 36
+  },
+  {
+    "areaId": 14,
+    "location": "Tiger Reserve",
+    "numberOfCages": 2,
+    "numberOfAnimals": 10
+  },
+  {
+    "areaId": 15,
+    "location": "Panda Enclosure",
+    "numberOfCages": 4,
+    "numberOfAnimals": 20
+  },
+  {
+    "areaId": 16,
+    "location": "Petting Zoo",
+    "numberOfCages": 5,
+    "numberOfAnimals": 25
+  },
+  {
+    "areaId": 17,
+    "location": "Koala Sanctuary",
+    "numberOfCages": 3,
+    "numberOfAnimals": 15
+  },
+  {
+    "areaId": 18,
+    "location": "Crocodile Swamp",
+    "numberOfCages": 4,
+    "numberOfAnimals": 20
+  },
+  {
+    "areaId": 19,
+    "location": "Penguin Encounter",
+    "numberOfCages": 2,
+    "numberOfAnimals": 10
+  },
+  {
+    "areaId": 20,
+    "location": "Butterfly Garden",
+    "numberOfCages": 1,
+    "numberOfAnimals": 5
+  }
+]

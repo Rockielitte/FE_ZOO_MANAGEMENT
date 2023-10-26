@@ -20,7 +20,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     enter: { opacity: 1, x: 0 }
   })
   return (
-    <div className='w-screen h-screen flex relative font-roboto  '>
+    <div className='w-screen h-screen  flex relative font-roboto  '>
       {transitions(
         (style, item) =>
           item && (
@@ -31,10 +31,11 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
               <div className='w-5/6 sm:w-full bg-background h-full flex flex-col'>
                 <h1 className='p-4 bg-background flex gap-2 items-center shadow-md   '>
                   <img
+                    alt='logo'
                     src={logo}
                     className='w-10 sm:w-16 transition-all  object-contain bg-clip-padding bg-black py-1 px-0.5 sm:p-1 sm:py-2 rounded-full shadow-md'
                   />
-                  <span className='font-luck text-2xl sm:text-4xl '>ZooCam</span>
+                  <span className='font-luck text-2xl sm:text-5xl '>TheZoo</span>
                   {item && (
                     <span
                       className='text-xl sm:text-4xl   pr-3 cursor-pointer sm:hidden flex-1 flex justify-end '
@@ -80,7 +81,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             </animated.div>
           )
       )}
-      <div className='flex flex-col w-full h-full p-2 md:p-4 transition-all duration-300 ease-linear'>
+      <div className='flex-1 flex flex-col w-full h-full p-2 md:p-4 transition-all duration-300 ease-linear'>
         <div className=' pb-6 flex gap-2 items-center w-full  justify-between'>
           <span className='text-xl sm:text-4xl   sm:pr-3 pr-1 cursor-pointer flex gap-4 items-center '>
             <AiOutlineMenu
@@ -96,7 +97,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             <Search />
           </div>
         </div>
-        <div className='flex-1 overflow-auto '>{children || <Outlet />}</div>
+        <div className='overflow-auto  '>{children || <Outlet />}</div>
       </div>
     </div>
   )
