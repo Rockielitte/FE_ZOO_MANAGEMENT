@@ -87,14 +87,14 @@ const Accounts: FC<Accounts> = () => {
     {
       id: 'action',
 
-      cell: (props) => {
+      cell: ({ row }) => {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger>
               <MdOutlineMore className='text-xl hover:scale-150 transition-all' />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <Link to='/dashboard/accounts/0ac03da8-9d62-484a-b58b-ca78f3c0e3a2'>
+              <Link to={`/dashboard/accounts/${row.original.id}`}>
                 <DropdownMenuItem>View Info</DropdownMenuItem>
               </Link>
               <DropdownMenuItem>Update Role</DropdownMenuItem>

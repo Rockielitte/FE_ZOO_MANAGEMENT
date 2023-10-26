@@ -18,6 +18,9 @@ const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals
 const AccountDetail = Loadable({ loader: () => import('../pages/dashboard/accounts/components/AccountDetail') })
 const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
 const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
+const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
+const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/CreateNew') })
+
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 //  * HOME PAGE
@@ -85,6 +88,17 @@ const routes: RouteObject[] = [
             ]
           },
 
+          {
+            path: 'news',
+            children: [
+              { index: true, element: News },
+              {
+                path: 'create',
+                element: CreateNew
+                // loader: loaderAccountDetail(queryClient)
+              }
+            ]
+          },
           {
             path: 'animals',
             children: [

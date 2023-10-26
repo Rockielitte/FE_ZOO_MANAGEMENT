@@ -1,15 +1,17 @@
 import { toast } from '@/components/ui/use-toast'
-import { AccountFormValues } from '@/pages/accounts/components/AccountForm'
+import { AccountFormValues } from '@/pages/dashboard/accounts/components/AccountForm'
 import Account from '@/utils/api/Account'
 import axios from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
 interface UseCreateAccount {
   createAccount: (data: AccountFormValues) => void
   form?: any
-  setOpenDialog?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const useCreateAccount = (form, setOpenDialog): UseCreateAccount => {
+export const useCreateAccount = (
+  form,
+  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
+): UseCreateAccount => {
   const client = useQueryClient()
 
   const { mutateAsync: createAccount } = useMutation({

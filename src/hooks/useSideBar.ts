@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { AiFillHome, AiFillSchedule, AiOutlineSchedule } from 'react-icons/ai'
+import { AiFillHome, AiFillSchedule, AiOutlineSchedule, AiOutlineMenuFold } from 'react-icons/ai'
 import { GiCaveman, GiBirdCage, GiElephant, GiNestBirds } from 'react-icons/gi'
 import { ImManWoman } from 'react-icons/im'
 import { BsFillPinMapFill } from 'react-icons/bs'
@@ -46,6 +46,11 @@ const useSideBar = () => {
         name: 'Meal schedule',
         Icon: AiFillSchedule,
         href: 'meal_schedule'
+      },
+      {
+        name: 'Create New',
+        Icon: AiOutlineMenuFold,
+        href: 'news/create'
       }
     ],
     []
