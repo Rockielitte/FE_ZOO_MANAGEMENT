@@ -14,7 +14,7 @@ import { DialogFooter } from "@/components/ui/dialog"
 import { dataSpecies } from "@/types"
 import axios from "axios"
 
-interface Species {id ? : number, species ? : dataSpecies}
+interface Species { id?: number, species?: dataSpecies }
 const animalSpeciesFormSchema = z.object({
     name: z
         .string()
@@ -68,6 +68,7 @@ export function SpeciesForm(props: Species) {
                     ),
                 })
             } else if (res.status == 400) {
+                res.data.data.forEach(({ field, message }) => form.setError(field, { type: 'focus', message }))
                 toast({
                     title: "Update Failed!!",
                     description: (
@@ -95,7 +96,7 @@ export function SpeciesForm(props: Species) {
                     ),
                 })
             } else if (res.status == 400) {
-                
+
                 res.data.data.forEach(({ field, message }) => form.setError(field, { type: 'focus', message }))
                 toast({
                     variant: 'destructive',
