@@ -6,6 +6,7 @@ import { useTheme } from './theme-provider'
 
 const Search = () => {
   const { theme, setTheme } = useTheme()
+
   return (
     <div className='px-2 lg:px-6 py-2 rounded-md shadow-lg flex items-center border gap-4'>
       <div className='flex items-center space-x-2 '>

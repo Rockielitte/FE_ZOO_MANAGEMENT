@@ -31,8 +31,8 @@ import { toast } from 'react-toastify'
 import { queryClient } from '@/routes'
 const formSchema = z.object({
   name: z.string().min(1, { message: "This field can't be empty" }),
-  speciesId: z.coerce.number(),
-  cageId: z.coerce.number(),
+  speciesId: z.coerce.number().min(1),
+  cageId: z.coerce.number().min(1),
   gender: z.nativeEnum(AnimalGenderEnum),
   status: z.nativeEnum(AnimalStatusEnum),
   dob: z.date().max(new Date(), { message: 'Please choose before current time' }),
@@ -49,59 +49,19 @@ const formSchema = z.object({
       message: "Note can't be exccess 255 characters"
     })
     .optional(),
-  imageList: z.string().array().optional()
+  imageList: z.string().array().optional().default([])
 })
 export type FormSchemaType = z.infer<typeof formSchema>
-const AnimalDetail = () => {
+const AnimalCreate = () => {
   const token = useUserStore((state) => state.user)?.token
   const id = useParams().id
-  const animal_data = useQuery<AxiosResponse<Animal>, unknown, Animal>({
-    queryKey: ['animals', id],
-    queryFn: () => {
-      return request<Animal>(`/animals/${id}`, 'GET', {
-        Authorization: `Bearer ${token} `
-      })
-    },
-    onSuccess: (data) => {},
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message)
-      }
-    },
-    select: (data) => {
-      return data.data
-    }
-  })
-  const animalDataForm = useMemo(() => {
-    if (animal_data.data) {
-      const animal: FormSchemaType = {
-        name: animal_data.data.name,
-        speciesId: animal_data.data.species.id,
-        cageId: animal_data.data.cage.id,
-        gender: animal_data.data.gender,
-        status: animal_data.data.status,
-        dob: new Date(animal_data.data.dob),
-        nation: animal_data.data.nation,
-        description: animal_data.data.description,
-        note: animal_data.data.note,
-        imageList: animal_data.data.imageList
-      }
-      return animal
-    }
-  }, [animal_data.data])
-  useEffect(() => {
-    console.log(animalDataForm, 'kkk')
-
-    form.reset(animalDataForm)
-  }, [animalDataForm])
-
   const formMutation = useMutation({
-    mutationKey: ['animals', id],
+    mutationKey: ['animals', 'create'],
     mutationFn: (data: FormSchemaType) => {
       // const dataForm = { ...data, dob: data.dob.toISOString().substring(0, 10) }
       return request<Animal>(
-        `/animals/${id}`,
-        'PUT',
+        `/animals/`,
+        'POST',
         {
           Authorization: `Bearer ${token} `,
           Headers: { 'Content-Type': 'application/json' }
@@ -113,8 +73,6 @@ const AnimalDetail = () => {
     onSuccess: (data) => {
       console.log(data.data)
       toast.success('Send sucessfully')
-      queryClient.invalidateQueries({ queryKey: ['animals'], exact: true })
-      queryClient.invalidateQueries({ queryKey: ['animals', id], exact: true })
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
@@ -124,24 +82,17 @@ const AnimalDetail = () => {
     }
   })
   const form = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: animalDataForm
+    resolver: zodResolver(formSchema)
   })
   return (
     <div className='w-full h-full'>
-      {animal_data.isError ? (
-        <Error></Error>
-      ) : !animal_data.isLoading ? (
-        <AnimalForm
-          form={form}
-          formMutation={formMutation}
-          fields={['name', 'cageId', 'speciesId', 'gender', 'status', 'dob', 'nation', 'description', 'note']}
-        ></AnimalForm>
-      ) : (
-        <LoadingScreen></LoadingScreen>
-      )}
+      <AnimalForm
+        form={form}
+        formMutation={formMutation}
+        fields={['name', 'cageId', 'speciesId', 'gender', 'status', 'dob', 'nation', 'description', 'note']}
+      ></AnimalForm>
     </div>
   )
 }
 
-export default AnimalDetail
+export default AnimalCreate

@@ -5,9 +5,7 @@ import { useTheme } from '@/components/theme-provider'
 interface HomeProps {}
 const Home: FC<HomeProps> = () => {
   console.log('Home')
-
   const { setTheme } = useTheme()
-
   return (
     <div className='w-full h-full'>
       <Banner />

@@ -23,13 +23,15 @@ import { MdOutlineMore } from 'react-icons/md'
 import { IoMaleFemale } from 'react-icons/io5'
 import { format } from 'date-fns'
 import { useUserStore } from '@/stores'
-import { useQuery } from 'react-query'
+import { UseQueryResult, useQuery } from 'react-query'
 import { request as requestCall } from '@/utils/apiCaller'
-import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
+import { Animal, AnimalGenderEnum, AnimalStatusEnum, Cage } from '@/types'
 import axios, { AxiosResponse } from 'axios'
 import { FaGenderless } from 'react-icons/fa'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
+import { useParams } from 'react-router-dom'
+
 type DataType = (typeof animalData)[0]
 const columns: ColumnDef<Animal>[] = [
   {
@@ -83,12 +85,12 @@ const columns: ColumnDef<Animal>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title='Name' />,
     cell: defaultColumn<Animal>('text').cell
   },
-  {
-    accessorFn: ({ species }) => species.name,
-    id: 'Species',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Species' />,
-    cell: defaultColumn<Animal>('text').cell
-  },
+  //   {
+  //     accessorFn: ({ species }) => species?.name,
+  //     id: 'Species',
+  //     header: ({ column }) => <DataTableColumnHeader column={column} title='Species' />,
+  //     cell: defaultColumn<Animal>('text').cell
+  //   },
 
   {
     accessorFn: ({ nation }) => nation,
@@ -168,31 +170,17 @@ const columns: ColumnDef<Animal>[] = [
   }
 ]
 
-export default function DemoPage() {
-  const token = useUserStore((state) => state.user)
-  const animal_data = useQuery<AxiosResponse<Animal[]>, unknown, Animal[]>({
-    queryKey: ['animals', token],
-    queryFn: () => {
-      return requestCall<Animal[]>('/animals/', 'GET', {
-        Authorization: `Bearer ${token} `
-      })
-    },
-    onSuccess: (data) => {},
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message)
-      }
-    },
-    select: (data) => {
-      return data.data
-    }
-  })
+export default function CageAnimalTable({ cage_data }: { cage_data: UseQueryResult<Cage, unknown> }) {
   return (
-    <div className='w-full p-2  py-2 h-full shadow-2xl border rounded-md '>
-      {animal_data.isError ? (
+    <div className='w-full  h-full  px-2 border rounded-md relative overflow-auto '>
+      {cage_data.isError ? (
         <Error />
-      ) : !animal_data.isLoading ? (
-        <DataTable columns={columns} data={!animal_data.data ? [] : (animal_data.data as Animal[])} />
+      ) : !cage_data.isLoading ? (
+        <DataTable
+          columns={columns}
+          data={!cage_data.data ? [] : (cage_data.data.animals as Animal[])}
+          pathName='/dashboard/animals'
+        />
       ) : (
         <LoadingScreen></LoadingScreen>
       )}

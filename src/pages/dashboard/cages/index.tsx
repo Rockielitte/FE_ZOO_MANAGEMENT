@@ -37,9 +37,7 @@ import { z } from 'zod'
 import { toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useParams } from 'react-router-dom'
-import { useMemo } from 'react'
-const columns: ColumnDef<Cage>[] = [
+export const columns: ColumnDef<Cage>[] = [
   {
     accessorKey: 'id',
     filterFn: 'includesString',
@@ -55,7 +53,7 @@ const columns: ColumnDef<Cage>[] = [
   },
 
   {
-    accessorFn: ({ animalSpecies }) => animalSpecies?.name,
+    accessorFn: ({ animalSpecies }) => animalSpecies.name,
     id: 'species'
   },
   {
@@ -66,16 +64,17 @@ const columns: ColumnDef<Cage>[] = [
   },
   {
     accessorFn: ({ managedBy }) => managedBy?.fname,
-    id: 'manager'
+    id: 'manager',
+    filterFn: 'includesString'
   },
   {
-    accessorFn: ({ animalSpecies }) => animalSpecies?.id,
+    accessorFn: ({ animalSpecies }) => animalSpecies.id,
     id: 'animalSpeciesId',
     enableGlobalFilter: false,
     enableColumnFilter: false
   },
   {
-    accessorFn: ({ animals }) => animals?.length || 0,
+    accessorFn: ({ animals }) => animals?.length,
     id: 'animalNum',
     enableGlobalFilter: false,
     enableColumnFilter: false
@@ -99,64 +98,10 @@ export type formSchemaType = z.infer<typeof formSchema>
 export default function DemoPage() {
   const token = useUserStore((state) => state.user)?.token
   const queryClient = useQueryClient()
-  const areaId = useParams().id
-  const columns: ColumnDef<Cage>[] = useMemo(
-    () => [
-      {
-        accessorKey: 'id',
-        filterFn: 'includesString',
-        enableGlobalFilter: false,
-        enableColumnFilter: false
-      },
-      {
-        accessorKey: 'code'
-      },
-      {
-        accessorFn: ({ description }) => description,
-        id: 'infor'
-      },
-
-      {
-        accessorFn: ({ animalSpecies }) => animalSpecies?.name,
-        id: 'species'
-      },
-      {
-        accessorFn: ({ managedBy }) => managedBy?.id,
-        id: 'manageBy',
-        enableGlobalFilter: false,
-        enableColumnFilter: false
-      },
-      {
-        accessorFn: ({ managedBy }) => managedBy?.fname,
-        id: 'manager',
-        filterFn: 'includesString'
-      },
-      {
-        accessorFn: ({ animalSpecies }) => animalSpecies?.id,
-        id: 'animalSpeciesId',
-        enableGlobalFilter: false,
-        enableColumnFilter: false
-      },
-      {
-        accessorFn: ({ animals }) => animals?.length || 0,
-        id: 'animalNum',
-        enableGlobalFilter: false,
-        enableColumnFilter: false
-      },
-      {
-        accessorFn: ({ area }) => area?.id || areaId,
-        id: 'areaId',
-        enableGlobalFilter: false,
-        enableColumnFilter: false
-      }
-    ],
-    [areaId]
-  )
-
-  const cage_data = useQuery<AxiosResponse<Area>, unknown, Cage[]>({
-    queryKey: ['areas', 'cages', areaId],
+  const cage_data = useQuery<AxiosResponse<Cage[]>, unknown, Cage[]>({
+    queryKey: ['cages'],
     queryFn: () => {
-      return requestCall<Area>(`/areas/${areaId}`, 'GET', {
+      return requestCall<Cage[]>('/cages/', 'GET', {
         Authorization: `Bearer ${token} `
       })
     },
@@ -167,7 +112,7 @@ export default function DemoPage() {
       }
     },
     select: (data) => {
-      return data.data.cages
+      return data.data
     }
   })
   const formMutation = useMutation({
@@ -187,8 +132,8 @@ export default function DemoPage() {
     onSuccess: (data) => {
       console.log(data.data)
       toast.success('Send sucessfully')
-      form.reset()
-      queryClient.invalidateQueries({ queryKey: ['areas', 'cages', areaId], exact: true })
+      form.reset({ code: '', animalSpeciesId: 0, areaId: 0, description: '', managedById: '' })
+      queryClient.invalidateQueries({ queryKey: ['cages'], exact: true })
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
@@ -198,11 +143,9 @@ export default function DemoPage() {
     }
   })
   const form = useForm<formSchemaType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      areaId: Number(areaId)
-    }
+    resolver: zodResolver(formSchema)
   })
+
   return (
     <div className='w-full  h-full '>
       {cage_data.isError ? (
