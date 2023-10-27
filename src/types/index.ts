@@ -23,7 +23,12 @@ export type dataCredential = {
   picture: string
   sub: string
 }
-
+export type dataSpecies = {
+  id: number
+  name: string
+  description: string
+  image: string
+}
 export type credential = {
   clientId: string
   credential: string
