@@ -48,7 +48,6 @@ export enum AccountGenderEnum {
 
 export enum RoleEnum {
   STAFF = 'STAFF',
-
   TRAINER = 'TRAINER',
   ADMIN = 'ADMIN'
 }
@@ -133,4 +132,11 @@ export type Area = {
   cages: Cage[]
   noCages: number
   noAnimals: number
+}
+export type NewType = {
+  id: number
+  content: string
+  title: string
+  postedAt: string
+  author: string
 }

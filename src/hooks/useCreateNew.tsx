@@ -1,6 +1,6 @@
 import { PostCreationRequest } from '@/components/Editor'
 import { toast } from '@/components/ui/use-toast'
-import News from '@/utils/api/News'
+import News from '@/utils/api/New'
 
 import { useMutation, useQueryClient } from 'react-query'
 interface UseCreateNew {

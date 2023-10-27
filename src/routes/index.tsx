@@ -10,6 +10,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
 import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoader'
+import { loaderAllNews } from '@/lib/loader/NewsLoader'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
@@ -19,7 +20,7 @@ const AnimalCreate = Loadable({ loader: () => import('../pages/dashboard/animals
 const AccountDetail = Loadable({ loader: () => import('../pages/dashboard/accounts/components/AccountDetail') })
 const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
 const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
-const AccountDetail = Loadable({ loader: () => import('../pages/accounts/components/AccountDetail') })
+
 const Cage = Loadable({ loader: () => import('../pages/dashboard/cages/index') })
 const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id]') })
 const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
@@ -82,7 +83,7 @@ const routes: RouteObject[] = [
           // { path: 'staffs', element: Staff },
 
           {
-            path: 'staffs',
+            path: 'accounts',
             children: [
               { index: true, element: Accounts, loader: loaderAllAccount(queryClient) },
               {
@@ -96,7 +97,7 @@ const routes: RouteObject[] = [
           {
             path: 'news',
             children: [
-              { index: true, element: News },
+              { index: true, element: News, loader: loaderAllNews(queryClient) },
               {
                 path: 'create',
                 element: CreateNew

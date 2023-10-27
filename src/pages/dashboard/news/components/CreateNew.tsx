@@ -9,7 +9,7 @@ const CreateNew: FC<CreateNewProps> = () => {
 
   return (
     <div className='w-full h-full border rounded-md shadow-md flex flex-col flex-1 p-2 gap-2'>
-      <div className='flex flex-col flex-1 h-full items-center justify-center space-y-5 p-10'>
+      <div className='flex flex-col flex-1 h-full items-start justify-start space-y-5 p-10'>
         <div className='border-b w-full border-gray-200 pb-5'>
           <div className='space-y-0.5'>
             <h3 className=' leading-6 text-2xl font-bold tracking-tight'>Create New</h3>

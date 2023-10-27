@@ -1,18 +1,12 @@
-import { accountsGetAll } from '@/pages/dashboard/accounts'
+import { newsGetAll } from '@/pages/dashboard/news'
 import { accountDetailQuery } from '@/pages/dashboard/accounts/components/AccountDetail'
-import Account from '@/utils/api/Account'
+
 import { QueryClient } from 'react-query'
 import { LoaderFunctionArgs } from 'react-router-dom'
 
-export const loaderAllAccount = (queryClient: QueryClient) => async () => {
+export const loaderAllNews = (queryClient: QueryClient) => async () => {
   try {
-    const query = accountsGetAll()
-    // const data = await queryClient.fetchQuery({
-    //   queryKey: ['account'],
-    //   queryFn: Account.getAllAccount,
-    //   staleTime: 100000
-    // })
-
+    const query = newsGetAll()
     return queryClient.getQueryData(query.queryKey) ?? (await queryClient.fetchQuery(query))
   } catch (error) {
     console.log(error)
