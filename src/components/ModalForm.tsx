@@ -75,7 +75,7 @@ const ModalForm = <X, T extends FieldValues>({
           <MdCreate className='text-xl ' />
         )}
       </DialogTrigger>
-      <DialogContent className='max-h-[400px] w-[400px] shadow-xl border-secondary flex flex-col gap-1'>
+      <DialogContent className='max-h-[400px]  shadow-xl border-secondary flex flex-col gap-1'>
         {formMutation.isLoading && <LoadingScreen label='Submitting'></LoadingScreen>}
         <DialogHeader>
           <DialogTitle className='uppercase pb-2'>{title}</DialogTitle>
@@ -93,7 +93,7 @@ const ModalForm = <X, T extends FieldValues>({
                       <Label htmlFor={item} className='text-right capitalize'>
                         {item}
                       </Label>
-                      <div className='col-span-3' id={item}>
+                      <div className='col-span-3 h-10' id={item}>
                         <SelectSearch form={form} query='areas' item={item} />
                       </div>
                       {errors[item] && (
@@ -125,7 +125,7 @@ const ModalForm = <X, T extends FieldValues>({
                       <Label htmlFor={item} className='text-right capitalize'>
                         {item}
                       </Label>
-                      <div className='col-span-3' id={item}>
+                      <div className='col-span-3 h-10' id={item}>
                         <SelectSearch form={form} query='accounts' item={item} />
                       </div>
                       {errors[item] && (
@@ -157,7 +157,7 @@ const ModalForm = <X, T extends FieldValues>({
                       <Label htmlFor={item} className='text-right capitalize'>
                         {item}
                       </Label>
-                      <div className='col-span-3' id={item}>
+                      <div className='col-span-3 h-10' id={item}>
                         <SelectSearch form={form} query='animal-species' item={item} />
                       </div>
                       {errors[item] && (

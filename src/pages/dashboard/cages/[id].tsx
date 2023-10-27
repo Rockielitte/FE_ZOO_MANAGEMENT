@@ -85,8 +85,6 @@ const DetailCage = (props: Props) => {
     onSuccess: (data) => {
       console.log(data.data)
       toast.success('Send sucessfully')
-
-      // QueryClient.invalidateQueries({ queryKey: ['cages'], exact: true })
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {

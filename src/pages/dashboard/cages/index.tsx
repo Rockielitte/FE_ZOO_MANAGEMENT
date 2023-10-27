@@ -105,9 +105,7 @@ export default function DemoPage() {
         Authorization: `Bearer ${token} `
       })
     },
-    onSuccess: (data) => {
-      form.reset()
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         console.log(error.message)
@@ -134,7 +132,7 @@ export default function DemoPage() {
     onSuccess: (data) => {
       console.log(data.data)
       toast.success('Send sucessfully')
-      form.reset()
+      form.reset({ code: '', animalSpeciesId: 0, areaId: 0, description: '', managedById: '' })
       queryClient.invalidateQueries({ queryKey: ['cages'], exact: true })
     },
     onError: (error) => {

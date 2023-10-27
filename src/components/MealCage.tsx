@@ -10,6 +10,7 @@ import { CalendarIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
 import CageMealTabe from './CageMealTabe'
 import { SelectSearch } from './SelectSearch'
+import LoadingScreen from './Loading'
 
 type Props<X, T extends FieldValues> = {
   form: UseFormReturn<T>
@@ -36,7 +37,8 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
   }
   return (
     <div className='border w-full h-full rounded-xl shadow-md p-2 flex flex-col-reverse md:flex-row  gap-2 overflow-auto'>
-      <div className='h-full w-full md:w-1/2  border p-2 shadow-xl rounded-lg'>
+      <div className='h-full w-full md:w-1/2  border p-2 shadow-xl rounded-lg relative'>
+        {formMutation.isLoading && <LoadingScreen label='Submitting' />}
         <form onSubmit={handleSubmit(onSubmit)} className='overflow-auto flex flex-col gap-1 w-full h-full '>
           <div className='flex flex-col gap-4 py-4 w-full flex-1 overflow-auto px-2'>
             {fields.map((item) => {

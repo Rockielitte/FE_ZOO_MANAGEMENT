@@ -135,7 +135,7 @@ const AnimalDetail = () => {
         <AnimalForm
           form={form}
           formMutation={formMutation}
-          fields={['name', 'speciesId', 'cageId', 'gender', 'status', 'dob', 'nation', 'description', 'note']}
+          fields={['name', 'cageId', 'speciesId', 'gender', 'status', 'dob', 'nation', 'description', 'note']}
         ></AnimalForm>
       ) : (
         <LoadingScreen></LoadingScreen>

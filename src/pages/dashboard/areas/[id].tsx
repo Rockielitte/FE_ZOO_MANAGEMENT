@@ -200,7 +200,6 @@ export default function DemoPage() {
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      managedById: 'f56fd9ec-62cc-421e-bf1d-9acd7aa67a9f',
       areaId: Number(areaId)
     }
   })

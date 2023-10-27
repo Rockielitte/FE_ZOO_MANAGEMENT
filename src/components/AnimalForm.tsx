@@ -27,7 +27,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { request } from '@/utils/apiCaller'
 import LoadingScreen from './Loading'
-import { SelectMap } from './SelectMap'
+
 import { SelectSearch } from './SelectSearch'
 
 interface AnimalFormProps<T extends FieldValues> {
@@ -208,7 +208,8 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                           </SelectContent>
                         </Select>
                       ) : item == 'speciesId' ? (
-                        <div className='flex-1' id={item}>
+                        <div className='flex-1 relative h-10' id={item}>
+                          <div className='absolute inset-0  z-10 rounded-md cursor-not-allowed'></div>
                           <SelectSearch query='animal-species' form={form} item={item} />
                         </div>
                       ) : item == 'cageId' ? (
