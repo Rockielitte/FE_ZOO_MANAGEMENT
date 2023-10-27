@@ -35,11 +35,15 @@ const ModalForm = <X, T extends FieldValues>({
   fields,
   Trigger
 }: PropsFormModal<X, T>) => {
+  const [open, setOpen] = useState(false)
   const onSubmit: SubmitHandler<T> = async (data) => {
     console.log('reload ne')
 
     console.log('submit data')
     formMutation.mutate(data, {
+      onSuccess: () => {
+        setOpen(false)
+      },
       onSettled: () => {
         setTimeout(() => {
           formMutation.reset()
@@ -57,7 +61,7 @@ const ModalForm = <X, T extends FieldValues>({
     watch
   } = form
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {action ? (
           <Button

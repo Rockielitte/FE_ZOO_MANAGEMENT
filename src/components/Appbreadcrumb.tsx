@@ -16,11 +16,15 @@ export function BreadcrumbDemo() {
         accumlative = accumlative + `/${item}`
         return index != segments.length - 1 ? (
           <BreadcrumbItem className='capitalize' key={index}>
-            <BreadcrumbLink href={accumlative}>{item}</BreadcrumbLink>
+            <BreadcrumbLink>
+              <Link to={accumlative}>{item}</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
         ) : (
           <BreadcrumbItem isCurrentPage className='capitalize' key={index}>
-            <BreadcrumbLink href={accumlative}>{item}</BreadcrumbLink>
+            <BreadcrumbLink>
+              <Link to={accumlative}>{item}</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
         )
       })}
