@@ -18,15 +18,16 @@ export const useCreateAccount = (
       return Account.createAccount(data)
     },
     onSuccess: (data) => {
-      toast({
-        title: 'Create Account successfully Your account information: ',
-        description: (
-          <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-            <code className='text-white'>{JSON.stringify(data.data, null, 2)}</code>
-          </pre>
-        )
-      })
+      // toast({
+      //   title: 'Create Account successfully Your account information: ',
+      //   description: (
+      //     <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+      //       <code className='text-white'>{JSON.stringify(data.data, null, 2)}</code>
+      //     </pre>
+      //   )
+      // })
       client.invalidateQueries(['account'])
+      window.location.reload()
       setOpenDialog(false)
     },
     onError: (error) => {

@@ -143,5 +143,5 @@ export type NewType = {
   content: string
   title: string
   postedAt: string
-  author: string
+  author: User | null
 }

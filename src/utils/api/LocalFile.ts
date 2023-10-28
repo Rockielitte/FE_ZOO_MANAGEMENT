@@ -15,7 +15,9 @@ const LocalFile = {
       formData,
       {},
       {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNzRiMzNiNy04OWFiLTRlZmItYWQxNC1iYTNlZDkwMGM0MmMiLCJpYXQiOjE2OTg0NTA4MjUsImV4cCI6MTY5ODUzNzIyNX0.kzL2k02mJkt658J7lM7Qiq-klHF6zCJg-vR7xzaR4kM`
       }
     )
     console.log('response: ', response)

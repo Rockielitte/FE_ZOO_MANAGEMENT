@@ -21,9 +21,9 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
   const [search, setSearch] = React.useState('')
   const token = useUserStore((state) => state.user)
   const select_data = useQuery<
-    AxiosResponse<{ id: string; name: string; code: string; animalSpecies?: Species }[]>,
+    AxiosResponse<{ id: string; name: string; code: string; animalSpecies?: Species; email?: string }[]>,
     unknown,
-    { id: string; name: string; code: string; animalSpecies?: Species }[]
+    { id: string; name: string; code: string; animalSpecies?: Species; email?: string }[]
   >({
     staleTime: 5000,
     queryKey: ['select', query],
@@ -56,7 +56,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
                 ...prev,
                 {
                   value: `${String(curr.id)}`,
-                  label: `${curr.name || curr.code} `,
+                  label: `${curr.name || curr.code || curr.email} `,
                   speciesId: `${curr.animalSpecies?.id}`
                 }
               ]
@@ -73,7 +73,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
                 ...prev,
                 {
                   value: `${String(curr.id)}`,
-                  label: `${curr.name || curr.code} `,
+                  label: `${curr.name || curr.code || curr.email} `,
                   speciesId: `${curr.animalSpecies?.id}`
                 }
               ]

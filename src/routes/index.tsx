@@ -12,7 +12,7 @@ import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
 import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoader'
-import { loaderAllNews } from '@/lib/loader/NewsLoader'
+import { loaderAllNews, loaderNewDetail } from '@/lib/loader/NewsLoader'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
@@ -27,12 +27,13 @@ const Cage = Loadable({ loader: () => import('../pages/dashboard/cages/index') }
 const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id]') })
 const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
 const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/CreateNew') })
+const NewDetail = Loadable({ loader: () => import('../pages/dashboard/news/components/NewDetail') })
 
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
-const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
+
 const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
 
@@ -107,6 +108,11 @@ const routes: RouteObject[] = [
                 path: 'create',
                 element: CreateNew
                 // loader: loaderAccountDetail(queryClient)
+              },
+              {
+                path: ':id',
+                element: NewDetail,
+                loader: loaderNewDetail(queryClient)
               }
             ]
           },

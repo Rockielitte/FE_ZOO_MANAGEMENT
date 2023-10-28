@@ -40,7 +40,9 @@ import GridArea from '@/components/GridArea'
 const regexPattern = /^[A-Z]\d{3}$/
 type Props = {}
 const formSchema = z.object({
-  code: z.string().regex(regexPattern),
+  // code: z.string().regex(regexPattern),
+  code: z.string().min(3),
+
   name: z.string().min(1),
   location: z.string().min(1)
 })

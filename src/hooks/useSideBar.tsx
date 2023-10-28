@@ -47,11 +47,11 @@ const useSideBar = () => {
         Icon: Icons.NewsPaper,
         href: 'news'
       },
-      {
-        name: 'My News',
-        Icon: Icons.BookUser,
-        href: 'my-news'
-      },
+      // {
+      //   name: 'My News',
+      //   Icon: Icons.BookUser,
+      //   href: 'my-news'
+      // },
       {
         name: 'Create New',
         Icon: AiOutlineMenuFold,
