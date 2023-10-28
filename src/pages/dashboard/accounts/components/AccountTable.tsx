@@ -10,30 +10,33 @@ import {
   getFilteredRowModel,
   RowData
 } from '@tanstack/react-table'
-import { Payment } from './columns'
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Button } from '../ui/button'
+import { Button } from '@/components/ui/button'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Input } from '../ui/input'
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu'
-import { DataTablePagination } from './Pagination'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { Input } from '@/components/ui/input'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { DataTablePagination } from '@/components/testTable/Pagination'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { BsFillCalendar2WeekFill } from 'react-icons/bs'
-import { Calendar } from '../ui/calendar'
+import { Calendar } from '@/components/ui/calendar'
 import { SelectSingleEventHandler } from 'react-day-picker'
 import { AiFillDelete } from 'react-icons/ai'
 import { getFacetedUniqueValues } from '@tanstack/react-table'
 import { getFacetedRowModel } from '@tanstack/react-table'
-import { Badge } from '../ui/badge'
+import { Badge } from '@/components/ui/badge'
 import clsx from 'clsx'
-import Filter from './Filter'
+import Filter from '@/components/testTable/Filter'
 import { BiFilterAlt } from 'react-icons/bi'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { IoMdCreate } from 'react-icons/io'
-import { Skeleton } from '../ui/skeleton'
 import { useQueryClient } from 'react-query'
 import { request } from '@/utils/apiCaller'
 import { useUserStore } from '@/stores'
@@ -294,9 +297,10 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
             <span>Delete</span>
           </Button>
         )}
-        <CreateAccount className='flex items-center gap-1 hover:scale-110 transition-all ml-auto' />
+
+        <CreateAccount />
       </div>
-      <div className='rounded-md border'></div>
+      {/* <div className='rounded-md border'></div> */}
       <div className='flex-1 overflow-auto  border rounded-md '>
         <Table className=''>
           <TableHeader className='sticky top-0 z-20'>
