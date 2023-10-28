@@ -1,5 +1,5 @@
 import { useState, type FC, type ReactNode } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import logo from '../assets/logo.webp'
 import useSideBar from '@/hooks/useSideBar'
 import clsx from 'clsx'
@@ -11,7 +11,7 @@ import { BreadcrumbDemo } from '@/components/Appbreadcrumb'
 interface MainLayoutProps {
   children?: ReactNode
 }
-const smSize = 640
+const smSize = 768
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const routeList = useSideBar()
   const [isShow, setIsShow] = useState(true)
@@ -19,6 +19,8 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     from: { opacity: 0, x: -100 },
     enter: { opacity: 1, x: 0 }
   })
+  console.log('shu')
+
   return (
     <div className='w-screen h-screen  flex relative font-roboto  '>
       {transitions(
@@ -26,19 +28,19 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           item && (
             <animated.div
               style={style}
-              className='min-w-[300px] h-full shadow-md border-r-2 absolute inset-0  backdrop-blur-md  z-50 sm:block sm:relative '
+              className='min-w-[280px] h-full shadow-md border-r-2 absolute inset-0  backdrop-blur-md  z-50 sm:block md:relative '
             >
-              <div className='w-5/6 sm:w-full bg-background h-full flex flex-col'>
-                <h1 className='p-4 bg-background flex gap-2 items-center shadow-md   '>
+              <div className='w-5/6 md:w-full bg-background h-full flex flex-col'>
+                <div className='p-4  bg-background flex gap-2 items-center shadow-md justify-center'>
                   <img
                     alt='logo'
                     src={logo}
                     className='w-10 sm:w-16 transition-all  object-contain bg-clip-padding bg-black py-1 px-0.5 sm:p-1 sm:py-2 rounded-full shadow-md'
                   />
-                  <span className='font-luck text-2xl sm:text-5xl '>TheZoo</span>
+                  <span className='font-luck text-2xl md:text-5xl  '>TheZoo</span>
                   {item && (
                     <span
-                      className='text-xl sm:text-4xl   pr-3 cursor-pointer sm:hidden flex-1 flex justify-end '
+                      className='text-xl sm:text-4xl   pr-3 cursor-pointer md:hidden flex-1 flex justify-end '
                       onClick={() => {
                         setIsShow(!isShow)
                       }}
@@ -46,7 +48,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                       <AiOutlineMenu />
                     </span>
                   )}
-                </h1>
+                </div>
                 <div className='flex flex-col  py-2 px-2 pl-4 flex-1 overflow-y-auto overflow-x-hidden'>
                   {routeList.map((route) => (
                     <NavLink
@@ -81,7 +83,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             </animated.div>
           )
       )}
-      <div className='flex-1 flex flex-col w-full h-full p-2 md:p-4 transition-all duration-300 ease-linear'>
+      <div className='flex flex-col w-full h-full p-2 md:p-4 transition-all duration-300 ease-linear overflow-auto'>
         <div className=' pb-6 flex gap-2 items-center w-full  justify-between'>
           <span className='text-xl sm:text-4xl   sm:pr-3 pr-1 cursor-pointer flex gap-4 items-center '>
             <AiOutlineMenu
@@ -97,7 +99,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             <Search />
           </div>
         </div>
-        <div className='overflow-auto  '>{children || <Outlet />}</div>
+        <div className='flex-1 overflow-auto w-full relative'>{children || <Outlet />}</div>
       </div>
     </div>
   )

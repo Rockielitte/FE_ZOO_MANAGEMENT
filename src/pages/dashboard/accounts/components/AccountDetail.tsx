@@ -17,6 +17,7 @@ import { useLoaderData, useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { loaderAccountDetail } from '@/lib/loader/AccountsLoader'
 import { useUpdateAccount } from '@/hooks/useUpdateAccount'
+import LocalFile from '@/utils/api/LocalFile'
 const MAX_IMAGE_SIZE = 5242880 // 5 MB
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
 interface AccountDetailProps {}
@@ -103,7 +104,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
     defaultValues: defaultValues
   })
   const { updateAccount } = useUpdateAccount(form, id)
-  function getImageData(event: ChangeEvent<HTMLInputElement>) {
+  async function getImageData(event: ChangeEvent<HTMLInputElement>) {
     // FileList is immutable, so we need to create a new one
     const dataTransfer = new DataTransfer()
 
@@ -111,9 +112,9 @@ const AccountDetail: FC<AccountDetailProps> = () => {
     Array.from(event.target.files!).forEach((image) => dataTransfer.items.add(image))
 
     const files = dataTransfer.files
-
-    const displayUrl = URL.createObjectURL(event.target.files![0])
-    console.log(files)
+    const displayUrl = await LocalFile.uploadFile({ file: files[0] })
+    // const displayUrl = URL.createObjectURL(event.target.files![0])
+    console.log(displayUrl)
 
     return { files, displayUrl }
   }
@@ -150,8 +151,8 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                             type='file'
                             accept='image/*'
                             {...rest}
-                            onChange={(event) => {
-                              const { files, displayUrl } = getImageData(event)
+                            onChange={async (event) => {
+                              const { displayUrl } = await getImageData(event)
                               setPreview(displayUrl)
                               onChange(displayUrl)
                             }}

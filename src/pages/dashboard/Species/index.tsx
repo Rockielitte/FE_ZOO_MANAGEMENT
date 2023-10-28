@@ -1,21 +1,19 @@
-import { Button, buttonVariants } from '@/components/ui/button';
-import * as React from 'react';
-import { SpeciesCard } from '@/components/SpeciesCard';
-import { Input } from '@/components/ui/input';
-import { CreateSpecies } from './components/CreateSpecies';
-import { useLoaderData } from 'react-router-dom';
-import { useQuery, useQueryClient } from 'react-query';
-import AnimalSpecies from '@/utils/api/AnimalSpecies';
-import { useEffect } from 'react';
-import { SpeciesTable } from './components/SpeciesTable';
-import { ColumnDef } from '@tanstack/react-table';
-import { dataSpecies } from '@/types';
-import GridSpecies from './components/GridSpecies';
+import { Button, buttonVariants } from '@/components/ui/button'
+import * as React from 'react'
+import { SpeciesCard } from '@/components/SpeciesCard'
+import { Input } from '@/components/ui/input'
+import { CreateSpecies } from './components/CreateSpecies'
+import { useLoaderData } from 'react-router-dom'
+import { useQuery, useQueryClient } from 'react-query'
+import AnimalSpecies from '@/utils/api/AnimalSpecies'
+import { useEffect } from 'react'
+import { SpeciesTable } from './components/SpeciesTable'
+import { ColumnDef } from '@tanstack/react-table'
+import { Species, dataSpecies } from '@/types'
+import GridSpecies from './components/GridSpecies'
 
-export interface IAppProps {
-}
-export default function Species(props: IAppProps) {
-  const data = useLoaderData()
+export default function Species() {
+  const data = useLoaderData() as Species[]
   //console.log(data)
   const queryClient = useQueryClient()
   //const [species, setSpecies] = React.useState([...data.data])
@@ -62,8 +60,7 @@ export default function Species(props: IAppProps) {
       accessorKey: 'image',
       header: 'Image',
       cell: ({ row }) => <span>{row.getValue('image')}</span>
-    },
-
+    }
   ]
   // useEffect(() => {
   //   if (!isPreviousData && data?.hasMore) {
@@ -75,10 +72,7 @@ export default function Species(props: IAppProps) {
   // }, [data, isPreviousData, page, queryClient])
   return (
     <div className='flex w-full p-3 py-2 h-full shadow-2xl border rounded-[0.5rem]'>
-     
-        <SpeciesTable columns={columnsSpecies} data={data.data} GridBox={GridSpecies} />
-   
-      
+      <SpeciesTable columns={columnsSpecies} data={data.data as Species[]} GridBox={GridSpecies} />
 
       {/* <div>Current Page: {page + 1}</div>
       <button
@@ -96,18 +90,5 @@ export default function Species(props: IAppProps) {
         Next Page
       </button> */}
     </div>
-  );
+  )
 }
-
-{/* <br />
-
-      <div className='flex justify-start align-middle border-2 rounded-[0.5rem] gap-3 overflow-hidden'>
-        <div className=''>
-          <img width='300px' height='200px' src={Lin} alt='' />
-        </div>
-        <div className='p-6'>
-          <h3 className='font-normal text-4xl flex items-center gap-3'>Animal Name <EyeIcon /></h3>
-          <p className='truncate w-[50rem] pt-2'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sit amet facilisis urna. Vestibulum ornare et orci ac consectetur. Praesent id diam at tellus lacinia consequat.
-            Quisque in enim velit. Nunc tempus est feugiat dolor bibendum faucibus. </p>
-        </div>
-      </div> */}

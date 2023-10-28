@@ -12,14 +12,22 @@ import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
 import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoader'
+import { loaderAllNews } from '@/lib/loader/NewsLoader'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
 const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
+const AnimalCreate = Loadable({ loader: () => import('../pages/dashboard/animals/create') })
 const AccountDetail = Loadable({ loader: () => import('../pages/dashboard/accounts/components/AccountDetail') })
 const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
 const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
+
+const Cage = Loadable({ loader: () => import('../pages/dashboard/cages/index') })
+const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id]') })
+const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
+const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/CreateNew') })
+
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 //  * HOME PAGE
@@ -33,7 +41,7 @@ const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/in
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 10
+      staleTime: 1000
     }
   }
 })
@@ -67,6 +75,7 @@ const routes: RouteObject[] = [
       }
     ]
   },
+
   {
     path: 'dashboard',
     element: <AuthGuard />,
@@ -76,7 +85,7 @@ const routes: RouteObject[] = [
         element: <MainLayout />,
         children: [
           { index: true, element: Home },
-          { path: 'staffs', element: Staff },
+          // { path: 'staffs', element: Staff },
 
           {
             path: 'accounts',
@@ -91,7 +100,19 @@ const routes: RouteObject[] = [
           },
 
           {
-            path: 'animal_species', element: Species,
+            path: 'news',
+            children: [
+              { index: true, element: News, loader: loaderAllNews(queryClient) },
+              {
+                path: 'create',
+                element: CreateNew
+                // loader: loaderAccountDetail(queryClient)
+              }
+            ]
+          },
+          {
+            path: 'animal_species',
+            element: Species,
             loader: loaderSpecies(queryClient)
           },
           { path: 'animal_species/:id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) },
@@ -99,6 +120,7 @@ const routes: RouteObject[] = [
             path: 'animals',
             children: [
               { index: true, element: Animal },
+              { path: 'create', element: AnimalCreate },
               { path: ':id', element: AnimalDetail }
             ]
           },
@@ -109,6 +131,24 @@ const routes: RouteObject[] = [
               { path: ':id', element: AreaDetail }
             ]
           },
+          {
+            path: 'cages',
+            children: [
+              { index: true, element: Cage },
+              { path: ':id', element: CageDetail }
+            ]
+          },
+          // {
+          //   path: 'animal_species',
+          //   children: [
+          //     { index: true, element: Species },
+          //     { path: ':id', element: SpeciesDetail }
+          //   ]
+          // },
+          // {
+          //   path: 'meal_schedule',
+          //   children: [{ index: true, element: Meal_schedule }]
+          // },
           {
             path: '*',
             element: Home

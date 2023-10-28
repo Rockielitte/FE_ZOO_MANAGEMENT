@@ -7,6 +7,7 @@ interface LoadableProps {
 
 const Loadable: FC<LoadableProps> = ({ loader }) => {
   const Component = lazy(loader)
+  console.log('rerednerrajsdif')
 
   return (
     <Suspense fallback={<LoadingScreen />}>
