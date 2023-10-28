@@ -23,7 +23,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
 import { request } from '@/utils/apiCaller'
 import { useMutation, useQuery } from 'react-query'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import AnimalForm from '@/components/AnimalForm'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
@@ -55,6 +55,7 @@ export type FormSchemaType = z.infer<typeof formSchema>
 const AnimalDetail = () => {
   const token = useUserStore((state) => state.user)?.token
   const id = useParams().id
+
   const animal_data = useQuery<AxiosResponse<Animal>, unknown, Animal>({
     queryKey: ['animals', id],
     queryFn: () => {
@@ -113,8 +114,6 @@ const AnimalDetail = () => {
     onSuccess: (data) => {
       console.log(data.data)
       toast.success('Send sucessfully')
-      queryClient.invalidateQueries({ queryKey: ['animals'], exact: true })
-      queryClient.invalidateQueries({ queryKey: ['animals', id], exact: true })
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
