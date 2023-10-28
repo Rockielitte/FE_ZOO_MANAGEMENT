@@ -1,0 +1,32 @@
+[
+  {
+    "cageID": 1,
+    "species": "Lion",
+    "numberOfAnimals": 2,
+    "description": "The lion cage houses two majestic lions. Visitors can observe their regal beauty and learn about their behavior and conservation status."
+  },
+  {
+    "cageID": 2,
+    "species": "Giraffe",
+    "numberOfAnimals": 3,
+    "description": "The giraffe enclosure features three graceful giraffes. Guests can marvel at their long necks and observe their unique feeding habits."
+  },
+  {
+    "cageID": 3,
+    "species": "Elephant",
+    "numberOfAnimals": 1,
+    "description": "The elephant enclosure is home to a single magnificent elephant. Visitors can witness its impressive size and strength while discovering interesting facts about this gentle giant."
+  },
+  {
+    "cageID": 4,
+    "species": "Tiger",
+    "numberOfAnimals": 2,
+    "description": "In the tiger habitat, two powerful tigers roam. Guests can catch a glimpse of their agility and learn about the conservation efforts in place to protect these endangered creatures."
+  },
+  {
+    "cageID": 5,
+    "species": "Penguin",
+    "numberOfAnimals": 10,
+    "description": "The penguin exhibit is home to a lively colony of ten penguins. Visitors can observe their playful antics and get a closer look at their unique adaptations to the cold environment."
+  }
+]

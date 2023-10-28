@@ -1,17 +1,16 @@
 import { useMemo } from 'react'
-import { AiFillHome, AiFillSchedule, AiOutlineSchedule } from 'react-icons/ai'
+import { AiFillHome, AiFillSchedule, AiOutlineSchedule, AiOutlineMenuFold } from 'react-icons/ai'
 import { GiCaveman, GiBirdCage, GiElephant, GiNestBirds } from 'react-icons/gi'
 import { ImManWoman } from 'react-icons/im'
 import { BsFillPinMapFill } from 'react-icons/bs'
-type Props = {}
-
+import { Icons } from '@/components/Icon'
 const useSideBar = () => {
   const routeList = useMemo(
     () => [
       {
         name: 'Dashboard',
         Icon: AiFillHome,
-        href: 'dashboard'
+        href: 'index'
       },
       {
         name: 'Zoo trainer',
@@ -21,7 +20,7 @@ const useSideBar = () => {
       {
         name: 'Staff',
         Icon: ImManWoman,
-        href: 'staffs'
+        href: 'accounts'
       },
       {
         name: 'Animal',
@@ -44,9 +43,19 @@ const useSideBar = () => {
         href: 'areas'
       },
       {
-        name: 'Meal schedule',
-        Icon: AiFillSchedule,
-        href: 'meal_schedule'
+        name: 'News',
+        Icon: Icons.NewsPaper,
+        href: 'news'
+      },
+      {
+        name: 'My News',
+        Icon: Icons.BookUser,
+        href: 'my-news'
+      },
+      {
+        name: 'Create New',
+        Icon: AiOutlineMenuFold,
+        href: 'news/create'
       }
     ],
     []
