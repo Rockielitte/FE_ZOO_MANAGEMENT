@@ -138,17 +138,7 @@ const routes: RouteObject[] = [
               { path: ':id', element: CageDetail }
             ]
           },
-          // {
-          //   path: 'animal_species',
-          //   children: [
-          //     { index: true, element: Species },
-          //     { path: ':id', element: SpeciesDetail }
-          //   ]
-          // },
-          // {
-          //   path: 'meal_schedule',
-          //   children: [{ index: true, element: Meal_schedule }]
-          // },
+
           {
             path: '*',
             element: Home
