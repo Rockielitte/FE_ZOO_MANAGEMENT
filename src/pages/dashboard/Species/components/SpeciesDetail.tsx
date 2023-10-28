@@ -141,20 +141,20 @@ export default function SpeciesDetail(props: IAppProps) {
                 <Separator />
             </div>
 
-                <Tabs defaultValue="animal" className=" flex-1 flex-col flex overflow-auto">
-                    <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="animal">Animal</TabsTrigger>
-                        <TabsTrigger value="cage">Cage</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="animal" className="w-full h-full flex-auto flex-col overflow-auto">
-                        <SpeciesTable columns={columnsAnimal} data={species.animals} GridBox={GridAnimal} />
-                    </TabsContent>
+            <Tabs defaultValue="animal" className=" flex-1 flex-col flex overflow-auto">
+                <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="animal">Animal {`(${species.animals.length})`}</TabsTrigger>
+                    <TabsTrigger value="cage">Cage {`(${cage_data?.length})`}</TabsTrigger>
+                </TabsList>
+                <TabsContent value="animal" className="w-full h-full flex-auto flex-col overflow-auto">
+                    <SpeciesTable columns={columnsAnimal} data={species.animals} GridBox={GridAnimal} />
+                </TabsContent>
 
-                    <TabsContent value="cage" className="w-full h-full flex-auto flex-col overflow-auto">
-                        <SpeciesTable columns={columnsCage} data={cage_data} GridBox={GridCage} />
-                    </TabsContent>
-                </Tabs>
-       
+                <TabsContent value="cage" className="w-full h-full flex-auto flex-col overflow-auto">
+                    <SpeciesTable columns={columnsCage} data={cage_data} GridBox={GridCage} />
+                </TabsContent>
+            </Tabs>
+
 
         </div>
     );
