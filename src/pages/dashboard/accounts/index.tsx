@@ -1,9 +1,5 @@
-import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
 import { FC } from 'react'
-
-import ACCOUNTS from '@/test/ACCOUNT_DATA.json'
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-
+import { ColumnDef } from '@tanstack/react-table'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
@@ -11,10 +7,24 @@ import { MdOutlineMore } from 'react-icons/md'
 import CreateAccount from './components/CreateAccount'
 import { useLoaderData } from 'react-router'
 import { AccountType } from '@/types'
+import { useQuery, useQueryClient } from 'react-query'
+import Account from '@/utils/api/Account'
+import { AccountTable } from './components/AccountTable'
+import { Link } from 'react-router-dom'
+
 interface Accounts {}
 
 const Accounts: FC<Accounts> = () => {
-  const data = useLoaderData() as AccountType
+  const queryClient = useQueryClient()
+  const initData = useLoaderData() as AccountType
+  const { data } = useQuery({
+    queryKey: ['account'],
+    queryFn: Account.getAllAccount,
+    // initialData: initData,
+    staleTime: 10000
+    // initialDataUpdatedAt: () => queryClient.getQueryState(['account'])?.dataUpdatedAt
+  })
+
   console.log('data account: ', data)
 
   const columnsAccount: ColumnDef<AccountType>[] = [
@@ -26,14 +36,14 @@ const Accounts: FC<Accounts> = () => {
     {
       accessorKey: 'name',
       header: 'Name',
-      accessorFn: ({ avatar, name }) => {
+      accessorFn: ({ avt, fname, lname }) => {
         return (
           <div className='flex items-center space-x-2 '>
             <Avatar>
-              <AvatarImage src={avatar} />
+              <AvatarImage src={avt} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <span>{name}</span>
+            <span>{fname + ' ' + lname}</span>
           </div>
         )
       },
@@ -50,9 +60,9 @@ const Accounts: FC<Accounts> = () => {
     },
 
     {
-      accessorKey: 'phoneNumber',
+      accessorKey: 'phone',
       header: 'Phone Number',
-      cell: ({ row }) => <span>{row.getValue('phoneNumber')}</span>
+      cell: ({ row }) => <span>{row.getValue('phone')}</span>
     },
     {
       accessorKey: 'gender',
@@ -84,6 +94,9 @@ const Accounts: FC<Accounts> = () => {
               <MdOutlineMore className='text-xl hover:scale-150 transition-all' />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <Link to='/dashboard/accounts/0ac03da8-9d62-484a-b58b-ca78f3c0e3a2'>
+                <DropdownMenuItem>View Info</DropdownMenuItem>
+              </Link>
               <DropdownMenuItem>Update Role</DropdownMenuItem>
               <DropdownMenuItem>View News</DropdownMenuItem>
             </DropdownMenuContent>
@@ -100,7 +113,12 @@ const Accounts: FC<Accounts> = () => {
       <CreateAccount />
       {/* table here */}
       <div className='flex-1 overflow-auto p-5'>
-        <DataTable columns={columnsAccount} data={ACCOUNTS} />
+        {data && (
+          <AccountTable
+            columns={columnsAccount}
+            data={data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))}
+          />
+        )}
       </div>
 
       {/* border rounded here */}

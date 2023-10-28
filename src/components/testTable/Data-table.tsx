@@ -302,8 +302,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <span>Create</span>
         </Button>
       </div>
-      <div className='rounded-md border'></div>
-      <div className='flex-1 overflow-auto  border rounded-md '>
+      {/* <div className='rounded-md border'></div> */}
+      <div className='flex-1 overflow-auto h-full rounded-[0.5rem] border'>
         <Table className=''>
           <TableHeader className='sticky top-0 z-20'>
             {table.getHeaderGroups().map((headerGroup) => (

@@ -9,13 +9,14 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Icons } from '@/components/Icon'
 interface CreateAccountProps {}
 import { AccountForm } from './AccountForm'
 const CreateAccount: FC<CreateAccountProps> = () => {
+  const [open, setOpen] = useState<boolean>(false)
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant='secondary'>
           <Icons.PlusCircleIcon className='mr-2' />
@@ -27,7 +28,7 @@ const CreateAccount: FC<CreateAccountProps> = () => {
           <DialogTitle> Create Account</DialogTitle>
           <DialogDescription>Fill out the required fields in the registration form</DialogDescription>
         </DialogHeader>
-        <AccountForm />
+        <AccountForm setOpenDialog={setOpen} />
 
         {/* <DialogFooter>
           <Button type='submit'>Save</Button>

@@ -9,26 +9,27 @@ import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
-import { loaderAllAccount } from '@/lib/loader/AccountsLoader'
+import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoader'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
 const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
 const AnimalCreate = Loadable({ loader: () => import('../pages/dashboard/animals/create') })
-const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
-const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
-const AccountDetail = Loadable({ loader: () => import('../pages/accounts/components/AccountDetail') })
 const Cage = Loadable({ loader: () => import('../pages/dashboard/cages/index') })
 const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id]') })
 const Species = Loadable({ loader: () => import('../pages/dashboard/animal_species/index') })
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/animal_species/[id]') })
+const AccountDetail = Loadable({ loader: () => import('../pages/dashboard/accounts/components/AccountDetail') })
+const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
+const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
+// const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
 const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
-const Accounts = Loadable({ loader: () => import('../pages/accounts/index') })
 const Ticket = Loadable({ loader: () => import('../pages/tickets/index') })
+const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/index') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -94,8 +95,8 @@ const routes: RouteObject[] = [
               { index: true, element: Accounts, loader: loaderAllAccount(queryClient) },
               {
                 path: ':id',
-                element: AccountDetail
-                // loader: loaderAllAccount(queryClient)
+                element: AccountDetail,
+                loader: loaderAccountDetail(queryClient)
               }
             ]
           },

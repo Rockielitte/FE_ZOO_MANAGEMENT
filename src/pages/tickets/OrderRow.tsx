@@ -6,7 +6,7 @@ const OrderRow: React.FC<{ detail: OrderDetail }> = ({ detail }) => {
       <p className='flex-1 font-bold '>{detail.ticketName}</p>
       <p className='flex-1 text-center font-bold'>{detail.ticketPrice}</p>
       <p className='flex-1 text-center font-bold'>{detail.quantity}</p>
-      <p className='flex-1 font-bold text-right'>{Math.round(detail.quantity * detail.ticketPrice)} </p>
+      <p className='flex-1 font-bold text-right'>{Math.round(detail.quantity * detail.ticketPrice)}$ </p>
     </div>
   )
 }

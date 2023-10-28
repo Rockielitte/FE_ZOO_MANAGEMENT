@@ -1,11 +1,22 @@
 import { Order, OrderDetail, Ticket } from '@/types'
 import { useState } from 'react'
+import { UseFormReturn } from 'react-hook-form'
 
 const TicketCounter: React.FC<{
+  form: UseFormReturn<{
+    name: string
+    details: {
+      ticketId: number
+      quantity: number
+    }[]
+    email: string
+    phone: string
+    visitDate: Date
+  }>
   order: Order
   setOrder: React.Dispatch<React.SetStateAction<Order>>
   ticket: Ticket
-}> = ({ order, setOrder, ticket }) => {
+}> = ({ order, setOrder, ticket, form }) => {
   const [value, setValue] = useState(0)
   const deleteOrderDetail = (details: OrderDetail[]): OrderDetail[] => {
     return details.filter((detail) => detail.ticketId != ticket.id)
@@ -31,6 +42,8 @@ const TicketCounter: React.FC<{
         newOrder.details = modifyOrderDetalQuantity(newOrder.details, findOrderDetail.quantity - 1)
       }
       setOrder(newOrder)
+      form.setValue('details', newOrder.details)
+      form.trigger('details')
     }
     if (value > 0) setValue(value - 1)
   }
@@ -46,6 +59,8 @@ const TicketCounter: React.FC<{
         findOrderDetail.quantity + 1 > 99 ? 99 : findOrderDetail.quantity + 1
       )
     }
+    form.setValue('details', newOrder.details)
+    form.trigger('details')
     setOrder(newOrder)
     if (value >= 99) setValue(99)
     else setValue(value + 1)
@@ -72,6 +87,8 @@ const TicketCounter: React.FC<{
       }
       setValue(e.target.valueAsNumber)
     }
+    form.setValue('details', newOrder.details)
+    form.trigger('details')
     setOrder(newOrder)
   }
 
@@ -84,6 +101,11 @@ const TicketCounter: React.FC<{
         value={value}
         type='number'
         onChange={handleOnChange}
+        onKeyDown={(e) => {
+          if (e.key === '.') {
+            e.preventDefault();
+          }
+        }}
         className='text-black text-center text-2xl place-content-between rounded outline-none place-self-center w-[30px] h-[30px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
       />
       <p className=' text-[30px] cursor-pointer' onClick={() => handleIncrement()}>
