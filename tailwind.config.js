@@ -1,7 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
-  content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
+  content: [
+    'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}'
+  ],
   theme: {
     container: {
       center: true,
@@ -12,6 +18,10 @@ module.exports = {
       extend: {}
     },
     extend: {
+      screens: {
+        xsm: '376px',
+        '3xl': '1920px'
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -69,7 +79,10 @@ module.exports = {
       fontFamily: {
         ultra: ['Ultra'],
         luck: ['Luckiest Guy'],
-        ime: ['IM Fell English']
+        ime: ['IM Fell English'],
+        roboto: ['Roboto'],
+        bakervilla: ['Libre Baskerville'],
+        monster: ['Montserrat']
       }
     }
   },
