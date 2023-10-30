@@ -1,46 +1,16 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import React from 'react'
-import {
-  MdChevronLeft,
-  MdChevronRight,
-  MdKeyboardDoubleArrowLeft,
-  MdKeyboardDoubleArrowRight,
-  MdCreate
-} from 'react-icons/md'
-import Areas from '@/test/AreaTest.json'
-import AreaTag from '@/components/AreaTag'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { useUserStore } from '@/stores'
-import axios, { AxiosError, AxiosResponse } from 'axios'
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Area } from '@/types'
-import { request } from '@/utils/apiCaller'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 import { z } from 'zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'react-toastify'
-import { Toast } from '@/components/ui/toast'
-import ModalForm from '@/components/ModalForm'
 import { GridShow } from '@/components/GridShow'
 import { ColumnDef } from '@tanstack/react-table'
 import GridArea from '@/components/GridArea'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
-const regexPattern = /^[A-Z]\d{3}$/
-type Props = {}
+
 const formSchema = z.object({
   // code: z.string().regex(regexPattern),
   code: z.string().min(3),
@@ -74,7 +44,7 @@ export const columns: ColumnDef<Area>[] = [
     accessorKey: 'noCages'
   }
 ]
-const index = (props: Props) => {
+const index = () => {
   const area_data = useQueryCustom({ query: '/areas/', queryKey: ['areas'], data: {} as Area })
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema)

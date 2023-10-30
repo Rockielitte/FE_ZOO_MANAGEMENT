@@ -55,10 +55,7 @@ const ModalForm = <X, T extends FieldValues>({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    getValues,
-    setValue,
-    watch
+    formState: { errors, isSubmitting }
   } = form
   return (
     <Dialog open={open} onOpenChange={setOpen}>

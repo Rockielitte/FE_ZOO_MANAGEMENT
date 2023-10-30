@@ -1,34 +1,14 @@
-import { Button } from '@/components/ui/button'
-import { Input, InputProps } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
-import { Popover } from '@radix-ui/react-popover'
-import { CalendarIcon, Ghost } from 'lucide-react'
-import { format } from 'date-fns'
-import { Calendar } from '@/components/ui/calendar'
-import { RiSendPlaneLine } from 'react-icons/ri'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-import { useEffect, useMemo, useState } from 'react'
-import { AiOutlineCloudUpload } from 'react-icons/ai'
-import { BsImages, BsUpload } from 'react-icons/bs'
-import Carousel from '@/components/Carousel'
-import { useUserStore } from '@/stores'
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import { useEffect, useMemo } from 'react'
+// import { useUserStore } from '@/stores'
 import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
-import { request } from '@/utils/apiCaller'
-import { useMutation, useQuery } from 'react-query'
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import AnimalForm from '@/components/AnimalForm'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
-import { toast } from 'react-toastify'
-import { queryClient } from '@/routes'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
 const formSchema = z.object({
@@ -55,7 +35,7 @@ const formSchema = z.object({
 })
 export type FormSchemaType = z.infer<typeof formSchema>
 const AnimalDetail = () => {
-  const token = useUserStore((state) => state.user)?.token
+  // const token = useUserStore((state) => state.user)?.token
   const id = useParams().id
   const animal_data = useQueryCustom({
     query: `/animals/${id}`,
@@ -86,6 +66,7 @@ const AnimalDetail = () => {
     console.log(animalDataForm)
 
     form.reset(animalDataForm)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animalDataForm])
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),

@@ -1,6 +1,6 @@
 import { Table } from '@tanstack/react-table'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'  
-import { Button } from '@/components/ui/button'  
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
 import { MdChevronLeft, MdChevronRight, MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from 'react-icons/md'
 interface DataTablePaginationProps<TData> {
   table: Table<TData>
@@ -9,7 +9,6 @@ interface DataTablePaginationProps<TData> {
 export function SpeciesTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
   return (
     <div className='flex items-center justify-end pt-4 pb-2 py-2'>
-      
       <div className='flex items-center space-x-6 lg:space-x-8'>
         <div className='flex items-center space-x-2'>
           <p className='text-sm font-medium'>Items per page</p>

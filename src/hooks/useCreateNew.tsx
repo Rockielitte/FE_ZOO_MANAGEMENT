@@ -7,7 +7,7 @@ interface UseCreateNew {
   createNew: (data: PostCreationRequest) => void
 }
 
-export const useCreateNew = (reset): UseCreateNew => {
+export const useCreateNew = (): UseCreateNew => {
   const client = useQueryClient()
   const navigae = useNavigate()
   const { mutate: createNew } = useMutation({
@@ -26,7 +26,7 @@ export const useCreateNew = (reset): UseCreateNew => {
     onSuccess: () => {
       client.invalidateQueries(['news', 'newDetail'])
 
-      reset
+      // form.re
       navigae('/dashboard/news')
 
       // client.invalidateQueries(['newDetail'])

@@ -8,9 +8,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-type Props = {}
 
-const AvatarFull = (props: Props) => {
+const AvatarFull = () => {
   return (
     <div className='flex gap-2 items-center w-full h-full'>
       <Avatar className='hidden xsm:block'>

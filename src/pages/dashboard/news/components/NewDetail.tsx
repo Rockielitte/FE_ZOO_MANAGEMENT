@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { loaderNewDetail } from '@/lib/loader/NewsLoader'
 import New from '@/utils/api/New'
 import { useQuery } from 'react-query'
