@@ -1,40 +1,12 @@
-// import { Payment, columns } from '@/components/testTable/columns'
-import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
-import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Checkbox } from '@/components/ui/checkbox'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import animalData from '@/test/animal_data.json'
-
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import clsx from 'clsx'
-import { AiFillEdit } from 'react-icons/ai'
-import { BiDetail } from 'react-icons/bi'
-import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
-import { MdOutlineMore } from 'react-icons/md'
-import { IoMaleFemale } from 'react-icons/io5'
-import { format } from 'date-fns'
+import { ColumnDef } from '@tanstack/react-table'
 import { useUserStore } from '@/stores'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { request, request as requestCall } from '@/utils/apiCaller'
-import { Animal, AnimalGenderEnum, AnimalStatusEnum, Area, Cage } from '@/types'
-import axios, { AxiosResponse } from 'axios'
-import { FaGenderless } from 'react-icons/fa'
+import { useQueryClient } from 'react-query'
+import { Cage } from '@/types'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
 import { GridShow } from '@/components/GridShow'
-import CageTag from '@/components/CageTag'
 import GridCage from '@/components/GridCage'
 import { z } from 'zod'
-import { toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import useQueryCustom from '@/hooks/useQueryCustom'

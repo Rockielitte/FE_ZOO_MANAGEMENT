@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { HiLocationMarker } from 'react-icons/hi'
+import React from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,16 +11,11 @@ import { BsThreeDots } from 'react-icons/bs'
 import { AiFillEdit } from 'react-icons/ai'
 import { MdGridView } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
-import { Badge } from './ui/badge'
+
 import { GiBirdCage } from 'react-icons/gi'
 import { Row } from '@tanstack/react-table'
 import { Cage } from '@/types'
-import { useUserStore } from '@/stores'
-import { useMutation, useQueryClient } from 'react-query'
 import { z } from 'zod'
-import { request } from '@/utils/apiCaller'
-import { toast } from 'react-toastify'
-import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ModalForm from './ModalForm'

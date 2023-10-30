@@ -5,7 +5,6 @@ import axios from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
 interface UseUpdateAccount {
   updateAccount: (data: AccountFormValues) => void
-  form?: any
 }
 
 export const useUpdateAccount = (form, id: string): UseUpdateAccount => {

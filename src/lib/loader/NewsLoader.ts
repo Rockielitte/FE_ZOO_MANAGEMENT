@@ -1,6 +1,4 @@
 import { newsGetAll } from '@/pages/dashboard/news'
-import { accountDetailQuery } from '@/pages/dashboard/accounts/components/AccountDetail'
-
 import { QueryClient } from 'react-query'
 import { LoaderFunctionArgs } from 'react-router-dom'
 import { newDetailQuery } from '@/pages/dashboard/news/components/NewDetail'

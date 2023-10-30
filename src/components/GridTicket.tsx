@@ -1,7 +1,7 @@
-import { Area, Cage, Ticket } from '@/types'
+import { Ticket } from '@/types'
 import { Table } from '@tanstack/react-table'
 import React from 'react'
-import AreaTag from './AreaTag'
+
 import TicketTag from './TicketTag'
 
 const GridTicket: React.FC<{

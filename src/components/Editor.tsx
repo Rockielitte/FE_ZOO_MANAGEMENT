@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type EditorJS from '@editorjs/editorjs'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -8,7 +9,7 @@ import TextareaAutosize from 'react-textarea-autosize'
 import { toast } from './ui/use-toast'
 import '@/editor.css'
 import { useCreateNew } from '@/hooks/useCreateNew'
-import EditorOutput from './EditorOutpu'
+// import EditorOutput from './EditorOutpu'
 import LocalFile from '@/utils/api/LocalFile'
 
 type FormData = z.infer<typeof PostValidator>
@@ -45,7 +46,6 @@ export const Editor: React.FC<EditorProps> = () => {
   })
   const ref = useRef<EditorJS>()
   const _titleRef = useRef<HTMLTextAreaElement>(null)
-  const [test, setTest] = useState()
 
   const [isMounted, setIsMounted] = useState<boolean>(false)
   const { createNew } = useCreateNew()
@@ -162,7 +162,7 @@ export const Editor: React.FC<EditorProps> = () => {
 
   async function onSubmit(data: FormData) {
     const blocks = await ref.current?.save()
-    setTest(blocks)
+
     const payload: PostCreationRequest = {
       title: data.title,
       content: JSON.stringify(blocks)

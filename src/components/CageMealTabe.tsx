@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
@@ -8,12 +8,8 @@ import { Calendar } from './ui/calendar'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { Input } from './ui/input'
 import { MdDelete } from 'react-icons/md'
-import { SelectMap } from './SelectMap'
-import { SelectSearch } from './SelectSearch'
 
-type Props = {}
-
-const CageMealTabe = (props: Props) => {
+const CageMealTabe = () => {
   const [date, setDate] = useState(new Date())
   return (
     <div className='w-full h-full flex flex-col gap-2'>

@@ -1,18 +1,16 @@
 import { Button } from '@/components/ui/button'
-import { Input, InputProps } from '@/components/ui/input'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { Popover } from '@radix-ui/react-popover'
-import { CalendarIcon, Ghost } from 'lucide-react'
+import { CalendarIcon } from 'lucide-react'
 import { format } from 'date-fns'
 import { Calendar } from '@/components/ui/calendar'
 import { RiSendPlaneLine } from 'react-icons/ri'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { UseFormReturn, FieldValues, Path, SubmitHandler, WatchObserver, PathValue } from 'react-hook-form'
-import * as z from 'zod'
+import { UseFormReturn, FieldValues, Path, SubmitHandler, PathValue } from 'react-hook-form'
 
 import { useMemo, useState } from 'react'
 import { AiOutlineCloudUpload, AiTwotoneDelete } from 'react-icons/ai'
@@ -29,7 +27,7 @@ import { request } from '@/utils/apiCaller'
 import LoadingScreen from './Loading'
 
 import { SelectSearch } from './SelectSearch'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface AnimalFormProps<T extends FieldValues> {
   form: UseFormReturn<T>
@@ -86,7 +84,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
       }
     }
   })
-  const handleSubmitImage: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleSubmitImage: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (image) imageMutation.mutate(image)
   }
   const {
@@ -330,7 +328,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                   </label>
                 ) : (
                   <div className='flex flex-col items-center justify-center relative  w-full h-52  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer transition-all hover:bg-slate-100 dark:hover:bg-slate-500'>
-                    <img src={imageUrl} className='w-full h-full rounded-md object-contain' />
+                    <img alt='' src={imageUrl} className='w-full h-full rounded-md object-contain' />
                     <AiTwotoneDelete
                       className='text-2xl transition-all hover:scale-125 opacity-50 hover:opacity-100 p-1 rounded-full bg-slate-100 absolute text-red-600 top-2 right-2'
                       onClick={() => {

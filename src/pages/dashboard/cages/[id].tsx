@@ -1,45 +1,19 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { useEffect, useMemo } from 'react'
 
-import {
-  MdChevronLeft,
-  MdChevronRight,
-  MdKeyboardDoubleArrowLeft,
-  MdKeyboardDoubleArrowRight,
-  MdCreate
-} from 'react-icons/md'
-import cage from '@/test/cage.json'
-import AreaTag from '@/components/AreaTag'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import CageTag from '@/components/CageTag'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CageAnimalTable from '@/components/CageAnimalTable'
 import MealCage from '@/components/MealCage'
 import { z } from 'zod'
-import { useUserStore } from '@/stores'
 import { useParams } from 'react-router-dom'
-import axios, { AxiosResponse } from 'axios'
-import { Animal, Cage } from '@/types'
-import { QueryClient, UseQueryResult, useMutation, useQuery } from 'react-query'
-import { request } from '@/utils/apiCaller'
-import { toast } from 'react-toastify'
+import { Cage } from '@/types'
+import { UseQueryResult } from 'react-query'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
-type Props = {}
+
 const regexPattern = /^[A-Za-z][0-9]{4}$/
 const formSchema = z.object({
   code: z.string().regex(regexPattern),
@@ -49,7 +23,7 @@ const formSchema = z.object({
   description: z.string().optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
-const DetailCage = (props: Props) => {
+const DetailCage = () => {
   const cageId = useParams().id
   const cage_data = useQueryCustom({
     query: `/cages/${cageId}`,
@@ -74,7 +48,7 @@ const DetailCage = (props: Props) => {
       return {
         code: data.code,
         areaId: data.area?.id,
-        animalSpeciesId: data.animalSpecies.id,
+        animalSpeciesId: data?.animalSpecies?.id,
         managedById: data.managedBy?.id,
         description: data.description
       }

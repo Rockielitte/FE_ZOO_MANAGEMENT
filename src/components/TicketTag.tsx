@@ -1,5 +1,4 @@
 import React from 'react'
-import { HiLocationMarker } from 'react-icons/hi'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,24 +9,14 @@ import {
 } from './ui/dropdown-menu'
 import { BsThreeDots, BsTicketPerforated } from 'react-icons/bs'
 import { AiFillEdit } from 'react-icons/ai'
-import { MdDelete, MdGridView } from 'react-icons/md'
-import { useNavigate } from 'react-router-dom'
-import { CiLocationOn } from 'react-icons/ci'
-import { TfiLocationPin } from 'react-icons/tfi'
-import { Area, Cage, Ticket } from '@/types'
+import { MdDelete } from 'react-icons/md'
 import ModalForm from './ModalForm'
-import { useMutation, useQueryClient } from 'react-query'
 import { z } from 'zod'
-import { request } from '@/utils/apiCaller'
-import { useUserStore } from '@/stores'
-import { toast } from 'react-toastify'
-import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Dialog } from '@radix-ui/react-dialog'
 import { Row } from '@tanstack/react-table'
-import { TicketIcon } from 'lucide-react'
 import useMutationCustom from '@/hooks/useMutationCustom'
+import { Ticket } from '@/types'
 
 const formSchema = z.object({
   name: z.string().min(1),

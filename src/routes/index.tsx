@@ -1,11 +1,10 @@
+/* eslint-disable react-refresh/only-export-components */
 import type { RouteObject } from 'react-router'
-// import MainLayout from '../layouts/MainLayout'
 import AuthGuard from './AuthGuard'
 import GuestGuard from './GuestGuard'
 import Loadable from './Loadable'
 import { QueryClient } from 'react-query'
 import Error from '@/pages/Error'
-import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
 import { loaderSpecies } from '@/lib/loader/loaderSpecies'
 import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
@@ -15,7 +14,6 @@ import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoad
 import { loaderAllNews, loaderNewDetail } from '@/lib/loader/NewsLoader'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
-const Test = Loadable({ loader: () => import('../test') })
 const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
 const AnimalCreate = Loadable({ loader: () => import('../pages/dashboard/animals/create') })
@@ -57,12 +55,6 @@ const routes: RouteObject[] = [
       {
         path: 'login',
         element: Login
-      },
-
-      {
-        path: 'test',
-        element: Test,
-        loader: loaderLeaderBoard(queryClient)
       }
     ]
   },

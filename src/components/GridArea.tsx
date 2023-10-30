@@ -1,4 +1,4 @@
-import { Area, Cage } from '@/types'
+import { Area } from '@/types'
 import { Table } from '@tanstack/react-table'
 import React from 'react'
 import AreaTag from './AreaTag'

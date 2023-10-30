@@ -2,7 +2,7 @@ import { FC, lazy, Suspense } from 'react'
 import LoadingScreen from '../components/Loading'
 
 interface LoadableProps {
-  loader: () => Promise<{ default: React.ComponentType<any> }>
+  loader: () => Promise<{ default: React.ComponentType }>
 }
 
 const Loadable: FC<LoadableProps> = ({ loader }) => {

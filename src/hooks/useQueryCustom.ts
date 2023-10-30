@@ -1,8 +1,7 @@
 import { useUserStore } from '@/stores'
 import { request } from '@/utils/apiCaller'
 import axios, { AxiosResponse } from 'axios'
-import React from 'react'
-import { useQuery, useQueryClient } from 'react-query'
+import { useQuery } from 'react-query'
 
 type Props<T, X> = {
   queryKey: string[]
@@ -12,7 +11,7 @@ type Props<T, X> = {
 }
 const useQueryCustom = <T, X>({ query, queryKey }: Props<T, X>) => {
   const token = useUserStore((state) => state.user)?.token
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient()
   const data = useQuery<AxiosResponse<T[] | X>, unknown, T[] | X>({
     queryKey: queryKey,
     queryFn: () => {

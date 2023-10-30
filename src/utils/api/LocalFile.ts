@@ -1,9 +1,7 @@
-import { get, post, put } from '../apiCaller'
-
-import { useAuthorizationHeader } from '../authHeader'
+import { post } from '../apiCaller'
 
 const LocalFile = {
-  uploadFile: async (data) => {
+  uploadFile: async (data: File) => {
     const endpoint = `/upload`
     console.log('data: ' + data.file.name)
     const formData = new FormData()
