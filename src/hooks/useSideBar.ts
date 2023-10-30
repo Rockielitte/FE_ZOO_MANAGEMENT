@@ -3,7 +3,7 @@ import { AiFillHome, AiFillSchedule, AiOutlineSchedule } from 'react-icons/ai'
 import { GiCaveman, GiBirdCage, GiElephant, GiNestBirds } from 'react-icons/gi'
 import { ImManWoman } from 'react-icons/im'
 import { BsFillPinMapFill, BsTicketPerforated } from 'react-icons/bs'
-
+import { LiaFileInvoiceDollarSolid } from 'react-icons/lia'
 const useSideBar = () => {
   const routeList = useMemo(
     () => [
@@ -46,12 +46,12 @@ const useSideBar = () => {
         name: 'Ticket',
         Icon: BsTicketPerforated,
         href: 'tickets'
+      },
+      {
+        name: 'Order',
+        Icon: LiaFileInvoiceDollarSolid,
+        href: 'orders'
       }
-      // {
-      //   name: 'Meal schedule',
-      //   Icon: AiFillSchedule,
-      //   href: 'meal_schedule'
-      // }
     ],
     []
   )

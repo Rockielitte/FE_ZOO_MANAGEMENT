@@ -85,7 +85,7 @@ export type Cage = {
   managedBy: User | null
 }
 export type Species = {
-  animalList: any | null
+  animalList: Animal[] | null
   cageList: Cage[] | null
   createdBy: User | null
   description: string
@@ -139,4 +139,25 @@ export type Ticket = {
   description: string
   price: number
   createdBy: User
+}
+export enum OrderStatusEnum {
+  PENDING = 'PENDING',
+  DONE = 'DONE',
+  CANCELLED = 'CANCELLED'
+}
+export interface OrderDetail {
+  id: number
+  quantity: number
+  ticketPrice: number
+  ticket: Ticket
+}
+export interface Order {
+  id: string
+  email: string
+  phone: string
+  name: string
+  total: number
+  visitDate: string
+  status: OrderStatusEnum
+  details: OrderDetail[]
 }
