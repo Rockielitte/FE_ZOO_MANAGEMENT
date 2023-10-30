@@ -37,6 +37,8 @@ import { z } from 'zod'
 import { toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import useQueryCustom from '@/hooks/useQueryCustom'
+import useMutationCustom from '@/hooks/useMutationCustom'
 export const columns: ColumnDef<Cage>[] = [
   {
     accessorKey: 'id',
@@ -98,52 +100,17 @@ export type formSchemaType = z.infer<typeof formSchema>
 export default function DemoPage() {
   const token = useUserStore((state) => state.user)?.token
   const queryClient = useQueryClient()
-  const cage_data = useQuery<AxiosResponse<Cage[]>, unknown, Cage[]>({
-    queryKey: ['cages'],
-    queryFn: () => {
-      return requestCall<Cage[]>('/cages/', 'GET', {
-        Authorization: `Bearer ${token} `
-      })
-    },
-    onSuccess: (data) => {},
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message)
-      }
-    },
-    select: (data) => {
-      return data.data
-    }
-  })
-  const formMutation = useMutation({
-    mutationKey: ['cages'],
-    mutationFn: (data: formSchemaType) => {
-      return request<Cage>(
-        '/cages/',
-        'POST',
-        {
-          Authorization: `Bearer ${token} `,
-          Headers: { 'Content-Type': 'application/json' }
-        },
-        {},
-        data
-      )
-    },
-    onSuccess: (data) => {
-      console.log(data.data)
-      toast.success('Send sucessfully')
-      form.reset({ code: '', animalSpeciesId: 0, areaId: 0, description: '', managedById: '' })
-      queryClient.invalidateQueries({ queryKey: ['cages'], exact: true })
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message, 'dasklfj')
-        toast.error(error.message)
-      }
-    }
-  })
+  const cage_data = useQueryCustom({ query: '/cages/', queryKey: ['cages'], data: {} as Cage })
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema)
+  })
+  const formMutation = useMutationCustom({
+    query: '/cages/',
+    queryKey: ['cages'],
+    form: form,
+    invalidQuery: ['cages'],
+    resetData: { code: '', animalSpeciesId: 0, areaId: 0, description: '', managedById: '' },
+    data: {} as Cage
   })
 
   return (

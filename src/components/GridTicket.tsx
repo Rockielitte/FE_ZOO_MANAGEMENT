@@ -1,18 +1,19 @@
-import { Area, Cage } from '@/types'
+import { Area, Cage, Ticket } from '@/types'
 import { Table } from '@tanstack/react-table'
 import React from 'react'
 import AreaTag from './AreaTag'
+import TicketTag from './TicketTag'
 
-const GridArea: React.FC<{
-  data: Table<Area>
+const GridTicket: React.FC<{
+  data: Table<Ticket>
 }> = ({ data }) => {
   return (
     <div className='md:grid-cols-2 w-full  grid grid-cols-1 overflow-auto gap-8 '>
       {data.getRowModel().rows.map((row) => (
-        <AreaTag row={row} key={row.getValue('id')} />
+        <TicketTag row={row} key={row.getValue('id')} />
       ))}
     </div>
   )
 }
 
-export default GridArea
+export default GridTicket

@@ -29,6 +29,7 @@ import { request } from '@/utils/apiCaller'
 import LoadingScreen from './Loading'
 
 import { SelectSearch } from './SelectSearch'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 interface AnimalFormProps<T extends FieldValues> {
   form: UseFormReturn<T>
@@ -45,6 +46,10 @@ interface AnimalFormProps<T extends FieldValues> {
 
 const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: AnimalFormProps<T>) => {
   const [imageShow, setImageShow] = useState('images')
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const navigate = useNavigate()
+
   const [image, setImage] = useState<File>()
   const imageUrl = useMemo(() => image && URL.createObjectURL(image as Blob), [image])
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -92,11 +97,14 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
     getValues,
     setValue
   } = form
-  console.log('reder form')
 
   const onSubmit: SubmitHandler<T> = async (data) => {
     // const sendData = { ...data, dob: data.dob.toISOString().substring(0, 10) }
-    formMutation.mutate(data)
+    formMutation.mutate(data, {
+      onSuccess: () => {
+        navigate(`${queryParams.get('redirect') || '/dashboard/animals'}`)
+      }
+    })
     // toast({
     //   title: 'You submitted the following values:',
     //   description: (
@@ -128,13 +136,16 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
             Submit
           </Button>
           <div className='w-full  md:border-r  flex flex-col sm:flex-row  justify-between flex-wrap gap-4 px-6 overflow-auto h-full py-2 '>
-            {fields.map(
-              (item) =>
+            {fields.map((item) => {
+              const label = String(item).includes('Id')
+                ? String(item).substring(0, String(item).length - 2)
+                : String(item)
+              return (
                 item != 'images' && (
                   <div className='w-full  flex flex-col gap-2 relative ' key={item}>
                     <div className='flex w-full  justify-center  items-center gap-2 '>
                       <Label htmlFor={item} className='min-w-[80px] capitalize text-base'>
-                        {item}
+                        {label}
                       </Label>
                       {item == 'description' || item == 'note' ? (
                         <Textarea
@@ -248,7 +259,8 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                     )}
                   </div>
                 )
-            )}
+              )
+            })}
           </div>
         </form>
         <div className='border-2 border-dashed my-2 block sm:hidden'></div>

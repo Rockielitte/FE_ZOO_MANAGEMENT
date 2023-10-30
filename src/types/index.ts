@@ -145,3 +145,10 @@ export type NewType = {
   postedAt: string
   author: User | null
 }
+export type Ticket = {
+  id: number
+  name: string
+  description: string
+  price: number
+  createdBy: User
+}

@@ -29,6 +29,7 @@ import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 import { toast } from 'react-toastify'
 import { queryClient } from '@/routes'
+import useMutationCustom from '@/hooks/useMutationCustom'
 const formSchema = z.object({
   name: z.string().min(1, { message: "This field can't be empty" }),
   speciesId: z.coerce.number().min(1),
@@ -53,36 +54,14 @@ const formSchema = z.object({
 })
 export type FormSchemaType = z.infer<typeof formSchema>
 const AnimalCreate = () => {
-  const token = useUserStore((state) => state.user)?.token
-  const id = useParams().id
-  const formMutation = useMutation({
-    mutationKey: ['animals', 'create'],
-    mutationFn: (data: FormSchemaType) => {
-      // const dataForm = { ...data, dob: data.dob.toISOString().substring(0, 10) }
-      return request<Animal>(
-        `/animals/`,
-        'POST',
-        {
-          Authorization: `Bearer ${token} `,
-          Headers: { 'Content-Type': 'application/json' }
-        },
-        {},
-        data
-      )
-    },
-    onSuccess: (data) => {
-      console.log(data.data)
-      toast.success('Send sucessfully')
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message, 'dasklfj')
-        toast.error(error.message)
-      }
-    }
-  })
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema)
+  })
+  const formMutation = useMutationCustom({
+    query: `/animals/`,
+    queryKey: ['animals', 'create'],
+    form: form,
+    data: {} as Animal
   })
   return (
     <div className='w-full h-full'>
