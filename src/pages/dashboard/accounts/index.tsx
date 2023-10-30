@@ -20,7 +20,8 @@ interface Accounts {}
 // eslint-disable-next-line react-refresh/only-export-components
 export const accountsGetAll = () => ({
   queryKey: ['accounts'],
-  queryFn: async () => Account.getAllAccount()
+  queryFn: async () => await Account.getAllAccount(),
+  staleTime: 10000
 })
 
 const Accounts: FC<Accounts> = () => {

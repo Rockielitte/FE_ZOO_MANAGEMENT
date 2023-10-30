@@ -1,5 +1,5 @@
-import AnimalSpecies from "@/utils/api/AnimalSpecies"
-import { speciesDetailQuery } from "@/pages/dashboard/Species/components/SpeciesDetail"
+import AnimalSpecies from '@/utils/api/AnimalSpecies'
+import { speciesDetailQuery } from '@/pages/dashboard/Species/components/SpeciesDetail'
 
 export const loaderSpecies = (queryClient: any) => async () => {
   try {
@@ -16,10 +16,9 @@ export const loaderSpecies = (queryClient: any) => async () => {
   }
   return null
 }
-export const loaderSpeciesDetail = (queryClient: any) => async ({ params }) => {
+export const loaderSpeciesDetail =
+  (queryClient: any) =>
+  async ({ params }) => {
     const query = speciesDetailQuery(params.id)
-    return (
-        queryClient.getQueryData(query.queryKey) ??
-        (await queryClient.fetchQuery(query))
-      )
+    return queryClient.getQueryData(query.queryKey) ?? (await queryClient.fetchQuery(query))
   }

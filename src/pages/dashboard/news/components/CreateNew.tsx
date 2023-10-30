@@ -1,12 +1,10 @@
 import { Editor } from '@/components/Editor'
-import EditorOutput from '@/components/EditorOutpu'
+
 import { Button } from '@/components/ui/button'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 interface CreateNewProps {}
 
 const CreateNew: FC<CreateNewProps> = () => {
-  const [test, setTest] = useState()
-
   return (
     <div className='w-full h-full border rounded-md shadow-md flex flex-col flex-1 p-2 gap-2'>
       <div className='flex flex-col flex-1 h-full items-start justify-start space-y-5 p-10'>

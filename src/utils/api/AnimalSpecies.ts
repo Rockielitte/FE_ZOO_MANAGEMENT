@@ -7,7 +7,16 @@ const AnimalSpecies = {
     const endpoint = `/animal-species/`
 
     try {
-      const response = await post(endpoint, data, {}, { Authorization: ' Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWY2ZjBkYi0wMDQ1LTRiZTYtYjFjMS0xZTVhZWVkYTYxNDUiLCJpYXQiOjE2OTgwNzgxMTUsImV4cCI6MTY5ODE2NDUxNX0.Ne4lvewUHJYhm0_0Btr06oeCjyp4LDlojHduf2fO_tk' })
+      const response = await post(
+        endpoint,
+        data,
+        {},
+        {
+          Authorization:
+            ' Bearer ' +
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWY2ZjBkYi0wMDQ1LTRiZTYtYjFjMS0xZTVhZWVkYTYxNDUiLCJpYXQiOjE2OTgwNzgxMTUsImV4cCI6MTY5ODE2NDUxNX0.Ne4lvewUHJYhm0_0Btr06oeCjyp4LDlojHduf2fO_tk'
+        }
+      )
       console.log(response)
       return response
     } catch (error) {
@@ -20,7 +29,16 @@ const AnimalSpecies = {
     const endpoint = `/animal-species/`
 
     try {
-      const response = await get(endpoint, {}, { "Content-Type": "application/json", Authorization: ' Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWY2ZjBkYi0wMDQ1LTRiZTYtYjFjMS0xZTVhZWVkYTYxNDUiLCJpYXQiOjE2OTgwNzgxMTUsImV4cCI6MTY5ODE2NDUxNX0.Ne4lvewUHJYhm0_0Btr06oeCjyp4LDlojHduf2fO_tk' })
+      const response = await get(
+        endpoint,
+        {},
+        {
+          'Content-Type': 'application/json',
+          Authorization:
+            ' Bearer ' +
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWY2ZjBkYi0wMDQ1LTRiZTYtYjFjMS0xZTVhZWVkYTYxNDUiLCJpYXQiOjE2OTgwNzgxMTUsImV4cCI6MTY5ODE2NDUxNX0.Ne4lvewUHJYhm0_0Btr06oeCjyp4LDlojHduf2fO_tk'
+        }
+      )
       console.log(response)
       return response
     } catch (error) {
@@ -33,7 +51,15 @@ const AnimalSpecies = {
     const endpoint = `/animal-species/${id}`
 
     try {
-      const response = await get(endpoint, {}, { Authorization: ' Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWY2ZjBkYi0wMDQ1LTRiZTYtYjFjMS0xZTVhZWVkYTYxNDUiLCJpYXQiOjE2OTgwNzgxMTUsImV4cCI6MTY5ODE2NDUxNX0.Ne4lvewUHJYhm0_0Btr06oeCjyp4LDlojHduf2fO_tk' })
+      const response = await get(
+        endpoint,
+        {},
+        {
+          Authorization:
+            ' Bearer ' +
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWY2ZjBkYi0wMDQ1LTRiZTYtYjFjMS0xZTVhZWVkYTYxNDUiLCJpYXQiOjE2OTgwNzgxMTUsImV4cCI6MTY5ODE2NDUxNX0.Ne4lvewUHJYhm0_0Btr06oeCjyp4LDlojHduf2fO_tk'
+        }
+      )
       console.log(response)
       return response.data
     } catch (error) {
@@ -45,10 +71,17 @@ const AnimalSpecies = {
   getCageBySpeciesId: async (id: string) => {
     const endpoint = `/cages/`
 
-    const response = await get(endpoint, { speciesId: id }, { Authorization: ' Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWY2ZjBkYi0wMDQ1LTRiZTYtYjFjMS0xZTVhZWVkYTYxNDUiLCJpYXQiOjE2OTgwNzgxMTUsImV4cCI6MTY5ODE2NDUxNX0.Ne4lvewUHJYhm0_0Btr06oeCjyp4LDlojHduf2fO_tk' })
+    const response = await get(
+      endpoint,
+      { speciesId: id },
+      {
+        Authorization:
+          ' Bearer ' +
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWY2ZjBkYi0wMDQ1LTRiZTYtYjFjMS0xZTVhZWVkYTYxNDUiLCJpYXQiOjE2OTgwNzgxMTUsImV4cCI6MTY5ODE2NDUxNX0.Ne4lvewUHJYhm0_0Btr06oeCjyp4LDlojHduf2fO_tk'
+      }
+    )
     console.log(response)
     return response.data
-
   },
 
   updateSpecies: async (data: dataSpecies, id: number) => {
@@ -56,13 +89,22 @@ const AnimalSpecies = {
     const endpoint = `/animal-species/${id}`
 
     try {
-      const response = await put(endpoint, data, {}, { Authorization: ' Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWY2ZjBkYi0wMDQ1LTRiZTYtYjFjMS0xZTVhZWVkYTYxNDUiLCJpYXQiOjE2OTgwNzE5NDgsImV4cCI6MTY5ODE1ODM0OH0.P0-68ATlPDrWOc0AJpLUFKdGsudIfsl6BIWFII02ibc' })
+      const response = await put(
+        endpoint,
+        data,
+        {},
+        {
+          Authorization:
+            ' Bearer ' +
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZWY2ZjBkYi0wMDQ1LTRiZTYtYjFjMS0xZTVhZWVkYTYxNDUiLCJpYXQiOjE2OTgwNzE5NDgsImV4cCI6MTY5ODE1ODM0OH0.P0-68ATlPDrWOc0AJpLUFKdGsudIfsl6BIWFII02ibc'
+        }
+      )
       console.log(response)
       return response
     } catch (error) {
       console.log(error)
       return error.response
     }
-  },
+  }
 }
 export default AnimalSpecies

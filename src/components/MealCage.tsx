@@ -42,12 +42,15 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
         <form onSubmit={handleSubmit(onSubmit)} className='overflow-auto flex flex-col gap-1 w-full h-full '>
           <div className='flex flex-col gap-4 py-4 w-full flex-1 overflow-auto px-2'>
             {fields.map((item) => {
+              const label = String(item).includes('Id')
+                ? String(item).substring(0, String(item).length - 2)
+                : String(item)
               switch (item) {
                 case 'areaId':
                   return (
                     <div className='grid grid-cols-4 items-center gap-4'>
                       <Label htmlFor={item} className='text-right capitalize'>
-                        {item}
+                        {label}
                       </Label>
                       <div className='col-span-3' id={item}>
                         <SelectSearch form={form} query='areas' item={item} />
@@ -79,7 +82,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                   return (
                     <div className='grid grid-cols-4 items-center gap-4'>
                       <Label htmlFor={item} className='text-right capitalize'>
-                        {item}
+                        {label}
                       </Label>
                       <div className='col-span-3' id={item}>
                         <SelectSearch form={form} query='accounts' item={item} />
@@ -111,7 +114,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                   return (
                     <div className='grid grid-cols-4 items-center gap-4'>
                       <Label htmlFor={item} className='text-right capitalize'>
-                        {item}
+                        {label}
                       </Label>
                       <div className='col-span-3' id={item}>
                         <SelectSearch form={form} query='animal-species' item={item} />
@@ -143,7 +146,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                   return (
                     <div className='grid grid-cols-4 items-center gap-4'>
                       <Label htmlFor={item} className='text-right capitalize'>
-                        {item}
+                        {label}
                       </Label>
                       <Input
                         id={item}

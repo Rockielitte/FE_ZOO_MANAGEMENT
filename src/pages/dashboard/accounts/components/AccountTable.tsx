@@ -203,6 +203,9 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
   useEffect(() => {
     setTableData(data)
   }, [data])
+  console.log('Data: ' + data.length)
+  console.log('tableData: ' + tableData.length)
+
   const table = useReactTable({
     data: tableData,
     columns,

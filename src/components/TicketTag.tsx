@@ -8,13 +8,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from './ui/dropdown-menu'
-import { BsThreeDots } from 'react-icons/bs'
+import { BsThreeDots, BsTicketPerforated } from 'react-icons/bs'
 import { AiFillEdit } from 'react-icons/ai'
-import { MdGridView } from 'react-icons/md'
+import { MdDelete, MdGridView } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import { CiLocationOn } from 'react-icons/ci'
 import { TfiLocationPin } from 'react-icons/tfi'
-import { Area, Cage } from '@/types'
+import { Area, Cage, Ticket } from '@/types'
 import ModalForm from './ModalForm'
 import { useMutation, useQueryClient } from 'react-query'
 import { z } from 'zod'
@@ -26,45 +26,45 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Dialog } from '@radix-ui/react-dialog'
 import { Row } from '@tanstack/react-table'
+import { TicketIcon } from 'lucide-react'
 import useMutationCustom from '@/hooks/useMutationCustom'
-const regexPattern = /^[A-Z]\d{3}$/
+
 const formSchema = z.object({
-  code: z.string().regex(regexPattern),
   name: z.string().min(1),
-  location: z.string().min(1)
+  description: z.string().min(1),
+  price: z.coerce.number().min(0)
 })
 export type formSchemaType = z.infer<typeof formSchema>
-const AreaTag: React.FC<{ row: Row<Area> }> = ({ row }) => {
-  const route = useNavigate()
+const TicketTag: React.FC<{ row: Row<Ticket> }> = ({ row }) => {
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      code: row.getValue('code'),
+      description: row.getValue('description'),
       name: row.getValue('name'),
-      location: row.getValue('location')
+      price: row.getValue('price')
     }
   })
   const formMutation = useMutationCustom({
-    query: `/areas/${row.getValue('id')}`,
-    queryKey: ['areas', row.getValue('id')],
+    query: `/tickets/${row.getValue('id')}`,
+    queryKey: ['tickets', row.getValue('id')],
     form: form,
-    invalidQuery: ['areas'],
-    data: {} as Area,
+    invalidQuery: ['tickets'],
+    data: {} as Ticket,
     method: 'PUT'
   })
 
   return (
     <div
       className='border-2 rounded-md shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all'
-      onClick={() => {
-        route(`${row.getValue('id')}`)
-      }}
+      //   onClick={() => {
+      //     route(`${row.getValue('id')}`)
+      //   }}
     >
       <div className='px-4 py-2 flex items-center w-full gap-4 bg-secondary  border-primary rounded-md'>
-        <TfiLocationPin className='text-4xl bg-primary rounded-full shadow-md p-2 text-white' />
+        <BsTicketPerforated className='text-4xl bg-primary rounded-full shadow-md p-2 text-white' />
         <div className='flex flex-1 flex-col'>
-          <h1 className=' font-semibold uppercase'>Area {row.getValue('code')}</h1>
-          <span className='text-sm'>{row.getValue('location')}</span>
+          <h1 className=' font-semibold uppercase'>Ticket: {row.getValue('name')}</h1>
+          <span className='text-sm'>{row.getValue('id')}</span>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger>
@@ -80,38 +80,38 @@ const AreaTag: React.FC<{ row: Row<Area> }> = ({ row }) => {
               }}
             >
               <ModalForm
-                title='Edit area'
+                title='Edit ticket'
                 form={form}
                 formMutation={formMutation}
-                fields={['code', 'name', 'location']}
+                fields={['name', 'price', 'description']}
                 Trigger={
                   <>
                     <AiFillEdit className='text-2xl pr-2' />
-                    Edit area
+                    Edit ticket
                   </>
                 }
               />
             </div>
 
             <DropdownMenuItem>
-              <MdGridView className='text-2xl pr-2' />
-              View details
+              <MdDelete className='text-2xl pr-2' />
+              Delete ticket
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
       <div className='flex flex-col gap-2 font-light py-2 text-sm'>
-        <div className='flex items-center justify-between px-4 py-1 b border-b'>
-          <span>Number of cages</span>
-          <span className=''>{row.getValue('noCages')}</span>
+        <div className='flex items-center gap-2 px-4 py-1 b border-b'>
+          <span>Description:</span>
+          <span className=''>{row.getValue('description')}</span>
         </div>
-        <div className='flex items-center justify-between px-4 py-1  '>
-          <span>Number of animals</span>
-          <span>{row.getValue('noAnimals')}</span>
+        <div className='flex items-center gap-2 px-4 py-1  '>
+          <span>Price:</span>
+          <span>{row.getValue('price')}</span>
         </div>
       </div>
     </div>
   )
 }
 
-export default AreaTag
+export default TicketTag

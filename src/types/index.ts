@@ -143,5 +143,12 @@ export type NewType = {
   content: string
   title: string
   postedAt: string
-  author: string
+  author: User | null
+}
+export type Ticket = {
+  id: number
+  name: string
+  description: string
+  price: number
+  createdBy: User
 }

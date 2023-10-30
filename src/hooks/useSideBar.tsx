@@ -12,11 +12,11 @@ const useSideBar = () => {
         Icon: AiFillHome,
         href: 'index'
       },
-      {
-        name: 'Zoo trainer',
-        Icon: GiCaveman,
-        href: 'zoo_trainers'
-      },
+      // {
+      //   name: 'Zoo trainer',
+      //   Icon: GiCaveman,
+      //   href: 'zoo_trainers'
+      // },
       {
         name: 'Staff',
         Icon: ImManWoman,
@@ -47,11 +47,11 @@ const useSideBar = () => {
         Icon: Icons.NewsPaper,
         href: 'news'
       },
-      {
-        name: 'My News',
-        Icon: Icons.BookUser,
-        href: 'my-news'
-      },
+      // {
+      //   name: 'My News',
+      //   Icon: Icons.BookUser,
+      //   href: 'my-news'
+      // },
       {
         name: 'Create New',
         Icon: AiOutlineMenuFold,

@@ -3,6 +3,7 @@ import { AccountFormValues } from '@/pages/dashboard/accounts/components/Account
 import Account from '@/utils/api/Account'
 import axios from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
+
 interface UseCreateAccount {
   createAccount: (data: AccountFormValues) => void
 }
@@ -20,13 +21,16 @@ export const useCreateAccount = (
     onSuccess: (data) => {
       toast({
         title: 'Create Account successfully Your account information: ',
+
         description: (
           <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
             <code className='text-white'>{JSON.stringify(data.data, null, 2)}</code>
           </pre>
         )
       })
-      client.invalidateQueries(['account'])
+
+      client.invalidateQueries(['accounts'])
+      window.location.reload()
       setOpenDialog(false)
     },
     onError: (error) => {

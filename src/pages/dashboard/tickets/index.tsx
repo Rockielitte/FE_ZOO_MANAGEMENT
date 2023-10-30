@@ -23,7 +23,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { useUserStore } from '@/stores'
 import axios, { AxiosError, AxiosResponse } from 'axios'
-import { Area } from '@/types'
+import { Area, Ticket } from '@/types'
 import { request } from '@/utils/apiCaller'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import Error from '@/pages/Error'
@@ -37,19 +37,18 @@ import ModalForm from '@/components/ModalForm'
 import { GridShow } from '@/components/GridShow'
 import { ColumnDef } from '@tanstack/react-table'
 import GridArea from '@/components/GridArea'
+import GridTicket from '@/components/GridTicket'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
 const regexPattern = /^[A-Z]\d{3}$/
 type Props = {}
 const formSchema = z.object({
-  // code: z.string().regex(regexPattern),
-  code: z.string().min(3),
-
   name: z.string().min(1),
-  location: z.string().min(1)
+  description: z.string().min(1),
+  price: z.coerce.number().min(0)
 })
 export type formSchemaType = z.infer<typeof formSchema>
-export const columns: ColumnDef<Area>[] = [
+export const columns: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'id',
     filterFn: 'includesString',
@@ -57,53 +56,50 @@ export const columns: ColumnDef<Area>[] = [
     enableColumnFilter: false
   },
   {
-    accessorKey: 'code'
+    accessorKey: 'description'
   },
   {
     accessorKey: 'name'
   },
   {
-    accessorFn: ({ location }) => location,
-    id: 'location'
-  },
-
-  {
-    accessorKey: 'noAnimals'
-  },
-  {
-    accessorKey: 'noCages'
+    accessorKey: 'price',
+    filterFn: 'includesString'
   }
 ]
 const index = (props: Props) => {
-  const area_data = useQueryCustom({ query: '/areas/', queryKey: ['areas'], data: {} as Area })
+  const ticket_data = useQueryCustom({ query: '/tickets/', queryKey: ['tickets'], data: {} as Ticket })
   const form = useForm<formSchemaType>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      price: 0
+    }
   })
+
   const formMutation = useMutationCustom({
-    query: '/areas/',
-    queryKey: ['areas'],
+    query: '/tickets/',
+    queryKey: ['tickets'],
     form: form,
-    invalidQuery: ['areas'],
-    resetData: { code: '', name: '', location: '' },
-    data: {} as Area
+    invalidQuery: ['tickets'],
+    resetData: { description: '', name: '', price: Number(undefined) },
+    data: {} as Ticket
   })
 
   return (
     <div className='w-full h-full shadow-2xl'>
-      {area_data.isError ? (
+      {ticket_data.isError ? (
         <Error />
-      ) : !area_data.isLoading ? (
+      ) : !ticket_data.isLoading ? (
         <div className='w-full h-full p-2 overflow-auto border shadow-2xl rounded-sm'>
           <GridShow
             columns={columns}
-            data={!area_data.data ? [] : (area_data.data as Area[])}
-            GridBox={GridArea}
+            data={!ticket_data.data ? [] : (ticket_data.data as Ticket[])}
+            GridBox={GridTicket}
             form={{
               action: 'Create',
-              title: 'Create new area',
+              title: 'Create new ticket',
               form,
               formMutation,
-              fields: ['code', 'name', 'location']
+              fields: ['name', 'price', 'description']
             }}
           />
         </div>

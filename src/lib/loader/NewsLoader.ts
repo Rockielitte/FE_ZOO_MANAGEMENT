@@ -3,6 +3,7 @@ import { accountDetailQuery } from '@/pages/dashboard/accounts/components/Accoun
 
 import { QueryClient } from 'react-query'
 import { LoaderFunctionArgs } from 'react-router-dom'
+import { newDetailQuery } from '@/pages/dashboard/news/components/NewDetail'
 
 export const loaderAllNews = (queryClient: QueryClient) => async () => {
   try {
@@ -13,10 +14,10 @@ export const loaderAllNews = (queryClient: QueryClient) => async () => {
     return null
   }
 }
-export const loaderAccountDetail =
+export const loaderNewDetail =
   (queryClient: QueryClient) =>
   async ({ params }: LoaderFunctionArgs) => {
-    const query = accountDetailQuery(params.id)
+    const query = newDetailQuery(params.id)
     // ⬇️ return data or fetch it
     return queryClient.getQueryData(query.queryKey) ?? (await queryClient.fetchQuery(query))
   }
