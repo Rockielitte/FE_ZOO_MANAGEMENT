@@ -12,11 +12,11 @@ const useSideBar = () => {
         Icon: AiFillHome,
         href: 'index'
       },
-      {
-        name: 'Zoo trainer',
-        Icon: GiCaveman,
-        href: 'zoo_trainers'
-      },
+      // {
+      //   name: 'Zoo trainer',
+      //   Icon: GiCaveman,
+      //   href: 'zoo_trainers'
+      // },
       {
         name: 'Staff',
         Icon: ImManWoman,

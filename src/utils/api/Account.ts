@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { get, post, put } from '../apiCaller'
 import { AccountFormValues } from '@/pages/dashboard/accounts/components/AccountForm'
 import { useAuthorizationHeader } from '../authHeader'
@@ -5,15 +6,9 @@ import { useAuthorizationHeader } from '../authHeader'
 const Account = {
   getAllAccount: async () => {
     const endpoint = `/accounts/`
-
+    const test = useAuthorizationHeader()
     try {
-      const response = await get(
-        endpoint,
-        {},
-        {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNzRiMzNiNy04OWFiLTRlZmItYWQxNC1iYTNlZDkwMGM0MmMiLCJpYXQiOjE2OTg0NTA4MjUsImV4cCI6MTY5ODUzNzIyNX0.kzL2k02mJkt658J7lM7Qiq-klHF6zCJg-vR7xzaR4kM`
-        }
-      )
+      const response = await get(endpoint, {}, test.headers)
 
       return response.data
     } catch (error) {
@@ -23,15 +18,10 @@ const Account = {
   },
   getAccountDetail: async (slug: string) => {
     const endpoint = `/accounts/${slug}`
+    const test = useAuthorizationHeader()
 
     try {
-      const response = await get(
-        endpoint,
-        {},
-        {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNzRiMzNiNy04OWFiLTRlZmItYWQxNC1iYTNlZDkwMGM0MmMiLCJpYXQiOjE2OTg0NTA4MjUsImV4cCI6MTY5ODUzNzIyNX0.kzL2k02mJkt658J7lM7Qiq-klHF6zCJg-vR7xzaR4kM`
-        }
-      )
+      const response = await get(endpoint, {}, test.headers)
       console.log('accountDetail: ', response.data)
 
       return response.data
@@ -42,16 +32,10 @@ const Account = {
   },
   createAccount: async (data: AccountFormValues) => {
     const endpoint = `/accounts/`
+    const test = useAuthorizationHeader()
 
     // try {
-    const response = await post(
-      endpoint,
-      data,
-      {},
-      {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNzRiMzNiNy04OWFiLTRlZmItYWQxNC1iYTNlZDkwMGM0MmMiLCJpYXQiOjE2OTg0NTA4MjUsImV4cCI6MTY5ODUzNzIyNX0.kzL2k02mJkt658J7lM7Qiq-klHF6zCJg-vR7xzaR4kM`
-      }
-    )
+    const response = await post(endpoint, data, {}, test.headers)
     console.log('response: ', response)
 
     return response
@@ -63,16 +47,10 @@ const Account = {
   },
   updateAccount: async (data: AccountFormValues, id: string) => {
     const endpoint = `/accounts/${id}`
+    const test = useAuthorizationHeader()
 
     // try {
-    const response = await put(
-      endpoint,
-      data,
-      {},
-      {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNzRiMzNiNy04OWFiLTRlZmItYWQxNC1iYTNlZDkwMGM0MmMiLCJpYXQiOjE2OTg0NTA4MjUsImV4cCI6MTY5ODUzNzIyNX0.kzL2k02mJkt658J7lM7Qiq-klHF6zCJg-vR7xzaR4kM`
-      }
-    )
+    const response = await put(endpoint, data, {}, test.headers)
     console.log('response: ', response)
 
     return response

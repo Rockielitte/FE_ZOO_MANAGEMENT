@@ -24,7 +24,10 @@ export const useUpdateAccount = (form, id: string): UseUpdateAccount => {
           </pre>
         )
       })
-      client.invalidateQueries(['accounts'])
+      client.invalidateQueries({
+        queryKey: ['accounts', id, 'accountDetail']
+      })
+      window.location.reload()
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
