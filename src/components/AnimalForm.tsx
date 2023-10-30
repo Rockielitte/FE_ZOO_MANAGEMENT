@@ -97,7 +97,6 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
     getValues,
     setValue
   } = form
-  console.log('reder form')
 
   const onSubmit: SubmitHandler<T> = async (data) => {
     // const sendData = { ...data, dob: data.dob.toISOString().substring(0, 10) }

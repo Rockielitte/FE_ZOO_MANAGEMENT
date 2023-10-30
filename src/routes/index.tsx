@@ -21,6 +21,7 @@ const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id
 const AccountDetail = Loadable({ loader: () => import('../pages/accounts/components/AccountDetail') })
 const Cage = Loadable({ loader: () => import('../pages/dashboard/cages/index') })
 const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id]') })
+const Ticket = Loadable({ loader: () => import('../pages/dashboard/tickets/index') })
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
 const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
@@ -107,6 +108,10 @@ const routes: RouteObject[] = [
               { index: true, element: Cage },
               { path: ':id', element: CageDetail }
             ]
+          },
+          {
+            path: 'tickets',
+            children: [{ index: true, element: Ticket }]
           },
           // {
           //   path: 'animal_species',

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { AiFillHome, AiFillSchedule, AiOutlineSchedule } from 'react-icons/ai'
 import { GiCaveman, GiBirdCage, GiElephant, GiNestBirds } from 'react-icons/gi'
 import { ImManWoman } from 'react-icons/im'
-import { BsFillPinMapFill } from 'react-icons/bs'
+import { BsFillPinMapFill, BsTicketPerforated } from 'react-icons/bs'
 
 const useSideBar = () => {
   const routeList = useMemo(
@@ -41,6 +41,11 @@ const useSideBar = () => {
         name: 'Area',
         Icon: BsFillPinMapFill,
         href: 'areas'
+      },
+      {
+        name: 'Ticket',
+        Icon: BsTicketPerforated,
+        href: 'tickets'
       }
       // {
       //   name: 'Meal schedule',

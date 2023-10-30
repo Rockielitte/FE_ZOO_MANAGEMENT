@@ -39,6 +39,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useParams } from 'react-router-dom'
 import { useMemo } from 'react'
+import useQueryCustom from '@/hooks/useQueryCustom'
+import useMutationCustom from '@/hooks/useMutationCustom'
 const columns: ColumnDef<Cage>[] = [
   {
     accessorKey: 'id',
@@ -97,9 +99,13 @@ const formSchema = z.object({
 })
 export type formSchemaType = z.infer<typeof formSchema>
 export default function DemoPage() {
-  const token = useUserStore((state) => state.user)?.token
-  const queryClient = useQueryClient()
   const areaId = useParams().id
+  const form = useForm<formSchemaType>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      areaId: Number(areaId)
+    }
+  })
   const columns: ColumnDef<Cage>[] = useMemo(
     () => [
       {
@@ -152,57 +158,21 @@ export default function DemoPage() {
     ],
     [areaId]
   )
+  const cage_data = useQueryCustom({
+    query: `/areas/${areaId}`,
+    queryKey: ['areas', 'cages', String(areaId)],
+    data: {} as Area,
+    dataRes: {} as Area
+  })
+  const formMutation = useMutationCustom({
+    query: '/cages/',
+    queryKey: ['cages'],
+    form: form,
+    invalidQuery: ['areas', 'cages', String(areaId)],
+    reset: true,
+    data: {} as Cage
+  })
 
-  const cage_data = useQuery<AxiosResponse<Area>, unknown, Cage[]>({
-    queryKey: ['areas', 'cages', areaId],
-    queryFn: () => {
-      return requestCall<Area>(`/areas/${areaId}`, 'GET', {
-        Authorization: `Bearer ${token} `
-      })
-    },
-    onSuccess: (data) => {},
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message)
-      }
-    },
-    select: (data) => {
-      return data.data.cages
-    }
-  })
-  const formMutation = useMutation({
-    mutationKey: ['cages'],
-    mutationFn: (data: formSchemaType) => {
-      return request<Cage>(
-        '/cages/',
-        'POST',
-        {
-          Authorization: `Bearer ${token} `,
-          Headers: { 'Content-Type': 'application/json' }
-        },
-        {},
-        data
-      )
-    },
-    onSuccess: (data) => {
-      console.log(data.data)
-      toast.success('Send sucessfully')
-      form.reset()
-      queryClient.invalidateQueries({ queryKey: ['areas', 'cages', areaId], exact: true })
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message, 'dasklfj')
-        toast.error(error.message)
-      }
-    }
-  })
-  const form = useForm<formSchemaType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      areaId: Number(areaId)
-    }
-  })
   return (
     <div className='w-full  h-full '>
       {cage_data.isError ? (
@@ -211,7 +181,7 @@ export default function DemoPage() {
         <div className='w-full h-full p-2 overflow-auto border shadow-lg rounded-sm'>
           <GridShow
             columns={columns}
-            data={!cage_data.data ? [] : (cage_data.data as Cage[])}
+            data={!cage_data.data ? [] : ((cage_data.data as Area).cages as Cage[])}
             GridBox={GridCage}
             form={{
               action: 'Create',

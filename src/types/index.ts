@@ -133,3 +133,10 @@ export type Area = {
   noCages: number
   noAnimals: number
 }
+export type Ticket = {
+  id: number
+  name: string
+  description: string
+  price: number
+  createdBy: User
+}
