@@ -2,6 +2,7 @@
 import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
@@ -11,22 +12,32 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import mockData from '@/test/MOCK_DATA.json'
-import { CiCircleMore } from 'react-icons/ci'
+import animalData from '@/test/animal_data.json'
+
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
+import clsx from 'clsx'
+import { AiFillEdit } from 'react-icons/ai'
+import { BiDetail } from 'react-icons/bi'
+import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { MdOutlineMore } from 'react-icons/md'
-import { Column } from '@tanstack/react-table'
-
-type DataType = (typeof mockData)[0]
-const columnHelper = createColumnHelper<DataType>()
-const arayColumns = ['avatar', 'id', 'first_name', 'last_name', 'email', 'gender', 'birthday']
-
-const columns: ColumnDef<DataType>[] = [
+import { IoMaleFemale } from 'react-icons/io5'
+import { format } from 'date-fns'
+import { useUserStore } from '@/stores'
+import { useQuery } from 'react-query'
+import { request as requestCall } from '@/utils/apiCaller'
+import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
+import axios, { AxiosResponse } from 'axios'
+import { FaGenderless } from 'react-icons/fa'
+import LoadingScreen from '@/components/Loading'
+import Error from '@/pages/Error'
+import useQueryCustom from '@/hooks/useQueryCustom'
+type DataType = (typeof animalData)[0]
+const columns: ColumnDef<Animal>[] = [
   {
     id: 'select',
     header: ({ table }) => (
       <Checkbox
-        className='border-foreground'
+        className='border-white'
         checked={table.getIsAllPageRowsSelected()}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label='Select all'
@@ -37,6 +48,9 @@ const columns: ColumnDef<DataType>[] = [
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label='Select row'
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
       />
     ),
     enableSorting: false,
@@ -44,34 +58,89 @@ const columns: ColumnDef<DataType>[] = [
   },
   {
     accessorKey: 'id',
-    header: 'ID',
-    cell: ({ row }) => <span>{row.getValue('id')}</span>
+    header: ({ column }) => <DataTableColumnHeader column={column} title='ID' />,
+    cell: defaultColumn<Animal>('text').cell,
+    filterFn: 'includesString'
   },
   {
-    accessorKey: 'avatar',
+    accessorFn: ({ imageList }) => imageList[0],
+    id: 'avatar',
     header: 'Avatar',
-    cell: ({ row }) => (
-      <Avatar>
-        <AvatarImage src={row.getValue('avatar')} />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
-    )
+    cell: ({ row, column }) => {
+      // console.log(row.getValue);
+      const value: string = row.getValue(column.id)
+      return (
+        <Avatar>
+          <AvatarImage src={value} />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+      )
+    },
+    enableGlobalFilter: false,
+    enableColumnFilter: false
   },
   {
-    accessorKey: 'email',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: defaultColumn<DataType>('input', ['.com', '.fpt.vn']).cell
+    accessorKey: 'name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Name' />,
+    cell: defaultColumn<Animal>('text').cell
+  },
+  {
+    accessorFn: ({ species }) => species.name,
+    id: 'Species',
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Species' />,
+    cell: defaultColumn<Animal>('text').cell
   },
 
   {
-    accessorKey: 'birthday',
-    header: 'Birthday',
-    cell: defaultColumn<DataType>('date', ['.com', '.fpt.vn']).cell
+    accessorFn: ({ nation }) => nation,
+    id: 'Nation',
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Nation' />,
+    cell: defaultColumn<Animal>('text').cell
   },
   {
     accessorKey: 'gender',
-    header: 'Gender',
-    cell: defaultColumn<DataType>('select', ['M', 'F']).cell
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Gender' />,
+    cell: ({ row, column }) => {
+      const value: AnimalGenderEnum = row.getValue(column.id)
+      return (
+        <Badge
+          className={clsx(
+            'px-2 py-1 min-w-[70px] text-center flex justify-center gap-1 items-center  ',
+            value == AnimalGenderEnum.MALE && 'bg-blue-400 ',
+            value == AnimalGenderEnum.FEMALE && 'bg-pink-400',
+            value == AnimalGenderEnum.HERMAPHRODITE && 'bg-orange-400',
+            value == AnimalGenderEnum.ASEXUAL && 'bg-slate-400'
+          )}
+        >
+          {value == AnimalGenderEnum.MALE ? (
+            <BsGenderMale className='text-xl'></BsGenderMale>
+          ) : value == AnimalGenderEnum.FEMALE ? (
+            <BsGenderFemale className='text-xl'></BsGenderFemale>
+          ) : value == AnimalGenderEnum.HERMAPHRODITE ? (
+            <IoMaleFemale className='text-xl'></IoMaleFemale>
+          ) : (
+            <FaGenderless className='text-xl' />
+          )}
+          {value}
+        </Badge>
+      )
+    },
+    enableSorting: false,
+    filterFn: 'equalsString'
+  },
+  {
+    accessorKey: 'dob',
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Birthday' />,
+    cell: ({ row, column }) => {
+      const date = new Date(row.getValue(column.id))
+      return date ? <span className='text-ellipsis'>{format(date, 'PPP')}</span> : <span>N/A</span>
+    }
+  },
+
+  {
+    accessorKey: 'status',
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
+    cell: defaultColumn<Animal>('select', [...Object.values(AnimalStatusEnum)]).cell
   },
   {
     id: 'action',
@@ -83,12 +152,14 @@ const columns: ColumnDef<DataType>[] = [
             <MdOutlineMore className='text-xl hover:scale-150 transition-all' />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            <DropdownMenuItem>
+              <AiFillEdit></AiFillEdit>Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <BiDetail></BiDetail>View details
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -99,11 +170,17 @@ const columns: ColumnDef<DataType>[] = [
 ]
 
 export default function DemoPage() {
-  // const data = getData()
+  const animal_data = useQueryCustom({ query: '/animals/', queryKey: ['animals'], data: {} as Animal })
 
   return (
     <div className='w-full p-2  py-2 h-full shadow-2xl border rounded-md '>
-      <DataTable columns={columns} data={mockData} />
+      {animal_data.isError ? (
+        <Error />
+      ) : !animal_data.isLoading ? (
+        <DataTable columns={columns} data={!animal_data.data ? [] : (animal_data.data as Animal[])} />
+      ) : (
+        <LoadingScreen></LoadingScreen>
+      )}
     </div>
   )
 }

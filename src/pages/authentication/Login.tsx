@@ -7,7 +7,7 @@ import { HiChevronDoubleDown } from 'react-icons/hi'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import ZooLogo from '@/assets/logo.webp'
 import { useNavigate } from 'react-router-dom'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { credential } from '@/types'
 import { apiCaller } from '@/utils'
 import { useUserStore } from '@/stores'
@@ -15,16 +15,16 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const Login: FC = () => {
+  const queryClient = useQueryClient()
   const setUser = useUserStore((state) => state.setUser)
   const navigate = useNavigate()
   const usMutation = useMutation({
-    retry: 3,
     mutationFn: (credentialResponse: CredentialResponse) => {
-      return apiCaller.post<credential>('/test-login-google', credentialResponse)
+      return apiCaller.get<credential>(`/auth/login-google?credential=${credentialResponse.credential}`)
     },
     onSuccess: (data) => {
       console.log('data: ', data)
-      setUser({ token: data.data })
+      setUser({ token: data.data.accessToken })
       // setUser(data.data)
       navigate('/dashboard')
     },

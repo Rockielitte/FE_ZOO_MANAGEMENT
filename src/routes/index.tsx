@@ -7,28 +7,43 @@ import { QueryClient } from 'react-query'
 import Error from '@/pages/Error'
 import { loaderLeaderBoard } from '../lib/loader'
 import { createBrowserRouter } from 'react-router-dom'
+import { loaderSpecies } from '@/lib/loader/loaderSpecies'
+import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
-import { loaderAllAccount } from '@/lib/loader/AccountsLoader'
+import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoader'
+import { loaderAllNews, loaderNewDetail } from '@/lib/loader/NewsLoader'
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Test = Loadable({ loader: () => import('../test') })
 const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
-const AccountDetail = Loadable({ loader: () => import('../pages/accounts/components/AccountDetail') })
+const AnimalCreate = Loadable({ loader: () => import('../pages/dashboard/animals/create') })
+const AccountDetail = Loadable({ loader: () => import('../pages/dashboard/accounts/components/AccountDetail') })
 const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
 const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
+
+const Cage = Loadable({ loader: () => import('../pages/dashboard/cages/index') })
+const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id]') })
+const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
+const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/CreateNew') })
+const NewDetail = Loadable({ loader: () => import('../pages/dashboard/news/components/NewDetail') })
+
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
+const Ticket = Loadable({ loader: () => import('../pages/dashboard/tickets/index') })
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
-const Staff = Loadable({ loader: () => import('../pages/dashboard/Staff') })
-const Accounts = Loadable({ loader: () => import('../pages/accounts/index') })
+
+const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
+const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
+
+const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/index') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 10
+      staleTime: 1000
     }
   }
 })
@@ -62,6 +77,7 @@ const routes: RouteObject[] = [
       }
     ]
   },
+
   {
     path: 'dashboard',
     element: <AuthGuard />,
@@ -71,7 +87,7 @@ const routes: RouteObject[] = [
         element: <MainLayout />,
         children: [
           { index: true, element: Home },
-          { path: 'staffs', element: Staff },
+          // { path: 'staffs', element: Staff },
 
           {
             path: 'accounts',
@@ -79,16 +95,39 @@ const routes: RouteObject[] = [
               { index: true, element: Accounts, loader: loaderAllAccount(queryClient) },
               {
                 path: ':id',
-                element: AccountDetail
-                // loader: loaderAllAccount(queryClient)
+                element: AccountDetail,
+                loader: loaderAccountDetail(queryClient)
               }
             ]
           },
 
           {
+            path: 'news',
+            children: [
+              { index: true, element: News, loader: loaderAllNews(queryClient) },
+              {
+                path: 'create',
+                element: CreateNew
+                // loader: loaderAccountDetail(queryClient)
+              },
+              {
+                path: ':id',
+                element: NewDetail,
+                loader: loaderNewDetail(queryClient)
+              }
+            ]
+          },
+          {
+            path: 'animal_species',
+            element: Species,
+            loader: loaderSpecies(queryClient)
+          },
+          { path: 'animal_species/:id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) },
+          {
             path: 'animals',
             children: [
               { index: true, element: Animal },
+              { path: 'create', element: AnimalCreate },
               { path: ':id', element: AnimalDetail }
             ]
           },
@@ -99,6 +138,28 @@ const routes: RouteObject[] = [
               { path: ':id', element: AreaDetail }
             ]
           },
+          {
+            path: 'cages',
+            children: [
+              { index: true, element: Cage },
+              { path: ':id', element: CageDetail }
+            ]
+          },
+          {
+            path: 'tickets',
+            children: [{ index: true, element: Ticket }]
+          },
+          // {
+          //   path: 'animal_species',
+          //   children: [
+          //     { index: true, element: Species },
+          //     { path: ':id', element: SpeciesDetail }
+          //   ]
+          // },
+          // {
+          //   path: 'meal_schedule',
+          //   children: [{ index: true, element: Meal_schedule }]
+          // },
           {
             path: '*',
             element: Home
