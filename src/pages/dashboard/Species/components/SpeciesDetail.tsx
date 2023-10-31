@@ -13,25 +13,6 @@ import { dataSpecies } from '@/types'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 export interface IAppProps { }
-export const animalList = [
-    { id: 1, name: 'meow', description: 'asdfg.....', image: Lin },
-    { id: 2, name: 'meow', description: 'asdfg.....', image: Lin },
-    { id: 3, name: 'meow', description: 'asdfg.....', image: Lin },
-    { id: 4, name: 'meow', description: 'asdfg.....', image: Lin }
-]
-
-export const cageList = [
-    { id: 1, code: 'A1000', description: 'asdfg.....' },
-    { id: 2, code: 'A2000', description: 'asdfg.....' },
-    { id: 3, code: 'A3000', description: 'asdfg.....' },
-    { id: 4, code: 'A4000', description: 'asdfg.....' }
-]
-export const cageList = [
-    { id: 1, code: 'A1000', description: 'asdfg.....' },
-    { id: 2, code: 'A2000', description: 'asdfg.....' },
-    { id: 3, code: 'A3000', description: 'asdfg.....' },
-    { id: 4, code: 'A4000', description: 'asdfg.....' }
-]
 
 export const speciesDetailQuery = (id?: string) => ({
     queryKey: ['species', 'detail', id],
@@ -47,43 +28,7 @@ export const speciesDetailQuery = (id?: string) => ({
     }
 })
 export default function SpeciesDetail(props: IAppProps) {
-    const columnsAnimal: ColumnDef<dataSpecies>[] = [
-        {
-            accessorKey: 'id',
-            header: 'ID',
-            cell: ({ row }) => <span>{parseInt(row.id) + 1}</span>
-        },
-        {
-            accessorKey: 'name',
-            header: 'Name',
-            // accessorFn: ({ avt, fname, lname }) => {
-            //   return (
-            //     <div className='flex items-center space-x-2 '>
-            //       <Avatar>
-            //         <AvatarImage src={avt} />
-            //         <AvatarFallback>CN</AvatarFallback>
-            //       </Avatar>
-            //       <span>{fname + ' ' + lname}</span>
-            //     </div>
-            //   )
-            // },
-            cell: ({ row }) => (
-                <div className='flex items-center space-x-2 '>
-                    <span>{row.getValue('name')}</span>
-                </div>
-            )
-        },
-        {
-            accessorKey: 'description',
-            header: 'Description',
-            cell: ({ row }) => <span>{row.getValue('description')}</span>
-        },
-        {
-            accessorKey: 'image',
-            header: 'Image',
-            cell: ({ row }) => <span>{row.getValue('image')}</span>
-        }
-    ]
+
     const columnsAnimal: ColumnDef<dataSpecies>[] = [
         {
             accessorKey: 'id',
