@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Icons } from './Icon'
 // import {
 //   NavigationMenu,
@@ -8,34 +8,58 @@ import { Icons } from './Icon'
 //   navigationMenuTriggerStyle
 // } from '@/components/ui/NavigationMenu'
 import { Link } from 'react-router-dom'
+import useScrollListener from '@/hooks/useScrollListener'
+import clsx from 'clsx'
 
 interface NavBarProps {}
-
+const menuContent = [
+  {
+    id: 1,
+    title: 'Home',
+    href: '/'
+  },
+  {
+    id: 2,
+    title: 'Price Ticket',
+    href: '/price_tickets'
+  },
+  {
+    id: 3,
+    title: 'Our Zoo',
+    href: '/about'
+  },
+  {
+    id: 4,
+    title: 'Contact',
+    href: '/contact'
+  }
+]
 const NavBar: FC<NavBarProps> = () => {
-  const menuContent = [
-    {
-      id: 1,
-      title: 'Home',
-      href: '/'
-    },
-    {
-      id: 2,
-      title: 'Price Ticket',
-      href: '/price_tickets'
-    },
-    {
-      id: 3,
-      title: 'Our Zoo',
-      href: '/about'
-    },
-    {
-      id: 4,
-      title: 'Contact',
-      href: '/contact'
+  const [open, setOpen] = useState(true)
+  const [navClassList, setNavClassList] = useState([])
+  const scrollLimit = 200 // Set your desired scroll limit here
+  const scroll = useScrollListener()
+  // update classList of nav on scroll
+  useEffect(() => {
+    const _classList = []
+
+    if (scroll.y > 150 && scroll.y - scroll.lastY > 0) {
+      _classList.push('nav-bar--hidden')
+      setOpen(false)
     }
-  ]
+
+    setNavClassList(_classList)
+  }, [scroll.y, scroll.lastY])
+
   return (
-    <header className='fixed top-0 inset-x-0 h-fit  border-b border-zinc-300 z-[10] py-2'>
+    <header
+      className={clsx(
+        'fixed top-0 inset-x-0 h-fit  border-b border-zinc-300 z-[10] py-2' + ` ${navClassList.join(' ')}`
+      )}
+      style={{
+        transition: 'transform 0.5s ease-in-out'
+      }}
+    >
       <nav className='mx-auto  flex max-w-7xl items-center justify-between p-6 lg:px-8' aria-label='Global'>
         <div className='flex lg:flex-1'>
           <a href='#' className='-m-1.5 p-1.5 flex items-center justify-between'>
@@ -49,11 +73,14 @@ const NavBar: FC<NavBarProps> = () => {
         <div className='flex lg:hidden'>
           <button
             type='button'
-            className='-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700'
+            className='-m-2.5 inline-flex items-center justify-center rounded-md transition-colors hover:bg-gray-50 hover:text-slate-700   text-white'
+            onClick={() => {
+              setOpen(!open)
+            }}
           >
             <span className='sr-only'>Open main menu</span>
             <svg
-              className='h-6 w-6'
+              className='h-12 w-12 '
               fill='none'
               viewBox='0 0 24 24'
               strokeWidth='1.5'
@@ -67,18 +94,6 @@ const NavBar: FC<NavBarProps> = () => {
         {/* burger */}
 
         <div className='hidden lg:flex lg:gap-x-12'>
-          {/* <NavigationMenu>
-            <NavigationMenuList>
-              {menuContent.map((el) => (
-                <NavigationMenuItem key={el.id}>
-                  <Link to={el.href}>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>{el.title}</NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu> */}
-
           {menuContent.map((el) => (
             <Link to={el.href} key={el.id}>
               <span className='text-slate-50 font-semibold lg:text-lg sm:text-sm'>{el.title}</span>
@@ -92,134 +107,63 @@ const NavBar: FC<NavBarProps> = () => {
         </div> */}
       </nav>
       {/* <!-- Mobile menu, show/hide based on menu open state. --> */}
-      {/* <div className='lg:hidden' role='dialog' aria-modal='true'>
-        {/* <!-- Background backdrop, show/hide based on slide-over state. --> 
-        <div className='fixed inset-0 z-10'></div>
-        <div className='fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10'>
-          <div className='flex items-center justify-between'>
-            <a href='#' className='-m-1.5 p-1.5'>
-              <span className='sr-only'>Your Company</span>
-              <img
-                className='h-8 w-auto'
-                src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
-                alt=''
-              />
-            </a>
-            <button type='button' className='-m-2.5 rounded-md p-2.5 text-gray-700'>
-              <span className='sr-only'>Close menu</span>
-              <svg
-                className='h-6 w-6'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke-width='1.5'
-                stroke='currentColor'
-                aria-hidden='true'
-              >
-                <path stroke-linecap='round' stroke-linejoin='round' d='M6 18L18 6M6 6l12 12' />
-              </svg>
-            </button>
-          </div>
-          <div className='mt-6 flow-root'>
-            <div className='-my-6 divide-y divide-gray-500/10'>
-              <div className='space-y-2 py-6'>
-                <div className='-mx-3'>
-                  <button
-                    type='button'
-                    className='flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                    aria-controls='disclosure-1'
-                    aria-expanded='false'
-                  >
-                    Product
-                    {/* <!--
-                  Expand/collapse icon, toggle classNamees based on menu open state.
 
-                  Open: "rotate-180", Closed: ""
-                --> 
-                    <svg className='h-5 w-5 flex-none' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
-                      <path
-                        fill-rule='evenodd'
-                        d='M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z'
-                        clip-rule='evenodd'
-                      />
-                    </svg>
-                  </button>
-                  {/* <!-- 'Product' sub-menu, show/hide based on menu state. 
-                  <div className='mt-2 space-y-2' id='disclosure-1'>
-                    <a
-                      href='#'
-                      className='block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                    >
-                      Analytics
-                    </a>
-                    <a
-                      href='#'
-                      className='block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                    >
-                      Engagement
-                    </a>
-                    <a
-                      href='#'
-                      className='block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                    >
-                      Security
-                    </a>
-                    <a
-                      href='#'
-                      className='block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                    >
-                      Integrations
-                    </a>
-                    <a
-                      href='#'
-                      className='block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                    >
-                      Automations
-                    </a>
-                    <a
-                      href='#'
-                      className='block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                    >
-                      Watch demo
-                    </a>
-                    <a
-                      href='#'
-                      className='block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                    >
-                      Contact sales
-                    </a>
-                  </div>
-                </div>
-                <a
-                  href='#'
-                  className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                >
-                  Features
+      <div className='lg:hidden ' role='dialog' aria-modal='true'>
+        {/* <!-- Background backdrop, show/hide based on slide-over state. --> */}
+        {open && (
+          <>
+            <div className='fixed inset-0 z-10'></div>
+            <div className='fixed inset-y-0 right-0 z-10 w-full overflow-y-auto transition-transform bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10'>
+              <div className='flex items-center justify-between'>
+                <a href='#' className='-m-1.5 p-1.5'>
+                  <span className='sr-only'>Your Company</span>
+                  <Icons.darkLogo className='h-16 w-auto' />
                 </a>
-                <a
-                  href='#'
-                  className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
+                <button
+                  type='button'
+                  className='-m-2.5 rounded-md p-2.5 text-gray-700 hover:text-red-700 duration-150'
+                  onClick={() => {
+                    setOpen(!open)
+                  }}
                 >
-                  Marketplace
-                </a>
-                <a
-                  href='#'
-                  className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
-                >
-                  Company
-                </a>
+                  <span className='sr-only'>Close menu</span>
+                  <svg
+                    className='h-6 w-6'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke-width='1.5'
+                    stroke='currentColor'
+                    aria-hidden='true'
+                  >
+                    <path stroke-linecap='round' stroke-linejoin='round' d='M6 18L18 6M6 6l12 12' />
+                  </svg>
+                </button>
               </div>
-              <div className='py-6'>
+              <div className='mt-6 flow-root'>
+                <div className='-my-6 divide-y divide-gray-500/10'>
+                  <div className='space-y-2 py-6'>
+                    {menuContent.map((el) => (
+                      <Link to={el.href} key={el.id}>
+                        <span className='-mx-3 block rounded-lg px-3 py-2 text-base  leading-7 text-gray-900 hover:bg-gray-50  font-semibold lg:text-lg sm:text-sm'>
+                          {el.title}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                  {/* <div className='py-6'>
                 <a
                   href='#'
                   className='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
                 >
                   Log in
                 </a>
+              </div> */}
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div> */}
+          </>
+        )}
+      </div>
     </header>
   )
 }
