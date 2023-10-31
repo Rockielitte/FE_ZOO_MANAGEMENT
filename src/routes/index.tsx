@@ -26,6 +26,7 @@ const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id
 const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
 const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/CreateNew') })
 const NewDetail = Loadable({ loader: () => import('../pages/dashboard/news/components/NewDetail') })
+const Blogs = Loadable({ loader: () => import('../pages/home/Blogs/index') })
 
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
@@ -62,10 +63,13 @@ const routes: RouteObject[] = [
     path: '/',
     element: <HomeLayout />,
     children: [
+      { index: true, element: Home },
       {
-        //private
-        element: <AuthGuard />,
-        children: [{ index: true, element: Home }]
+        path: 'blogs',
+        children: [
+          { index: true, element: Blogs },
+          { path: ':id', element: Blogs }
+        ]
       }
     ]
   },
