@@ -1,10 +1,6 @@
-import React from 'react'
 import { Table } from '@tanstack/react-table'
-import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { AiFillDelete } from 'react-icons/ai'
 import { IoMdColorFilter } from 'react-icons/io'
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Label } from '../ui/label'
 import { DebouncedInput } from './Data-table'
 type Props<TData> = {

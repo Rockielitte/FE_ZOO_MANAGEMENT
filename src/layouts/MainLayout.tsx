@@ -1,5 +1,5 @@
 import { useState, type FC, type ReactNode } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
 import logo from '../assets/logo.webp'
 import useSideBar from '@/hooks/useSideBar'
 import clsx from 'clsx'

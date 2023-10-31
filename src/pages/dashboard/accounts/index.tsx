@@ -4,14 +4,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { MdOutlineMore } from 'react-icons/md'
-import CreateAccount from './components/CreateAccount'
 import { useLoaderData } from 'react-router'
-import { AccountGenderEnum, AccountType, User } from '@/types'
+import { AccountGenderEnum, AccountStatusEnum, AccountType, User } from '@/types'
 import Account from '@/utils/api/Account'
-// import { AccountTable } from './components/AccountTable'
 import { Link } from 'react-router-dom'
 import { Badge } from '@/components/ui/badge'
 import clsx from 'clsx'
+
 import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { FaGenderless } from 'react-icons/fa'
 import { defaultColumn } from '@/components/testTable/Data-table'
@@ -21,7 +20,8 @@ interface Accounts {}
 // eslint-disable-next-line react-refresh/only-export-components
 export const accountsGetAll = () => ({
   queryKey: ['accounts'],
-  queryFn: async () => Account.getAllAccount()
+  queryFn: async () => await Account.getAllAccount(),
+  staleTime: 10000
 })
 
 const Accounts: FC<Accounts> = () => {
@@ -98,20 +98,18 @@ const Accounts: FC<Accounts> = () => {
       accessorKey: 'status',
       header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
       cell: ({ row, column }) => {
-        const value: AccountGenderEnum = row.getValue(column.id)
+        const value: AccountStatusEnum = row.getValue(column.id)
         return (
           <Badge
             className={clsx(
               'px-2 py-1 w-fit text-center flex justify-center gap-1 items-center  ',
-              value == AccountGenderEnum.MALE && 'bg-green-400 ',
-              value == AccountGenderEnum.FEMALE && 'bg-pink-400',
-
-              value == AccountGenderEnum.OTHER && 'bg-slate-400'
+              value == AccountStatusEnum.ACTIVE && 'bg-green-400 ',
+              value == AccountStatusEnum.INACTIVE && 'bg-red-400'
             )}
           >
-            {value == AccountGenderEnum.MALE ? (
+            {value == AccountStatusEnum.ACTIVE ? (
               <BsGenderMale className='text-xl'></BsGenderMale>
-            ) : value == AccountGenderEnum.FEMALE ? (
+            ) : value == AccountStatusEnum.INACTIVE ? (
               <BsGenderFemale className='text-xl'></BsGenderFemale>
             ) : (
               <FaGenderless className='text-xl' />

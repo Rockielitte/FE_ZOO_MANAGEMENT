@@ -1,18 +1,16 @@
 import { Button } from '@/components/ui/button'
-import { Input, InputProps } from '@/components/ui/input'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { Popover } from '@radix-ui/react-popover'
-import { CalendarIcon, Ghost } from 'lucide-react'
+import { CalendarIcon } from 'lucide-react'
 import { format } from 'date-fns'
 import { Calendar } from '@/components/ui/calendar'
 import { RiSendPlaneLine } from 'react-icons/ri'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { UseFormReturn, FieldValues, Path, SubmitHandler, WatchObserver, PathValue } from 'react-hook-form'
-import * as z from 'zod'
+import { UseFormReturn, FieldValues, Path, SubmitHandler, PathValue } from 'react-hook-form'
 
 import { useMemo, useState } from 'react'
 import { AiOutlineCloudUpload, AiTwotoneDelete } from 'react-icons/ai'
@@ -29,6 +27,7 @@ import { request } from '@/utils/apiCaller'
 import LoadingScreen from './Loading'
 
 import { SelectSearch } from './SelectSearch'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface AnimalFormProps<T extends FieldValues> {
   form: UseFormReturn<T>
@@ -45,6 +44,10 @@ interface AnimalFormProps<T extends FieldValues> {
 
 const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: AnimalFormProps<T>) => {
   const [imageShow, setImageShow] = useState('images')
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const navigate = useNavigate()
+
   const [image, setImage] = useState<File>()
   const imageUrl = useMemo(() => image && URL.createObjectURL(image as Blob), [image])
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -81,7 +84,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
       }
     }
   })
-  const handleSubmitImage: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleSubmitImage: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (image) imageMutation.mutate(image)
   }
   const {
@@ -92,11 +95,14 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
     getValues,
     setValue
   } = form
-  console.log('reder form')
 
   const onSubmit: SubmitHandler<T> = async (data) => {
     // const sendData = { ...data, dob: data.dob.toISOString().substring(0, 10) }
-    formMutation.mutate(data)
+    formMutation.mutate(data, {
+      onSuccess: () => {
+        navigate(`${queryParams.get('redirect') || '/dashboard/animals'}`)
+      }
+    })
     // toast({
     //   title: 'You submitted the following values:',
     //   description: (
@@ -128,13 +134,16 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
             Submit
           </Button>
           <div className='w-full  md:border-r  flex flex-col sm:flex-row  justify-between flex-wrap gap-4 px-6 overflow-auto h-full py-2 '>
-            {fields.map(
-              (item) =>
+            {fields.map((item) => {
+              const label = String(item).includes('Id')
+                ? String(item).substring(0, String(item).length - 2)
+                : String(item)
+              return (
                 item != 'images' && (
                   <div className='w-full  flex flex-col gap-2 relative ' key={item}>
                     <div className='flex w-full  justify-center  items-center gap-2 '>
                       <Label htmlFor={item} className='min-w-[80px] capitalize text-base'>
-                        {item}
+                        {label}
                       </Label>
                       {item == 'description' || item == 'note' ? (
                         <Textarea
@@ -248,7 +257,8 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                     )}
                   </div>
                 )
-            )}
+              )
+            })}
           </div>
         </form>
         <div className='border-2 border-dashed my-2 block sm:hidden'></div>
@@ -318,7 +328,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                   </label>
                 ) : (
                   <div className='flex flex-col items-center justify-center relative  w-full h-52  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer transition-all hover:bg-slate-100 dark:hover:bg-slate-500'>
-                    <img src={imageUrl} className='w-full h-full rounded-md object-contain' />
+                    <img alt='' src={imageUrl} className='w-full h-full rounded-md object-contain' />
                     <AiTwotoneDelete
                       className='text-2xl transition-all hover:scale-125 opacity-50 hover:opacity-100 p-1 rounded-full bg-slate-100 absolute text-red-600 top-2 right-2'
                       onClick={() => {

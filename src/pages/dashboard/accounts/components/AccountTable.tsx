@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react-refresh/only-export-components */
 import {
   ColumnDef,
   SortingState,
@@ -203,6 +205,9 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
   useEffect(() => {
     setTableData(data)
   }, [data])
+  console.log('Data: ' + data.length)
+  console.log('tableData: ' + tableData.length)
+
   const table = useReactTable({
     data: tableData,
     columns,

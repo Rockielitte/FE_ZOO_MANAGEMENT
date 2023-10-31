@@ -1,10 +1,9 @@
-import * as React from 'react'
 import Lin from '@/assets/image14.png'
 import { EyeIcon } from 'lucide-react'
 
-export interface IAppProps {}
+export interface IAppProps { }
 
-export default function AnimalCard(props: IAppProps) {
+export default function AnimalCard() {
   return (
     <div className='flex justify-start align-middle border-2 rounded-[0.5rem] gap-3 overflow-hidden'>
       <div className=''>

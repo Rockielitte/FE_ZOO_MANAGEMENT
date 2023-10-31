@@ -55,10 +55,7 @@ const ModalForm = <X, T extends FieldValues>({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    getValues,
-    setValue,
-    watch
+    formState: { errors, isSubmitting }
   } = form
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -90,14 +87,17 @@ const ModalForm = <X, T extends FieldValues>({
         <form onSubmit={handleSubmit(onSubmit)} className='flex-1 overflow-auto flex flex-col gap-1 '>
           <div className='grid gap-4 py-4 w-full h-full flex-1 overflow-auto px-2'>
             {fields.map((item) => {
+              const label = String(item).includes('Id')
+                ? String(item).substring(0, String(item).length - 2)
+                : String(item)
               switch (item) {
                 case 'areaId':
                   return (
                     <div className='grid grid-cols-4 items-center gap-4'>
                       <Label htmlFor={item} className='text-right capitalize'>
-                        {item}
+                        {label}
                       </Label>
-                      <div className='col-span-3 h-10' id={item}>
+                      <div className='col-span-3 h-10'>
                         <SelectSearch form={form} query='areas' item={item} />
                       </div>
                       {errors[item] && (
@@ -127,9 +127,9 @@ const ModalForm = <X, T extends FieldValues>({
                   return (
                     <div className='grid grid-cols-4 items-center gap-4'>
                       <Label htmlFor={item} className='text-right capitalize'>
-                        {item}
+                        {label}
                       </Label>
-                      <div className='col-span-3 h-10' id={item}>
+                      <div className='col-span-3 h-10'>
                         <SelectSearch form={form} query='accounts' item={item} />
                       </div>
                       {errors[item] && (
@@ -159,9 +159,9 @@ const ModalForm = <X, T extends FieldValues>({
                   return (
                     <div className='grid grid-cols-4 items-center gap-4'>
                       <Label htmlFor={item} className='text-right capitalize'>
-                        {item}
+                        {label}
                       </Label>
-                      <div className='col-span-3 h-10' id={item}>
+                      <div className='col-span-3 h-10'>
                         <SelectSearch form={form} query='animal-species' item={item} />
                       </div>
                       {errors[item] && (
@@ -191,7 +191,7 @@ const ModalForm = <X, T extends FieldValues>({
                   return (
                     <div className='grid grid-cols-4 items-center gap-4'>
                       <Label htmlFor={item} className='text-right capitalize'>
-                        {item}
+                        {label}
                       </Label>
                       <Input
                         id={item}

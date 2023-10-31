@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   ColumnDef,
   SortingState,
@@ -10,7 +13,6 @@ import {
   getFilteredRowModel,
   RowData
 } from '@tanstack/react-table'
-import { Payment } from './columns'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '../ui/button'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -33,7 +35,6 @@ import Filter from './Filter'
 import { BiFilterAlt } from 'react-icons/bi'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { IoMdCreate } from 'react-icons/io'
-import { Skeleton } from '../ui/skeleton'
 import { useQueryClient } from 'react-query'
 import { request } from '@/utils/apiCaller'
 import { useUserStore } from '@/stores'
@@ -45,6 +46,7 @@ interface DataTableProps<TData, TValue> {
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void
+    tessData?: TData[]
   }
 }
 
@@ -70,7 +72,7 @@ export function DebouncedInput({
     }, debounce)
 
     return () => clearTimeout(timeout)
-  }, [value])
+  }, [debounce, initialValue, onChange, value])
 
   return <Input {...props} value={value} onChange={(e) => setValue(e.target.value)} />
 }

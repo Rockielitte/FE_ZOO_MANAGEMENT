@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { AiFillHome, AiFillSchedule, AiOutlineSchedule, AiOutlineMenuFold } from 'react-icons/ai'
-import { GiCaveman, GiBirdCage, GiElephant, GiNestBirds } from 'react-icons/gi'
+import { AiFillHome, AiOutlineMenuFold } from 'react-icons/ai'
+import { GiBirdCage, GiElephant, GiNestBirds } from 'react-icons/gi'
 import { ImManWoman } from 'react-icons/im'
 import { BsFillPinMapFill } from 'react-icons/bs'
 import { Icons } from '@/components/Icon'
@@ -12,11 +12,11 @@ const useSideBar = () => {
         Icon: AiFillHome,
         href: 'index'
       },
-      {
-        name: 'Zoo trainer',
-        Icon: GiCaveman,
-        href: 'zoo_trainers'
-      },
+      // {
+      //   name: 'Zoo trainer',
+      //   Icon: GiCaveman,
+      //   href: 'zoo_trainers'
+      // },
       {
         name: 'Staff',
         Icon: ImManWoman,
@@ -47,11 +47,11 @@ const useSideBar = () => {
         Icon: Icons.NewsPaper,
         href: 'news'
       },
-      {
-        name: 'My News',
-        Icon: Icons.BookUser,
-        href: 'my-news'
-      },
+      // {
+      //   name: 'My News',
+      //   Icon: Icons.BookUser,
+      //   href: 'my-news'
+      // },
       {
         name: 'Create New',
         Icon: AiOutlineMenuFold,

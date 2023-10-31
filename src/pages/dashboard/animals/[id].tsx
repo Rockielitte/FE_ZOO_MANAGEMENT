@@ -1,34 +1,16 @@
-import { Button } from '@/components/ui/button'
-import { Input, InputProps } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
-import { Popover } from '@radix-ui/react-popover'
-import { CalendarIcon, Ghost } from 'lucide-react'
-import { format } from 'date-fns'
-import { Calendar } from '@/components/ui/calendar'
-import { RiSendPlaneLine } from 'react-icons/ri'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-import { useEffect, useMemo, useState } from 'react'
-import { AiOutlineCloudUpload } from 'react-icons/ai'
-import { BsImages, BsUpload } from 'react-icons/bs'
-import Carousel from '@/components/Carousel'
-import { useUserStore } from '@/stores'
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import { useEffect, useMemo } from 'react'
+// import { useUserStore } from '@/stores'
 import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
-import { request } from '@/utils/apiCaller'
-import { useMutation, useQuery } from 'react-query'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import AnimalForm from '@/components/AnimalForm'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
-import { toast } from 'react-toastify'
-import { queryClient } from '@/routes'
+import useQueryCustom from '@/hooks/useQueryCustom'
+import useMutationCustom from '@/hooks/useMutationCustom'
 const formSchema = z.object({
   name: z.string().min(1, { message: "This field can't be empty" }),
   speciesId: z.coerce.number(),
@@ -53,79 +35,49 @@ const formSchema = z.object({
 })
 export type FormSchemaType = z.infer<typeof formSchema>
 const AnimalDetail = () => {
-  const token = useUserStore((state) => state.user)?.token
+  // const token = useUserStore((state) => state.user)?.token
   const id = useParams().id
-  const animal_data = useQuery<AxiosResponse<Animal>, unknown, Animal>({
-    queryKey: ['animals', id],
-    queryFn: () => {
-      return request<Animal>(`/animals/${id}`, 'GET', {
-        Authorization: `Bearer ${token} `
-      })
-    },
-    onSuccess: (data) => {},
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message)
-      }
-    },
-    select: (data) => {
-      return data.data
-    }
+  const animal_data = useQueryCustom({
+    query: `/animals/${id}`,
+    queryKey: ['animals', String(id)],
+    data: {} as Animal,
+    dataRes: {} as Animal
   })
+
   const animalDataForm = useMemo(() => {
     if (animal_data.data) {
+      const data = animal_data.data as Animal
       const animal: FormSchemaType = {
-        name: animal_data.data.name,
-        speciesId: animal_data.data.species.id,
-        cageId: animal_data.data.cage.id,
-        gender: animal_data.data.gender,
-        status: animal_data.data.status,
-        dob: new Date(animal_data.data.dob),
-        nation: animal_data.data.nation,
-        description: animal_data.data.description,
-        note: animal_data.data.note,
-        imageList: animal_data.data.imageList
+        name: data.name,
+        speciesId: data.species.id,
+        cageId: data.cage.id,
+        gender: data.gender,
+        status: data.status,
+        dob: new Date(data.dob),
+        nation: data.nation,
+        description: data.description,
+        note: data.note,
+        imageList: data.imageList
       }
       return animal
     }
   }, [animal_data.data])
   useEffect(() => {
-    console.log(animalDataForm, 'kkk')
+    console.log(animalDataForm)
 
     form.reset(animalDataForm)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animalDataForm])
-
-  const formMutation = useMutation({
-    mutationKey: ['animals', id],
-    mutationFn: (data: FormSchemaType) => {
-      // const dataForm = { ...data, dob: data.dob.toISOString().substring(0, 10) }
-      return request<Animal>(
-        `/animals/${id}`,
-        'PUT',
-        {
-          Authorization: `Bearer ${token} `,
-          Headers: { 'Content-Type': 'application/json' }
-        },
-        {},
-        data
-      )
-    },
-    onSuccess: (data) => {
-      console.log(data.data)
-      toast.success('Send sucessfully')
-      queryClient.invalidateQueries({ queryKey: ['animals'], exact: true })
-      queryClient.invalidateQueries({ queryKey: ['animals', id], exact: true })
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message, 'dasklfj')
-        toast.error(error.message)
-      }
-    }
-  })
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: animalDataForm
+  })
+  const formMutation = useMutationCustom({
+    query: `/animals/${id}`,
+    method: 'PUT',
+    queryKey: ['animals', String(id)],
+    form: form,
+    data: {} as Animal
   })
   return (
     <div className='w-full h-full'>

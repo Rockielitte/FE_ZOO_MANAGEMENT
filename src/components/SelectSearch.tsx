@@ -21,16 +21,20 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
   const [search, setSearch] = React.useState('')
   const token = useUserStore((state) => state.user)
   const select_data = useQuery<
-    AxiosResponse<{ id: string; name: string; code: string; animalSpecies?: Species }[]>,
+    AxiosResponse<{ id: string; name: string; code: string; animalSpecies?: Species; email?: string }[]>,
     unknown,
-    { id: string; name: string; code: string; animalSpecies?: Species }[]
+    { id: string; name: string; code: string; animalSpecies?: Species; email?: string }[]
   >({
     staleTime: 5000,
     queryKey: ['select', query],
     queryFn: () => {
-      return request<{ id: string; name: string; code: string; animalSpecies?: Species }[]>(`/${query}/`, 'GET', {
-        Authorization: `Bearer ${token} `
-      })
+      return request<{ id: string; name: string; code: string; animalSpecies?: Species; email?: string }[]>(
+        `/${query}/`,
+        'GET',
+        {
+          Authorization: `Bearer ${token} `
+        }
+      )
     },
     onSuccess: (data) => {
       console.log(data)
@@ -49,14 +53,14 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
     return !select_data.data
       ? []
       : select_data.data.reduce((prev, curr) => {
-          const bool = (curr.code + curr.name + curr.id).includes(search)
+          const bool = (curr.code + curr.name + curr.id).toLowerCase().includes(search.toLowerCase())
           return !bool
             ? prev
             : [
                 ...prev,
                 {
                   value: `${String(curr.id)}`,
-                  label: `${curr.name || curr.code} `,
+                  label: `${curr.name || curr.code || curr.email} `,
                   speciesId: `${curr.animalSpecies?.id}`
                 }
               ]
@@ -66,14 +70,14 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
     const result: { value: string; label: string; speciesId?: string }[] = []
     const data = select_data.data
       ? select_data.data.reduce((prev, curr) => {
-          const bool = (curr.code + curr.name + curr.id).includes(search)
+          const bool = (curr.code + curr.name + curr.id).toLowerCase().includes(search.toLowerCase())
           return !bool
             ? prev
             : [
                 ...prev,
                 {
                   value: `${String(curr.id)}`,
-                  label: `${curr.name || curr.code} `,
+                  label: `${curr.name || curr.code || curr.email} `,
                   speciesId: `${curr.animalSpecies?.id}`
                 }
               ]
@@ -105,7 +109,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
             form.setValue(item, value as PathValue<T, Path<T>>)
           }}
         >
-          <SelectTrigger className='w-full' id={item}>
+          <SelectTrigger className='w-full' id={String(item)}>
             <SelectValue placeholder={`Select ${query} . . .`} />
           </SelectTrigger>
           <SelectContent className='h-[210px] w-full  font-normal '>

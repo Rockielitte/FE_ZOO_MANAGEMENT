@@ -156,7 +156,7 @@ export const Icons = {
     </svg>
   ),
   feedingTheAnimalLogo: (props: LucideProps) => (
-    <svg xmlns='http://www.w3.org/2000/svg' width='155' height='130' viewBox='0 0 155 130' fill='none'>
+    <svg xmlns='http://www.w3.org/2000/svg' width='155' height='130' viewBox='0 0 155 130' fill='none' {...props}>
       <path
         d='M89.1991 62.9787C89.9543 63.4839 90.9647 63.9891 91.7251 64.4943C91.9751 62.7235 91.7251 60.9526 90.7147 59.437C89.4491 56.9058 86.423 54.8849 83.647 54.1245C81.8761 53.6193 80.3605 53.8745 79.1001 54.6297C78.3449 55.1401 77.5845 55.6453 77.3345 56.4006C81.8761 56.4006 86.423 58.9318 89.1991 62.9787Z'
         fill='white'
@@ -215,7 +215,7 @@ export const Icons = {
   ),
 
   animalShowLogo: (props: LucideProps) => (
-    <svg xmlns='http://www.w3.org/2000/svg' width='111' height='142' viewBox='0 0 111 142' fill='none'>
+    <svg xmlns='http://www.w3.org/2000/svg' width='111' height='142' viewBox='0 0 111 142' fill='none' {...props}>
       <mask
         id='mask0_21_843'
         fontStyle='mask-type:luminance'
@@ -239,7 +239,7 @@ export const Icons = {
   ),
 
   takeAPhotoLogo: (props: LucideProps) => (
-    <svg xmlns='http://www.w3.org/2000/svg' width='159' height='122' viewBox='0 0 159 122' fill='none'>
+    <svg xmlns='http://www.w3.org/2000/svg' width='159' height='122' viewBox='0 0 159 122' fill='none' {...props}>
       <path
         d='M79.8398 50.7861C68.5273 50.7861 59.3242 59.9528 59.3242 71.2184C59.3242 82.4788 68.5273 91.6455 79.8398 91.6455C91.1523 91.6455 100.355 82.4788 100.355 71.2184C100.355 59.9528 91.1523 50.7861 79.8398 50.7861Z'
         fill='white'
@@ -666,7 +666,7 @@ export const Icons = {
       stroke-width='2'
       stroke-linecap='round'
       stroke-linejoin='round'
-      class='lucide lucide-book-user'
+      className='lucide lucide-book-user'
       {...props}
     >
       <path d='M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20' />

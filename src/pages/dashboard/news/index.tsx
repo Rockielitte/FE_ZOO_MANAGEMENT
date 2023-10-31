@@ -11,7 +11,8 @@ import { Link, useLoaderData } from 'react-router-dom'
 // eslint-disable-next-line react-refresh/only-export-components
 export const newsGetAll = () => ({
   queryKey: ['news'],
-  queryFn: async () => New.getAllNew()
+  queryFn: async () => New.getAllNew(),
+  staleTime: 10000
 })
 
 const News = () => {
@@ -32,7 +33,7 @@ const News = () => {
     {
       accessorKey: 'author',
       header: ({ column }) => <DataTableColumnHeader column={column} title='Author' />,
-      cell: defaultColumn<NewType>('text').cell
+      cell: ({ row }) => <span>{row.getValue('author')?.email}</span>
     },
     {
       accessorKey: 'postedAt',

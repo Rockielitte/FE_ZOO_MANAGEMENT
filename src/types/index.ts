@@ -72,7 +72,7 @@ export type User = {
   gender: AccountGenderEnum
   id: string
   lname: string
-  newsList: any | null
+  newsList: [] | null
   phone: string
   role: RoleEnum
   status: AccountStatusEnum
@@ -80,9 +80,9 @@ export type User = {
 
 export type Cage = {
   animals: Animal[]
-  animalSpecies: any | null
+  animalSpecies: [] | null
   area: Area | null
-  cageMeals: any | null
+  cageMeals: [] | null
   code: string
   createdBy: User | null
   description: string
@@ -90,7 +90,7 @@ export type Cage = {
   managedBy: User | null
 }
 export type Species = {
-  animalList: any | null
+  animalList: [] | null
   cageList: Cage[] | null
   createdBy: User | null
   description: string
@@ -143,5 +143,12 @@ export type NewType = {
   content: string
   title: string
   postedAt: string
-  author: string
+  author: User | null
+}
+export type Ticket = {
+  id: number
+  name: string
+  description: string
+  price: number
+  createdBy: User
 }

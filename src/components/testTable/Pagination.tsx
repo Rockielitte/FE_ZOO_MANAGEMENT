@@ -2,7 +2,7 @@ import { Table } from '@tanstack/react-table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Button } from '../ui/button'
 import { MdChevronLeft, MdChevronRight, MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from 'react-icons/md'
-import { useEffect } from 'react'
+
 interface DataTablePaginationProps<TData> {
   table: Table<TData>
 }

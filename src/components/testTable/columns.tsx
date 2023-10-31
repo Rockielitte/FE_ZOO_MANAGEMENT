@@ -1,9 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
-import { Button } from '../ui/button'
 import { Checkbox } from '../ui/checkbox'
 import { DataTableColumnHeader } from './TableHeader'
-import { Skeleton } from '../ui/skeleton'
+
 import { defaultColumn } from './Data-table'
 
 // This type is used to define the shape of our data.

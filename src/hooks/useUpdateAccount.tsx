@@ -5,7 +5,6 @@ import axios from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
 interface UseUpdateAccount {
   updateAccount: (data: AccountFormValues) => void
-  form?: any
 }
 
 export const useUpdateAccount = (form, id: string): UseUpdateAccount => {
@@ -24,7 +23,10 @@ export const useUpdateAccount = (form, id: string): UseUpdateAccount => {
           </pre>
         )
       })
-      client.invalidateQueries(['account'])
+      client.invalidateQueries({
+        queryKey: ['accounts', id, 'accountDetail']
+      })
+      window.location.reload()
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {

@@ -5,7 +5,7 @@ import { FC } from 'react'
 import Output from 'editorjs-react-renderer'
 
 interface EditorOutputProps {
-  content: any
+  content: object
 }
 
 // const renderers = {
@@ -20,11 +20,8 @@ const style = {
   }
 }
 
-const EditorOutput: FC<EditorOutputProps> = ({ content }) => {
-  return (
-    // @ts-expect-error
-    <Output style={style} className='text-sm' data={content} />
-  )
+const EditorOutput: FC<EditorOutputProps> = ({ content }: EditorOutputProps) => {
+  return <Output style={style} className='text-sm' data={content} />
 }
 
 export default EditorOutput
