@@ -24,6 +24,8 @@ export type dataCredential = {
   sub: string
 }
 export type dataSpecies = {
+  // [x: string]: unknown
+  // [x: string]: ReactNode
   id: number
   name: string
   description: string
@@ -80,7 +82,7 @@ export type User = {
 
 export type Cage = {
   animals: Animal[]
-  animalSpecies: [] | null
+  animalSpecies: Species
   area: Area | null
   cageMeals: [] | null
   code: string
@@ -178,7 +180,7 @@ export type NewType = {
   content: string
   title: string
   postedAt: string
-  author: User | null
+  author: User
 }
 export type Ticket = {
   id: number
@@ -188,9 +190,26 @@ export type Ticket = {
   createdBy: User
 }
 
-export type Ticket = {
+
+
+export enum OrderStatusEnum {
+  PENDING = 'PENDING',
+  DONE = 'DONE',
+  CANCELLED = 'CANCELLED'
+}
+export interface OrderDetail {
   id: number
+  quantity: number
+  ticketPrice: number
+  ticket: Ticket
+}
+export interface Order {
+  id: string
+  email: string
+  phone: string
   name: string
-  description: string
-  price: number
+  total: number
+  visitDate: string
+  status: OrderStatusEnum
+  details: OrderDetail[]
 }

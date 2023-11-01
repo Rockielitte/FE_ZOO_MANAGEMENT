@@ -10,11 +10,12 @@ import { SpeciesForm } from './SpeciesForm'
 import { Button, buttonVariants } from '@/components/ui/button'
 import AnimalSpecies from '@/utils/api/AnimalSpecies'
 import { useState, useEffect } from 'react'
+import { Species } from '@/types'
 
 type Props = { id: number }
 
 export const EditSpecies = (props: Props) => {
-  const [species, setSpecies] = useState()
+  const [species, setSpecies] = useState<Species>()
   const [open, setOpen] = useState(false)
 
   useEffect(() => {

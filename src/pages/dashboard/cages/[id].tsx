@@ -56,7 +56,7 @@ const DetailCage = () => {
   }, [cage_data.data])
   useEffect(() => {
     if (cage_data.data) form.reset(defaultValues)
-  }, [defaultValues])
+  }, [cage_data.data, defaultValues, form])
 
   return (
     <div className='w-full h-full rounded-md  flex flex-col p-1 gap-2'>

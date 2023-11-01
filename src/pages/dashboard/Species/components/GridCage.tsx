@@ -1,15 +1,14 @@
-import { dataSpecies } from '@/types'
+import { Cage } from '@/types'
 import { Table } from '@tanstack/react-table'
-import { EyeIcon } from 'lucide-react'
-import Lin from '@/assets/image14.png'
+
 import { Separator } from '@/components/ui/separator'
 import { LandmarkIcon } from 'lucide-react'
-import { LucideMoreHorizontal } from 'lucide-react'
+
 import React from 'react'
 import { Link } from 'react-router-dom'
 
 const GridCage: React.FC<{
-  data: Table<dataSpecies>
+  data: Table<Cage>
 }> = ({ data }) => {
   return (
     <div className='grid grid-cols-2 gap-10 justify-center items-center p-7'>
@@ -17,8 +16,6 @@ const GridCage: React.FC<{
         console.log('row cage: ', row.original)
         return (
           <Link to={`/dashboard/cages/${row.original.id}`}>
-
-
             <div className='box-content w-full min-h-[150px] border-4 rounded-[1rem] flex flex-col'>
               <div className='bg-slate-100 dark:bg-slate-800 p-4 flex justify-between gap-4'>
                 <div className='flex justify-between gap-4'>
@@ -35,9 +32,7 @@ const GridCage: React.FC<{
                     </p>
                   </div>
                 </div>
-                <div className='p-4 justify-self-end'>
-                  {/* <LucideMoreHorizontal /> */}
-                </div>
+                <div className='p-4 justify-self-end'>{/* <LucideMoreHorizontal /> */}</div>
               </div>
               <Separator />
               <div className='truncate-4  p-7'>

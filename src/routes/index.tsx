@@ -6,12 +6,12 @@ import Loadable from './Loadable'
 import { QueryClient } from 'react-query'
 import Error from '@/pages/Error'
 import { createBrowserRouter } from 'react-router-dom'
-import { loaderSpecies } from '@/lib/loader/loaderSpecies'
 import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
 import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoader'
 import { loaderAllNews, loaderNewDetail } from '@/lib/loader/NewsLoader'
+
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
@@ -26,10 +26,17 @@ const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id
 const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
 const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/CreateNew') })
 const NewDetail = Loadable({ loader: () => import('../pages/dashboard/news/components/NewDetail') })
+const UpdateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/UpdateNew') })
+
+const Blogs = Loadable({ loader: () => import('../pages/home/Blogs/index') })
+const BlogDetail = Loadable({ loader: () => import('../pages/home/Blogs/[id]') })
 
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 const Ticket = Loadable({ loader: () => import('../pages/dashboard/tickets/index') })
+const Order = Loadable({ loader: () => import('../pages/dashboard/orders/index') })
+const OrderDetail = Loadable({ loader: () => import('../pages/dashboard/orders/[id]') })
+const OrderCreate = Loadable({ loader: () => import('../pages/dashboard/orders/create') })
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
 const TicketOrder = Loadable({ loader: () => import('../pages/tickets/index') })
@@ -63,10 +70,13 @@ const routes: RouteObject[] = [
     path: '/',
     element: <HomeLayout />,
     children: [
+      { index: true, element: Home },
       {
-        //private
-        element: <AuthGuard />,
-        children: [{ index: true, element: Home }]
+        path: 'blogs',
+        children: [
+          { index: true, element: Blogs },
+          { path: ':id', element: BlogDetail }
+        ]
       }
     ]
   },
@@ -116,13 +126,17 @@ const routes: RouteObject[] = [
                 path: ':id',
                 element: NewDetail,
                 loader: loaderNewDetail(queryClient)
+              },
+              {
+                path: 'update/:id',
+                element: UpdateNew,
+                loader: loaderNewDetail(queryClient)
               }
             ]
           },
           {
             path: 'animal_species',
-            element: Species,
-            loader: loaderSpecies(queryClient)
+            element: Species
           },
           { path: 'animal_species/:id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) },
           {
@@ -151,17 +165,14 @@ const routes: RouteObject[] = [
             path: 'tickets',
             children: [{ index: true, element: Ticket }]
           },
-          // {
-          //   path: 'animal_species',
-          //   children: [
-          //     { index: true, element: Species },
-          //     { path: ':id', element: SpeciesDetail }
-          //   ]
-          // },
-          // {
-          //   path: 'meal_schedule',
-          //   children: [{ index: true, element: Meal_schedule }]
-          // },
+          {
+            path: 'orders',
+            children: [
+              { index: true, element: Order },
+              { path: 'create', element: OrderCreate },
+              { path: ':id', element: OrderDetail }
+            ]
+          },
           {
             path: '*',
             element: Home
