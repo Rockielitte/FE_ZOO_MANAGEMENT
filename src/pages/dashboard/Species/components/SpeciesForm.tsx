@@ -6,12 +6,12 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { Textarea } from '@/components/ui/textarea'
-import AnimalSpecies from '@/utils/api/AnimalSpecies'
+// import AnimalSpecies from '@/utils/api/AnimalSpecies'
 import { DialogFooter } from '@/components/ui/dialog'
 import { dataSpecies } from '@/types'
-import { useQueryClient } from 'react-query'
+// import { useQueryClient } from 'react-query'
 import useMutationCustom from '@/hooks/useMutationCustom'
-import { useLocation, useNavigate } from 'react-router-dom'
+// import { useLocation, useNavigate } from 'react-router-dom'
 
 interface Species {
   id?: number
@@ -40,20 +40,20 @@ const animalSpeciesFormSchema = z.object({
 export type SpeciesFormValue = z.infer<typeof animalSpeciesFormSchema>
 
 // This can come from your database or API.
-const defaultValues: Partial<SpeciesFormValue> = {
-  name: 'Species name',
-  description: 'asdfghj',
-  image: 'images/img.jpg'
-}
+// const defaultValues: Partial<SpeciesFormValue> = {
+//   name: 'Species name',
+//   description: 'asdfghj',
+//   image: 'images/img.jpg'
+// }
 
 export function SpeciesForm(props: Species) {
   const form = useForm<SpeciesFormValue>({
     resolver: zodResolver(animalSpeciesFormSchema),
     defaultValues: props.species
   })
-  const location = useLocation()
-  const queryParams = new URLSearchParams(location.search)
-  const navigate = useNavigate()
+  // const location = useLocation()
+  // const queryParams = new URLSearchParams(location.search)
+  // const navigate = useNavigate()
   const createMutation = useMutationCustom({
     query: `/animal-species/`,
     queryKey: ['animal-species', 'create'],
@@ -69,7 +69,7 @@ export function SpeciesForm(props: Species) {
     data: {} as Species,
     method: 'PUT'
   })
-  const client = useQueryClient()
+  // const client = useQueryClient()
 
   async function onSubmit(data: SpeciesFormValue) {
     if (props.id) {
@@ -134,7 +134,6 @@ export function SpeciesForm(props: Species) {
       //   return res
       // })
       // console.log(res)
-
 
       // if (res.status == 200) {
       //   client.invalidateQueries(['animal-species'])

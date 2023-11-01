@@ -7,7 +7,6 @@ import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 
 export default function Species() {
-
   const columnsSpecies: ColumnDef<dataSpecies>[] = [
     {
       accessorKey: 'id',
@@ -34,18 +33,25 @@ export default function Species() {
       cell: ({ row }) => <span>{row.getValue('image')}</span>
     }
   ]
-  const animal_species_data = useQueryCustom({ query: '/animal-species/', queryKey: ['animal-species'], data: {} as Species })
+  const animal_species_data = useQueryCustom({
+    query: '/animal-species/',
+    queryKey: ['animal-species'],
+    data: {} as Species
+  })
 
   return (
     <div className='w-full p-2  py-2 h-full shadow-2xl border rounded-md '>
       {animal_species_data.isError ? (
         <Error />
       ) : !animal_species_data.isLoading ? (
-        <SpeciesTable columns={columnsSpecies} data={!animal_species_data.data ? [] : (animal_species_data.data as Species[])} GridBox={GridSpecies} />
+        <SpeciesTable
+          columns={columnsSpecies}
+          data={!animal_species_data.data ? [] : (animal_species_data.data as Species[])}
+          GridBox={GridSpecies}
+        />
       ) : (
         <LoadingScreen></LoadingScreen>
       )}
     </div>
   )
-
 }

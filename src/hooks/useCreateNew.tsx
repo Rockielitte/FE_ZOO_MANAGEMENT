@@ -11,6 +11,7 @@ export const useCreateNew = (): UseCreateNew => {
   const client = useQueryClient()
   const navigae = useNavigate()
   const { mutate: createNew } = useMutation({
+    mutationKey: ['createNew'],
     mutationFn: async ({ title, content }: PostCreationRequest) => {
       const payload: PostCreationRequest = { title, content }
       const { data } = await News.createNew(payload)

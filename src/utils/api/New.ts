@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { NewType } from '@/types'
 import { get, post } from '../apiCaller'
 import { useAuthorizationHeader } from '../authHeader'
 
@@ -28,7 +29,7 @@ const New = {
       return null
     }
   },
-  createNew: async (data) => {
+  createNew: async (data: NewType) => {
     const endpoint = `/news/`
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const test = useAuthorizationHeader()
