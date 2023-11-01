@@ -16,7 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useLoaderData, useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { loaderAccountDetail } from '@/lib/loader/AccountsLoader'
-import { useUpdateAccount } from '@/hooks/useUpdateAccount'
+import { useUpdateAccount } from '@/hooks/useUpdateAccount.1'
 import LocalFile from '@/utils/api/LocalFile'
 const MAX_IMAGE_SIZE = 5242880 // 5 MB
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']

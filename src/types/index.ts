@@ -24,6 +24,7 @@ export type dataCredential = {
   sub: string
 }
 export type dataSpecies = {
+  // [x: string]: ReactNode
   id: number
   name: string
   description: string
@@ -80,7 +81,7 @@ export type User = {
 
 export type Cage = {
   animals: Animal[]
-  animalSpecies: [] | null
+  animalSpecies: Species
   area: Area | null
   cageMeals: [] | null
   code: string

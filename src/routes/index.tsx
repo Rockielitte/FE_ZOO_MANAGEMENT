@@ -6,7 +6,6 @@ import Loadable from './Loadable'
 import { QueryClient } from 'react-query'
 import Error from '@/pages/Error'
 import { createBrowserRouter } from 'react-router-dom'
-import { loaderSpecies } from '@/lib/loader/loaderSpecies'
 import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
@@ -117,8 +116,7 @@ const routes: RouteObject[] = [
           },
           {
             path: 'animal_species',
-            element: Species,
-            loader: loaderSpecies(queryClient)
+            element: Species
           },
           { path: 'animal_species/:id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) },
           {

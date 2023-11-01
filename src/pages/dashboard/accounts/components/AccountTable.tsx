@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-refresh/only-export-components */
 import {
@@ -200,6 +201,7 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
           staleTime: 3000
         })
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [segmentEndpoint]
   )
   useEffect(() => {

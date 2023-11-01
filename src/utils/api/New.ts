@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { NewType } from '@/types'
+
 import { get, post } from '../apiCaller'
 import { useAuthorizationHeader } from '../authHeader'
+import { PostCreationRequest } from '@/components/Editor'
 
 const New = {
   getAllNew: async () => {
@@ -29,7 +30,7 @@ const New = {
       return null
     }
   },
-  createNew: async (data: NewType) => {
+  createNew: async (data: PostCreationRequest) => {
     const endpoint = `/news/`
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const test = useAuthorizationHeader()

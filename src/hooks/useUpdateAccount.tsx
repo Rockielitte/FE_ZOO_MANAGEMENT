@@ -2,12 +2,13 @@ import { toast } from '@/components/ui/use-toast'
 import { AccountFormValues } from '@/pages/dashboard/accounts/components/AccountForm'
 import Account from '@/utils/api/Account'
 import axios from 'axios'
+import { UseFormReturn } from 'react-hook-form'
 import { useMutation, useQueryClient } from 'react-query'
 interface UseUpdateAccount {
   updateAccount: (data: AccountFormValues) => void
 }
 
-export const useUpdateAccount = (form, id: string): UseUpdateAccount => {
+export const useUpdateAccount = (form: UseFormReturn, id: string): UseUpdateAccount => {
   const client = useQueryClient()
 
   const { mutateAsync: updateAccount } = useMutation({
@@ -30,7 +31,9 @@ export const useUpdateAccount = (form, id: string): UseUpdateAccount => {
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        error.response.data.data.forEach(({ field, message }) => form.setError(field, { type: 'focus', message }))
+        error.response.data.data.forEach(({ field, message }: { field: string; message: string }) =>
+          form.setError(field, { type: 'focus', message })
+        )
       }
       toast({
         variant: 'destructive',
