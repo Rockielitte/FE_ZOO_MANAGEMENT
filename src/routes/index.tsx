@@ -39,7 +39,6 @@ const OrderDetail = Loadable({ loader: () => import('../pages/dashboard/orders/[
 const OrderCreate = Loadable({ loader: () => import('../pages/dashboard/orders/create') })
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
-const TicketOrder = Loadable({ loader: () => import('../pages/tickets/index') })
 
 const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
@@ -71,7 +70,7 @@ const routes: RouteObject[] = [
     element: <HomeLayout />,
     children: [
       { index: true, element: Home },
-      { path: 'price_tickets', element: TicketOrder },
+      // { path: 'price_tickets', element: TicketOrder },
       {
         path: 'blogs',
         children: [
