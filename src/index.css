@@ -119,3 +119,8 @@ html {
   -webkit-box-orient: vertical;
   line-height: 22px;
 }
+.nav-bar--hidden {
+  transition: all 0.5s;
+
+  transform: translateY(-150%);
+}

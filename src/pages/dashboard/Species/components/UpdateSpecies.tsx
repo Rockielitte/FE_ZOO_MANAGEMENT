@@ -6,7 +6,6 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import React from 'react'
 import { SpeciesForm } from './SpeciesForm'
 import { Button, buttonVariants } from '@/components/ui/button'
 import AnimalSpecies from '@/utils/api/AnimalSpecies'
@@ -16,6 +15,8 @@ type Props = { id: number }
 
 export const EditSpecies = (props: Props) => {
   const [species, setSpecies] = useState()
+  const [open, setOpen] = useState(false)
+
   useEffect(() => {
     async function fetchMyAPI() {
       const response = await AnimalSpecies.getById(props.id.toString())
@@ -27,7 +28,7 @@ export const EditSpecies = (props: Props) => {
   }, [])
   return (
     species && (
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
           <Button className={buttonVariants({ variant: 'default' })}>Edit</Button>
         </DialogTrigger>
@@ -36,7 +37,7 @@ export const EditSpecies = (props: Props) => {
             <DialogTitle>Update Animal Species</DialogTitle>
             <DialogDescription>some description ...</DialogDescription>
           </DialogHeader>
-          <SpeciesForm id={species.id} species={species} />
+          <SpeciesForm setOpen={setOpen} id={species.id} species={species} />
         </DialogContent>
       </Dialog>
     )
