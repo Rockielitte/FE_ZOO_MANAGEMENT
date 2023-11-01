@@ -3,6 +3,7 @@ import { Table } from '@tanstack/react-table'
 import { EyeIcon } from 'lucide-react'
 import Lin from '@/assets/image14.png'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const GridAnimal: React.FC<{
   data: Table<dataSpecies>
@@ -16,9 +17,12 @@ const GridAnimal: React.FC<{
             <img className='max-h-[150px] min-w-[200px] object-cover' src={Lin} alt='' />
 
             <div className='p-6'>
-              <h3 className='font-normal text-4xl flex items-center gap-3'>
-                {row.original.name} <EyeIcon />
-              </h3>
+              <Link to={`/dashboard/animals/${row.original.id}`}>
+
+                <h3 className='font-normal text-4xl flex items-center gap-3'>
+                  {row.original.name} <EyeIcon />
+                </h3>
+              </Link>
               <p className='truncate-4  pt-2'>{row.original.description}</p>
             </div>
           </div>

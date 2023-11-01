@@ -10,12 +10,14 @@ import React from 'react'
 import { SpeciesForm } from './SpeciesForm'
 import { Icons } from '@/components/Icon'
 import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 
 type Props = {}
 
 export const CreateSpecies = (props: Props) => {
+  const [open, setOpen] = useState(false)
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         {' '}
         <Button variant='default' className='flex items-center gap-1 hover:scale-110 transition-all ml-auto'>
@@ -28,7 +30,7 @@ export const CreateSpecies = (props: Props) => {
           <DialogTitle>Create New Animal Species</DialogTitle>
           <DialogDescription>some description ...</DialogDescription>
         </DialogHeader>
-        <SpeciesForm />
+        <SpeciesForm setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   )

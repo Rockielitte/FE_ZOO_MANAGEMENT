@@ -43,14 +43,14 @@ export function SpeciesTable<TData, TValue, X>({ columns, data, GridBox }: DataT
           <CreateSpecies />
         </div>
       ) : (
-        <div className='flex items-center justify-between py-2 gap-2 space-y-4 '>
+        <div className='flex items-center justify-start py-2 gap-2 space-y-4 '>
           <Input
             placeholder='Search...'
             value={(table.getColumn('code')?.getFilterValue() as string) ?? ''}
             onChange={(event) => table.getColumn('code')?.setFilterValue(event.target.value)}
             className='max-w-sm'
           />
-          <CreateSpecies />
+
         </div>
       )}
 
@@ -58,7 +58,7 @@ export function SpeciesTable<TData, TValue, X>({ columns, data, GridBox }: DataT
         {table.getRowModel().rows?.length ? (
           <div className='w-full h-full'>{<GridBox data={table} />}</div>
         ) : (
-          <div className='h-24 text-center w-full'>No results.</div>
+          <div className='text-center w-full h-full text-2xl'>No results.</div>
         )}
       </div>
       <div className='h-2' />

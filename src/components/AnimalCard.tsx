@@ -1,7 +1,7 @@
 import Lin from '@/assets/image14.png'
 import { EyeIcon } from 'lucide-react'
 
-export interface IAppProps {}
+export interface IAppProps { }
 
 export default function AnimalCard() {
   return (

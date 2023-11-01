@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { get, post, put } from '../apiCaller'
 import { dataSpecies } from '@/types'
 
@@ -21,11 +22,13 @@ const AnimalSpecies = {
       return response
     } catch (error) {
       console.log(error)
-      return error.response
+      if (axios.isAxiosError(error)) {
+        return error.response
+      }
     }
   },
 
-  getAllSpecies: async (page = 0) => {
+  getAllSpecies: async () => {
     const endpoint = `/animal-species/`
 
     try {
@@ -43,11 +46,13 @@ const AnimalSpecies = {
       return response
     } catch (error) {
       console.log(error)
-      return error.response
+      if (axios.isAxiosError(error)) {
+        return error.response
+      }
     }
   },
 
-  getById: async (id: string) => {
+  getById: async (id?: string) => {
     const endpoint = `/animal-species/${id}`
 
     try {
@@ -64,11 +69,13 @@ const AnimalSpecies = {
       return response.data
     } catch (error) {
       console.log(error)
-      return error.response
+      if (axios.isAxiosError(error)) {
+        return error.response
+      }
     }
   },
 
-  getCageBySpeciesId: async (id: string) => {
+  getCageBySpeciesId: async (id?: string | undefined) => {
     const endpoint = `/cages/`
 
     const response = await get(
@@ -103,7 +110,9 @@ const AnimalSpecies = {
       return response
     } catch (error) {
       console.log(error)
-      return error.response
+      if (axios.isAxiosError(error)) {
+        return error.response
+      }
     }
   }
 }
