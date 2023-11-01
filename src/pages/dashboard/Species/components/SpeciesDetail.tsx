@@ -38,17 +38,6 @@ export default function SpeciesDetail(props: IAppProps) {
         {
             accessorKey: 'name',
             header: 'Name',
-            // accessorFn: ({ avt, fname, lname }) => {
-            //   return (
-            //     <div className='flex items-center space-x-2 '>
-            //       <Avatar>
-            //         <AvatarImage src={avt} />
-            //         <AvatarFallback>CN</AvatarFallback>
-            //       </Avatar>
-            //       <span>{fname + ' ' + lname}</span>
-            //     </div>
-            //   )
-            // },
             cell: ({ row }) => (
                 <div className='flex items-center space-x-2 '>
                     <span>{row.getValue('name')}</span>
@@ -59,6 +48,11 @@ export default function SpeciesDetail(props: IAppProps) {
             accessorKey: 'description',
             header: 'Description',
             cell: ({ row }) => <span>{row.getValue('description')}</span>
+        },
+        {
+            accessorKey: 'nation',
+            header: 'Nation',
+            cell: ({ row }) => <span>{row.getValue('nation')}</span>
         },
         {
             accessorKey: 'image',
@@ -111,7 +105,7 @@ export default function SpeciesDetail(props: IAppProps) {
     })
     console.log('cage_data: ', cage_data)
     const { data: species } = useQuery(speciesDetailQuery(id))
-    console.log(species)
+    console.log("animal: ", species.animals)
     return (
         <div className='w-full p-5 py-2 h-full flex  flex-col  shadow-2xl border rounded-[0.5rem]  '>
             <div className='p-5'>

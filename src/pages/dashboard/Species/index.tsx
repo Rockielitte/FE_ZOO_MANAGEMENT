@@ -35,13 +35,14 @@ export default function Species() {
     }
   ]
   const animal_species_data = useQueryCustom({ query: '/animal-species/', queryKey: ['animal-species'], data: {} as Species })
+  console.log("species: ", animal_species_data.data)
 
   return (
     <div className='w-full p-2  py-2 h-full shadow-2xl border rounded-md '>
       {animal_species_data.isError ? (
         <Error />
       ) : !animal_species_data.isLoading ? (
-        <SpeciesTable columns={columnsSpecies} data={!animal_species_data.data ? [] : (animal_species_data.data as Species[])} GridBox={GridSpecies} />
+        <SpeciesTable columns={columnsSpecies} data={!animal_species_data.data ? [] : (animal_species_data.data.reverse() as Species[])} GridBox={GridSpecies} />
       ) : (
         <LoadingScreen></LoadingScreen>
       )}

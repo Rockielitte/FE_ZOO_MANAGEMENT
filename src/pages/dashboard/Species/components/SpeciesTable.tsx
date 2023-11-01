@@ -40,7 +40,8 @@ export function SpeciesTable<TData, TValue, X>({ columns, data, GridBox }: DataT
             onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
             className='max-w-sm'
           />
-          <CreateSpecies />
+          {table.getColumn('nation')?.id ?
+            (<></>) : (<CreateSpecies />)}
         </div>
       ) : (
         <div className='flex items-center justify-start py-2 gap-2 space-y-4 '>
