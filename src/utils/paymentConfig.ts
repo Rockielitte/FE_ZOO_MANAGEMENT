@@ -1,9 +1,7 @@
 import { format } from 'date-fns'
 import qs from 'qs'
-import hmacSHA512 from 'crypto-js/hmac-sha512'
-import Base64 from 'crypto-js/enc-base64'
 import cryptoJS from 'crypto-js'
-const { createHmac } = await import('node:crypto')
+// const { createHmac } = await import('node:crypto')
 export class PaymentConfig {
   static vnp_PayUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
 
@@ -21,7 +19,21 @@ export class PaymentConfig {
     date.setMinutes(date.getMinutes() + 15)
     const expireDate = format(date, 'yyyyMMddHHmmss')
 
-    let mapParams = {}
+    let mapParams = {
+      vnp_Version: '2.1.0',
+      vnp_Command: 'pay',
+      vnp_TmnCode: this.vnp_TmnCode,
+      vnp_Amount: (total * 100).toString(),
+      vnp_CreateDate: currentDate,
+      vnp_ExpireDate: expireDate,
+      vnp_CurrCode: 'USD',
+      vnp_Locale: 'vn',
+      vnp_IpAddr: '127.0.0.1',
+      vnp_TxnRef: orderId,
+      vnp_OrderType: 'other',
+      vnp_OrderInfo: 'Pay+order+' + orderId,
+      vnp_ReturnUrl: this.vnp_ReturnUrl
+    }
     mapParams['vnp_Version'] = '2.1.0'
     mapParams['vnp_Command'] = 'pay'
     mapParams['vnp_TmnCode'] = this.vnp_TmnCode

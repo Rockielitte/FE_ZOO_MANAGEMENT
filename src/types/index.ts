@@ -149,22 +149,6 @@ export type ExistOrderDetail = {
   ticket: Ticket
 }
 
-export type Order = {
-  email: string
-  phone: string
-  name: string
-  total: number
-  visitDate: Date
-  details: OrderDetail[]
-}
-
-export type OrderDetail = {
-  quantity: number
-  ticketId: number
-  ticketName: string
-  ticketPrice: number
-}
-
 export type Area = {
   id: number
   code: string
@@ -189,8 +173,6 @@ export type Ticket = {
   price: number
   createdBy: User
 }
-
-
 
 export enum OrderStatusEnum {
   PENDING = 'PENDING',
