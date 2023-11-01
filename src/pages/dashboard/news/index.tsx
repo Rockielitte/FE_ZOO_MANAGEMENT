@@ -55,11 +55,28 @@ const News = () => {
               <MdOutlineMore className='text-xl hover:scale-150 transition-all' />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <Link to={`/dashboard/accounts/${row.original.id}`}>
-                <DropdownMenuItem>View Info</DropdownMenuItem>
+              <Link to={`/dashboard/news/update/${row.original.id}`}>
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
+                >
+                  Update New
+                </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem>Update Role</DropdownMenuItem>
-              <DropdownMenuItem>View News</DropdownMenuItem>
+              <Link to={`/blogs/${row.original.id}`}>
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
+                >
+                  View New
+                </DropdownMenuItem>
+              </Link>
+
+              {/* <Link to={`/dashboard/news/update/${row.original.id}`}>
+                <DropdownMenuItem>Preview</DropdownMenuItem>
+              </Link> */}
             </DropdownMenuContent>
           </DropdownMenu>
         )

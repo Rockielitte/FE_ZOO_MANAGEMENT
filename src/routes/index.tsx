@@ -26,6 +26,8 @@ const CageDetail = Loadable({ loader: () => import('../pages/dashboard/cages/[id
 const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
 const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/CreateNew') })
 const NewDetail = Loadable({ loader: () => import('../pages/dashboard/news/components/NewDetail') })
+const UpdateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/UpdateNew') })
+
 const Blogs = Loadable({ loader: () => import('../pages/home/Blogs/index') })
 const BlogDetail = Loadable({ loader: () => import('../pages/home/Blogs/[id]') })
 
@@ -113,6 +115,11 @@ const routes: RouteObject[] = [
               {
                 path: ':id',
                 element: NewDetail,
+                loader: loaderNewDetail(queryClient)
+              },
+              {
+                path: 'update/:id',
+                element: UpdateNew,
                 loader: loaderNewDetail(queryClient)
               }
             ]
