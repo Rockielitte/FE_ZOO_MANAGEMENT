@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -42,11 +43,12 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   pathName?: string
+  // tessData?: TData[]
 }
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void
-    tessData?: TData[]
+    // tessData?: TData[]
   }
 }
 
@@ -173,7 +175,7 @@ export function DataTable<TData, TValue>({ columns, data, pathName }: DataTableP
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
-  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
+  const [autoResetPageIndex] = useSkipper()
   const [globalFilter, setGlobalFilter] = useState('')
   const [tableData, setTableData] = useState(data)
   const navigate = useNavigate()
@@ -223,24 +225,24 @@ export function DataTable<TData, TValue>({ columns, data, pathName }: DataTableP
     },
     autoResetPageIndex,
     // Provide our updateData function to our table meta
-    meta: {
-      updateData: (rowIndex, columnId, value) => {
-        // Skip page index reset until after next rerender
-        skipAutoResetPageIndex()
-        setTableData(
-          (old) =>
-            old?.map((row, index) => {
-              if (index === rowIndex) {
-                return {
-                  ...old[rowIndex]!,
-                  [columnId]: value
-                }
-              }
-              return row
-            })
-        )
-      }
-    },
+    // meta: {
+    //   updateData: (rowIndex, columnId, value) => {
+    //     // Skip page index reset until after next rerender
+    //     skipAutoResetPageIndex()
+    //     setTableData(
+    //       (old) =>
+    //         old?.map((row, index) => {
+    //           if (index === rowIndex) {
+    //             return {
+    //               ...old[rowIndex]!,
+    //               [columnId]: value
+    //             }
+    //           }
+    //           return row
+    //         })
+    //     )
+    //   }
+    // },
     debugTable: true
   })
   // console.log(isLoading, 'loadie')

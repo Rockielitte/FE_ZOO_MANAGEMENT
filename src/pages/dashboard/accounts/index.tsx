@@ -132,8 +132,8 @@ const Accounts: FC<Accounts> = () => {
               <Link to={`/dashboard/accounts/${row.original.id}`}>
                 <DropdownMenuItem>View Info</DropdownMenuItem>
               </Link>
-              <DropdownMenuItem>Update Role</DropdownMenuItem>
-              <DropdownMenuItem>View News</DropdownMenuItem>
+              {/* <DropdownMenuItem>Update Role</DropdownMenuItem>
+              <DropdownMenuItem>View News</DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         )

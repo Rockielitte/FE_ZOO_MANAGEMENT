@@ -74,6 +74,13 @@ export const AccountForm: FC<AccountProps> = ({ setOpenDialog }) => {
     resolver: zodResolver(accountFormSchema),
     defaultValues: defaultValues
   })
+
+  // const accountMutation = useMutationCustom({
+  //   query: `/accounts/`,
+  //   queryKey: ['/accounts/', 'create'],
+  //   form: form,
+  //   data: {} as Animal
+  // })
   const { createAccount } = useCreateAccount(form, setOpenDialog)
 
   async function onSubmit(data: AccountFormValues) {

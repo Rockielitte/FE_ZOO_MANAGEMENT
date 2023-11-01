@@ -23,6 +23,7 @@
     "@editorjs/list": "^1.8.0",
     "@editorjs/table": "^2.2.2",
     "@hookform/resolvers": "^3.3.2",
+    "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -70,9 +71,9 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.200",
     "@editorjs/paragraph": "^2.11.3",
     "@editorjs/quote": "^2.5.0",
+    "@types/lodash": "^4.14.200",
     "@types/node": "^20.6.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

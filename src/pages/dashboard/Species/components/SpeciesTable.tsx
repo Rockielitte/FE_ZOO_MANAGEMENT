@@ -1,4 +1,3 @@
-import { SpeciesCard } from '@/components/SpeciesCard'
 import {
   ColumnDef,
   getPaginationRowModel,
@@ -11,7 +10,8 @@ import { SpeciesTablePagination } from './SpeciesPagination'
 import { Input } from '@/components/ui/input'
 import { CreateSpecies } from './CreateSpecies'
 
-interface DataTableProps<TData, TValue, X> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface DataTableProps<TData, TValue, _X> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   GridBox: React.FC<{ data: Table<TData> }>
@@ -51,7 +51,6 @@ export function SpeciesTable<TData, TValue, X>({ columns, data, GridBox }: DataT
             onChange={(event) => table.getColumn('code')?.setFilterValue(event.target.value)}
             className='max-w-sm'
           />
-
         </div>
       )}
 
