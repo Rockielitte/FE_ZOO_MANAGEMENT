@@ -1,46 +1,22 @@
-// import { Payment, columns } from '@/components/testTable/columns'
-import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
-import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Checkbox } from '@/components/ui/checkbox'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import animalData from '@/test/animal_data.json'
-
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import clsx from 'clsx'
-import { AiFillEdit } from 'react-icons/ai'
-import { BiDetail } from 'react-icons/bi'
-import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
-import { MdOutlineMore } from 'react-icons/md'
-import { IoMaleFemale } from 'react-icons/io5'
-import { format } from 'date-fns'
+import { ColumnDef } from '@tanstack/react-table'
 import { useUserStore } from '@/stores'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { request, request as requestCall } from '@/utils/apiCaller'
-import { Animal, AnimalGenderEnum, AnimalStatusEnum, Area, Cage } from '@/types'
-import axios, { AxiosResponse } from 'axios'
-import { FaGenderless } from 'react-icons/fa'
+import { useQueryClient } from 'react-query'
+import { Cage } from '@/types'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
 import { GridShow } from '@/components/GridShow'
-import CageTag from '@/components/CageTag'
 import GridCage from '@/components/GridCage'
 import { z } from 'zod'
-import { toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import useQueryCustom from '@/hooks/useQueryCustom'
+import useMutationCustom from '@/hooks/useMutationCustom'
 export const columns: ColumnDef<Cage>[] = [
   {
     accessorKey: 'id',
-    filterFn: 'includesString'
+    filterFn: 'includesString',
+    enableGlobalFilter: false,
+    enableColumnFilter: false
   },
   {
     accessorKey: 'code'
@@ -62,7 +38,8 @@ export const columns: ColumnDef<Cage>[] = [
   },
   {
     accessorFn: ({ managedBy }) => managedBy?.fname,
-    id: 'manager'
+    id: 'manager',
+    filterFn: 'includesString'
   },
   {
     accessorFn: ({ animalSpecies }) => animalSpecies.id,
@@ -71,7 +48,7 @@ export const columns: ColumnDef<Cage>[] = [
     enableColumnFilter: false
   },
   {
-    accessorFn: ({ animalList }) => animalList?.length,
+    accessorFn: ({ animals }) => animals?.length,
     id: 'animalNum',
     enableGlobalFilter: false,
     enableColumnFilter: false
@@ -88,63 +65,26 @@ const formSchema = z.object({
   code: z.string().regex(regexPattern),
   areaId: z.coerce.number(),
   animalSpeciesId: z.coerce.number(),
-  managedBy: z.string().min(1),
+  managedById: z.string().min(1),
   description: z.string().optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
 export default function DemoPage() {
   const token = useUserStore((state) => state.user)?.token
   const queryClient = useQueryClient()
-  const cage_data = useQuery<AxiosResponse<Cage[]>, unknown, Cage[]>({
-    queryKey: ['cage'],
-    queryFn: () => {
-      return requestCall<Cage[]>('/cage/', 'GET', {
-        Authorization: `Bearer ${token} `
-      })
-    },
-    onSuccess: (data) => {},
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message)
-      }
-    },
-    select: (data) => {
-      return data.data
-    }
-  })
-  const formMutation = useMutation({
-    mutationKey: ['dashboard', 'cage'],
-    mutationFn: (data: formSchemaType) => {
-      return request<Cage>(
-        '/cage/',
-        'POST',
-        {
-          Authorization: `Bearer ${token} `,
-          Headers: { 'Content-Type': 'application/json' }
-        },
-        {},
-        data
-      )
-    },
-    onSuccess: (data) => {
-      console.log(data.data)
-      toast.success('Send sucessfully')
-      form.reset()
-      queryClient.invalidateQueries({ queryKey: ['cage'], exact: true })
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message, 'dasklfj')
-        toast.error(error.message)
-      }
-    }
-  })
+  const cage_data = useQueryCustom({ query: '/cages/', queryKey: ['cages'], data: {} as Cage })
   const form = useForm<formSchemaType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      managedBy: '432bdd34-fd6d-4018-be48-3f8878feece5'
-    }
+    resolver: zodResolver(formSchema)
   })
+  const formMutation = useMutationCustom({
+    query: '/cages/',
+    queryKey: ['cages'],
+    form: form,
+    invalidQuery: ['cages'],
+    resetData: { code: '', animalSpeciesId: 0, areaId: 0, description: '', managedById: '' },
+    data: {} as Cage
+  })
+
   return (
     <div className='w-full  h-full '>
       {cage_data.isError ? (
@@ -160,7 +100,7 @@ export default function DemoPage() {
               title: 'Create new cage',
               form,
               formMutation,
-              fields: ['code', 'areaId', 'animalSpeciesId', 'managedBy', 'description']
+              fields: ['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']
             }}
           />
         </div>

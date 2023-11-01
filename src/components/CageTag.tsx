@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { HiLocationMarker } from 'react-icons/hi'
+import React from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,68 +11,45 @@ import { BsThreeDots } from 'react-icons/bs'
 import { AiFillEdit } from 'react-icons/ai'
 import { MdGridView } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
-import { Badge } from './ui/badge'
+
 import { GiBirdCage } from 'react-icons/gi'
 import { Row } from '@tanstack/react-table'
 import { Cage } from '@/types'
-import { useUserStore } from '@/stores'
-import { useMutation, useQueryClient } from 'react-query'
 import { z } from 'zod'
-import { request } from '@/utils/apiCaller'
-import { toast } from 'react-toastify'
-import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ModalForm from './ModalForm'
+import useMutationCustom from '@/hooks/useMutationCustom'
 const regexPattern = /^[A-Za-z][0-9]{4}$/
 const formSchema = z.object({
   code: z.string().regex(regexPattern),
   areaId: z.coerce.number(),
   animalSpeciesId: z.coerce.number(),
-  managedBy: z.string().min(1),
+  managedById: z.string().min(1),
   description: z.string().optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
 const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
-  const queryClient = useQueryClient()
   const route = useNavigate()
-  const token = useUserStore((state) => state.user)?.token
-  const formMutation = useMutation({
-    mutationKey: ['dashboard', 'area'],
-    mutationFn: (data: formSchemaType) => {
-      return request<Cage>(
-        `/cage/${row.getValue('id')}`,
-        'PUT',
-        {
-          Authorization: `Bearer ${token} `,
-          Headers: { 'Content-Type': 'application/json' }
-        },
-        {},
-        data
-      )
-    },
-    onSuccess: (data) => {
-      console.log(data.data)
-      toast.success('Send sucessfully')
-      queryClient.invalidateQueries({ queryKey: ['cage'], exact: true })
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message, 'dasklfj')
-        toast.error(error.message)
-      }
-    }
-  })
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       code: row.getValue('code'),
       areaId: row.getValue('areaId'),
       animalSpeciesId: row.getValue('animalSpeciesId'),
-      managedBy: row.getValue('manageBy'),
+      managedById: row.getValue('manageBy'),
       description: row.getValue('infor')
     }
   })
+  const formMutation = useMutationCustom({
+    query: `/cages/${row.getValue('id')}`,
+    method: 'PUT',
+    queryKey: ['cages'],
+    form: form,
+    invalidQuery: ['cages'],
+    data: {} as Cage
+  })
+
   return (
     <div
       className='border-2 rounded-md shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all'
@@ -85,9 +61,9 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
         <GiBirdCage className='text-4xl bg-primary rounded-full shadow-md p-2 text-white' />
         <div className='flex flex-1 flex-col'>
           <h1 className='text-md tracking-wide font-extrabold uppercase'>
-            <span>Cage </span> {row.getValue('code')}
+            <span>Cage </span> {form.getValues('code') || row.getValue('code')}
           </h1>
-          <span className='text-sm'>Species: {row.getValue('species')}</span>
+          <span className='text-sm'>Species: {form.getValues('animalSpeciesId') || row.getValue('species')}</span>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger>
@@ -106,11 +82,11 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
                 title='Edit cage'
                 form={form}
                 formMutation={formMutation}
-                fields={['code', 'areaId', 'animalSpeciesId', 'managedBy', 'description']}
+                fields={['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']}
                 Trigger={
                   <>
                     <AiFillEdit className='text-2xl pr-2' />
-                    Edit area
+                    Edit cage
                   </>
                 }
               />
@@ -127,11 +103,11 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
         <div className='flex items-center justify-between px-4 py-1 b border-b font-normal'>
           <span>Number of animals:</span>
           <span className='px-2 text-md rounded-full border-2 bg-primary text-white'>
-            {row.getValue('animalNum') || 'N/A'}
+            {row.getValue('animalNum') || '0'}
           </span>
         </div>
         <div className='flex items-center justify-between px-4 py-1 text-sm  '>
-          <span>{row.getValue('infor')}</span>
+          <span>{form.getValues('description') || row.getValue('infor')}</span>
         </div>
       </div>
     </div>

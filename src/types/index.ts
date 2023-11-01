@@ -23,7 +23,12 @@ export type dataCredential = {
   picture: string
   sub: string
 }
-
+export type dataSpecies = {
+  id: number
+  name: string
+  description: string
+  image: string
+}
 export type credential = {
   clientId: string
   credential: string
@@ -48,7 +53,6 @@ export enum AccountGenderEnum {
 
 export enum RoleEnum {
   STAFF = 'STAFF',
-
   TRAINER = 'TRAINER',
   ADMIN = 'ADMIN'
 }
@@ -68,17 +72,17 @@ export type User = {
   gender: AccountGenderEnum
   id: string
   lname: string
-  newsList: any | null
+  newsList: [] | null
   phone: string
   role: RoleEnum
   status: AccountStatusEnum
 }
 
 export type Cage = {
-  animalList: Animal[]
-  animalSpecies: any | null
+  animals: Animal[]
+  animalSpecies: [] | null
   area: Area | null
-  cageMealList: any | null
+  cageMeals: [] | null
   code: string
   createdBy: User | null
   description: string
@@ -86,7 +90,7 @@ export type Cage = {
   managedBy: User | null
 }
 export type Species = {
-  animalList: any | null
+  animalList: Animal[] | null
   cageList: Cage[] | null
   createdBy: User | null
   description: string
@@ -165,7 +169,23 @@ export type Area = {
   name: string
   location: string
   createdBy: User
-  cageList: Cage[]
+  cages: Cage[]
+  noCages: number
+  noAnimals: number
+}
+export type NewType = {
+  id: number
+  content: string
+  title: string
+  postedAt: string
+  author: User | null
+}
+export type Ticket = {
+  id: number
+  name: string
+  description: string
+  price: number
+  createdBy: User
 }
 
 export type Ticket = {

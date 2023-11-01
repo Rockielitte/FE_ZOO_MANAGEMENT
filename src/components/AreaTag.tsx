@@ -1,5 +1,4 @@
 import React from 'react'
-import { HiLocationMarker } from 'react-icons/hi'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,20 +11,15 @@ import { BsThreeDots } from 'react-icons/bs'
 import { AiFillEdit } from 'react-icons/ai'
 import { MdGridView } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
-import { CiLocationOn } from 'react-icons/ci'
 import { TfiLocationPin } from 'react-icons/tfi'
-import { Area, Cage } from '@/types'
+import { Area } from '@/types'
 import ModalForm from './ModalForm'
-import { useMutation, useQueryClient } from 'react-query'
 import { z } from 'zod'
-import { request } from '@/utils/apiCaller'
-import { useUserStore } from '@/stores'
-import { toast } from 'react-toastify'
-import axios from 'axios'
+
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Dialog } from '@radix-ui/react-dialog'
 import { Row } from '@tanstack/react-table'
+import useMutationCustom from '@/hooks/useMutationCustom'
 const regexPattern = /^[A-Z]\d{3}$/
 const formSchema = z.object({
   code: z.string().regex(regexPattern),
@@ -35,34 +29,6 @@ const formSchema = z.object({
 export type formSchemaType = z.infer<typeof formSchema>
 const AreaTag: React.FC<{ row: Row<Area> }> = ({ row }) => {
   const route = useNavigate()
-  const queryClient = useQueryClient()
-  const token = useUserStore((state) => state.user)?.token
-  const formMutation = useMutation({
-    mutationKey: ['dashboard', 'area'],
-    mutationFn: (data: formSchemaType) => {
-      return request<Area>(
-        `/area/${row.getValue('id')}`,
-        'PUT',
-        {
-          Authorization: `Bearer ${token} `,
-          Headers: { 'Content-Type': 'application/json' }
-        },
-        {},
-        data
-      )
-    },
-    onSuccess: (data) => {
-      console.log(data.data)
-      toast.success('Send sucessfully')
-      queryClient.invalidateQueries({ queryKey: ['area'], exact: true })
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message, 'dasklfj')
-        toast.error(error.message)
-      }
-    }
-  })
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,6 +36,14 @@ const AreaTag: React.FC<{ row: Row<Area> }> = ({ row }) => {
       name: row.getValue('name'),
       location: row.getValue('location')
     }
+  })
+  const formMutation = useMutationCustom({
+    query: `/areas/${row.getValue('id')}`,
+    queryKey: ['areas', row.getValue('id')],
+    form: form,
+    invalidQuery: ['areas'],
+    data: {} as Area,
+    method: 'PUT'
   })
 
   return (
@@ -122,15 +96,11 @@ const AreaTag: React.FC<{ row: Row<Area> }> = ({ row }) => {
       <div className='flex flex-col gap-2 font-light py-2 text-sm'>
         <div className='flex items-center justify-between px-4 py-1 b border-b'>
           <span>Number of cages</span>
-          <span className=''>{row.getValue('cageNum')}</span>
+          <span className=''>{row.getValue('noCages')}</span>
         </div>
         <div className='flex items-center justify-between px-4 py-1  '>
           <span>Number of animals</span>
-          <span>
-            {(row.getValue('cageList') as Cage[])?.reduce((pre, nex, index) => {
-              return pre + nex.animalList.length
-            }, 0)}
-          </span>
+          <span>{row.getValue('noAnimals')}</span>
         </div>
       </div>
     </div>

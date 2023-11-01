@@ -18,7 +18,7 @@ const CreateAccount: FC<CreateAccountProps> = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant='secondary'>
+        <Button variant='default' className='flex items-center gap-1 hover:scale-110 transition-all ml-auto'>
           <Icons.PlusCircleIcon className='mr-2' />
           Create Account
         </Button>

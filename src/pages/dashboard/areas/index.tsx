@@ -1,46 +1,20 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import React from 'react'
-import {
-  MdChevronLeft,
-  MdChevronRight,
-  MdKeyboardDoubleArrowLeft,
-  MdKeyboardDoubleArrowRight,
-  MdCreate
-} from 'react-icons/md'
-import Areas from '@/test/AreaTest.json'
-import AreaTag from '@/components/AreaTag'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { useUserStore } from '@/stores'
-import axios, { AxiosError, AxiosResponse } from 'axios'
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Area } from '@/types'
-import { request } from '@/utils/apiCaller'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 import { z } from 'zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'react-toastify'
-import { Toast } from '@/components/ui/toast'
-import ModalForm from '@/components/ModalForm'
 import { GridShow } from '@/components/GridShow'
 import { ColumnDef } from '@tanstack/react-table'
 import GridArea from '@/components/GridArea'
-const regexPattern = /^[A-Z]\d{3}$/
-type Props = {}
+import useQueryCustom from '@/hooks/useQueryCustom'
+import useMutationCustom from '@/hooks/useMutationCustom'
+
 const formSchema = z.object({
-  code: z.string().regex(regexPattern),
+  // code: z.string().regex(regexPattern),
+  code: z.string().min(3),
+
   name: z.string().min(1),
   location: z.string().min(1)
 })
@@ -64,72 +38,32 @@ export const columns: ColumnDef<Area>[] = [
   },
 
   {
-    accessorFn: ({ cageList }) => cageList?.length,
-    id: 'cageNum'
+    accessorKey: 'noAnimals'
   },
   {
-    accessorKey: 'cageList',
-    enableGlobalFilter: false,
-    enableColumnFilter: false
+    accessorKey: 'noCages'
   }
 ]
-const Index = (props: Props) => {
-  const token = useUserStore((state) => state.user)?.token
-  const queryClient = useQueryClient()
-  const area_data = useQuery<AxiosResponse<Area[]>, unknown, Area[]>({
-    queryKey: ['areas'],
-    queryFn: () => {
-      return request<Area[]>('/areas/', 'GET', {
-        Authorization: `Bearer ${token} `
-      })
-    },
-    onSuccess: (data) => {},
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message)
-      }
-    },
-    select: (data) => {
-      return data.data
-    }
-  })
-  const formMutation = useMutation({
-    mutationKey: ['dashboard', 'areas'],
-    mutationFn: (data: formSchemaType) => {
-      return request<Area>(
-        '/areas/',
-        'POST',
-        {
-          Authorization: `Bearer ${token} `,
-          Headers: { 'Content-Type': 'application/json' }
-        },
-        {},
-        data
-      )
-    },
-    onSuccess: (data) => {
-      console.log(data.data)
-      toast.success('Send sucessfully')
-      form.reset({ code: '', name: '', location: '' })
-      queryClient.invalidateQueries({ queryKey: ['areas'], exact: true })
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message, 'dasklfj')
-        toast.error(error.message)
-      }
-    }
-  })
+const index = () => {
+  const area_data = useQueryCustom({ query: '/areas/', queryKey: ['areas'], data: {} as Area })
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema)
   })
+  const formMutation = useMutationCustom({
+    query: '/areas/',
+    queryKey: ['areas'],
+    form: form,
+    invalidQuery: ['areas'],
+    resetData: { code: '', name: '', location: '' },
+    data: {} as Area
+  })
 
   return (
-    <div className='w-full h-full'>
+    <div className='w-full h-full shadow-2xl'>
       {area_data.isError ? (
         <Error />
       ) : !area_data.isLoading ? (
-        <div className='w-full h-full p-2 overflow-auto border shadow-lg rounded-sm'>
+        <div className='w-full h-full p-2 overflow-auto border shadow-2xl rounded-sm'>
           <GridShow
             columns={columns}
             data={!area_data.data ? [] : (area_data.data as Area[])}

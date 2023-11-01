@@ -2,37 +2,19 @@ import {
   ColumnDef,
   SortingState,
   getSortedRowModel,
-  flexRender,
   getPaginationRowModel,
   getCoreRowModel,
   useReactTable,
   ColumnFiltersState,
   getFilteredRowModel,
   RowData,
-  Row,
   Table
 } from '@tanstack/react-table'
 
-import { ReactComponentElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-
-import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
-import { BsFillCalendar2WeekFill } from 'react-icons/bs'
-
-import { SelectSingleEventHandler } from 'react-day-picker'
-import { AiFillDelete } from 'react-icons/ai'
+import { useEffect, useState } from 'react'
 import { getFacetedUniqueValues } from '@tanstack/react-table'
 import { getFacetedRowModel } from '@tanstack/react-table'
-
-import clsx from 'clsx'
-
 import { BiFilterAlt } from 'react-icons/bi'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { IoMdCreate } from 'react-icons/io'
-
-import { useQueryClient } from 'react-query'
-import { request } from '@/utils/apiCaller'
-import { useUserStore } from '@/stores'
 import { Input } from './ui/input'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { Button } from './ui/button'
@@ -51,6 +33,7 @@ type DataTableProps<TData, TValue, X, T extends FieldValues> = {
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void
+    testData: TData[]
   }
 }
 export function DebouncedInput({
@@ -75,7 +58,7 @@ export function DebouncedInput({
     }, debounce)
 
     return () => clearTimeout(timeout)
-  }, [value])
+  }, [debounce, initialValue, onChange, value])
 
   return <Input {...props} value={value} onChange={(e) => setValue(e.target.value)} />
 }
@@ -90,28 +73,7 @@ export function GridShow<TData, TValue, X, T extends FieldValues>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [globalFilter, setGlobalFilter] = useState('')
   const [tableData, setTableData] = useState(data)
-  const navigate = useNavigate()
-  // const queryClient = useQueryClient()
-  // const path = useLocation().pathname
-  // const token = useUserStore((state) => state.user)
-  // const segmentEndpoint = useMemo(() => {
-  //   if (path.includes('animals')) return { segment: 'animal' }
-  // }, [path])
-  // const prefetchId = useCallback(
-  //   (id: number) => {
-  //     if (Number.isInteger(id) && id >= 0 && segmentEndpoint?.segment)
-  //       queryClient.prefetchQuery({
-  //         queryKey: ['dashboad', `${segmentEndpoint.segment}`, id],
-  //         queryFn: () => {
-  //           return request(`/${segmentEndpoint?.segment}/${id}`, 'GET', {
-  //             Authorization: `Bearer ${token} `
-  //           })
-  //         },
-  //         staleTime: 3000
-  //       })
-  //   },
-  //   [segmentEndpoint]
-  // )
+
   useEffect(() => {
     setTableData(data)
   }, [data])

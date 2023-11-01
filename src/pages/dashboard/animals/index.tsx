@@ -30,6 +30,7 @@ import axios, { AxiosResponse } from 'axios'
 import { FaGenderless } from 'react-icons/fa'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
+import useQueryCustom from '@/hooks/useQueryCustom'
 type DataType = (typeof animalData)[0]
 const columns: ColumnDef<Animal>[] = [
   {
@@ -89,7 +90,6 @@ const columns: ColumnDef<Animal>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title='Species' />,
     cell: defaultColumn<Animal>('text').cell
   },
-
   {
     accessorFn: ({ nation }) => nation,
     id: 'Nation',
@@ -169,24 +169,8 @@ const columns: ColumnDef<Animal>[] = [
 ]
 
 export default function DemoPage() {
-  const token = useUserStore((state) => state.user)
-  const animal_data = useQuery<AxiosResponse<Animal[]>, unknown, Animal[]>({
-    queryKey: ['animal', token],
-    queryFn: () => {
-      return requestCall<Animal[]>('/animal/', 'GET', {
-        Authorization: `Bearer ${token} `
-      })
-    },
-    onSuccess: (data) => {},
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message)
-      }
-    },
-    select: (data) => {
-      return data.data
-    }
-  })
+  const animal_data = useQueryCustom({ query: '/animals/', queryKey: ['animals'], data: {} as Animal })
+
   return (
     <div className='w-full p-2  py-2 h-full shadow-2xl border rounded-md '>
       {animal_data.isError ? (

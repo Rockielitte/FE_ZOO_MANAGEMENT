@@ -1,43 +1,49 @@
-import AnimalForm, { AnimalSchemaType } from '@/components/AnimalForm'
-import { useUserStore } from '@/stores'
-import { AnimalGenderEnum, AnimalStatusEnum } from '@/types'
-import { useMemo } from 'react'
-
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
+import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
+import AnimalForm from '@/components/AnimalForm'
+import useMutationCustom from '@/hooks/useMutationCustom'
+const formSchema = z.object({
+  name: z.string().min(1, { message: "This field can't be empty" }),
+  speciesId: z.coerce.number().min(1),
+  cageId: z.coerce.number().min(1),
+  gender: z.nativeEnum(AnimalGenderEnum),
+  status: z.nativeEnum(AnimalStatusEnum),
+  dob: z.date().max(new Date(), { message: 'Please choose before current time' }),
+  nation: z.string().min(1, { message: "This field can't be empty" }),
+  description: z
+    .string()
+    .max(255, {
+      message: "Description can't be exccess 255 characters"
+    })
+    .optional(),
+  note: z
+    .string()
+    .max(255, {
+      message: "Note can't be exccess 255 characters"
+    })
+    .optional(),
+  imageList: z.string().array().optional().default([])
+})
+export type FormSchemaType = z.infer<typeof formSchema>
 const AnimalCreate = () => {
-  const token = useUserStore((state) => state.user)
-
-  //   const animal_data = useQuery<AxiosResponse<Animal>, unknown, Animal>({
-  //     queryKey: ['dashboad', 'animal', Number(id)],
-  //     queryFn: () => {
-  //       return request<Animal>(`/animal/${id}`, 'GET', {
-  //         Authorization: `Bearer ${token} `
-  //       })
-  //     },
-  //     onSuccess: (data) => {},
-  //     onError: (error) => {
-  //       if (axios.isAxiosError(error)) {
-  //         console.log(error.message)
-  //       }
-  //     },
-  //     select: (data) => {
-  //       return data.data
-  //     }
-  //   })
-  const animalDataForm = {
-    name: '',
-    speciesId: Number(''),
-    cageId: Number(''),
-    gender: AnimalGenderEnum.MALE,
-    status: AnimalStatusEnum.HEALTHY,
-    dob: new Date(),
-    nation: '',
-    description: '',
-    note: '',
-    imageList: []
-  }
+  const form = useForm<FormSchemaType>({
+    resolver: zodResolver(formSchema)
+  })
+  const formMutation = useMutationCustom({
+    query: `/animals/`,
+    queryKey: ['animals', 'create'],
+    form: form,
+    data: {} as Animal
+  })
   return (
     <div className='w-full h-full'>
-      <AnimalForm></AnimalForm>
+      <AnimalForm
+        form={form}
+        formMutation={formMutation}
+        fields={['name', 'cageId', 'speciesId', 'gender', 'status', 'dob', 'nation', 'description', 'note']}
+      ></AnimalForm>
     </div>
   )
 }

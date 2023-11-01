@@ -63,6 +63,24 @@
   body {
     @apply bg-background text-foreground;
   }
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+  h3 {
+    @apply text-xl;
+  }
+  h4 {
+    @apply text-lg;
+  }
+  h5 {
+    @apply text-base;
+  }
+  h6 {
+    @apply text-sm;
+  }
 }
 *,
 html {
@@ -92,4 +110,12 @@ html {
 .sticky {
   position: sticky;
   position: -webkit-sticky;
+}
+.truncate-4 {
+  width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 22px;
 }
