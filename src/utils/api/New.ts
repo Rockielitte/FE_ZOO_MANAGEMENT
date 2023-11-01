@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
+import { NewType } from '@/types'
 import { get, post } from '../apiCaller'
 import { useAuthorizationHeader } from '../authHeader'
 import { PostCreationRequest } from '@/components/Editor'
@@ -36,7 +37,7 @@ const New = {
     const test = useAuthorizationHeader()
 
     // try {
-    const response = await post(endpoint, data, {}, test.headers)
+    const response = await post<NewType>(endpoint, data, {}, test.headers)
     console.log('response: ', response)
 
     return response

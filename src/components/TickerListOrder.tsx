@@ -1,7 +1,6 @@
 import useQueryCustom from '@/hooks/useQueryCustom'
 import Error from '@/pages/Error'
 import { Ticket } from '@/types'
-import React from 'react'
 import LoadingScreen from './Loading'
 import { TbTicketOff } from 'react-icons/tb'
 import { FieldValues, UseFormReturn } from 'react-hook-form'

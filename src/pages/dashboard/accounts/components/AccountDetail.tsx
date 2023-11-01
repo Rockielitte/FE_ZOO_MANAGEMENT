@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { Command, CommandGroup, CommandItem } from '@/components/ui/command'
@@ -16,10 +17,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useLoaderData, useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { loaderAccountDetail } from '@/lib/loader/AccountsLoader'
-import { useUpdateAccount } from '@/hooks/useUpdateAccount.1'
+import { useUpdateAccount } from '@/hooks/useUpdateAccount'
 import LocalFile from '@/utils/api/LocalFile'
-const MAX_IMAGE_SIZE = 5242880 // 5 MB
-const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
+// const MAX_IMAGE_SIZE = 5242880 // 5 MB
+// const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
 interface AccountDetailProps {}
 const roles = [
   { label: 'Staff', value: 'STAFF' },
@@ -75,7 +76,7 @@ const accountFormSchema = z.object({
 })
 export const accountDetailQuery = (slug?: string) => ({
   queryKey: ['accounts', 'accountDetail', slug],
-  queryFn: async () => Account.getAccountDetail(slug)
+  queryFn: async () => Account.getAccountDetail(slug as string)
 })
 
 export type AccountFormValues = z.infer<typeof accountFormSchema>
@@ -103,7 +104,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
     resolver: zodResolver(accountFormSchema),
     defaultValues: defaultValues
   })
-  const { updateAccount } = useUpdateAccount(form, id)
+  const { updateAccount } = useUpdateAccount(form, id as string)
   async function getImageData(event: ChangeEvent<HTMLInputElement>) {
     // FileList is immutable, so we need to create a new one
     const dataTransfer = new DataTransfer()
@@ -142,7 +143,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                 <FormField
                   control={form.control}
                   name='avt'
-                  render={({ field: { onChange, value, ...rest } }) => (
+                  render={({ field: { onChange, ...rest } }) => (
                     <>
                       <FormItem>
                         <FormLabel>Avatar</FormLabel>

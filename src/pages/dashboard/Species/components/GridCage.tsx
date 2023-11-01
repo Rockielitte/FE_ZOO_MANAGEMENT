@@ -1,4 +1,4 @@
-import { dataSpecies } from '@/types'
+import { Cage } from '@/types'
 import { Table } from '@tanstack/react-table'
 
 import { Separator } from '@/components/ui/separator'
@@ -8,7 +8,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const GridCage: React.FC<{
-  data: Table<dataSpecies>
+  data: Table<Cage>
 }> = ({ data }) => {
   return (
     <div className='grid grid-cols-2 gap-10 justify-center items-center p-7'>

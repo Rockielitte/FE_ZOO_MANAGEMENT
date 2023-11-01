@@ -32,8 +32,9 @@ const News = () => {
     },
     {
       accessorKey: 'author',
+      accessorFn: ({ author }) => author.email,
       header: ({ column }) => <DataTableColumnHeader column={column} title='Author' />,
-      cell: ({ row }) => <span>{row.getValue('author')?.email}</span>
+      cell: ({ row }) => <span>{row.getValue('author')}</span>
     },
     {
       accessorKey: 'postedAt',

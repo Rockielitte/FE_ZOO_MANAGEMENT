@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-// import { useCreateAccount } from '@/hooks/useCreateAccount'
+import { useCreateAccount } from '@/hooks/useCreateAccount'
 import { Command, CommandGroup, CommandItem } from '@/components/ui/command'
 import { DialogFooter } from '@/components/ui/dialog'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -15,8 +15,6 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { FC } from 'react'
-import useMutationCustom from '@/hooks/useMutationCustom'
-import axios from 'axios'
 
 export type AccountProps = {
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
@@ -77,28 +75,16 @@ export const AccountForm: FC<AccountProps> = ({ setOpenDialog }) => {
     defaultValues: defaultValues
   })
 
-  const accountMutation = useMutationCustom({
-    query: `/accounts/`,
-    queryKey: ['accounts', 'create'],
-    form: form,
-    data: {} as AccountFormValues
-  })
-  // const { createAccount } = useCreateAccount(form, setOpenDialog)
+  // const accountMutation = useMutationCustom({
+  //   query: `/accounts/`,
+  //   queryKey: ['/accounts/', 'create'],
+  //   form: form,
+  //   data: {} as Animal
+  // })
+  const { createAccount } = useCreateAccount(form, setOpenDialog)
 
   async function onSubmit(data: AccountFormValues) {
-    accountMutation.mutate(data, {
-      onSuccess: () => {
-        setOpenDialog(false)
-      },
-      onError: (error) => {
-        if (axios.isAxiosError(error) && error.response) {
-          const errorData = error.response.data
-          errorData.data.forEach(({ field, message }: { field: string | undefined; message: string }) =>
-            form.setError(field, { type: 'focus', message })
-          )
-        }
-      }
-    })
+    createAccount(data)
   }
 
   return (

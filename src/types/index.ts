@@ -24,6 +24,7 @@ export type dataCredential = {
   sub: string
 }
 export type dataSpecies = {
+  // [x: string]: unknown
   // [x: string]: ReactNode
   id: number
   name: string
@@ -144,7 +145,7 @@ export type NewType = {
   content: string
   title: string
   postedAt: string
-  author: User | null
+  author: User
 }
 export type Ticket = {
   id: number

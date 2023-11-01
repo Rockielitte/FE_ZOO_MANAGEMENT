@@ -1,9 +1,7 @@
 import { useUserStore } from '@/stores'
 import { request } from '@/utils/apiCaller'
 import axios from 'axios'
-import React from 'react'
-import { FieldValues, UseFormReturn } from 'react-hook-form'
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation } from 'react-query'
 import { toast } from 'react-toastify'
 type Props<T> = {
   queryKey: string[]
@@ -28,7 +26,7 @@ const useSideMutation = <T>({ query, queryKey, method = 'POST' }: Props<T>) => {
         data
       )
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success('Send sucessfully')
     },
     onError: (error) => {

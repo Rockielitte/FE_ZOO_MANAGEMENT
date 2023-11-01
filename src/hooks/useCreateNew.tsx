@@ -10,13 +10,14 @@ interface UseCreateNew {
 export const useCreateNew = (): UseCreateNew => {
   const client = useQueryClient()
   const navigae = useNavigate()
-  const { mutate: createNew } = useMutation({
-    mutationFn: (dataNew) => {
-      // const payload: PostCreationRequest = { title: dataNew.title, content: dataNew.content }
-      return News.createNew(dataNew)
+  const { mutateAsync: createNew } = useMutation({
+    mutationFn: async ({ title, content }: PostCreationRequest) => {
+      const payload: PostCreationRequest = { title, content }
+      const { data } = await News.createNew(payload)
+      return data
     },
     onError: () => {
-      return toast({
+      toast({
         title: 'Something went wrong.',
         description: 'Your post was not published. Please try again.',
         variant: 'destructive'
@@ -29,7 +30,7 @@ export const useCreateNew = (): UseCreateNew => {
       navigae('/dashboard/news')
 
       // client.invalidateQueries(['newDetail'])
-      return toast({
+      toast({
         description: 'Your post has been published.'
       })
     }

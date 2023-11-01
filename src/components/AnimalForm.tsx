@@ -18,16 +18,12 @@ import { BsImages, BsUpload } from 'react-icons/bs'
 import Carousel from '@/components/Carousel'
 
 import { AnimalGenderEnum, AnimalStatusEnum } from '@/types'
-import { UseMutationResult, useMutation } from 'react-query'
+import { UseMutationResult } from 'react-query'
 
-import { useUserStore } from '@/stores'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import { request } from '@/utils/apiCaller'
 import LoadingScreen from './Loading'
 
 import { SelectSearch } from './SelectSearch'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import useSideMutation from '@/hooks/useSideMutation'
 
 interface AnimalFormProps<T extends FieldValues> {
@@ -54,14 +50,14 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files?.length) setImage(e.target.files[0])
   }
-  const token = useUserStore((state) => state.user)?.token
+
   const imageMutation = useSideMutation({
     query: `/upload`,
     queryKey: ['upload'],
     returnType: ''
   })
 
-  const handleSubmitImage: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleSubmitImage: React.MouseEventHandler<HTMLButtonElement> = () => {
     const formData = new FormData()
     formData.append('file', image as File)
     if (image)

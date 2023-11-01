@@ -9,7 +9,7 @@ import GridAnimal from './GridAnimal'
 import axios from 'axios'
 import GridCage from './GridCage'
 import { ColumnDef } from '@tanstack/react-table'
-import { dataSpecies } from '@/types'
+import { Cage, dataSpecies } from '@/types'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 export interface IAppProps {}
@@ -37,17 +37,7 @@ export default function SpeciesDetail() {
     {
       accessorKey: 'name',
       header: 'Name',
-      // accessorFn: ({ avt, fname, lname }) => {
-      //   return (
-      //     <div className='flex items-center space-x-2 '>
-      //       <Avatar>
-      //         <AvatarImage src={avt} />
-      //         <AvatarFallback>CN</AvatarFallback>
-      //       </Avatar>
-      //       <span>{fname + ' ' + lname}</span>
-      //     </div>
-      //   )
-      // },
+
       cell: ({ row }) => (
         <div className='flex items-center space-x-2 '>
           <span>{row.getValue('name')}</span>
@@ -66,7 +56,7 @@ export default function SpeciesDetail() {
     }
   ]
 
-  const columnsCage: ColumnDef<dataSpecies>[] = [
+  const columnsCage: ColumnDef<Cage>[] = [
     {
       accessorKey: 'id',
       header: 'ID',

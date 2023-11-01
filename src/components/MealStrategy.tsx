@@ -1,8 +1,4 @@
-import React from 'react'
-
-type Props = {}
-
-const MealStrategy = (props: Props) => {
+const MealStrategy = () => {
   return <div className='w-full h-full'>MealStrategy nákldfhnkljasdeh</div>
 }
 

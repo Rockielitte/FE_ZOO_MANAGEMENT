@@ -1,7 +1,7 @@
 // import { Payment, columns } from '@/components/testTable/columns'
-import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
+import { DataTable } from '@/components/testTable/Data-table'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -16,17 +16,14 @@ import { ColumnDef } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { AiFillEdit, AiOutlineCheck } from 'react-icons/ai'
 import { BiDetail } from 'react-icons/bi'
-import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { MdOutlineMore, MdPendingActions } from 'react-icons/md'
-import { IoMaleFemale } from 'react-icons/io5'
 import { format } from 'date-fns'
-import { Animal, AnimalGenderEnum, AnimalStatusEnum, Order, OrderStatusEnum } from '@/types'
-import { FaGenderless } from 'react-icons/fa'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import { GiCancel } from 'react-icons/gi'
 import { GrStatusDisabled } from 'react-icons/gr'
+import { Order, OrderStatusEnum } from '@/types'
 const columns: ColumnDef<Order>[] = [
   {
     id: 'select',
@@ -117,7 +114,7 @@ const columns: ColumnDef<Order>[] = [
   {
     id: 'action',
     header: 'Action',
-    cell: (props) => {
+    cell: () => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger>

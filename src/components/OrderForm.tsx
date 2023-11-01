@@ -1,37 +1,32 @@
 import { Button } from '@/components/ui/button'
-import { Input, InputProps } from '@/components/ui/input'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { Popover } from '@radix-ui/react-popover'
-import { CalendarIcon, DeleteIcon, Ghost } from 'lucide-react'
+import { CalendarIcon } from 'lucide-react'
 import { format } from 'date-fns'
 import { Calendar } from '@/components/ui/calendar'
 import { RiSendPlaneLine } from 'react-icons/ri'
-import { UseFormReturn, FieldValues, Path, SubmitHandler, PathValue, WatchObserver } from 'react-hook-form'
-
+import { UseFormReturn, FieldValues, Path, SubmitHandler, PathValue } from 'react-hook-form'
 import { useState } from 'react'
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 import { BsCart4, BsImages } from 'react-icons/bs'
 import { OrderStatusEnum, User } from '@/types'
-import { UseMutationResult, useMutation } from 'react-query'
-import { useUserStore } from '@/stores'
-import axios, { AxiosResponse } from 'axios'
-import { toast } from 'react-toastify'
-import { request } from '@/utils/apiCaller'
+import { UseMutationResult } from 'react-query'
+import { AxiosResponse } from 'axios'
 import LoadingScreen from './Loading'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TicketOrderTag from './TicketOrderTag'
 import TickerListOrder from './TickerListOrder'
 import OrderTicketTag from './OrderTicketTag'
-import { MdDeleteForever, MdDeleteOutline, MdDeleteSweep } from 'react-icons/md'
+import { MdDeleteOutline } from 'react-icons/md'
 
 interface OrderFormProps<T extends FieldValues, R> {
   form: UseFormReturn<T>
   formMutation?: UseMutationResult<unknown, unknown, T>
-  formSideMutation?: UseMutationResult<AxiosResponse<R, any>, unknown, object, unknown>
+  formSideMutation?: UseMutationResult<AxiosResponse<R>, unknown, object, unknown>
   fields: Path<T>[]
   canEdit: Path<T>[]
 }
@@ -81,7 +76,7 @@ const OrderForm = <T extends FieldValues, R>({
       ticketName?: string | undefined
     }[]
   )?.reduce(
-    (pre, next, index) => {
+    (pre, next) => {
       return {
         ticketCount: pre.ticketCount + next.quantity,
         total: pre.total + (next.price ? next.price : 0) * next.quantity

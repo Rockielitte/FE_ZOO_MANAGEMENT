@@ -2,9 +2,7 @@ import MealByDay from './MealByDay'
 import MealStrategy from './MealStrategy'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 
-type Props = {}
-
-const CageMealTabe = (props: Props) => {
+const CageMealTabe = () => {
   return (
     <div className='w-full h-full flex flex-col gap-2'>
       <Tabs defaultValue='meals' className='w-full  h-full flex-col flex  '>
