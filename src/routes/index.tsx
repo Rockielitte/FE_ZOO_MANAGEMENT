@@ -12,6 +12,7 @@ import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
 import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoader'
 import { loaderAllNews, loaderNewDetail } from '@/lib/loader/NewsLoader'
+
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
 const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index') })
@@ -27,6 +28,7 @@ const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
 const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/CreateNew') })
 const NewDetail = Loadable({ loader: () => import('../pages/dashboard/news/components/NewDetail') })
 const Blogs = Loadable({ loader: () => import('../pages/home/Blogs/index') })
+const BlogDetail = Loadable({ loader: () => import('../pages/home/Blogs/[id]') })
 
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
@@ -68,7 +70,7 @@ const routes: RouteObject[] = [
         path: 'blogs',
         children: [
           { index: true, element: Blogs },
-          { path: ':id', element: Blogs }
+          { path: ':id', element: BlogDetail }
         ]
       }
     ]

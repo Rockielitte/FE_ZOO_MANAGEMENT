@@ -36,8 +36,8 @@ const menuContent = [
 ]
 const NavBar: FC<NavBarProps> = () => {
   const [open, setOpen] = useState(true)
-  const [navClassList, setNavClassList] = useState([])
-  const scrollLimit = 200 // Set your desired scroll limit here
+  const [navClassList, setNavClassList] = useState<string[]>([])
+  // const scrollLimit = 200 // Set your desired scroll limit here
   const scroll = useScrollListener()
   // update classList of nav on scroll
   useEffect(() => {
