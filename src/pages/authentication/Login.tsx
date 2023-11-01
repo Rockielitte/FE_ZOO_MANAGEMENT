@@ -19,11 +19,14 @@ const Login: FC = () => {
   const navigate = useNavigate()
   const usMutation = useMutation({
     mutationFn: (credentialResponse: CredentialResponse) => {
-      return apiCaller.get(`/auth/login-google?credential=${credentialResponse.credential}`)
+
+      return apiCaller.get('/auth/login-google', credentialResponse)
+
     },
     onSuccess: (data) => {
       console.log('data: ', data)
-      setUser({ token: data.data.accessToken })
+      setUser({ token: data.data })
+      queryClient.cancelQueries()
       // setUser(data.data)
       navigate('/dashboard')
     },
