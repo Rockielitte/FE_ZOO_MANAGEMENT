@@ -130,41 +130,6 @@ export type Animal = {
   updatedBy: User | null
   description: string
 }
-
-export type ExistOrder = {
-  id: string
-  email: string
-  phone: string
-  name: string
-  total: number
-  status: string
-  visitDate: Date
-  createdAt: Date
-  details: ExistOrderDetail[]
-}
-
-export type ExistOrderDetail = {
-  quantity: number
-  ticketPrice: number
-  ticket: Ticket
-}
-
-export type Order = {
-  email: string
-  phone: string
-  name: string
-  total: number
-  visitDate: Date
-  details: OrderDetail[]
-}
-
-export type OrderDetail = {
-  quantity: number
-  ticketId: number
-  ticketName: string
-  ticketPrice: number
-}
-
 export type Area = {
   id: number
   code: string
@@ -189,9 +154,6 @@ export type Ticket = {
   price: number
   createdBy: User
 }
-
-
-
 export enum OrderStatusEnum {
   PENDING = 'PENDING',
   DONE = 'DONE',
