@@ -1,30 +1,32 @@
 import { FC } from 'react'
-import { GoogleLogin } from '@react-oauth/google'
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import videoBg from '@/assets/bg-video.mp4'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { HiChevronDoubleDown } from 'react-icons/hi'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import ZooLogo from '@/assets/logo.webp'
-import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
-import { IUser, dataCredential } from '@/types'
+
 import { apiCaller } from '@/utils'
 import { useUserStore } from '@/stores'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
 const Login: FC = () => {
   const setUser = useUserStore((state) => state.setUser)
   const navigate = useNavigate()
+  // const queryClient = useQueryClient()
   const usMutation = useMutation({
-    retry: 3,
-    mutationFn: (user: Omit<IUser, 'token'>) => {
-      return apiCaller.post<IUser>('/endpoint', user)
+    mutationFn: (credentialResponse: CredentialResponse) => {
+      return apiCaller.get('/auth/login-google', credentialResponse)
     },
     onSuccess: (data) => {
-      setUser(data.data)
-      navigate('/')
+      console.log('data: ', data)
+      setUser({ token: data.data.accessToken })
+      // setUser(data.data)
+      navigate('/dashboard')
     },
     onError: (error) => {
       if (error instanceof Error)
@@ -62,9 +64,15 @@ const Login: FC = () => {
             <HiChevronDoubleDown color={'white'} className='animate-bounce animate-infinite' />
             <div className='shadow-2xl'>
               <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
-                  usMutation.mutate({ email: usProfile?.email, name: usProfile.name, image: usProfile.picture })
+                onSuccess={(credentialResponse: CredentialResponse) => {
+                  console.log('credentialResponse: ', credentialResponse)
+                  // apiCaller.post<string>('/test-login-google', credentialResponse, {}, {}).then((data) => {
+                  //   console.log('data: ', data)
+                  //   setUser({ token: data.data })
+                  // })
+                  // const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
+
+                  usMutation.mutate(credentialResponse)
                 }}
                 onError={() => {
                   console.log('Login Failed')
