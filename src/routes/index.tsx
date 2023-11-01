@@ -70,6 +70,7 @@ const routes: RouteObject[] = [
     element: <HomeLayout />,
     children: [
       { index: true, element: Home },
+      // { path: 'price_tickets', element: TicketOrder },
       {
         path: 'blogs',
         children: [

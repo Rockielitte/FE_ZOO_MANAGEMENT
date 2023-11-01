@@ -17,9 +17,10 @@ import 'react-toastify/dist/ReactToastify.css'
 const Login: FC = () => {
   const setUser = useUserStore((state) => state.setUser)
   const navigate = useNavigate()
+  // const queryClient = useQueryClient()
   const usMutation = useMutation({
     mutationFn: (credentialResponse: CredentialResponse) => {
-      return apiCaller.get(`/auth/login-google?credential=${credentialResponse.credential}`)
+      return apiCaller.get('/auth/login-google', credentialResponse)
     },
     onSuccess: (data) => {
       console.log('data: ', data)

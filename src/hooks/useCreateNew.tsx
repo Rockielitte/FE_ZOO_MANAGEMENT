@@ -26,6 +26,7 @@ export const useCreateNew = (): UseCreateNew => {
 
       // form.re
       navigae('/dashboard/news')
+      window.location.reload()
     }
   })
   return {
