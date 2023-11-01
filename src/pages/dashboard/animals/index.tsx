@@ -90,7 +90,6 @@ const columns: ColumnDef<Animal>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title='Species' />,
     cell: defaultColumn<Animal>('text').cell
   },
-
   {
     accessorFn: ({ nation }) => nation,
     id: 'Nation',

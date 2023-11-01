@@ -90,7 +90,7 @@ export type Cage = {
   managedBy: User | null
 }
 export type Species = {
-  animalList: [] | null
+  animalList: Animal[] | null
   cageList: Cage[] | null
   createdBy: User | null
   description: string
