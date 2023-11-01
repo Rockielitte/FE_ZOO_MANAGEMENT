@@ -153,3 +153,24 @@ export type Ticket = {
   price: number
   createdBy: User
 }
+export enum OrderStatusEnum {
+  PENDING = 'PENDING',
+  DONE = 'DONE',
+  CANCELLED = 'CANCELLED'
+}
+export interface OrderDetail {
+  id: number
+  quantity: number
+  ticketPrice: number
+  ticket: Ticket
+}
+export interface Order {
+  id: string
+  email: string
+  phone: string
+  name: string
+  total: number
+  visitDate: string
+  status: OrderStatusEnum
+  details: OrderDetail[]
+}

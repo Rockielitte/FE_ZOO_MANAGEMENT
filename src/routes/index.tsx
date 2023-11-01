@@ -32,6 +32,9 @@ const BlogDetail = Loadable({ loader: () => import('../pages/home/Blogs/[id]') }
 // const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
 
 const Ticket = Loadable({ loader: () => import('../pages/dashboard/tickets/index') })
+const Order = Loadable({ loader: () => import('../pages/dashboard/orders/index') })
+const OrderDetail = Loadable({ loader: () => import('../pages/dashboard/orders/[id]') })
+const OrderCreate = Loadable({ loader: () => import('../pages/dashboard/orders/create') })
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
 
@@ -145,17 +148,14 @@ const routes: RouteObject[] = [
             path: 'tickets',
             children: [{ index: true, element: Ticket }]
           },
-          // {
-          //   path: 'animal_species',
-          //   children: [
-          //     { index: true, element: Species },
-          //     { path: ':id', element: SpeciesDetail }
-          //   ]
-          // },
-          // {
-          //   path: 'meal_schedule',
-          //   children: [{ index: true, element: Meal_schedule }]
-          // },
+          {
+            path: 'orders',
+            children: [
+              { index: true, element: Order },
+              { path: 'create', element: OrderCreate },
+              { path: ':id', element: OrderDetail }
+            ]
+          },
           {
             path: '*',
             element: Home
