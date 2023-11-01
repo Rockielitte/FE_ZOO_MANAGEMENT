@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { Path, useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -11,6 +11,7 @@ import { DialogFooter } from '@/components/ui/dialog'
 import { dataSpecies } from '@/types'
 // import { useQueryClient } from 'react-query'
 import useMutationCustom from '@/hooks/useMutationCustom'
+import axios from 'axios'
 // import { useLocation, useNavigate } from 'react-router-dom'
 
 interface Species {
@@ -85,34 +86,15 @@ export function SpeciesForm(props: Species) {
               </pre>
             )
           })
-          // navigate(`${queryParams.get('redirect') || '/dashboard/animal_species'}`)
+        },
+        onError: (data) => {
+          if (axios.isAxiosError(data) && data.response) {
+            data.response.data.data.forEach(({ field, message }: { field: Path<SpeciesFormValue>; message: string }) =>
+              form.setError(field, { type: 'focus', message })
+            )
+          }
         }
       })
-      // const res = await AnimalSpecies.updateSpecies(data, props.id).then((res) => {
-      //   console.log('ress: ', res)
-      //   return res
-      // })
-      // console.log(res)
-      // if (res.status == 200) {
-      //   toast({
-      //     title: 'Update Successfull',
-      //     description: (
-      //       <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-      //         <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-      //       </pre>
-      //     )
-      //   })
-      // } else if (res.status == 400) {
-      //   res.data.data.forEach(({ field, message }) => form.setError(field, { type: 'focus', message }))
-      //   toast({
-      //     title: 'Update Failed!!',
-      //     description: (
-      //       <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-      //         <code className='text-white'>{res.data.message}</code>
-      //       </pre>
-      //     )
-      //   })
-      // }
     } else {
       createMutation.mutate(data, {
         onSuccess: () => {
@@ -126,37 +108,15 @@ export function SpeciesForm(props: Species) {
               </pre>
             )
           })
-          // navigate(`${queryParams.get('redirect') || '/dashboard/animal_species'}`)
+        },
+        onError: (data) => {
+          if (axios.isAxiosError(data) && data.response) {
+            data.response.data.data.forEach(({ field, message }: { field: Path<SpeciesFormValue>; message: string }) =>
+              form.setError(field, { type: 'focus', message })
+            )
+          }
         }
       })
-      // const res = await AnimalSpecies.createSpecies(data).then((res) => {
-      //   console.log('ress: ', res)
-      //   return res
-      // })
-      // console.log(res)
-
-      // if (res.status == 200) {
-      //   client.invalidateQueries(['animal-species'])
-      //   toast({
-      //     title: 'Create Successfull',
-      //     description: (
-      //       <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-      //         <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-      //       </pre>
-      //     )
-      //   })
-      // } else if (res.status == 400) {
-      //   res.data.data.forEach(({ field, message }) => form.setError(field, { type: 'focus', message }))
-      //   toast({
-      //     variant: 'destructive',
-      //     title: 'Create Failed!!',
-      //     description: (
-      //       <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-      //         <code className='text-white'>{res.data.message}</code>
-      //       </pre>
-      //     )
-      //   })
-      // }
     }
   }
 
