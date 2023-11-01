@@ -8,10 +8,10 @@ export default function Blogs() {
   const new_data = useQueryCustom<NewType, []>({ query: '/news/', queryKey: ['newGuests'], data: {} as NewType })
   const data = new_data.data as NewType[]
   return (
-    <div className='flex w-full'>
+    <div className='flex w-full bg-green-300 backdrop-blur-lg'>
       <div className='fixed inset-0 flex justify-center sm:px-8'>
         <div className='flex w-full max-w-7xl lg:px-8'>
-          <div className='w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20'></div>
+          <div className='w-full bg-slate-200 ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20'></div>
         </div>
       </div>
       <div className='relative flex w-full flex-col'>

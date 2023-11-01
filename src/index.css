@@ -6,7 +6,10 @@
 ::-webkit-scrollbar {
   width: 6px;
 }
-
+/*CSS*/
+html {
+  scroll-behavior: smooth;
+}
 /* Track */
 
 @layer base {

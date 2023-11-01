@@ -8,10 +8,9 @@ import { useForm } from 'react-hook-form'
 import TextareaAutosize from 'react-textarea-autosize'
 import { toast } from './ui/use-toast'
 import '@/editor.css'
-import { useCreateNew } from '@/hooks/useCreateNew'
-// import EditorOutput from './EditorOutpu'
 import LocalFile from '@/utils/api/LocalFile'
 import { NewType } from '@/types'
+import { useUpdateNew } from '@/hooks/useUpdateNews'
 
 type FormData = z.infer<typeof PostValidator>
 
@@ -50,7 +49,7 @@ export const EditorUpdate: React.FC<EditorProps> = ({ data }) => {
   const _titleRef = useRef<HTMLTextAreaElement>(null)
 
   const [isMounted, setIsMounted] = useState<boolean>(false)
-  const { createNew } = useCreateNew()
+  const { updateNew } = useUpdateNew()
 
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import('@editorjs/editorjs')).default
@@ -170,7 +169,7 @@ export const EditorUpdate: React.FC<EditorProps> = ({ data }) => {
       content: JSON.stringify(blocks)
     }
 
-    createNew(payload)
+    updateNew(payload)
   }
 
   if (!isMounted) {

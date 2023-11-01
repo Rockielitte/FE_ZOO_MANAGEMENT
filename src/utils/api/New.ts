@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { NewType } from '@/types'
-import { get, post } from '../apiCaller'
+import { get, post, put } from '../apiCaller'
 import { useAuthorizationHeader } from '../authHeader'
 import { PostCreationRequest } from '@/components/Editor'
 
@@ -36,8 +36,18 @@ const New = {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const test = useAuthorizationHeader()
 
-    // try {
     const response = await post<NewType>(endpoint, data, {}, test.headers)
+    console.log('response: ', response)
+
+    return response
+  },
+  updateNew: async (data: PostCreationRequest, id: string) => {
+    const endpoint = `/news/${id}`
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const test = useAuthorizationHeader()
+
+    // try {
+    const response = await put(endpoint, data, {}, test.headers)
     console.log('response: ', response)
 
     return response

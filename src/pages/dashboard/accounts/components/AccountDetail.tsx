@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Separator } from '@/components/ui/separator'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Command, CommandGroup, CommandItem } from '@/components/ui/command'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -89,7 +89,8 @@ const AccountDetail: FC<AccountDetailProps> = () => {
     ...accountDetailQuery(id),
     initialData
   })
-  const [preview, setPreview] = useState(accountDetail.avt)
+  const [preview, setPreview] = useState(accountDetail?.avt)
+
   const defaultValues: Partial<AccountFormValues> = {
     email: accountDetail.email || '',
     fname: accountDetail.fname || '',
@@ -97,13 +98,14 @@ const AccountDetail: FC<AccountDetailProps> = () => {
     phone: accountDetail.phone || '',
     role: accountDetail.role || '',
     gender: accountDetail.gender || '',
-    avt: accountDetail.avt || '',
+    avt: accountDetail?.avt || '',
     status: 'ACTIVE'
   }
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: defaultValues
   })
+
   const { updateAccount } = useUpdateAccount(form, id as string)
   async function getImageData(event: ChangeEvent<HTMLInputElement>) {
     // FileList is immutable, so we need to create a new one
@@ -140,31 +142,27 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                   <AvatarImage src={preview} />
                   <AvatarFallback>Unknown</AvatarFallback>
                 </Avatar>
-                <FormField
-                  control={form.control}
-                  name='avt'
-                  render={({ field: { onChange, ...rest } }) => (
-                    <>
-                      <FormItem>
-                        <FormLabel>Avatar</FormLabel>
-                        <FormControl>
-                          <Input
-                            type='file'
-                            accept='image/*'
-                            {...rest}
-                            onChange={async (event) => {
-                              const { displayUrl } = await getImageData(event)
-                              setPreview(displayUrl)
-                              onChange(displayUrl)
-                            }}
-                          />
-                        </FormControl>
+                <FormItem>
+                  <FormLabel>
+                    <p className={cn(buttonVariants({ variant: 'default' }))}>upload</p>
+                  </FormLabel>
+                  <FormControl>
+                    <input
+                      type='file'
+                      accept='image/*'
+                      hidden
+                      onChange={async (event) => {
+                        const { displayUrl } = await getImageData(event)
+                        console.log('displayUrl ' + displayUrl)
+                        setPreview(displayUrl)
+                        form.setValue('avt', displayUrl as string)
+                      }}
+                    />
+                  </FormControl>
 
-                        <FormMessage />
-                      </FormItem>
-                    </>
-                  )}
-                />
+                  <FormMessage />
+                </FormItem>
+
                 <p className='font-semibold leading-none text-lg tracking-tight'>
                   {accountDetail.fname + ' ' + accountDetail.lname}
                 </p>

@@ -10,6 +10,7 @@ import { Icons } from './Icon'
 import { Link } from 'react-router-dom'
 import useScrollListener from '@/hooks/useScrollListener'
 import clsx from 'clsx'
+import { Theme } from 'react-toastify'
 
 interface NavBarProps {}
 const menuContent = [
@@ -23,15 +24,15 @@ const menuContent = [
     title: 'Price Ticket',
     href: '/price_tickets'
   },
-  {
-    id: 3,
-    title: 'Our Zoo',
-    href: '/about'
-  },
+  // {
+  //   id: 3,
+  //   title: 'Our Zoo',
+  //   href: '/about'
+  // },
   {
     id: 4,
-    title: 'Contact',
-    href: '/contact'
+    title: 'Blog',
+    href: '/blogs'
   }
 ]
 const NavBar: FC<NavBarProps> = () => {
@@ -39,6 +40,7 @@ const NavBar: FC<NavBarProps> = () => {
   const [navClassList, setNavClassList] = useState<string[]>([])
   // const scrollLimit = 200 // Set your desired scroll limit here
   const scroll = useScrollListener()
+  const theme = localStorage.getItem('vite-ui-theme') as Theme
   // update classList of nav on scroll
   useEffect(() => {
     const _classList = []
@@ -54,20 +56,25 @@ const NavBar: FC<NavBarProps> = () => {
   return (
     <header
       className={clsx(
-        'fixed top-0 inset-x-0 h-fit  border-b border-zinc-300 z-[10] py-2' + ` ${navClassList.join(' ')}`
+        'fixed top-0 inset-x-0 h-fit  border-b border-zinc-300 z-[10] py-2 bg backdrop-blur-lg' +
+          ` ${navClassList.join(' ')}`
       )}
       style={{
         transition: 'transform 0.5s ease-in-out'
       }}
     >
-      <nav className='mx-auto  flex max-w-7xl items-center justify-between p-6 lg:px-8' aria-label='Global'>
+      <nav className='mx-auto  flex max-w-7xl items-center justify-between p-6 lg:px-8 ' aria-label='Global'>
         <div className='flex lg:flex-1'>
-          <a href='#' className='-m-1.5 p-1.5 flex items-center justify-between'>
+          <Link to='/' className='-m-1.5 p-1.5 flex items-center justify-between'>
             <span className='sr-only'>Your Company</span>
             {/* <img  src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600' alt='' /> */}
-            <Icons.whiteLogo className='h-16 w-auto' />
-            <p className='hidden text-white text-xl font-bold md:block'>Zoo</p>
-          </a>
+            {theme == 'light' ? (
+              <Icons.darkLogo className='h-16 w-auto' />
+            ) : (
+              <Icons.whiteLogo className='h-16 w-auto' />
+            )}
+            <p className='hidden text-gray-700 dark:text-white text-xl font-bold md:block'>Zoo</p>
+          </Link>
         </div>
         {/* burger */}
         <div className='flex lg:hidden'>
@@ -96,9 +103,18 @@ const NavBar: FC<NavBarProps> = () => {
         <div className='hidden lg:flex lg:gap-x-12'>
           {menuContent.map((el) => (
             <Link to={el.href} key={el.id}>
-              <span className='text-slate-50 font-semibold lg:text-lg sm:text-sm'>{el.title}</span>
+              <span className='text-foreground   font-semibold lg:text-lg sm:text-sm'>{el.title}</span>
             </Link>
           ))}
+          <Link to='/#about' className='text-foreground font-semibold lg:text-lg sm:text-sm'>
+            About
+          </Link>
+          {/* <a href='/#ticket' className='text-foreground font-semibold lg:text-lg sm:text-sm'>
+            Ticket
+          </a> */}
+          <a href='/#contact' className='text-foreground font-semibold lg:text-lg sm:text-sm'>
+            Contact
+          </a>
         </div>
         {/* <div className='hidden lg:flex lg:flex-1 lg:justify-end'>
           <a href='#' className='text-sm font-semibold leading-6 text-gray-900'>

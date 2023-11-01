@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
-import { AiFillHome, AiOutlineMenuFold } from 'react-icons/ai'
+import { AiFillHome } from 'react-icons/ai'
 import { GiBirdCage, GiElephant, GiNestBirds } from 'react-icons/gi'
 import { ImManWoman } from 'react-icons/im'
-import { BsFillPinMapFill } from 'react-icons/bs'
+import { BsFillPinMapFill, BsTicketPerforated } from 'react-icons/bs'
+import { LiaFileInvoiceDollarSolid } from 'react-icons/lia'
 import { Icons } from '@/components/Icon'
 const useSideBar = () => {
   const routeList = useMemo(
@@ -18,7 +19,7 @@ const useSideBar = () => {
       //   href: 'zoo_trainers'
       // },
       {
-        name: 'Staff',
+        name: 'Account',
         Icon: ImManWoman,
         href: 'accounts'
       },
@@ -52,10 +53,20 @@ const useSideBar = () => {
       //   Icon: Icons.BookUser,
       //   href: 'my-news'
       // },
+      // {
+      //   name: 'Create New',
+      //   Icon: AiOutlineMenuFold,
+      //   href: 'news/create'
+      // },
       {
-        name: 'Create New',
-        Icon: AiOutlineMenuFold,
-        href: 'news/create'
+        name: 'Ticket',
+        Icon: BsTicketPerforated,
+        href: 'tickets'
+      },
+      {
+        name: 'Order',
+        Icon: LiaFileInvoiceDollarSolid,
+        href: 'orders'
       }
     ],
     []
