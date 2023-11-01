@@ -30,6 +30,7 @@ export const useUpdateNew = (): UseUpdateNew => {
 
       // client.invalidateQueries(['newDetail'])
       toast.success('Update Successfully')
+      window.location.reload()
     }
   })
   return {

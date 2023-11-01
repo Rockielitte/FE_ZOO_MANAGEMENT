@@ -24,7 +24,7 @@ export const useUpdateAccount = <T extends FieldValues>(form: UseFormReturn<T>, 
         queryKey: ['accounts', id, 'accountDetail']
       })
       navigate('/dashboard/accounts')
-      // window.location.reload()
+      window.location.reload()
     },
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
