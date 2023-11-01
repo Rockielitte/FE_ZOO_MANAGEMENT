@@ -1,8 +1,4 @@
 import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
-import { Calendar } from '@/components/ui/calendar'
 import { useEffect, useState } from 'react'
 import {
   Dialog,
@@ -27,7 +23,6 @@ import OrderRow from './OrderRow'
 import LoadingScreen from '@/components/Loading'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Form } from '@/components/ui/form'
 import OrderForm from './OrderForm'
 import MyOrder from '@/utils/api/MyOrder'
 
@@ -111,7 +106,6 @@ const DemoPage = () => {
   }
 
   const token = useUserStore((state) => state.user)?.token
-  const [date, setDate] = useState<Date>()
   const [order, setOrder] = useState<Order>({
     email: '',
     phone: '',
@@ -127,7 +121,7 @@ const DemoPage = () => {
         Authorization: `Bearer ${token} `
       })
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       console.log(tickets)
     },
     onError: (error) => {
@@ -144,8 +138,7 @@ const DemoPage = () => {
     <>
       {showDialog && (
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
-          <DialogTrigger asChild>
-          </DialogTrigger>
+          <DialogTrigger asChild></DialogTrigger>
           <DialogContent className='sm:min-w-[425px]'>
             <DialogHeader>
               <DialogTitle>
@@ -218,7 +211,7 @@ const DemoPage = () => {
           </DialogContent>
         </Dialog>
       )}
-      <div className='flex flex-col lg:flex-row gap-4 min-h-screen w-screen justify-around items-center p-2 '>
+      <div className='flex flex-col lg:flex-row gap-4 min-h-screen w-screen justify-around items-center p-2 bg-primary-foreground'>
         <div className='w-full lg:w-5/12 bg-[#30AF21] rounded-lg lg:min-h-[300px] flex flex-col gap-4 justify-center mb-5  py-4  px-4'>
           <p className='text-3xl text-white flex font-bold justify-center text-background font-ime'>Ticket Type</p>
           {tickets.isLoading ? (

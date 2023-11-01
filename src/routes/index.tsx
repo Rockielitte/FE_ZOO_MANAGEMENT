@@ -71,6 +71,7 @@ const routes: RouteObject[] = [
     element: <HomeLayout />,
     children: [
       { index: true, element: Home },
+      { path: 'price_tickets', element: TicketOrder },
       {
         path: 'blogs',
         children: [
@@ -81,15 +82,6 @@ const routes: RouteObject[] = [
     ]
   },
 
-  {
-    path: 'price_tickets',
-    // element: <HomeLayout />,
-    children: [
-      {
-        children: [{ index: true, element: TicketOrder }]
-      }
-    ]
-  },
   {
     path: 'dashboard',
     element: <AuthGuard />,
