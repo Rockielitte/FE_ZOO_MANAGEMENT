@@ -253,7 +253,6 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
     // },
     debugTable: true
   })
-  // console.log(isLoading, 'loadie')
 
   return (
     <div className='w-full h-full flex flex-col '>
