@@ -9,7 +9,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
-import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoader'
+import { loaderAccountDetail } from '@/lib/loader/AccountsLoader'
 import { loaderAllNews, loaderNewDetail } from '@/lib/loader/NewsLoader'
 
 // *  AUTHENTICATION PAGES
@@ -95,7 +95,7 @@ const routes: RouteObject[] = [
           {
             path: 'accounts',
             children: [
-              { index: true, element: Accounts, loader: loaderAllAccount(queryClient) },
+              { index: true, element: Accounts },
               {
                 path: ':id',
                 element: AccountDetail,

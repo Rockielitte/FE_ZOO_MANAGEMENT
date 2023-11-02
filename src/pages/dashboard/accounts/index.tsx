@@ -4,28 +4,23 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { MdOutlineMore } from 'react-icons/md'
-import { useLoaderData } from 'react-router'
 import { AccountGenderEnum, AccountStatusEnum, AccountType, User } from '@/types'
-import Account from '@/utils/api/Account'
 import { Link } from 'react-router-dom'
 import { Badge } from '@/components/ui/badge'
 import clsx from 'clsx'
-
 import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { FaGenderless } from 'react-icons/fa'
 import { defaultColumn } from '@/components/testTable/Data-table'
 import { AccountTable } from './components/AccountTable'
+import useQueryCustom from '@/hooks/useQueryCustom'
+import Error from '@/pages/Error'
+import LoadingScreen from '@/components/Loading'
 
 interface Accounts {}
 // eslint-disable-next-line react-refresh/only-export-components
-export const accountsGetAll = () => ({
-  queryKey: ['accounts'],
-  queryFn: async () => await Account.getAllAccount(),
-  staleTime: 10000
-})
 
 const Accounts: FC<Accounts> = () => {
-  const initData = useLoaderData() as User[]
+  const accounts_data = useQueryCustom({ query: '/accounts/', queryKey: ['accounts'], data: {} as AccountType })
 
   const columnsAccount: ColumnDef<AccountType>[] = [
     {
@@ -144,19 +139,16 @@ const Accounts: FC<Accounts> = () => {
   ]
   return (
     <section className='w-full  h-full flex flex-col shadow-2xl rounded-[0.5rem] border bg-background   '>
-      {/* title of border here  */}
-
       {/* table here */}
-      <div className='flex-1 overflow-auto p-5'>
-        {initData && (
-          <AccountTable
-            columns={columnsAccount}
-            // !animal_data.data ? [] : (animal_data.data as Animal[])
-            data={!initData ? [] : (initData as User[])}
-          />
-        )}
-      </div>
-
+      {accounts_data.isError ? (
+        <Error />
+      ) : !accounts_data.isLoading ? (
+        <div className='flex-1 overflow-auto p-5'>
+          <AccountTable columns={columnsAccount} data={!accounts_data.data ? [] : (accounts_data.data as User[])} />
+        </div>
+      ) : (
+        <LoadingScreen></LoadingScreen>
+      )}
       {/* border rounded here */}
     </section>
   )

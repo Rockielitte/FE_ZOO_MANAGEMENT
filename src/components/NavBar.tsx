@@ -165,6 +165,21 @@ const NavBar: FC<NavBarProps> = () => {
                         </span>
                       </Link>
                     ))}
+                    <Link
+                      to='/#about'
+                      className='-mx-3 block rounded-lg px-3 py-2 text-base  leading-7 text-gray-900 hover:bg-gray-50  font-semibold lg:text-lg sm:text-sm'
+                    >
+                      About
+                    </Link>
+                    {/* <a href='/#ticket' className='text-foreground font-semibold lg:text-lg sm:text-sm'>
+            Ticket
+          </a> */}
+                    <a
+                      href='/#contact'
+                      className='-mx-3 block rounded-lg px-3 py-2 text-base  leading-7 text-gray-900 hover:bg-gray-50  font-semibold lg:text-lg sm:text-sm'
+                    >
+                      Contact
+                    </a>
                   </div>
                   {/* <div className='py-6'>
                 <a
