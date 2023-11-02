@@ -1,5 +1,5 @@
 import TicketCounter from '@/components/TicketCounter'
-import { Order, Ticket } from '@/types'
+import { OrderBeforeSaving, Ticket } from '@/types'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
@@ -15,8 +15,8 @@ const TicketItem: React.FC<{
     visitDate: Date
   }>
   ticket: Ticket
-  order: Order
-  setOrder: React.Dispatch<React.SetStateAction<Order>>
+  order: OrderBeforeSaving
+  setOrder: React.Dispatch<React.SetStateAction<OrderBeforeSaving>>
 }> = ({ ticket, order, setOrder, form }) => {
   return (
     <div key={ticket.id} className='flex w-full gap-4 justify-between items-center'>

@@ -1,12 +1,10 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { UseFormReturn, useForm } from 'react-hook-form'
-import z from 'zod'
+import { UseFormReturn } from 'react-hook-form'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { Input } from '@/components/ui/input'
@@ -21,10 +19,8 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { OrderFormValues } from '.'
-import { useCreateOrder } from '@/hooks/useCreateOrder'
 import MyOrder from '@/utils/api/MyOrder'
-import { Order } from '@/types'
-import { PaymentConfig } from '@/utils/paymentConfig'
+import { OrderBeforeSaving } from '@/types'
 const today = new Date()
 today.setHours(0, 0, 0, 0)
 const OrderForm: React.FC<{
@@ -38,8 +34,8 @@ const OrderForm: React.FC<{
     phone: string
     visitDate: Date
   }>
-  order: Order
-  setOrder: React.Dispatch<React.SetStateAction<Order>>
+  order: OrderBeforeSaving
+  setOrder: React.Dispatch<React.SetStateAction<OrderBeforeSaving>>
 }> = ({ order, setOrder, form }) => {
   const [formData, setFormData] = useState<OrderFormValues>({
     email: '',
@@ -57,7 +53,8 @@ const OrderForm: React.FC<{
   }
   async function createOrderHandler() {
     const response = await MyOrder.createOrder(formData)
-    if (response.status == 200) localStorage.setItem('order', JSON.stringify({ ...response.data, createdAt: new Date() }))
+    if (response.status == 200 && typeof response.data == 'object')
+      localStorage.setItem('order', JSON.stringify({ ...response.data, createdAt: new Date() }))
     // const url = await PaymentConfig.createPaymentUrl(order.total, '1')
     // console.log('url ', url)
     // window.location.href = url
@@ -214,7 +211,7 @@ const OrderForm: React.FC<{
         <FormField
           control={form.control}
           name='details'
-          render={({ field }) => (
+          render={() => (
             <FormItem className='mb-3'>
               <FormMessage />
             </FormItem>

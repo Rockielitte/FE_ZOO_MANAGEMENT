@@ -1,4 +1,4 @@
-import { Order, OrderDetail, Ticket } from '@/types'
+import { OrderBeforeSaving, OrderDetailBeforeSaving, Ticket } from '@/types'
 import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
@@ -13,18 +13,21 @@ const TicketCounter: React.FC<{
     phone: string
     visitDate: Date
   }>
-  order: Order
-  setOrder: React.Dispatch<React.SetStateAction<Order>>
+  order: OrderBeforeSaving
+  setOrder: React.Dispatch<React.SetStateAction<OrderBeforeSaving>>
   ticket: Ticket
 }> = ({ order, setOrder, ticket, form }) => {
   const [value, setValue] = useState(0)
-  const deleteOrderDetail = (details: OrderDetail[]): OrderDetail[] => {
+  const deleteOrderDetail = (details: OrderDetailBeforeSaving[]): OrderDetailBeforeSaving[] => {
     return details.filter((detail) => detail.ticketId != ticket.id)
   }
-  const addOrderDetail = (details: OrderDetail[], quantity: number): OrderDetail[] => {
+  const addOrderDetail = (details: OrderDetailBeforeSaving[], quantity: number): OrderDetailBeforeSaving[] => {
     return [...details, { ticketId: ticket.id, quantity: quantity, ticketName: ticket.name, ticketPrice: ticket.price }]
   }
-  const modifyOrderDetalQuantity = (details: OrderDetail[], quantity: number): OrderDetail[] => {
+  const modifyOrderDetalQuantity = (
+    details: OrderDetailBeforeSaving[],
+    quantity: number
+  ): OrderDetailBeforeSaving[] => {
     return details.map((detail) => {
       if (detail.ticketId == ticket.id) {
         return { ...detail, quantity: quantity }
@@ -34,7 +37,7 @@ const TicketCounter: React.FC<{
   }
   const handleDecrement = () => {
     const findOrderDetail = order.details.find((detail) => detail.ticketId == ticket.id)
-    const newOrder: Order = { ...order }
+    const newOrder: OrderBeforeSaving = { ...order }
     if (findOrderDetail) {
       if (findOrderDetail.quantity == 1) {
         newOrder.details = deleteOrderDetail(newOrder.details)
@@ -50,7 +53,7 @@ const TicketCounter: React.FC<{
 
   const handleIncrement = () => {
     const findOrderDetail = order.details.find((detail) => detail.ticketId == ticket.id)
-    const newOrder: Order = { ...order }
+    const newOrder: OrderBeforeSaving = { ...order }
     if (!findOrderDetail) {
       newOrder.details = addOrderDetail(order.details, 1)
     } else {
@@ -68,7 +71,7 @@ const TicketCounter: React.FC<{
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const findOrderDetail = order.details.find((detail) => detail.ticketId == ticket.id)
-    const newOrder: Order = { ...order }
+    const newOrder: OrderBeforeSaving = { ...order }
     if (!e.target.value || e.target.valueAsNumber == 0) {
       setValue(0)
       if (findOrderDetail) newOrder.details = deleteOrderDetail(newOrder.details)
@@ -103,7 +106,7 @@ const TicketCounter: React.FC<{
         onChange={handleOnChange}
         onKeyDown={(e) => {
           if (e.key === '.') {
-            e.preventDefault();
+            e.preventDefault()
           }
         }}
         className='text-black text-center text-2xl place-content-between rounded outline-none place-self-center w-[30px] h-[30px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'

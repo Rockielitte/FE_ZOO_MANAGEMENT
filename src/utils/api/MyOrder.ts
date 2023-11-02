@@ -1,4 +1,4 @@
-import { get, post, put, remove } from '../apiCaller'
+import { post, remove } from '../apiCaller'
 import { OrderFormValues } from '@/pages/tickets'
 
 const MyOrder = {

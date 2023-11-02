@@ -1,8 +1,4 @@
 import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
-import { Calendar } from '@/components/ui/calendar'
 import { useEffect, useState } from 'react'
 import {
   Dialog,
@@ -17,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import z from 'zod'
-import { ExistOrder, Order, Ticket } from '@/types'
+import { ExistOrder, OrderBeforeSaving, Ticket } from '@/types'
 import axios, { AxiosResponse } from 'axios'
 import { useUserStore } from '@/stores'
 import { useQuery } from 'react-query'
@@ -27,7 +23,6 @@ import OrderRow from './OrderRow'
 import LoadingScreen from '@/components/Loading'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Form } from '@/components/ui/form'
 import OrderForm from './OrderForm'
 import MyOrder from '@/utils/api/MyOrder'
 
@@ -111,8 +106,7 @@ const DemoPage = () => {
   }
 
   const token = useUserStore((state) => state.user)?.token
-  const [date, setDate] = useState<Date>()
-  const [order, setOrder] = useState<Order>({
+  const [order, setOrder] = useState<OrderBeforeSaving>({
     email: '',
     phone: '',
     name: '',
@@ -127,7 +121,7 @@ const DemoPage = () => {
         Authorization: `Bearer ${token} `
       })
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       console.log(tickets)
     },
     onError: (error) => {
@@ -144,8 +138,7 @@ const DemoPage = () => {
     <>
       {showDialog && (
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
-          <DialogTrigger asChild>
-          </DialogTrigger>
+          <DialogTrigger asChild></DialogTrigger>
           <DialogContent className='sm:min-w-[425px]'>
             <DialogHeader>
               <DialogTitle>

@@ -1,6 +1,6 @@
-import { OrderDetail } from '@/types'
+import { OrderDetailBeforeSaving } from '@/types'
 import React from 'react'
-const OrderRow: React.FC<{ detail: OrderDetail }> = ({ detail }) => {
+const OrderRow: React.FC<{ detail: OrderDetailBeforeSaving }> = ({ detail }) => {
   return (
     <div className='w-full flex mt-3'>
       <p className='flex-1 font-bold '>{detail.ticketName}</p>

@@ -149,16 +149,16 @@ export type ExistOrderDetail = {
   ticket: Ticket
 }
 
-export type Order = {
+export type OrderBeforeSaving = {
   email: string
   phone: string
   name: string
   total: number
   visitDate: Date
-  details: OrderDetail[]
+  details: OrderDetailBeforeSaving[]
 }
 
-export type OrderDetail = {
+export type OrderDetailBeforeSaving = {
   quantity: number
   ticketId: number
   ticketName: string
@@ -189,8 +189,6 @@ export type Ticket = {
   price: number
   createdBy: User
 }
-
-
 
 export enum OrderStatusEnum {
   PENDING = 'PENDING',
