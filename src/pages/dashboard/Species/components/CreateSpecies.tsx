@@ -6,15 +6,12 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import React from 'react'
 import { SpeciesForm } from './SpeciesForm'
 import { Icons } from '@/components/Icon'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
-type Props = {}
-
-export const CreateSpecies = (props: Props) => {
+export const CreateSpecies = () => {
   const [open, setOpen] = useState(false)
   return (
     <Dialog open={open} onOpenChange={setOpen}>

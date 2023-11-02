@@ -6,7 +6,10 @@
 ::-webkit-scrollbar {
   width: 6px;
 }
-
+/*CSS*/
+html {
+  scroll-behavior: smooth;
+}
 /* Track */
 
 @layer base {
@@ -118,4 +121,9 @@ html {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   line-height: 22px;
+}
+.nav-bar--hidden {
+  transition: all 0.5s;
+
+  transform: translateY(-150%);
 }

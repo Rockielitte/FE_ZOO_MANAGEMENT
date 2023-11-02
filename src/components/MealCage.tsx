@@ -33,7 +33,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
   }
   return (
     <div className='border w-full h-full rounded-xl shadow-md p-2 flex flex-col-reverse md:flex-row  gap-2 overflow-auto'>
-      <div className='h-full w-full md:w-1/2  border p-2 shadow-xl rounded-lg relative'>
+      <div className='md:h-full w-full md:w-1/2  border p-2 shadow-xl rounded-lg relative'>
         {formMutation.isLoading && <LoadingScreen label='Submitting' />}
         <form onSubmit={handleSubmit(onSubmit)} className='overflow-auto flex flex-col gap-1 w-full h-full '>
           <div className='flex flex-col gap-4 py-4 w-full flex-1 overflow-auto px-2'>
@@ -80,7 +80,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                       <Label htmlFor={item} className='text-right capitalize'>
                         {label}
                       </Label>
-                      <div className='col-span-3' id={item}>
+                      <div className='col-span-3 h-10' id={item}>
                         <SelectSearch form={form} query='accounts' item={item} />
                       </div>
                       {errors[item] && (
@@ -112,7 +112,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                       <Label htmlFor={item} className='text-right capitalize'>
                         {label}
                       </Label>
-                      <div className='col-span-3' id={item}>
+                      <div className='col-span-3 h-10' id={item}>
                         <SelectSearch form={form} query='animal-species' item={item} />
                       </div>
                       {errors[item] && (
@@ -210,8 +210,8 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
           </Button>
         </form>
       </div>
-      <div className='h-full md:w-1/2 w-full p-2 shadow-2xl border rounded-lg '>
-        <div className='flex w-full h-full flex-col gap-2 '>
+      <div className='md:h-full md:w-1/2 w-full p-2 shadow-2xl border rounded-lg '>
+        <div className='flex w-full md:h-full flex-col gap-2 '>
           <CageMealTabe />
         </div>
       </div>

@@ -12,9 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import animalData from '@/test/animal_data.json'
-
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
+import { ColumnDef } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { AiFillEdit } from 'react-icons/ai'
 import { BiDetail } from 'react-icons/bi'
@@ -22,16 +20,11 @@ import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { MdOutlineMore } from 'react-icons/md'
 import { IoMaleFemale } from 'react-icons/io5'
 import { format } from 'date-fns'
-import { useUserStore } from '@/stores'
-import { useQuery } from 'react-query'
-import { request as requestCall } from '@/utils/apiCaller'
 import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
-import axios, { AxiosResponse } from 'axios'
 import { FaGenderless } from 'react-icons/fa'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
 import useQueryCustom from '@/hooks/useQueryCustom'
-type DataType = (typeof animalData)[0]
 const columns: ColumnDef<Animal>[] = [
   {
     id: 'select',
@@ -144,7 +137,7 @@ const columns: ColumnDef<Animal>[] = [
   {
     id: 'action',
     header: 'Action',
-    cell: (props) => {
+    cell: () => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger>

@@ -1,6 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import { ColumnDef } from '@tanstack/react-table'
-import { useUserStore } from '@/stores'
-import { useQueryClient } from 'react-query'
+// import { useUserStore } from '@/stores'
+// import { useQueryClient } from 'react-query'
 import { Cage } from '@/types'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
@@ -70,8 +71,8 @@ const formSchema = z.object({
 })
 export type formSchemaType = z.infer<typeof formSchema>
 export default function DemoPage() {
-  const token = useUserStore((state) => state.user)?.token
-  const queryClient = useQueryClient()
+  // const token = useUserStore((state) => state.user)?.token
+  // const queryClient = useQueryClient()
   const cage_data = useQueryCustom({ query: '/cages/', queryKey: ['cages'], data: {} as Cage })
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema)

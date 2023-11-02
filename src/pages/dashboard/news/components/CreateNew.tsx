@@ -14,8 +14,6 @@ const CreateNew: FC<CreateNewProps> = () => {
             <p className='text-muted-foreground'>
               Unleashing the power of news to protect and celebrate our zoo's remarkable wildlife.
             </p>
-
-            {/* <p className='ml-2 mt-1 truncate text-sm text-gray-500'>in r/1</p> */}
           </div>
         </div>
 

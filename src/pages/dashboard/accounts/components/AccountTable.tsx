@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-refresh/only-export-components */
 import {
@@ -177,7 +179,7 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
-  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
+  const [autoResetPageIndex] = useSkipper()
   const [globalFilter, setGlobalFilter] = useState('')
   const [tableData, setTableData] = useState(data)
   const navigate = useNavigate()
@@ -200,6 +202,7 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
           staleTime: 3000
         })
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [segmentEndpoint]
   )
   useEffect(() => {
@@ -230,24 +233,24 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
     },
     autoResetPageIndex,
     // Provide our updateData function to our table meta
-    meta: {
-      updateData: (rowIndex, columnId, value) => {
-        // Skip page index reset until after next rerender
-        skipAutoResetPageIndex()
-        setTableData(
-          (old) =>
-            old?.map((row, index) => {
-              if (index === rowIndex) {
-                return {
-                  ...old[rowIndex]!,
-                  [columnId]: value
-                }
-              }
-              return row
-            })
-        )
-      }
-    },
+    // meta: {
+    //   updateData: (rowIndex, columnId, value) => {
+    //     // Skip page index reset until after next rerender
+    //     skipAutoResetPageIndex()
+    //     setTableData(
+    //       (old) =>
+    //         old?.map((row, index) => {
+    //           if (index === rowIndex) {
+    //             return {
+    //               ...old[rowIndex]!,
+    //               [columnId]: value
+    //             }
+    //           }
+    //           return row
+    //         })
+    //     )
+    //   }
+    // },
     debugTable: true
   })
   // console.log(isLoading, 'loadie')

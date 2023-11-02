@@ -18,16 +18,13 @@ import { BsImages, BsUpload } from 'react-icons/bs'
 import Carousel from '@/components/Carousel'
 
 import { AnimalGenderEnum, AnimalStatusEnum } from '@/types'
-import { UseMutationResult, useMutation } from 'react-query'
+import { UseMutationResult } from 'react-query'
 
-import { useUserStore } from '@/stores'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import { request } from '@/utils/apiCaller'
 import LoadingScreen from './Loading'
 
 import { SelectSearch } from './SelectSearch'
 import { useLocation, useNavigate } from 'react-router-dom'
+import useSideMutation from '@/hooks/useSideMutation'
 
 interface AnimalFormProps<T extends FieldValues> {
   form: UseFormReturn<T>
@@ -53,39 +50,25 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files?.length) setImage(e.target.files[0])
   }
-  const token = useUserStore((state) => state.user)?.token
-  const imageMutation = useMutation({
-    mutationKey: ['upload'],
-    mutationFn: (data: File) => {
-      const formData = new FormData()
-      formData.append('file', data)
-      return request<string>(
-        `/upload`,
-        'POST',
-        {
-          Authorization: `Bearer ${token} `,
-          Headers: { 'Content-Type': 'application/json' }
-        },
-        {},
-        formData
-      )
-    },
-    onSuccess: (data) => {
-      const currentValue = [...(form.getValues('imageList' as Path<T>) || [])]
-      const newValue = [...currentValue, data.data] as PathValue<T, Path<T>>
-      console.log(newValue, 'kkkkk')
 
-      form.setValue('imageList' as Path<T>, newValue)
-      toast.success('Send sucessfully')
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.message)
-      }
-    }
+  const imageMutation = useSideMutation({
+    query: `/upload`,
+    queryKey: ['upload'],
+    returnType: ''
   })
+
   const handleSubmitImage: React.MouseEventHandler<HTMLButtonElement> = () => {
-    if (image) imageMutation.mutate(image)
+    const formData = new FormData()
+    formData.append('file', image as File)
+    if (image)
+      imageMutation.mutate(formData, {
+        onSuccess: (data) => {
+          const currentValue = [...(form.getValues('imageList' as Path<T>) || [])]
+          const newValue = [...currentValue, data.data] as PathValue<T, Path<T>>
+          console.log(newValue, 'kkkkk')
+          form.setValue('imageList' as Path<T>, newValue)
+        }
+      })
   }
   const {
     register,

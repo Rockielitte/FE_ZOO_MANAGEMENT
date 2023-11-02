@@ -7,14 +7,14 @@ import { HiChevronDoubleDown } from 'react-icons/hi'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import ZooLogo from '@/assets/logo.webp'
 import { useNavigate } from 'react-router-dom'
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation } from 'react-query'
+
 import { apiCaller } from '@/utils'
 import { useUserStore } from '@/stores'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const Login: FC = () => {
-  const queryClient = useQueryClient()
   const setUser = useUserStore((state) => state.setUser)
   const navigate = useNavigate()
   const usMutation = useMutation({
@@ -23,8 +23,7 @@ const Login: FC = () => {
     },
     onSuccess: (data) => {
       console.log('data: ', data)
-      setUser({ token: data.data })
-      queryClient.cancelQueries()
+      setUser({ token: data.data.accessToken })
       // setUser(data.data)
       navigate('/dashboard')
     },

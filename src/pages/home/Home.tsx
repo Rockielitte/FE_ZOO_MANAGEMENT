@@ -14,14 +14,12 @@ const Home: FC<HomeProps> = () => {
     <div className='w-full h-full'>
       <Banner />
 
-      <div className='flex flex-col items-center pt-14'>
-        <h1 className='mt-4 text-7xl font-bold tracking-tight text-green-600 sm:text-7xl items-center'>
-          About Our Zoo
-        </h1>
+      <div className='flex flex-col items-center pt-14 bg-primary' id='about'>
+        <h1 className='mt-4 text-7xl font-bold tracking-tight text-white sm:text-7xl items-center'>About Our Zoo</h1>
 
         <div className='flex justify-center items-center self-stretch flex-1 p-24 gap-16'>
           <div className='flex flex-col items-start gap-20 w-[915px] h-[690px]'>
-            <p className='mt-4 text-3xl leading-9 text-justify tracking-tight text-black self-stretch'>
+            <p className='mt-4 text-3xl leading-9 text-justify text-white tracking-tight text-foreground self-stretch'>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu sem a felis porta eleifend. Sed
               fringilla diam sed sem egestas lacinia. Morbi ornare eget ante id efficitur Lorem ipsum dolor sit amet,
               consectetur adipiscing elit. Aliquam eu sem a felis porta eleifend. Sed fringilla diam sed sem egestas
@@ -62,11 +60,12 @@ const Home: FC<HomeProps> = () => {
           </div>
         </div>
       </div>
+      <div>
+        <img src={Banner2} alt='' className='w-full ' />
+      </div>
 
-      <img src={Banner2} alt='' className='w-full pt-10' />
-
-      <div className='flex flex-col items-center pt-14'>
-        <h1 className='mt-4 text-7xl font-bold tracking-tight text-green-600 sm:text-7xl items-center'>
+      <div className='flex flex-col items-center p-14  bg-primary' id='ticket'>
+        <h1 className='mt-4 text-7xl font-bold tracking-tight text-white sm:text-7xl items-center'>
           Ticket Price List
         </h1>
 
@@ -117,9 +116,9 @@ const Home: FC<HomeProps> = () => {
         </div>
       </div>
 
-      <img src={Banner3} alt='' className='w-full pt-20' />
+      <img src={Banner3} alt='' className='w-full ' />
 
-      <section id='newsletter' aria-label='Newsletter'>
+      <section id='contact' aria-label='Newsletter'>
         <div className='mx-auto px-20 sm:px-10 lg:px-20 p-4 pt-20 items-center align-middle flex justify-center'>
           <div className='bg-[url(@/assets/background/BgFooter.svg)] w-[1696px] h-[594px] relative -mx-4 overflow-hidden px-4 py-20 sm:-mx-6 sm:px-6 md:mx-0 md:rounded-5xl md:px-16 xl:px-24 xl:py-36 flex justify-center items-center align-middle'>
             {/* <img alt="" loading="lazy" width="919" height="1351" decoding="async" data-nimg="1" class="absolute left-1/2 top-0 translate-x-[-10%] translate-y-[-45%] lg:translate-x-[-32%]" style={{color:"transparent"}} src={Lin}/> */}
@@ -171,17 +170,6 @@ const Home: FC<HomeProps> = () => {
           </div>
         </div>
       </section>
-
-      <footer className='flex-none py-14'>
-        <div className='mx-auto max-w-[77%] flex flex-col items-center justify-between md:flex-row'>
-          <div className='flex items-center justify-between'>
-            <Icons.darkLogo className='h-16 w-auto' />
-            <p className='text-2xl font-bold text-black'>The Zoo</p>
-          </div>
-
-          <p className='mt-6 text-base text-slate-500 md:mt-0'>Copyright © DeceptiConf, LLC. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   )
 }
