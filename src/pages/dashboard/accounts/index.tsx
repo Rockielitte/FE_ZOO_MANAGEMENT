@@ -15,14 +15,16 @@ import { AccountTable } from './components/AccountTable'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
+import { useBanAccount } from '@/hooks/useBanAccount'
+import { Icons } from '@/components/Icon'
 
 interface Accounts {}
 // eslint-disable-next-line react-refresh/only-export-components
 
 const Accounts: FC<Accounts> = () => {
   const accounts_data = useQueryCustom({ query: '/accounts/', queryKey: ['accounts'], data: {} as AccountType })
-
-  const columnsAccount: ColumnDef<AccountType>[] = [
+  const { banAccount } = useBanAccount()
+  const columnsAccount: ColumnDef<User>[] = [
     {
       accessorKey: 'id',
       header: ({ column }) => <DataTableColumnHeader column={column} title='ID' />,
@@ -44,18 +46,18 @@ const Accounts: FC<Accounts> = () => {
           </div>
         )
       },
-      cell: defaultColumn<AccountType>('text').cell
+      cell: defaultColumn<User>('text').cell
     },
     {
       accessorKey: 'email',
       header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-      cell: defaultColumn<AccountType>('text').cell
+      cell: defaultColumn<User>('text').cell
     },
 
     {
       accessorKey: 'phone',
       header: ({ column }) => <DataTableColumnHeader column={column} title='Phone Number' />,
-      cell: defaultColumn<AccountType>('text').cell
+      cell: defaultColumn<User>('text').cell
     },
     {
       accessorKey: 'gender',
@@ -87,7 +89,7 @@ const Accounts: FC<Accounts> = () => {
     {
       accessorKey: 'role',
       header: ({ column }) => <DataTableColumnHeader column={column} title='Role' />,
-      cell: defaultColumn<AccountType>('text').cell
+      cell: defaultColumn<User>('text').cell
     },
     {
       accessorKey: 'status',
@@ -103,9 +105,9 @@ const Accounts: FC<Accounts> = () => {
             )}
           >
             {value == AccountStatusEnum.ACTIVE ? (
-              <BsGenderMale className='text-xl'></BsGenderMale>
+              <Icons.CircleDot className='text-xl'></Icons.CircleDot>
             ) : value == AccountStatusEnum.INACTIVE ? (
-              <BsGenderFemale className='text-xl'></BsGenderFemale>
+              <Icons.BanIcon className='text-xl'></Icons.BanIcon>
             ) : (
               <FaGenderless className='text-xl' />
             )}
@@ -116,19 +118,25 @@ const Accounts: FC<Accounts> = () => {
     },
     {
       id: 'action',
-
+      accessorFn: ({ status }) => status,
       cell: ({ row }) => {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger>
               <MdOutlineMore className='text-xl hover:scale-150 transition-all' />
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
               <Link to={`/dashboard/accounts/${row.original.id}`}>
                 <DropdownMenuItem>View Info</DropdownMenuItem>
               </Link>
-              {/* <DropdownMenuItem>Update Role</DropdownMenuItem>
-              <DropdownMenuItem>View News</DropdownMenuItem> */}
+              <DropdownMenuItem>View News</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => banAccount({ status: 'INACTIVE', id: row.original.id })}>
+                Ban
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )

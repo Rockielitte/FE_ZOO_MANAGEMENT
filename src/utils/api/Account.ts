@@ -59,6 +59,21 @@ const Account = {
 
     //   return error.response
     // }
+  },
+  banAccount: async (status: string, id: string) => {
+    const endpoint = `/accounts/update-status/${id}`
+    const test = useAuthorizationHeader()
+
+    // try {
+    const response = await put(endpoint, { status: status }, {}, test.headers)
+    console.log('response: ', response)
+
+    return response
+    // } catch (error: AxiosError) {
+    //   console.log('Error code:', error.response)
+
+    //   return error.response
+    // }
   }
 }
 export default Account

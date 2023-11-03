@@ -179,8 +179,8 @@ export const Editor: React.FC<EditorProps> = () => {
 
   return (
     <div className='w-full flex flex-1 flex-col items-center h-fit p-4 bg-zinc-50 dark:bg-slate-700 rounded-lg border border-zinc-200'>
-      <form id='subreddit-post-form' className=' w-fit' onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
-        <div className='prose  prose-stone dark:prose-invert'>
+      <form id='subreddit-post-form' className='w-full' onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
+        <div className='prose w-full  prose-stone dark:prose-invert'>
           <TextareaAutosize
             ref={(e) => {
               titleRef(e)
@@ -191,7 +191,7 @@ export const Editor: React.FC<EditorProps> = () => {
             placeholder='Title'
             className='w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none'
           />
-          <div id='editor' className='min-h-[400px] min-w-full ' />
+          <div id='editor' className='min-h-[400px] min-w-full' />
           <p className='text-sm text-gray-500'>
             Use <kbd className='rounded-md border bg-muted px-1 text-xs uppercase'>Tab</kbd> to open the command menu.
           </p>
