@@ -33,7 +33,9 @@ const NewsDetail = () => {
             {newDetail?.title}
           </h1>
           <div className='order-first flex items-center  gap-2 text-base text-zinc-400 dark:text-zinc-500'>
-            <div className=''>{!newDetail?.author ? 'Unknown' : newDetail.author.email}</div>
+            <div className=''>
+              {!newDetail?.author ? 'Unknown' : <> {newDetail.author?.fname + ' ' + newDetail.author?.lname} </>}
+            </div>
             <time dateTime={getDate(newDetail?.postedAt)} className=' flex items-center text-base'>
               <span className='h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500'></span>
               <span className='ml-3'>{getDate(newDetail?.postedAt)}</span>

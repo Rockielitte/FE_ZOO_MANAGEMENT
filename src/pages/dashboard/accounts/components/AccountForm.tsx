@@ -32,11 +32,11 @@ const accountFormSchema = z.object({
   email: z.string().email(),
   fname: z
     .string()
-    .min(3, {
-      message: 'Name must be at least 3 characters.'
+    .min(2, {
+      message: 'First name must be at least 2 characters.'
     })
     .max(100, {
-      message: 'Name must not be longer than 30 characters.'
+      message: 'Last name must not be longer than 30 characters.'
     }),
   lname: z
     .string()
@@ -75,12 +75,6 @@ export const AccountForm: FC<AccountProps> = ({ setOpenDialog }) => {
     defaultValues: defaultValues
   })
 
-  // const accountMutation = useMutationCustom({
-  //   query: `/accounts/`,
-  //   queryKey: ['/accounts/', 'create'],
-  //   form: form,
-  //   data: {} as Animal
-  // })
   const { createAccount } = useCreateAccount(form, setOpenDialog)
 
   async function onSubmit(data: AccountFormValues) {

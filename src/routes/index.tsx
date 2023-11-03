@@ -10,7 +10,7 @@ import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
 import { loaderAccountDetail } from '@/lib/loader/AccountsLoader'
-import { loaderAllNews, loaderNewDetail } from '@/lib/loader/NewsLoader'
+import { loaderNewDetail } from '@/lib/loader/NewsLoader'
 
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
@@ -107,11 +107,10 @@ const routes: RouteObject[] = [
           {
             path: 'news',
             children: [
-              { index: true, element: News, loader: loaderAllNews(queryClient) },
+              { index: true, element: News },
               {
                 path: 'create',
                 element: CreateNew
-                // loader: loaderAccountDetail(queryClient)
               },
               {
                 path: ':id',
