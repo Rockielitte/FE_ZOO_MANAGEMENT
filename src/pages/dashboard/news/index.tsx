@@ -39,7 +39,13 @@ const News = () => {
         return date ? <span className='text-ellipsis'>{format(date, 'PPP')}</span> : <span>N/A</span>
       }
     },
-
+    {
+      accessorKey: 'status',
+      header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
+      cell: () => {
+        return <span className='text-ellipsis'>status</span>
+      }
+    },
     {
       id: 'action',
 
