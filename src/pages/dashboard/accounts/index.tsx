@@ -56,7 +56,7 @@ const Accounts: FC<Accounts> = () => {
 
     {
       accessorKey: 'phone',
-      header: ({ column }) => <DataTableColumnHeader column={column} title='Phone Number' />,
+      header: 'Phone Number',
       cell: defaultColumn<User>('text').cell
     },
     {
@@ -67,20 +67,13 @@ const Accounts: FC<Accounts> = () => {
         return (
           <Badge
             className={clsx(
-              'px-2 py-1 w-fit text-center flex justify-center gap-1 items-center  ',
+              'px-2 py-1 w-full text-center flex justify-center gap-1 items-center  ',
               value == AccountGenderEnum.MALE && 'bg-blue-400 ',
               value == AccountGenderEnum.FEMALE && 'bg-pink-400',
 
               value == AccountGenderEnum.OTHER && 'bg-slate-400'
             )}
           >
-            {value == AccountGenderEnum.MALE ? (
-              <BsGenderMale className='text-xl'></BsGenderMale>
-            ) : value == AccountGenderEnum.FEMALE ? (
-              <BsGenderFemale className='text-xl'></BsGenderFemale>
-            ) : (
-              <FaGenderless className='text-xl' />
-            )}
             {value}
           </Badge>
         )

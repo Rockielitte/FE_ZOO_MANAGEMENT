@@ -8,16 +8,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import useAuthStore from '@/stores/authStore'
+import { useLogout } from '@/hooks/useLogout'
+import { cn } from '@/lib/utils'
+import { buttonVariants } from './ui/button'
 
 const AvatarFull = () => {
+  const { user } = useAuthStore()
+  const { logout } = useLogout()
   return (
     <div className='flex gap-2 items-center w-full h-full'>
       <Avatar className='hidden xsm:block'>
-        <AvatarImage src='https://github.com/shadcn.png' />
+        <AvatarImage src={user?.avt} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
       <div className='flex gap-2 items-center '>
-        <span className='hidden md:block text-base font-medium'>Zooname</span>
+        <span className='hidden md:block text-base font-medium'>{user?.fname + ' ' + user?.lname}</span>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <AiFillCaretDown />
@@ -26,9 +32,14 @@ const AvatarFull = () => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                logout()
+              }}
+              className={cn(buttonVariants({ variant: 'destructive' }) + 'w-full')}
+            >
+              Logout
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

@@ -6,37 +6,39 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { HiChevronDoubleDown } from 'react-icons/hi'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import ZooLogo from '@/assets/logo.webp'
-import { useNavigate } from 'react-router-dom'
-import { useMutation } from 'react-query'
+// import { useNavigate } from 'react-router-dom'
+// import { useMutation } from 'react-query'
 
-import { apiCaller } from '@/utils'
-import { useUserStore } from '@/stores'
-import { ToastContainer, toast } from 'react-toastify'
+// import { apiCaller } from '@/utils'
+// import { useUserStore } from '@/stores'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useLogin } from '@/hooks/useLogin'
 
 const Login: FC = () => {
-  const setUser = useUserStore((state) => state.setUser)
-  const navigate = useNavigate()
-  // const queryClient = useQueryClient()
-  const usMutation = useMutation({
-    mutationFn: (credentialResponse: CredentialResponse) => {
-      return apiCaller.get('/auth/login-google', credentialResponse)
-    },
-    onSuccess: (data) => {
-      console.log('data: ', data)
-      setUser({ token: data.data.accessToken })
-      // setUser(data.data)
-      navigate('/dashboard')
-    },
-    onError: (error) => {
-      if (error instanceof Error)
-        toast.error(
-          <div className='font-luck text-base text-red-600'>
-            {error.message}.<div>Try again!</div>
-          </div>
-        )
-    }
-  })
+  // const setUser = useUserStore((state) => state.setUser)
+  // const navigate = useNavigate()
+  const { login, isLoading } = useLogin()
+  // const usMutation = useMutation({
+  //   mutationFn: (credentialResponse: CredentialResponse) => {
+  //     return apiCaller.get('/auth/login-google', credentialResponse)
+  //   },
+  //   onSuccess: (data) => {
+  //     console.log('data: ', data)
+  //     setUser({ token: data.data.accessToken })
+  //     // setUser(data.data)
+  //     navigate('/dashboard')
+  //   },
+  //   onError: (error) => {
+  //     if (error instanceof Error) console.log('error: ', error)
+
+  //     toast.error(
+  //       <div className='font-luck text-base text-red-600'>
+  //         <div>Try again!</div>
+  //       </div>
+  //     )
+  //   }
+  // })
   return (
     <div className='font-ime w-screen h-screen flex relative justify-center items-center bg-white'>
       <div className='absolute  inset-0 '>
@@ -58,7 +60,7 @@ const Login: FC = () => {
           </span>
           {/* <span className=' text-white italic font-sans text-4xl font-extrabold capitalize'>welcome</span> */}
         </h1>
-        {!usMutation.isLoading ? (
+        {!isLoading ? (
           <div className='flex gap-3 flex-col items-center'>
             <p className='font-medium text-lg text-white'>Sign in to continue</p>
             <HiChevronDoubleDown color={'white'} className='animate-bounce animate-infinite' />
@@ -71,8 +73,8 @@ const Login: FC = () => {
                   //   setUser({ token: data.data })
                   // })
                   // const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
-
-                  usMutation.mutate(credentialResponse)
+                  login(credentialResponse)
+                  // usMutation.mutate(credentialResponse)
                 }}
                 onError={() => {
                   console.log('Login Failed')

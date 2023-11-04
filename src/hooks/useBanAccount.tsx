@@ -20,11 +20,10 @@ export const useBanAccount = (): UseBanAccount => {
       return Account.banAccount(data.status, data.id)
     },
     onSuccess: () => {
+      client.invalidateQueries(['accounts'])
+
       toast.success('Banned!')
 
-      client.invalidateQueries({
-        queryKey: ['accounts', 'accountDetail']
-      })
       navigate('/dashboard/accounts')
       // window.location.reload()
     },
