@@ -176,7 +176,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder='Your email' autoComplete='off' {...field} />
+                        <Input placeholder='Your email' disabled={true} autoComplete='off' {...field} />
                       </FormControl>
                       <FormDescription>This is the email that will be displayed on your profile .</FormDescription>
                       <FormMessage />
