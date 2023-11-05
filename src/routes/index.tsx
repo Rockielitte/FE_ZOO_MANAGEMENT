@@ -9,7 +9,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
-import { loaderAccountDetail } from '@/lib/loader/AccountsLoader'
+import { loaderAccountDetail, GetInfoUser } from '@/lib/loader/AccountsLoader'
 import { loaderNewDetail } from '@/lib/loader/NewsLoader'
 
 // *  AUTHENTICATION PAGES
@@ -18,6 +18,8 @@ const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
 const AnimalCreate = Loadable({ loader: () => import('../pages/dashboard/animals/create') })
 const AccountDetail = Loadable({ loader: () => import('../pages/dashboard/accounts/components/AccountDetail') })
+const TrainerDetail = Loadable({ loader: () => import('../pages/dashboard/staff/components/AccountDetail') })
+
 const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
 const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
 
@@ -27,7 +29,7 @@ const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
 const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/CreateNew') })
 const NewDetail = Loadable({ loader: () => import('../pages/dashboard/news/components/NewDetail') })
 const UpdateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/UpdateNew') })
-
+const Dashboard = Loadable({ loader: () => import('../pages/dashboard/index') })
 const Blogs = Loadable({ loader: () => import('../pages/home/Blogs/index') })
 const BlogDetail = Loadable({ loader: () => import('../pages/home/Blogs/[id]') })
 
@@ -39,11 +41,14 @@ const OrderDetail = Loadable({ loader: () => import('../pages/dashboard/orders/[
 const OrderCreate = Loadable({ loader: () => import('../pages/dashboard/orders/create') })
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
+const TicketOrder = Loadable({ loader: () => import('../pages/tickets/index') })
+const SuccessOrderNotification = Loadable({ loader: () => import('../pages/tickets/SuccessNoti') })
 
 const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
 
 const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/index') })
+const Staffs = Loadable({ loader: () => import('../pages/dashboard/staff/index') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -82,14 +87,33 @@ const routes: RouteObject[] = [
   },
 
   {
+    path: 'price_tickets',
+    // element: <HomeLayout />,
+    children: [
+      {
+        children: [{ index: true, element: TicketOrder }]
+      }
+    ]
+  },
+  {
+    path: 'success-noti',
+    children: [
+      {
+        children: [{ index: true, element: SuccessOrderNotification }]
+      }
+    ]
+  },
+  {
     path: 'dashboard',
     element: <AuthGuard allowedRoles={['ADMIN', 'STAFF', 'TRAINER']} />,
+    loader: GetInfoUser,
+    id: 'dashboard',
     children: [
       {
         //private
         element: <MainLayout />,
         children: [
-          { index: true, element: Home },
+          { index: true, element: Dashboard },
           // { path: 'staffs', element: Staff },
 
           {
@@ -99,6 +123,17 @@ const routes: RouteObject[] = [
               {
                 path: ':id',
                 element: AccountDetail,
+                loader: loaderAccountDetail(queryClient)
+              }
+            ]
+          },
+          {
+            path: 'staffs',
+            children: [
+              { index: true, element: Staffs },
+              {
+                path: ':id',
+                element: TrainerDetail,
                 loader: loaderAccountDetail(queryClient)
               }
             ]

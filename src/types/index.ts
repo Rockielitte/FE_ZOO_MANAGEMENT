@@ -112,7 +112,10 @@ export enum AnimalStatusEnum {
   IN_DANGER = 'IN_DANGER',
   DEAD = 'DEAD'
 }
-
+export type AnimalStatusStatistics = {
+  name: string
+  value: number
+}
 export type Animal = {
   cage: Cage
   createdAt: string
@@ -130,7 +133,24 @@ export type Animal = {
   updatedBy: User | null
   description: string
 }
-
+export type SpeciesStatistics = {
+  speciesId: number
+  speciesName: string
+  totalAnimal: number
+}
+export type ZooStatistics = {
+  animalSpeciesStatistics: SpeciesStatistics[]
+  totalAnimal: number
+  totalAnimalInDanger: number
+  totalAnimalSick: number
+  totalAnimalSpecies: number
+  totalArea: number
+  totalCage: number
+  totalNewsHidden: number
+  totalNewsPublished: number
+  totalStaff: number
+  totalTrainer: number
+}
 export type ExistOrder = {
   id: string
   email: string
@@ -147,6 +167,22 @@ export type ExistOrderDetail = {
   quantity: number
   ticketPrice: number
   ticket: Ticket
+}
+
+export type OrderBeforeSaving = {
+  email: string
+  phone: string
+  name: string
+  total: number
+  visitDate: Date
+  details: OrderDetailBeforeSaving[]
+}
+
+export type OrderDetailBeforeSaving = {
+  quantity: number
+  ticketId: number
+  ticketName: string
+  ticketPrice: number
 }
 
 export type Area = {
