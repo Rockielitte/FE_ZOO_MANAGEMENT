@@ -10,13 +10,14 @@ import {
 } from './ui/dialog'
 import { MdCreate } from 'react-icons/md'
 import { Button } from './ui/button'
-import { FieldValues, Path, SubmitHandler, UseFormReturn } from 'react-hook-form'
+import { FieldValues, Path, PathValue, SubmitHandler, UseFormReturn } from 'react-hook-form'
 import { UseMutationResult } from 'react-query'
 import { Label } from 'flowbite-react'
 import { Input } from './ui/input'
 import LoadingScreen from './Loading'
 import { AxiosError } from 'axios'
 import { SelectSearch } from './SelectSearch'
+import { DebouncedInput } from './GridShow'
 
 export type PropsFormModal<X, T extends FieldValues> = {
   form: UseFormReturn<T>
@@ -55,7 +56,9 @@ const ModalForm = <X, T extends FieldValues>({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    watch,
+    setValue
   } = form
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -164,6 +167,92 @@ const ModalForm = <X, T extends FieldValues>({
                       <div className='col-span-3 h-10'>
                         <SelectSearch form={form} query='animal-species' item={item} />
                       </div>
+                      {errors[item] && (
+                        <div
+                          className='col-span-4 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 '
+                          role='alert'
+                        >
+                          <svg
+                            className='flex-shrink-0 inline w-4 h-4 mr-3'
+                            aria-hidden='true'
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='currentColor'
+                            viewBox='0 0 20 20'
+                          >
+                            <path d='M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z' />
+                          </svg>
+                          <span className='sr-only'>Info</span>
+                          <div>
+                            <span className='font-medium'>Validation alert! </span>
+                            {errors[item]?.message as string}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )
+                case 'location':
+                  return (
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label htmlFor={item} className='text-right capitalize'>
+                        {'Description'}
+                      </Label>
+                      <Input
+                        id={item}
+                        className='col-span-3'
+                        placeholder={`Type description here . . .`}
+                        {...register(item)}
+                      />
+
+                      {errors[item] && (
+                        <div
+                          className='col-span-4 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 '
+                          role='alert'
+                        >
+                          <svg
+                            className='flex-shrink-0 inline w-4 h-4 mr-3'
+                            aria-hidden='true'
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='currentColor'
+                            viewBox='0 0 20 20'
+                          >
+                            <path d='M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z' />
+                          </svg>
+                          <span className='sr-only'>Info</span>
+                          <div>
+                            <span className='font-medium'>Validation alert! </span>
+                            {errors[item]?.message as string}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )
+                case 'price':
+                  return (
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label htmlFor={item} className='text-right capitalize'>
+                        {label}
+                      </Label>
+                      <DebouncedInput
+                        id={item}
+                        className='col-span-3'
+                        placeholder={`Type price here . . .`}
+                        {...register(item)}
+                        value={
+                          watch(item)
+                            ? Number(watch(item)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                            : ''
+                        }
+                        onChange={(value) => {
+                          setValue(
+                            item,
+                            isNaN(Number(value))
+                              ? (0 as PathValue<T, Path<T>>)
+                              : (Number(value) as PathValue<T, Path<T>>)
+                          )
+                        }}
+                        // debounce={200}
+                      />
+
                       {errors[item] && (
                         <div
                           className='col-span-4 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 '

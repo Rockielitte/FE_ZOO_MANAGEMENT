@@ -22,6 +22,17 @@ import TicketOrderTag from './TicketOrderTag'
 import TickerListOrder from './TickerListOrder'
 import OrderTicketTag from './OrderTicketTag'
 import { MdDeleteOutline } from 'react-icons/md'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from './ui/alert-dialog'
 
 interface OrderFormProps<T extends FieldValues, R> {
   form: UseFormReturn<T>
@@ -29,9 +40,11 @@ interface OrderFormProps<T extends FieldValues, R> {
   formSideMutation?: UseMutationResult<AxiosResponse<R>, unknown, object, unknown>
   fields: Path<T>[]
   canEdit: Path<T>[]
+  deleteFn?: UseMutationResult<AxiosResponse<R>, unknown, object, unknown>
 }
 
 const OrderForm = <T extends FieldValues, R>({
+  deleteFn,
   form,
   formMutation,
   fields,
@@ -86,7 +99,9 @@ const OrderForm = <T extends FieldValues, R>({
   )
   return (
     <div className='w-full h-full border shadow-xl rounded-lg p-2 overflow-auto flex-col flex '>
-      {(formMutation?.isLoading || formSideMutation?.isLoading) && <LoadingScreen label='submitting'></LoadingScreen>}
+      {(formMutation?.isLoading || formSideMutation?.isLoading || deleteFn?.isLoading) && (
+        <LoadingScreen label='submitting'></LoadingScreen>
+      )}
       <div className=' text-white flex flex-col border-b-2  border-secondary shadow-lg font-ime bg-primary px-5 sm:-m-2 leading-tight rounded-md relative'>
         <span className='text-xl uppercase font-bold tracking-wider pt-1 font-ime min-h-[32px]'>
           {watch('name' as Path<T>) || 'Customer name'}
@@ -96,7 +111,42 @@ const OrderForm = <T extends FieldValues, R>({
         </span>
         {id && (
           <div className='m-auto flex items-center gap-2 shadow-2xl absolute top-0 right-4 bottom-0 uppercase'>
-            <MdDeleteOutline className='text-3xl  font-bold p-1 rounded-full bg-red-500 transition-all hover:scale-125 opacity-50 hover:opacity-100 cursor-pointer' />
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <MdDeleteOutline className='text-3xl  font-bold p-1 rounded-full bg-red-500 transition-all hover:scale-125 opacity-50 hover:opacity-100 cursor-pointer' />
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete your account and remove your data from
+                    our servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction className='p-0'>
+                    <Button
+                      variant={'destructive'}
+                      className='w-full'
+                      onClick={() => {
+                        deleteFn &&
+                          deleteFn.mutate(
+                            {},
+                            {
+                              onSuccess(t) {
+                                navigate(`${queryParams.get('redirect') || '/dashboard/orders/'}`)
+                              }
+                            }
+                          )
+                      }}
+                    >
+                      Continue
+                    </Button>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         )}
       </div>

@@ -29,7 +29,10 @@ const formSchema = z.object({
 export type FormSchemaType = z.infer<typeof formSchema>
 const AnimalCreate = () => {
   const form = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      status: AnimalStatusEnum.HEALTHY
+    }
   })
   const formMutation = useMutationCustom({
     query: `/animals/`,

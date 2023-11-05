@@ -15,6 +15,7 @@ type AuthHook = {
 const useAuth = (): AuthHook => {
   const { user, setUser } = useAuthStore()
   const token = useUserStore((state) => state.user)?.token
+  console.log(token, 'token')
 
   const { data: userData } = useQuery({
     queryKey: ['own'],

@@ -72,12 +72,19 @@ const OrderDetail = () => {
     queryKey: ['orders', String(id)],
     returnType: {} as Order
   })
+  const formMutationDel = useSideMutation({
+    query: `/orders/${id}`,
+    method: 'DELETE',
+    queryKey: ['orders', String(id)],
+    returnType: {} as Order
+  })
   return (
     <div className='w-full h-full'>
       {order_data.isError ? (
         <Error></Error>
       ) : !order_data.isLoading ? (
         <OrderForm
+          deleteFn={formMutationDel}
           form={form}
           formSideMutation={formMutation}
           fields={['id', 'name', 'email', 'phone', 'visitDate', 'status', 'total']}

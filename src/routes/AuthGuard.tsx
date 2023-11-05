@@ -20,7 +20,7 @@ const AuthGuard: FC<AuthGuardProps> = ({ allowedRoles }) => {
   const user: User | null = getUser()
   const location = useLocation()
   //   const [requestedLocation, setRequestedLocation] = useState<string | null>('/login')
-  console.log(location)
+  // console.log(location)
 
   console.log('isUserAdmin: ' + isUserAdmin)
 

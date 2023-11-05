@@ -83,7 +83,7 @@ const routes: RouteObject[] = [
 
   {
     path: 'dashboard',
-    element: <AuthGuard allowedRoles={['ADMIN']} />,
+    element: <AuthGuard allowedRoles={['ADMIN', 'STAFF', 'TRAINER']} />,
     children: [
       {
         //private

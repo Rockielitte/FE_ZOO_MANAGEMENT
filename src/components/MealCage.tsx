@@ -1,5 +1,5 @@
 import { FieldValues, Path, SubmitHandler, UseFormReturn } from 'react-hook-form'
-import { UseMutationResult } from 'react-query'
+import { UseMutationResult, useQueryClient } from 'react-query'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { AxiosError } from 'axios'
@@ -20,6 +20,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
     register,
     formState: { errors, isSubmitting }
   } = form
+  const queryClient = useQueryClient()
   const onSubmit: SubmitHandler<T> = async (data) => {
     console.log('submit data', data)
     formMutation.mutate(data, {
@@ -27,6 +28,11 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
         setTimeout(() => {
           formMutation.reset()
         }, 2000)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(['cages'], {
+          exact: true
+        })
       }
     })
     console.log(data)
