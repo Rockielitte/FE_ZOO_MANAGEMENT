@@ -6,9 +6,7 @@ import { z } from 'zod'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { AiTwotoneDelete, AiTwotoneSave } from 'react-icons/ai'
-import useMutationCustom from '@/hooks/useMutationCustom'
 import useSideMutation from '@/hooks/useSideMutation'
-import { AxiosError } from 'axios'
 import { useQueryClient } from 'react-query'
 import { Skeleton } from './ui/skeleton'
 import { GiCancel } from 'react-icons/gi'
@@ -30,10 +28,9 @@ const MealForm = ({ mealItem, cageId, createFn, method }: Props) => {
   const queryClient = useQueryClient()
   const {
     register,
-    formState: { isDirty, errors, isSubmitSuccessful },
+    formState: { isDirty, errors },
     handleSubmit,
-    reset,
-    getValues
+    reset
   } = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {

@@ -1,19 +1,16 @@
-import { CageMeal, FeedStatusEnum, MealReCord } from '@/types'
+import { FeedStatusEnum, MealReCord } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
 import { useForm, SubmitHandler, Path } from 'react-hook-form'
 import { z } from 'zod'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
-import { AiTwotoneDelete, AiTwotoneSave } from 'react-icons/ai'
-import useMutationCustom from '@/hooks/useMutationCustom'
+import { AiTwotoneSave } from 'react-icons/ai'
+
 import useSideMutation from '@/hooks/useSideMutation'
-import { AxiosError } from 'axios'
-import { useQueryClient } from 'react-query'
+
 import { Skeleton } from './ui/skeleton'
-import { GiCancel } from 'react-icons/gi'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
-import { Checkbox } from './ui/checkbox'
 
 type Props = {
   mealItem?: MealReCord
@@ -26,10 +23,9 @@ const formSchema = z.object({
 })
 type formSchemaType = z.infer<typeof formSchema>
 const MealByDateForm: React.FC<Props> = ({ mealItem }) => {
-  const queryClient = useQueryClient()
   const {
     register,
-    formState: { isDirty, errors, isSubmitSuccessful },
+    formState: { isDirty, errors },
     handleSubmit,
     reset,
     getValues,

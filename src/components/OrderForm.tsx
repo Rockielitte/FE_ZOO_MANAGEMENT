@@ -134,7 +134,7 @@ const OrderForm = <T extends FieldValues, R>({
                           deleteFn.mutate(
                             {},
                             {
-                              onSuccess(t) {
+                              onSuccess() {
                                 navigate(`${queryParams.get('redirect') || '/dashboard/orders/'}`)
                               }
                             }
