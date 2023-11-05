@@ -44,6 +44,7 @@ const Species = Loadable({ loader: () => import('../pages/dashboard/Species/inde
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
 
 const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/index') })
+const Staffs = Loadable({ loader: () => import('../pages/dashboard/staff/index') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -83,7 +84,7 @@ const routes: RouteObject[] = [
 
   {
     path: 'dashboard',
-    element: <AuthGuard allowedRoles={['ADMIN']} />,
+    element: <AuthGuard allowedRoles={['ADMIN', 'STAFF', 'TRAINER']} />,
     children: [
       {
         //private
@@ -96,6 +97,17 @@ const routes: RouteObject[] = [
             path: 'accounts',
             children: [
               { index: true, element: Accounts },
+              {
+                path: ':id',
+                element: AccountDetail,
+                loader: loaderAccountDetail(queryClient)
+              }
+            ]
+          },
+          {
+            path: 'staffs',
+            children: [
+              { index: true, element: Staffs },
               {
                 path: ':id',
                 element: AccountDetail,

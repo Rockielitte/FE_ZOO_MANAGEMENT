@@ -10,8 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import useAuthStore from '@/stores/authStore'
 import { useLogout } from '@/hooks/useLogout'
-import { cn } from '@/lib/utils'
-import { buttonVariants } from './ui/button'
+import { Link } from 'react-router-dom'
 
 const AvatarFull = () => {
   const { user } = useAuthStore()
@@ -31,12 +30,14 @@ const AvatarFull = () => {
           <DropdownMenuContent className='min-w-[250px] relative -left-[15px] top-[20px] '>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <Link to={`/dashboard/accounts/${user?.id}`}>
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+            </Link>
             <DropdownMenuItem
               onClick={() => {
                 logout()
               }}
-              className={cn(buttonVariants({ variant: 'destructive' }) + 'w-full')}
+              className={'hover:bg-red-500 hover:text-white'}
             >
               Logout
             </DropdownMenuItem>

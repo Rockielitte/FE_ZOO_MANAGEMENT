@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { AiFillHome } from 'react-icons/ai'
-import { GiBirdCage, GiElephant, GiNestBirds } from 'react-icons/gi'
+import { GiBirdCage, GiCaveman, GiElephant, GiNestBirds } from 'react-icons/gi'
 import { ImManWoman } from 'react-icons/im'
 import { BsFillPinMapFill, BsTicketPerforated } from 'react-icons/bs'
 import { LiaFileInvoiceDollarSolid } from 'react-icons/lia'
@@ -13,11 +13,11 @@ const useSideBar = () => {
         Icon: AiFillHome,
         href: 'index'
       },
-      // {
-      //   name: 'Zoo trainer',
-      //   Icon: GiCaveman,
-      //   href: 'zoo_trainers'
-      // },
+      {
+        name: 'Zoo trainer',
+        Icon: GiCaveman,
+        href: 'staffs'
+      },
       {
         name: 'Account',
         Icon: ImManWoman,

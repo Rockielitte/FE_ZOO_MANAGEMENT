@@ -11,7 +11,7 @@ import clsx from 'clsx'
 // import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { FaGenderless } from 'react-icons/fa'
 import { defaultColumn } from '@/components/testTable/Data-table'
-import { AccountTable } from './components/AccountTable'
+import { AccountTable } from '../accounts/components/AccountTable'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
@@ -21,7 +21,7 @@ import { Icons } from '@/components/Icon'
 interface Accounts {}
 // eslint-disable-next-line react-refresh/only-export-components
 
-const Accounts: FC<Accounts> = () => {
+const Staffs: FC<Accounts> = () => {
   const accounts_data = useQueryCustom({ query: '/accounts/', queryKey: ['accounts'], data: {} as AccountType })
   const { banAccount } = useBanAccount()
   const columnsAccount: ColumnDef<User>[] = [
@@ -155,4 +155,4 @@ const Accounts: FC<Accounts> = () => {
   )
 }
 
-export default Accounts
+export default Staffs
