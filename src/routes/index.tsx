@@ -9,7 +9,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
-import { loaderAccountDetail } from '@/lib/loader/AccountsLoader'
+import { loaderAccountDetail, GetInfoUser } from '@/lib/loader/AccountsLoader'
 import { loaderNewDetail } from '@/lib/loader/NewsLoader'
 
 // *  AUTHENTICATION PAGES
@@ -18,6 +18,8 @@ const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
 const AnimalCreate = Loadable({ loader: () => import('../pages/dashboard/animals/create') })
 const AccountDetail = Loadable({ loader: () => import('../pages/dashboard/accounts/components/AccountDetail') })
+const TrainerDetail = Loadable({ loader: () => import('../pages/dashboard/staff/components/AccountDetail') })
+
 const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
 const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
 
@@ -44,6 +46,7 @@ const Species = Loadable({ loader: () => import('../pages/dashboard/Species/inde
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
 
 const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/index') })
+const Staffs = Loadable({ loader: () => import('../pages/dashboard/staff/index') })
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -83,7 +86,9 @@ const routes: RouteObject[] = [
 
   {
     path: 'dashboard',
-    element: <AuthGuard allowedRoles={['ADMIN']} />,
+    element: <AuthGuard allowedRoles={['ADMIN', 'STAFF', 'TRAINER']} />,
+    loader: GetInfoUser,
+    id: 'dashboard',
     children: [
       {
         //private
@@ -99,6 +104,17 @@ const routes: RouteObject[] = [
               {
                 path: ':id',
                 element: AccountDetail,
+                loader: loaderAccountDetail(queryClient)
+              }
+            ]
+          },
+          {
+            path: 'staffs',
+            children: [
+              { index: true, element: Staffs },
+              {
+                path: ':id',
+                element: TrainerDetail,
                 loader: loaderAccountDetail(queryClient)
               }
             ]

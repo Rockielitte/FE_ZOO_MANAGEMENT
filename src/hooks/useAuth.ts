@@ -1,66 +1,46 @@
-import useAuthStore from '@/stores/authStore'
-import { User } from '@/types'
-import { useQuery } from 'react-query'
-import { useUserStore } from '@/stores'
-import { get } from '@/utils/apiCaller'
-import axios from 'axios'
-import { useEffect } from 'react'
-type AuthHook = {
-  getUser: () => User | null
-  isAdmin: () => boolean
-  isStaff: () => boolean
-  isTrainer: () => boolean
-}
+// import useAuthStore from '@/stores/authStore'
+// import { User } from '@/types'
+// // import { useQuery } from 'react-query'
+// import { useUserStore } from '@/stores'
+// import { get } from '@/utils/apiCaller'
+// import axios from 'axios'
+// import { useEffect } from 'react'
+// type AuthHook = {
+//   getUser: () => User | null
+//   isAdmin: () => boolean
+//   isStaff: () => boolean
+//   isTrainer: () => boolean
+// }
 
-const useAuth = (): AuthHook => {
-  const { user, setUser } = useAuthStore()
-  const token = useUserStore((state) => state.user)?.token
+// const useAuth = ({ data }: User): AuthHook => {
+//   const { user, setUser } = useAuthStore()
 
-  const { data: userData } = useQuery({
-    queryKey: ['own'],
-    enabled: !!token,
-    queryFn: async () => {
-      return await get(
-        '/auth/profile',
-        {},
-        {
-          Authorization: `Bearer ${token} `
-        }
-      )
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message)
-      }
-    },
-    // onSuccess: (res) => {
-    //   console.log(res.data)
+//   // console.log('check ' + user)
+//   useEffect(() => {
+//     const fetchUser = () => {
+//       // Set the user in the auth store
+//       setUser(data)
 
-    //   setUser(res.data.data)
-    // }
-    select: (data) => data.data
-  })
-  useEffect(() => {
-    if (userData) {
-      setUser(userData)
-    }
-  }, [setUser, userData])
-  const getUser = (): User | null => {
-    return user
-  }
+//       // if (userData) {
+//       //   console.log('check run: ' + userData)
+//       //   setUser(userData)
+//       // }
+//     }
+//     fetchUser()
+//   }, [])
+//   // const getUser = (): User | null => {
+//   //   return user
+//   // }
+//   // const isAdmin = (): boolean => {
+//   //   return user?.role.toString() === 'ADMIN'
+//   // }
+//   // const isStaff = (): boolean => {
+//   //   return user?.role.toString() === 'STAFF'
+//   // }
+//   // const isTrainer = (): boolean => {
+//   //   return user?.role.toString() === 'TRAINER'
+//   // }
+//   // return { getUser, isAdmin, isStaff, isTrainer }
+// }
 
-  const isAdmin = (): boolean => {
-    return user?.role.toString() === 'ADMIN'
-  }
-
-  const isStaff = (): boolean => {
-    return user?.role.toString() === 'STAFF'
-  }
-  const isTrainer = (): boolean => {
-    return user?.role.toString() === 'TRAINER'
-  }
-
-  return { getUser, isAdmin, isStaff, isTrainer }
-}
-
-export default useAuth
+// export default useAuth

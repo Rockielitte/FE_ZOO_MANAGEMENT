@@ -8,22 +8,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import useAuthStore from '@/stores/authStore'
+
 import { useLogout } from '@/hooks/useLogout'
-import { cn } from '@/lib/utils'
-import { buttonVariants } from './ui/button'
+import { Link, useRouteLoaderData } from 'react-router-dom'
+import { User } from '@/types'
 
 const AvatarFull = () => {
-  const { user } = useAuthStore()
+  const { data } = useRouteLoaderData('dashboard') as { data: User }
+
   const { logout } = useLogout()
   return (
     <div className='flex gap-2 items-center w-full h-full'>
       <Avatar className='hidden xsm:block'>
-        <AvatarImage src={user?.avt} />
+        <AvatarImage src={data?.avt} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
       <div className='flex gap-2 items-center '>
-        <span className='hidden md:block text-base font-medium'>{user?.fname + ' ' + user?.lname}</span>
+        <span className='hidden md:block text-base font-medium'>{data?.fname + ' ' + data?.lname}</span>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <AiFillCaretDown />
@@ -31,12 +32,14 @@ const AvatarFull = () => {
           <DropdownMenuContent className='min-w-[250px] relative -left-[15px] top-[20px] '>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <Link to={`/dashboard/accounts/${data?.id}`}>
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+            </Link>
             <DropdownMenuItem
               onClick={() => {
                 logout()
               }}
-              className={cn(buttonVariants({ variant: 'destructive' }) + 'w-full')}
+              className={'hover:bg-red-500 hover:text-white'}
             >
               Logout
             </DropdownMenuItem>
