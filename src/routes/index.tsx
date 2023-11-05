@@ -9,7 +9,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
-import { loaderAccountDetail } from '@/lib/loader/AccountsLoader'
+import { loaderAccountDetail, GetInfoUser } from '@/lib/loader/AccountsLoader'
 import { loaderNewDetail } from '@/lib/loader/NewsLoader'
 
 // *  AUTHENTICATION PAGES
@@ -87,6 +87,8 @@ const routes: RouteObject[] = [
   {
     path: 'dashboard',
     element: <AuthGuard allowedRoles={['ADMIN', 'STAFF', 'TRAINER']} />,
+    loader: GetInfoUser,
+    id: 'dashboard',
     children: [
       {
         //private
