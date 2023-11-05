@@ -18,6 +18,8 @@ const Animal = Loadable({ loader: () => import('../pages/dashboard/animals/index
 const AnimalDetail = Loadable({ loader: () => import('../pages/dashboard/animals/[id]') })
 const AnimalCreate = Loadable({ loader: () => import('../pages/dashboard/animals/create') })
 const AccountDetail = Loadable({ loader: () => import('../pages/dashboard/accounts/components/AccountDetail') })
+const TrainerDetail = Loadable({ loader: () => import('../pages/dashboard/staff/components/AccountDetail') })
+
 const Area = Loadable({ loader: () => import('../pages/dashboard/areas/index') })
 const AreaDetail = Loadable({ loader: () => import('../pages/dashboard/areas/[id]') })
 
@@ -110,7 +112,7 @@ const routes: RouteObject[] = [
               { index: true, element: Staffs },
               {
                 path: ':id',
-                element: AccountDetail,
+                element: TrainerDetail,
                 loader: loaderAccountDetail(queryClient)
               }
             ]

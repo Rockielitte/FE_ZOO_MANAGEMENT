@@ -11,19 +11,23 @@ import clsx from 'clsx'
 // import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { FaGenderless } from 'react-icons/fa'
 import { defaultColumn } from '@/components/testTable/Data-table'
-import { AccountTable } from '../accounts/components/AccountTable'
+import { AccountTable } from './components/AccountTable'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
-import { useBanAccount } from '@/hooks/useBanAccount'
+// import { useBanAccount } from '@/hooks/useBanAccount'
 import { Icons } from '@/components/Icon'
+import { format } from 'date-fns'
 
 interface Accounts {}
-// eslint-disable-next-line react-refresh/only-export-components
 
 const Staffs: FC<Accounts> = () => {
-  const accounts_data = useQueryCustom({ query: '/accounts/', queryKey: ['accounts'], data: {} as AccountType })
-  const { banAccount } = useBanAccount()
+  const accounts_data = useQueryCustom({
+    query: '/accounts/?role=TRAINER',
+    queryKey: ['trainers'],
+    data: {} as AccountType
+  })
+  // const { banAccount } = useBanAccount()
   const columnsAccount: ColumnDef<User>[] = [
     {
       accessorKey: 'id',
@@ -110,6 +114,14 @@ const Staffs: FC<Accounts> = () => {
       }
     },
     {
+      accessorKey: 'createdAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title='Create At' />,
+      cell: ({ row, column }) => {
+        const date = new Date(row.getValue(column.id))
+        return date ? <span className='text-ellipsis'>{format(date, 'PPP')}</span> : <span>N/A</span>
+      }
+    },
+    {
       id: 'action',
       accessorFn: ({ status }) => status,
       cell: ({ row }) => {
@@ -123,13 +135,13 @@ const Staffs: FC<Accounts> = () => {
                 e.stopPropagation()
               }}
             >
-              <Link to={`/dashboard/accounts/${row.original.id}`}>
+              <Link to={`/dashboard/staffs/${row.original.id}`}>
                 <DropdownMenuItem>View Info</DropdownMenuItem>
               </Link>
-              <DropdownMenuItem>View News</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => banAccount({ status: 'INACTIVE', id: row.original.id })}>
+              {/* <DropdownMenuItem>View News</DropdownMenuItem> */}
+              {/* <DropdownMenuItem onClick={() => banAccount({ status: 'INACTIVE', id: row.original.id })}>
                 Ban
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         )
