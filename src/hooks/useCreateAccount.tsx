@@ -23,8 +23,8 @@ export const useCreateAccount = <T extends FieldValues>(
     onSuccess: () => {
       toast.success('create successfully')
 
-      client.invalidateQueries(['accounts'])
-      window.location.reload()
+      client.invalidateQueries(['accounts', 'trainers'])
+      // window.location.reload()
       setOpenDialog(false)
     },
     onError: (error) => {

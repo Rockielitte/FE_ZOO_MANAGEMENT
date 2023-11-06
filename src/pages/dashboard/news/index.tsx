@@ -1,22 +1,17 @@
+import LoadingScreen from '@/components/Loading'
 import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import useQueryCustom from '@/hooks/useQueryCustom'
+import Error from '@/pages/Error'
 import { NewType } from '@/types'
-import New from '@/utils/api/New'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { MdOutlineMore } from 'react-icons/md'
-import { Link, useLoaderData } from 'react-router-dom'
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const newsGetAll = () => ({
-  queryKey: ['news'],
-  queryFn: async () => New.getAllNew(),
-  staleTime: 10000
-})
+import { Link } from 'react-router-dom'
 
 const News = () => {
-  const initData = useLoaderData() as NewType[]
+  const news_data = useQueryCustom({ query: '/news/', queryKey: ['news'], data: {} as NewType })
 
   const columnsAccount: ColumnDef<NewType>[] = [
     {
@@ -44,7 +39,13 @@ const News = () => {
         return date ? <span className='text-ellipsis'>{format(date, 'PPP')}</span> : <span>N/A</span>
       }
     },
-
+    {
+      accessorKey: 'status',
+      header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
+      cell: () => {
+        return <span className='text-ellipsis'>status</span>
+      }
+    },
     {
       id: 'action',
 
@@ -87,16 +88,19 @@ const News = () => {
   ]
   return (
     <div className='w-full h-full border rounded-md shadow-md flex flex-col p-2 gap-2'>
-      {' '}
-      <div className='flex-1 overflow-auto p-5'>
-        {initData && (
+      {news_data.isError ? (
+        <Error />
+      ) : !news_data.isLoading ? (
+        <div className='flex-1 overflow-auto p-5'>
           <DataTable
             columns={columnsAccount}
             // !animal_data.data ? [] : (animal_data.data as Animal[])
-            data={!initData.length ? [] : (initData as NewType[])}
+            data={!news_data.data ? [] : (news_data.data as NewType[])}
           />
-        )}
-      </div>
+        </div>
+      ) : (
+        <LoadingScreen></LoadingScreen>
+      )}
     </div>
   )
 }

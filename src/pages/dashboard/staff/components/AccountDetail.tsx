@@ -23,7 +23,7 @@ import LocalFile from '@/utils/api/LocalFile'
 // const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
 interface AccountDetailProps {}
 const roles = [
-  { label: 'Staff', value: 'STAFF' },
+  // { label: 'Staff', value: 'STAFF' },
   { label: 'Zoo Trainer', value: 'TRAINER' }
 ] as const
 const genders = [

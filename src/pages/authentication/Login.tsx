@@ -6,18 +6,27 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { HiChevronDoubleDown } from 'react-icons/hi'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import ZooLogo from '@/assets/logo.webp'
-import { useNavigate } from 'react-router-dom'
-import { useMutation } from 'react-query'
+// import { useNavigate } from 'react-router-dom'
+// import { useMutation } from 'react-query'
 
-import { apiCaller } from '@/utils'
-import { useUserStore } from '@/stores'
-import { ToastContainer, toast } from 'react-toastify'
+// import { apiCaller } from '@/utils'
+// import { useUserStore } from '@/stores'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import { useNavigate } from 'react-router-dom'
+import { useUserStore } from '@/stores'
+import { useMutation } from 'react-query'
+import { apiCaller } from '@/utils'
+
 const Login: FC = () => {
+  // const token = useUserStore((state) => state.user)?.token
   const setUser = useUserStore((state) => state.setUser)
+
   const navigate = useNavigate()
-  // const queryClient = useQueryClient()
+  // const { login, isLoading, isSuccess } = useLogin()
+  // const { getUser } = useAuth()
+
   const usMutation = useMutation({
     mutationFn: (credentialResponse: CredentialResponse) => {
       return apiCaller.get('/auth/login-google', credentialResponse)
@@ -29,14 +38,12 @@ const Login: FC = () => {
       navigate('/dashboard')
     },
     onError: (error) => {
-      if (error instanceof Error)
-        toast.error(
-          <div className='font-luck text-base text-red-600'>
-            {error.message}.<div>Try again!</div>
-          </div>
-        )
+      if (error instanceof Error) console.log('error: ', error)
     }
   })
+  // if (isSuccess) {
+  //   navigate('/dashboard')
+  // }
   return (
     <div className='font-ime w-screen h-screen flex relative justify-center items-center bg-white'>
       <div className='absolute  inset-0 '>
@@ -71,8 +78,10 @@ const Login: FC = () => {
                   //   setUser({ token: data.data })
                   // })
                   // const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
-
                   usMutation.mutate(credentialResponse)
+                  // if (token && isSuccess) navigate('/dashboard')
+
+                  // usMutation.mutate(credentialResponse)
                 }}
                 onError={() => {
                   console.log('Login Failed')

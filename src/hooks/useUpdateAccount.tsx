@@ -21,10 +21,10 @@ export const useUpdateAccount = <T extends FieldValues>(form: UseFormReturn<T>, 
       toast.success('Update Successfully')
 
       client.invalidateQueries({
-        queryKey: ['accounts', id, 'accountDetail']
+        queryKey: ['accounts', id, 'accountDetail', 'trainers']
       })
       navigate('/dashboard/accounts')
-      window.location.reload()
+      // window.location.reload()
     },
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
