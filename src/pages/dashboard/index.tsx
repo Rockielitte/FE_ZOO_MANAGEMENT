@@ -11,6 +11,11 @@ const Dashboard = () => {
     queryKey: ['zoos-statistics'],
     data: {} as ZooStatistics
   })
+  const sale_statistics = useQueryCustom({
+    query: '/dashboard/sale-report/?startDate=[timestamp]&endDate=[timestamp]',
+    queryKey: ['zoos-statistics'],
+    data: {} as ZooStatistics
+  })
   const ZooStatistics = fetch_statistics.data as ZooStatistics
   const data = [
     {
