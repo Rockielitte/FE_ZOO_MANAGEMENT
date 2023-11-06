@@ -18,11 +18,11 @@ const useSideBar = () => {
         href: 'index'
       },
 
-      {
-        name: 'Zoo trainer',
-        Icon: GiCaveman,
-        href: 'staffs'
-      },
+      // {
+      //   name: 'Zoo trainer',
+      //   Icon: GiCaveman,
+      //   href: 'staffs'
+      // },
       {
         name: 'Account',
         Icon: ImManWoman,
