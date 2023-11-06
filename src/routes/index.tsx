@@ -29,7 +29,7 @@ const News = Loadable({ loader: () => import('../pages/dashboard/news/index') })
 const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/CreateNew') })
 const NewDetail = Loadable({ loader: () => import('../pages/dashboard/news/components/NewDetail') })
 const UpdateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/UpdateNew') })
-
+const Dashboard = Loadable({ loader: () => import('../pages/dashboard/index') })
 const Blogs = Loadable({ loader: () => import('../pages/home/Blogs/index') })
 const BlogDetail = Loadable({ loader: () => import('../pages/home/Blogs/[id]') })
 
@@ -94,7 +94,7 @@ const routes: RouteObject[] = [
         //private
         element: <MainLayout />,
         children: [
-          { index: true, element: Home },
+          { index: true, element: Dashboard },
           // { path: 'staffs', element: Staff },
 
           {
