@@ -20,7 +20,7 @@ export const useUpdateNew = (): UseUpdateNew => {
       return data
     },
     onError: () => {
-      toast.success('Failed')
+      toast.error('Failed')
     },
     onSuccess: () => {
       client.invalidateQueries(['news', 'newDetail'])
@@ -28,8 +28,8 @@ export const useUpdateNew = (): UseUpdateNew => {
       // form.re
       navigae('/dashboard/news')
 
-      // client.invalidateQueries(['newDetail'])
       toast.success('Update Successfully')
+      // window.location.reload()
     }
   })
   return {

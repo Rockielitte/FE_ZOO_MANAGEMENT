@@ -21,7 +21,7 @@ export const useCreateNew = (): UseCreateNew => {
       toast.error('Failed')
     },
     onSuccess: () => {
-      client.invalidateQueries(['news', 'newDetail'])
+      client.invalidateQueries(['news'])
       toast.success('create successfully')
 
       // form.re

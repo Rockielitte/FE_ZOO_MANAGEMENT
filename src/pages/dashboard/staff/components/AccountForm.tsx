@@ -20,7 +20,7 @@ export type AccountProps = {
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
 }
 const roles = [
-  { label: 'Staff', value: 'STAFF' },
+  // { label: 'Staff', value: 'STAFF' },
   { label: 'Zoo Trainer', value: 'TRAINER' }
 ] as const
 const genders = [

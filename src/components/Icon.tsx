@@ -1,4 +1,4 @@
-import { LucideProps, PlusCircleIcon, Newspaper } from 'lucide-react'
+import { LucideProps, PlusCircleIcon, Newspaper, Ban, CircleDot, ArrowRight } from 'lucide-react'
 
 export const Icons = {
   darkLogo: (props: LucideProps) => (
@@ -673,5 +673,8 @@ export const Icons = {
       <circle cx='12' cy='8' r='2' />
       <path d='M15 13a3 3 0 1 0-6 0' />
     </svg>
-  )
+  ),
+  BanIcon: (props: LucideProps) => <Ban {...props} />,
+  CircleDot: (props: LucideProps) => <CircleDot {...props} />,
+  ArrowRight: (props: LucideProps) => <ArrowRight {...props} />
 }

@@ -63,3 +63,7 @@
 .codex-editor__redactor {
   padding-bottom: 0 !important;
 }
+/*.ce-block__content,
+.ce-toolbar__content {
+  max-width: 99%; /* example value, adjust for your own use case 
+}*/
