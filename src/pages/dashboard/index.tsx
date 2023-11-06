@@ -1,4 +1,5 @@
 import AnimalPieChart from '@/components/AnimalPieChart'
+import Example from '@/components/BarChart'
 import { Icons } from '@/components/Icon'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import { ZooStatistics } from '@/types'
@@ -35,8 +36,10 @@ const Dashboard = () => {
             </Link>
           </div>
 
-          <AnimalPieChart data={data} width={200} height={200} />
+          <AnimalPieChart data={data} width={250} height={250} />
         </div>
+
+        <Example />
       </div>
     </section>
   )

@@ -1,6 +1,6 @@
 import { AnimalStatusStatistics } from '@/types'
 
-import { PieChart, Pie, Cell, Tooltip } from 'recharts'
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'
 
 const COLORS = ['#1DDD8D', '#D1F765', '#DB4E66', '#FF8042']
 
@@ -22,16 +22,14 @@ type Props = {
   height: number
 }
 export default function AnimalPieChart({ data, width, height }: Props) {
-  const cx = width / 2
-  const cy = height / 2
-
   return (
-    <PieChart width={width} height={height}>
-      <Pie data={data} cx={cx} cy={cy} labelLine={false} outerRadius={80} fill='#8884d8' dataKey='value'>
+    <PieChart width={width} height={height} className='flex items-center justify-center'>
+      <Pie data={data} cx={'50%'} cy={'50%'} labelLine={false} outerRadius={80} fill='#8884d8' dataKey='value'>
         {data.map((_entry, index) => (
           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
         ))}
       </Pie>
+      <Legend />
       <Tooltip cursor={{ stroke: 'red', strokeWidth: 2 }} />
     </PieChart>
   )
