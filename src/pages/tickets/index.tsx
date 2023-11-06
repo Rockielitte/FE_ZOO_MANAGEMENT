@@ -25,6 +25,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import OrderForm from './OrderForm'
 import MyOrder from '@/utils/api/MyOrder'
+import Payment from '@/utils/api/Payment'
 
 const today = new Date()
 today.setHours(0, 0, 0, 0)
@@ -134,6 +135,12 @@ const DemoPage = () => {
     }
   })
 
+  async function processToPaymentUrl() {
+    const url = (await Payment.createPaymentURL(JSON.parse(localStorage.getItem('order') as string).id)).data as string
+
+    window.location.href = url
+  }
+
   return (
     <>
       {showDialog && (
@@ -205,7 +212,9 @@ const DemoPage = () => {
                 >
                   Cancel
                 </Button>
-                <Button type='submit'>Pay</Button>
+                <Button onClick={() => processToPaymentUrl()} type='submit'>
+                  Pay
+                </Button>
               </div>
             </DialogFooter>
           </DialogContent>

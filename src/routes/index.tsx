@@ -11,6 +11,7 @@ import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
 import { loaderAccountDetail, loaderAllAccount } from '@/lib/loader/AccountsLoader'
 import { loaderAllNews, loaderNewDetail } from '@/lib/loader/NewsLoader'
+import SuccessNoti from '@/pages/tickets/SuccessNoti'
 
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
@@ -40,6 +41,7 @@ const OrderCreate = Loadable({ loader: () => import('../pages/dashboard/orders/c
 //  * HOME PAGE
 const Home = Loadable({ loader: () => import('../pages/home/Home') })
 const TicketOrder = Loadable({ loader: () => import('../pages/tickets/index') })
+const SuccessOrderNotification = Loadable({ loader: () => import('../pages/tickets/SuccessNoti') })
 
 const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
@@ -87,6 +89,14 @@ const routes: RouteObject[] = [
     children: [
       {
         children: [{ index: true, element: TicketOrder }]
+      }
+    ]
+  },
+  {
+    path: 'success-noti',
+    children: [
+      {
+        children: [{ index: true, element: SuccessOrderNotification }]
       }
     ]
   },

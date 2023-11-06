@@ -21,6 +21,7 @@ import { Label } from '@/components/ui/label'
 import { OrderFormValues } from '.'
 import MyOrder from '@/utils/api/MyOrder'
 import { OrderBeforeSaving } from '@/types'
+import Payment from '@/utils/api/Payment'
 const today = new Date()
 today.setHours(0, 0, 0, 0)
 const OrderForm: React.FC<{
@@ -51,14 +52,21 @@ const OrderForm: React.FC<{
     setOrder({ ...order, name, email, phone, visitDate, total })
     setFormData(data)
   }
+
   async function createOrderHandler() {
     const response = await MyOrder.createOrder(formData)
-    if (response.status == 200 && typeof response.data == 'object')
-      localStorage.setItem('order', JSON.stringify({ ...response.data, createdAt: new Date() }))
-    // const url = await PaymentConfig.createPaymentUrl(order.total, '1')
-    // console.log('url ', url)
-    // window.location.href = url
+    localStorage.setItem('order', JSON.stringify(response.data))
+
+    if (response.status == 200 && typeof response.data == 'object') {
+      const url = (await Payment.createPaymentURL(JSON.parse(localStorage.getItem('order') as string).id))
+        .data as string
+
+      localStorage.setItem('order', JSON.stringify({ ...response.data, url }))
+
+      window.location.href = url
+    }
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
