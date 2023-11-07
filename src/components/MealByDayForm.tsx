@@ -33,8 +33,8 @@ const MealByDateForm: React.FC<Props> = ({ mealItem }) => {
   } = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      time: mealItem?.time?.substring(11, 16) || '00:00',
-      food: mealItem?.food || 'worl',
+      time: mealItem?.cageMeal.time?.substring(11, 16) || '00:00',
+      food: mealItem?.cageMeal.food || '',
       status: mealItem?.status
     }
   })

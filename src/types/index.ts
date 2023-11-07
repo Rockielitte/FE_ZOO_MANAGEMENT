@@ -242,8 +242,7 @@ export enum FeedStatusEnum {
   FED = 'FED'
 }
 export type MealReCord = {
-  time: string
-  food: string
+  cageMeal:CageMeal,
   id: number
   status: FeedStatusEnum
   createdAt: string

@@ -73,7 +73,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
   const {
     register,
     watch,
-    formState: { errors, isDirty },
+    formState: { errors },
     handleSubmit,
     getValues,
     setValue
@@ -86,14 +86,6 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
         navigate(`${queryParams.get('redirect') || '/dashboard/animals'}`)
       }
     })
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    //     <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4 overflow-hidden'>
-    //       <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   )
-    // })
   }
   return (
     <div className='w-full h-full border shadow-xl rounded-lg p-2 overflow-auto flex-col flex '>
@@ -235,12 +227,12 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
               )
             })}
           </div>
-          {isDirty && (
+          {
             <Button type='submit' className=' mt-4' disabled={formMutation.isLoading}>
               <RiSendPlaneLine className='text-xl' />
               Submit
             </Button>
-          )}
+          }
         </form>
         <div className='border-2 border-dashed my-2 block sm:hidden'></div>
         <div className='w-full md:w-2/5 px-6 flex flex-col gap-4 overflow-auto py-2'>
