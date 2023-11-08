@@ -202,6 +202,22 @@ export type ExistOrderDetail = {
   ticket: Ticket
 }
 
+export type OrderBeforeSaving = {
+  email: string
+  phone: string
+  name: string
+  total: number
+  visitDate: Date
+  details: OrderDetailBeforeSaving[]
+}
+
+export type OrderDetailBeforeSaving = {
+  quantity: number
+  ticketId: number
+  ticketName: string
+  ticketPrice: number
+}
+
 export type Area = {
   id: number
   code: string
