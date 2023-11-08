@@ -56,7 +56,7 @@ const Dashboard = () => {
     } else if (type === 'MONTH') {
       queryParams = `/dashboard/sale-report?&year=${year}&type=${type}`
     } else if (type === 'YEAR') {
-      queryParams = `/dashboard/sale-report?year=${year}&type=${type}`
+      queryParams = `/dashboard/sale-report?startYear=${2020}&endYear=${2023}&type=${type}`
     }
 
     // Make the Fetch API request
