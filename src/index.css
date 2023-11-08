@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 /* width */
 ::-webkit-scrollbar {
   width: 6px;
@@ -89,6 +90,9 @@ html {
   }
   h6 {
     @apply text-sm;
+  }
+  .rdp-vhidden {
+    @apply hidden;
   }
 }
 *,

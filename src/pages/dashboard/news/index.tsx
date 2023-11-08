@@ -1,18 +1,24 @@
+import { Icons } from '@/components/Icon'
 import LoadingScreen from '@/components/Loading'
 import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
+import { Badge } from '@/components/ui/badge'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import Error from '@/pages/Error'
-import { NewType } from '@/types'
+import { NewType, NewsStatusEnum } from '@/types'
 import { ColumnDef } from '@tanstack/react-table'
+import clsx from 'clsx'
 import { format } from 'date-fns'
+import { useState } from 'react'
+import { FaGenderless } from 'react-icons/fa'
 import { MdOutlineMore } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import ModalConfirmUpdate from './components/ModalUpdateStatus'
 
 const News = () => {
   const news_data = useQueryCustom({ query: '/news/', queryKey: ['news'], data: {} as NewType })
-
+  const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false)
   const columnsAccount: ColumnDef<NewType>[] = [
     {
       accessorKey: 'id',
@@ -42,8 +48,26 @@ const News = () => {
     {
       accessorKey: 'status',
       header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
-      cell: () => {
-        return <span className='text-ellipsis'>status</span>
+      cell: ({ row, column }) => {
+        const value: NewsStatusEnum = row.getValue(column.id)
+        return (
+          <Badge
+            className={clsx(
+              'px-2 py-1 w-fit text-center flex justify-center gap-1 items-center  ',
+              value == NewsStatusEnum.PUBLISHED && 'bg-green-400 ',
+              value == NewsStatusEnum.HIDDEN && 'bg-red-400 dark:bg-red-200 hover:bg-red-600'
+            )}
+          >
+            {value == NewsStatusEnum.PUBLISHED ? (
+              <Icons.CircleDot className='text-xl'></Icons.CircleDot>
+            ) : value == NewsStatusEnum.HIDDEN ? (
+              <Icons.BanIcon className='text-xl'></Icons.BanIcon>
+            ) : (
+              <FaGenderless className='text-xl' />
+            )}
+            {value}
+          </Badge>
+        )
       }
     },
     {
@@ -78,6 +102,17 @@ const News = () => {
               {/* <Link to={`/dashboard/news/update/${row.original.id}`}>
                 <DropdownMenuItem>Preview</DropdownMenuItem>
               </Link> */}
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+                onSelect={() => {
+                  setShowDeleteDialog(true)
+                }}
+                className='text-green-600'
+              >
+                Published
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )
@@ -86,6 +121,7 @@ const News = () => {
       enableSorting: false
     }
   ]
+
   return (
     <div className='w-full h-full border rounded-md shadow-md flex flex-col p-2 gap-2'>
       {news_data.isError ? (
@@ -101,6 +137,7 @@ const News = () => {
       ) : (
         <LoadingScreen></LoadingScreen>
       )}
+      <ModalConfirmUpdate showDeleteDialog={showDeleteDialog} setShowDeleteDialog={setShowDeleteDialog} />
     </div>
   )
 }

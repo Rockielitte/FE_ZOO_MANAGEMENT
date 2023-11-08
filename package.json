@@ -49,6 +49,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
+    "dayjs": "^1.11.10",
     "editorjs-react-renderer": "^3.5.1",
     "flowbite": "^1.8.1",
     "flowbite-react": "^0.6.4",

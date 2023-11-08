@@ -112,10 +112,38 @@ export enum AnimalStatusEnum {
   IN_DANGER = 'IN_DANGER',
   DEAD = 'DEAD'
 }
+export enum NewsStatusEnum {
+  HIDDEN = 'HIDDEN',
+  PUBLISHED = 'PUBLISHED'
+}
 export type AnimalStatusStatistics = {
   name: string
   value: number
 }
+export type SaleOverallStatistics = {
+  totalMoney: number
+  totalTicket: number
+  name: string
+}
+export type OverallStatistics = {
+  week: string
+  month: string
+  date: string
+  year: number
+  totalMoney: number
+  totalTicket: number
+}
+export type TicketStatistic = {
+  ticketName: string
+  ticketId: number
+  money: number
+  quantity: number
+}
+export type SaleStatistics = {
+  overallStatistics: OverallStatistics[] | []
+  ticketDistribution: TicketStatistic[] | []
+}
+
 export type Animal = {
   cage: Cage
   createdAt: string
@@ -137,6 +165,10 @@ export type SpeciesStatistics = {
   speciesId: number
   speciesName: string
   totalAnimal: number
+}
+export type DateRangeType = {
+  from: Date
+  to: Date
 }
 export type ZooStatistics = {
   animalSpeciesStatistics: SpeciesStatistics[]
