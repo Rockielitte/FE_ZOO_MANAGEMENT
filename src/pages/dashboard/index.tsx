@@ -179,7 +179,7 @@ const Dashboard = () => {
     return newArray as AnimalStatusStatistics[]
   }
 
-  const speciesStatic = useGenerateSpeciesStatistic(ZooStatistics.animalSpeciesStatistics)
+  const speciesStatic = useGenerateSpeciesStatistic(ZooStatistics?.animalSpeciesStatistics)
 
   ///////////////////////////////WeekPicker////////////////////////////////////////////////////
 
