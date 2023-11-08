@@ -35,21 +35,21 @@ type Props = {
   width: number
   height: number
 }
-export default function AnimalPieChart({ data, width, height }: Props) {
+export default function SpeciesPieChart({ data, width, height }: Props) {
   return (
     <PieChart width={width} height={height} className='flex items-center justify-center'>
       <Pie
         data={data}
         cx={'50%'}
         cy={'50%'}
-        labelLine={false}
         label={renderCustomizedLabel}
-        outerRadius={80}
+        labelLine={false}
+        outerRadius={100}
         fill='#8884d8'
         dataKey='value'
       >
         {data.map((_entry, index) => (
-          <Cell key={`cell-${_entry.name}`} fill={COLORS[index % COLORS.length]} />
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
         ))}
       </Pie>
       <Legend />

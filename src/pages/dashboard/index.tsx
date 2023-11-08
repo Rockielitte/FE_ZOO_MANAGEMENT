@@ -1,11 +1,18 @@
 import AnimalPieChart from '@/components/AnimalPieChart'
 import { Icons } from '@/components/Icon'
 import useQueryCustom from '@/hooks/useQueryCustom'
-import { OverallStatistics, SaleOverallStatistics, SaleStatistics, ZooStatistics } from '@/types'
+import {
+  AnimalStatusStatistics,
+  OverallStatistics,
+  SaleOverallStatistics,
+  SaleStatistics,
+  SpeciesStatistics,
+  ZooStatistics
+} from '@/types'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CalendarIcon } from '@radix-ui/react-icons'
-import { addDays, eachDayOfInterval, endOfWeek, format, getYear, startOfWeek } from 'date-fns'
+import { addDays, eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns'
 import { DateRange } from 'react-day-picker'
 import { capitalizeFirstLetter, cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -17,12 +24,22 @@ import Error from '../Error'
 import LoadingScreen from '@/components/Loading'
 import { toast } from '@/components/ui/use-toast'
 import SaleBarChart from '@/components/BarChart'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
+import SpeciesPieChart from '@/components/SpeciesPieChart'
 const options = [
-  { type: 'WEEK', value: 'Week' },
+  { type: 'DAY', value: 'Day' },
   { type: 'MONTH', value: 'Month' },
   { type: 'YEAR', value: 'Year' }
 ]
 const Dashboard = () => {
+  const minYear = 1800
+  const maxYear = 2023
+
+  const years = []
+  for (let i = minYear; i <= maxYear; i++) {
+    years.push(i)
+  }
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(),
     to: addDays(new Date(), 30)
@@ -31,6 +48,11 @@ const Dashboard = () => {
     from: new Date(),
     to: addDays(new Date(), 30)
   })
+  const [yearRange, setYearRange] = useState({
+    from: new Date().getFullYear().toString(),
+    to: new Date().getFullYear().toString()
+  })
+  const [yearOfMonth, setYearOfMonth] = useState('2023')
   const [type, setSelectType] = useState('YEAR')
   const fetch_statistics = useQueryCustom({
     query: '/dashboard/zoo-statistics',
@@ -48,15 +70,15 @@ const Dashboard = () => {
     }
 
     // Adding 1 because getMonth returns zero-based index
-    const year = getYear(startDate)
+    // const year = getYear(startDate)
     // Construct the query parameters based on the selected type
 
     if (type === 'DAY') {
       queryParams = `/dashboard/sale-report?startDate=${startDate.toISOString()}&endDate=${endDate?.toISOString()}&type=${type}`
     } else if (type === 'MONTH') {
-      queryParams = `/dashboard/sale-report?&year=${year}&type=${type}`
+      queryParams = `/dashboard/sale-report?&year=${yearOfMonth}&type=${type}`
     } else if (type === 'YEAR') {
-      queryParams = `/dashboard/sale-report?startYear=${2020}&endYear=${2023}&type=${type}`
+      queryParams = `/dashboard/sale-report?startYear=${yearRange.from}&endYear=${yearRange.to}&type=${type}`
     }
 
     // Make the Fetch API request
@@ -64,7 +86,14 @@ const Dashboard = () => {
   }
   const sale_statistics = useQueryCustom({
     query: QueryParam(type, range?.from, range?.to),
-    queryKey: ['sale-statistics', type, range?.from?.toISOString() as string],
+    queryKey: [
+      'sale-statistics',
+      type,
+      range?.from?.toISOString() as string,
+      yearRange?.from,
+      yearRange?.to,
+      yearOfMonth
+    ],
     data: {} as ZooStatistics
   })
   const saleData = sale_statistics.data as SaleStatistics
@@ -134,91 +163,290 @@ const Dashboard = () => {
   }
 
   const statistics = useGenerateStatistic(overallData)
-  console.log(`newMonth: ${statistics[0]?.name}`)
+
+  function useGenerateSpeciesStatistic(data: SpeciesStatistics[]) {
+    if (data?.length === 0 || data == undefined) {
+      return []
+    }
+    const generateItem = (item: SpeciesStatistics) => {
+      const { totalAnimal, speciesName } = item
+
+      return { name: speciesName, value: totalAnimal }
+    }
+
+    const newArray = data?.map(generateItem)
+
+    return newArray as AnimalStatusStatistics[]
+  }
+
+  const speciesStatic = useGenerateSpeciesStatistic(ZooStatistics.animalSpeciesStatistics)
 
   ///////////////////////////////WeekPicker////////////////////////////////////////////////////
 
   const handleChange = (value: string) => {
     setSelectType(value)
   }
+  const handleYearStartChange = (value: string) => {
+    setYearRange({ ...yearRange, from: value })
+  }
+  const handleYearEndChange = (value: string) => {
+    setYearRange({ ...yearRange, to: value })
+  }
+  const handleYearOfMonthEndChange = (value: string) => {
+    setYearOfMonth(value)
+  }
+
   return (
     <section className='w-full  h-full flex flex-col shadow-2xl rounded-[0.5rem] border bg-background'>
       {fetch_statistics.isError || sale_statistics.isError ? (
         <Error />
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
         <div className='flex-1 overflow-auto p-5'>
-          <div className=' flex items-center flex-col justify-center border w-fit p-5 rounded-[0.5rem] shadow-md'>
-            <div className='flex items-start justify-between  gap-14'>
-              <div className=''>
-                <p className=' text-muted-foreground'>Animal Statistics</p>
-                <h1>{ZooStatistics?.totalAnimal}</h1>
+          <div className='mx-auto my-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-4'>
+            <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
+              <div className='flex items-center justify-between gap-3'>
+                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+                  <Icons.Home />
+                </div>
+                <Link
+                  to='/dashboard/cages'
+                  className='flex items-center text-muted-foreground text-sm justify-between '
+                >
+                  View All <Icons.ArrowRight className='text-sm' />
+                </Link>
               </div>
-              <Link to='/dashboard/animal' className='flex items-center text-muted-foreground text-sm justify-between '>
-                View All <Icons.ArrowRight className='text-sm' />
-              </Link>
+              <div className='p-5'>
+                <h3>Cage</h3>
+                <h2>{ZooStatistics?.totalCage}</h2>
+              </div>
             </div>
 
-            <AnimalPieChart data={dataAnimal} width={250} height={250} />
+            <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
+              <div className='flex items-center justify-between gap-3'>
+                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+                  <Icons.MayIn />
+                </div>
+                <Link
+                  to='/dashboard/areas'
+                  className='flex items-center text-muted-foreground text-sm justify-between '
+                >
+                  View All <Icons.ArrowRight className='text-sm' />
+                </Link>
+              </div>
+              <div className='p-5'>
+                <h3>Area</h3>
+                <h2>{ZooStatistics?.totalArea}</h2>
+              </div>
+            </div>
+
+            <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
+              <div className='flex items-center justify-between gap-3'>
+                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+                  <Icons.NewsPaper />
+                </div>
+                <Link to='/dashboard/news' className='flex items-center text-muted-foreground text-sm justify-between '>
+                  View All <Icons.ArrowRight className='text-sm' />
+                </Link>
+              </div>
+              <div className='p-5'>
+                <h3>Total News</h3>
+                <h2>{ZooStatistics?.totalNewsPublished}</h2>
+              </div>
+            </div>
+            <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3 '>
+              <div className='flex items-center justify-between gap-3'>
+                <div className='flex gap-5 items-center justify-center'>
+                  <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+                    <Icons.User2 />
+                  </div>
+                  Human Resources
+                </div>
+                <Link
+                  to='/dashboard/cages'
+                  className='flex items-center text-muted-foreground text-sm justify-between '
+                >
+                  View All <Icons.ArrowRight className='text-sm' />
+                </Link>
+              </div>
+
+              <div className='p-5 flex items-center gap-4 justify-between'>
+                <div className='justify-items-stretch'>
+                  <h3>Staff</h3>
+                  <h2>{ZooStatistics?.totalStaff}</h2>
+                </div>
+                <Separator orientation='vertical' className='justify-self-center' />
+                <div className='justify-self-center'>
+                  <h3>Trainer</h3>
+                  <h2>{ZooStatistics?.totalTrainer}</h2>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className='barChart flex flex-1 items-end  justify-center p-5'>
-            <Select
-              value={type?.toString()}
-              onValueChange={(value) => {
-                handleChange(value)
-              }}
-            >
-              <SelectTrigger className='pr-1.5 focus:ring-0'>
-                {type != '' ? capitalizeFirstLetter(type) : 'Select Type'}
-              </SelectTrigger>
-              <SelectContent position='popper'>
-                <ScrollArea className='h-80'>
+          <div className={cn('flex gap-2 ')}>
+            <div className=' flex items-center flex-col justify-center border w-fit p-5 rounded-[0.5rem] shadow-md '>
+              <div className='flex items-start justify-between  gap-14'>
+                <div className=''>
+                  <p className=' text-muted-foreground'>Animal Statistics</p>
+                  <h1>{ZooStatistics?.totalAnimal}</h1>
+                </div>
+                <Link
+                  to='/dashboard/animal'
+                  className='flex items-center text-muted-foreground text-sm justify-between '
+                >
+                  View All <Icons.ArrowRight className='text-sm' />
+                </Link>
+              </div>
+
+              <AnimalPieChart data={dataAnimal} width={250} height={250} />
+            </div>
+
+            <div className=' flex items-center flex-col justify-center border w-fit p-5 rounded-[0.5rem] shadow-md '>
+              <div className='flex items-start justify-between  gap-14'>
+                <div className=''>
+                  <p className=' text-muted-foreground'>Species Statistics</p>
+                  <h1>{speciesStatic.length}</h1>
+                </div>
+                <Link
+                  to='/dashboard/animal'
+                  className='flex items-center text-muted-foreground text-sm justify-between '
+                >
+                  View All <Icons.ArrowRight className='text-sm' />
+                </Link>
+              </div>
+
+              <SpeciesPieChart data={speciesStatic} width={700} height={250} />
+            </div>
+          </div>
+
+          <div className='barChart flex flex-1 items-end  justify-between p-5'>
+            <div className={cn('flex gap-2 items-center justify-between')}>
+              <Label>Type: </Label>
+              <Select
+                value={type?.toString()}
+                onValueChange={(value) => {
+                  handleChange(value)
+                }}
+              >
+                <SelectTrigger className='pr-1.5 focus:ring-0'>
+                  {type != '' ? capitalizeFirstLetter(type) : 'Select Type'}
+                </SelectTrigger>
+                <SelectContent position='popper'>
                   {options.map((option, id: number) => (
                     <SelectItem key={`${option.value}-${id}`} value={option.type?.toString() ?? ''}>
                       {option.value}
                     </SelectItem>
                   ))}
-                </ScrollArea>
-              </SelectContent>
-            </Select>
-            <div className={cn('grid gap-2')}>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    id='date'
-                    variant={'outline'}
-                    className={cn('w-[260px] justify-start text-left font-normal', !date && 'text-muted-foreground')}
-                  >
-                    <CalendarIcon className='mr-2 h-4 w-4' />
-                    {date?.from ? (
-                      date.to ? (
-                        <>
-                          {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
-                        </>
-                      ) : (
-                        format(date.from, 'LLL dd, y')
-                      )
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className='w-auto p-0' align='end'>
-                  <Calendar
-                    initialFocus
-                    mode='range'
-                    defaultMonth={date?.from}
-                    captionLayout='dropdown-buttons'
-                    selected={date}
-                    disabled={(date) => date > new Date() || date < new Date('1800-01-01')}
-                    onDayClick={handleDayClick}
-                    onDayMouseEnter={handleDayMouseEnter}
-                    onDayMouseLeave={handleDayMouseLeave}
-                    fromYear={1800}
-                    toYear={2050}
-                  />
-                </PopoverContent>
-              </Popover>
+                </SelectContent>
+              </Select>
             </div>
+
+            {type == 'YEAR' ? (
+              <div className={cn('flex items-center gap-2 justify-between ')}>
+                <Select
+                  value={yearRange.from}
+                  onValueChange={(value) => {
+                    handleYearStartChange(value)
+                  }}
+                >
+                  <SelectTrigger className=' focus:ring-0'>
+                    {' '}
+                    {yearRange.from != '' ? yearRange.from : 'Select Start Year'}
+                  </SelectTrigger>
+                  <SelectContent position='popper'>
+                    <ScrollArea className='h-80'>
+                      {years.map((option, id: number) => (
+                        <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </ScrollArea>
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={yearRange.to}
+                  onValueChange={(value) => {
+                    handleYearEndChange(value)
+                  }}
+                >
+                  <SelectTrigger className='pr-1.5 focus:ring-0'>
+                    {' '}
+                    {yearRange.to != '' ? yearRange.to : 'Select End Year'}
+                  </SelectTrigger>
+                  <SelectContent position='popper'>
+                    <ScrollArea className='h-80'>
+                      {years.map((option, id: number) => (
+                        <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </ScrollArea>
+                  </SelectContent>
+                </Select>
+              </div>
+            ) : type === 'MONTH' ? (
+              <div className={cn('grid gap-2')}>
+                <Select
+                  value={yearOfMonth}
+                  onValueChange={(value) => {
+                    handleYearOfMonthEndChange(value)
+                  }}
+                >
+                  <SelectTrigger className='pr-1.5 focus:ring-0'>
+                    {' '}
+                    {yearOfMonth != '' ? yearOfMonth : 'Select Year'}
+                  </SelectTrigger>
+                  <SelectContent position='popper'>
+                    <ScrollArea className='h-80'>
+                      {years.map((option, id: number) => (
+                        <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </ScrollArea>
+                  </SelectContent>
+                </Select>
+              </div>
+            ) : (
+              <div className={cn('grid gap-2')}>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      id='date'
+                      variant={'outline'}
+                      className={cn('w-[260px] justify-start text-left font-normal', !date && 'text-muted-foreground')}
+                    >
+                      <CalendarIcon className='mr-2 h-4 w-4' />
+                      {date?.from ? (
+                        date.to ? (
+                          <>
+                            {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
+                          </>
+                        ) : (
+                          format(date.from, 'LLL dd, y')
+                        )
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-auto p-0' align='end'>
+                    <Calendar
+                      initialFocus
+                      mode='range'
+                      defaultMonth={date?.from}
+                      captionLayout='dropdown-buttons'
+                      selected={date}
+                      disabled={(date) => date > new Date() || date < new Date('1800-01-01')}
+                      onDayClick={handleDayClick}
+                      onDayMouseEnter={handleDayMouseEnter}
+                      onDayMouseLeave={handleDayMouseLeave}
+                      fromYear={1800}
+                      toYear={2050}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            )}
           </div>
 
           <SaleBarChart data={statistics} />
