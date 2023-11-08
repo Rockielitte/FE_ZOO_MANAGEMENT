@@ -15,7 +15,7 @@ const useSideBar = () => {
       {
         name: 'Dashboard',
         Icon: AiFillHome,
-        href: 'index'
+        href: ''
       },
 
       {
@@ -82,7 +82,7 @@ const useSideBar = () => {
       {
         name: 'Dashboard',
         Icon: AiFillHome,
-        href: 'index'
+        href: ''
       },
 
       {
