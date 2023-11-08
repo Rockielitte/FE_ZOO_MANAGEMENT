@@ -7,7 +7,7 @@ type Props = {
   height?: number
 }
 
-export default function SaleBarChart({ data, _width, _height }: Props) {
+export default function SaleBarChart({ data }: Props) {
   if (data?.length === 0) {
     return <div className='flex items-center justify-center p-10'>No data available.</div> // Render a message when data is empty
   }

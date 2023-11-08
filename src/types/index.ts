@@ -129,10 +129,9 @@ export type OverallStatistics = {
   week: string
   month: string
   date: string
+  year: number
   totalMoney: number
   totalTicket: number
-  startDate: string
-  endDate: string
 }
 export type TicketStatistic = {
   ticketName: string

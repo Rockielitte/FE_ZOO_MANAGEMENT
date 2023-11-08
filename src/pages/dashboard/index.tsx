@@ -1,13 +1,13 @@
 import AnimalPieChart from '@/components/AnimalPieChart'
 import { Icons } from '@/components/Icon'
 import useQueryCustom from '@/hooks/useQueryCustom'
-import { OverallStatistics, SaleOverallStatistics, SaleStatistics, TicketStatistic, ZooStatistics } from '@/types'
+import { OverallStatistics, SaleOverallStatistics, SaleStatistics, ZooStatistics } from '@/types'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CalendarIcon } from '@radix-ui/react-icons'
-import { addDays, eachDayOfInterval, endOfWeek, format, getMonth, getYear, startOfWeek } from 'date-fns'
+import { addDays, eachDayOfInterval, endOfWeek, format, getYear, startOfWeek } from 'date-fns'
 import { DateRange } from 'react-day-picker'
-import { capitalizeFirstLetter, cn, formatDates } from '@/lib/utils'
+import { capitalizeFirstLetter, cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -47,14 +47,14 @@ const Dashboard = () => {
       return ''
     }
 
-    const month = getMonth(startDate) + 1 // Adding 1 because getMonth returns zero-based index
+    // Adding 1 because getMonth returns zero-based index
     const year = getYear(startDate)
     // Construct the query parameters based on the selected type
 
-    if (type === 'WEEK') {
+    if (type === 'DAY') {
       queryParams = `/dashboard/sale-report?startDate=${startDate.toISOString()}&endDate=${endDate?.toISOString()}&type=${type}`
     } else if (type === 'MONTH') {
-      queryParams = `/dashboard/sale-report?month=${month}&year=${year}&type=${type}`
+      queryParams = `/dashboard/sale-report?&year=${year}&type=${type}`
     } else if (type === 'YEAR') {
       queryParams = `/dashboard/sale-report?year=${year}&type=${type}`
     }
@@ -111,8 +111,8 @@ const Dashboard = () => {
       return []
     }
     const generateItem = (item: OverallStatistics) => {
-      const { totalMoney, totalTicket, startDate, endDate, date, month } = item
-      if (type === 'WEEK') {
+      const { totalMoney, totalTicket, date, month, year } = item
+      if (type === 'DAY') {
         const dateFormate = new Date(date)
         const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit' }
 
@@ -122,11 +122,9 @@ const Dashboard = () => {
           name: dateFormate.toLocaleDateString('en-GB', options)
         }
       } else if (type === 'YEAR') {
-        return { totalMoney: totalMoney, totalTicket: totalTicket, name: month }
+        return { totalMoney: totalMoney, totalTicket: totalTicket, name: year }
       } else if (type === 'MONTH') {
-        const name = formatDates(startDate, endDate)
-
-        return { totalMoney: totalMoney, totalTicket: totalTicket, name: name }
+        return { totalMoney: totalMoney, totalTicket: totalTicket, name: month }
       }
     }
 
@@ -210,7 +208,6 @@ const Dashboard = () => {
                     mode='range'
                     defaultMonth={date?.from}
                     captionLayout='dropdown-buttons'
-                    ISOWeek
                     selected={date}
                     disabled={(date) => date > new Date() || date < new Date('1800-01-01')}
                     onDayClick={handleDayClick}
