@@ -66,7 +66,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
           const currentValue = [...(form.getValues('imageList' as Path<T>) || [])]
           const newValue = [...currentValue, data.data] as PathValue<T, Path<T>>
           console.log(newValue, 'kkkkk')
-          form.setValue('imageList' as Path<T>, newValue)
+          form.setValue('imageList' as Path<T>, newValue), setImage(undefined)
         }
       })
   }
@@ -86,14 +86,6 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
         navigate(`${queryParams.get('redirect') || '/dashboard/animals'}`)
       }
     })
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    //     <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4 overflow-hidden'>
-    //       <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   )
-    // })
   }
   return (
     <div className='w-full h-full border shadow-xl rounded-lg p-2 overflow-auto flex-col flex '>
@@ -107,16 +99,8 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
         </span>
       </div>
       <div className='flex-1 flex flex-col-reverse sm:flex-row gap-2  sm:overflow-auto pt-4  sm:px-0'>
-        <form className='w-full md:w-3/5 md:h-full relative  ' onSubmit={handleSubmit(onSubmit)}>
-          <Button
-            type='submit'
-            className='absolute flex z-20 items-center gap-1 bottom-1 right-1 sm:right-3 sm:bottom-2 opacity-70  font-bold hover:opacity-100 hover:scale-110 transition-all'
-            disabled={formMutation.isLoading}
-          >
-            <RiSendPlaneLine className='text-xl' />
-            Submit
-          </Button>
-          <div className='w-full  md:border-r  flex flex-col sm:flex-row  justify-between flex-wrap gap-4 px-6 overflow-auto h-full py-2 '>
+        <form className='w-full md:w-3/5 md:h-full relative flex flex-col  ' onSubmit={handleSubmit(onSubmit)}>
+          <div className='w-full flex-1  md:border-r  flex flex-col sm:flex-row  justify-between flex-wrap gap-4 px-6 overflow-auto h-full py-2 '>
             {fields.map((item) => {
               const label = String(item).includes('Id')
                 ? String(item).substring(0, String(item).length - 2)
@@ -169,13 +153,13 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                           value={watch(item)}
                           defaultValue={watch(item)}
                         >
-                          <SelectTrigger className='w-full' id={item}>
-                            <SelectValue placeholder={`Select gender here . . .`} />
+                          <SelectTrigger className='w-full capitalize' id={item}>
+                            <SelectValue placeholder={`Select gender here . . .`} className='capitalize' />
                           </SelectTrigger>
                           <SelectContent>
                             {Object.values(AnimalGenderEnum).map((item) => (
-                              <SelectItem value={item} key={item}>
-                                {item}
+                              <SelectItem value={item} key={item} className='capitalize'>
+                                {item.replace('_', ' ').toLowerCase()}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -188,13 +172,13 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                           value={watch(item)}
                           defaultValue={getValues(item)}
                         >
-                          <SelectTrigger className='w-full' id={item}>
+                          <SelectTrigger className='w-full capitalize' id={item}>
                             <SelectValue placeholder={`Select status here . . .`} />
                           </SelectTrigger>
                           <SelectContent>
                             {Object.values(AnimalStatusEnum).map((item) => (
-                              <SelectItem value={item} key={item}>
-                                {item}
+                              <SelectItem value={item} key={item} className='capitalize'>
+                                {item.replace('_', ' ').toLowerCase()}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -243,12 +227,18 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
               )
             })}
           </div>
+          {
+            <Button type='submit' className=' mt-4' disabled={formMutation.isLoading}>
+              <RiSendPlaneLine className='text-xl' />
+              Submit
+            </Button>
+          }
         </form>
         <div className='border-2 border-dashed my-2 block sm:hidden'></div>
         <div className='w-full md:w-2/5 px-6 flex flex-col gap-4 overflow-auto py-2'>
           <div className='flex items-center gap-1 text-xl font-bold'>
             <Button
-              className='flex-1 transition-all duration-500 flex items-center gap-2'
+              className='flex-1 transition-all duration-500 flex items-center gap-2 '
               variant={imageShow == 'images' ? 'default' : 'secondary'}
               onClick={() => setImageShow('images')}
             >

@@ -17,10 +17,10 @@ const CageMealTabe = () => {
             value='strategy'
             className=' uppercase data-[state=active]:bg-primary data-[state=active]:text-white'
           >
-            Meal strategy
+            Meal Schedule
           </TabsTrigger>
         </TabsList>
-        <TabsContent value='meals' className='w-full flex-1 overflow-auto px-1'>
+        <TabsContent value='meals' className='w-full flex-1 overflow-auto  px-1'>
           <MealByDay />
         </TabsContent>
         <TabsContent value='strategy' className='w-full flex-1 overflow-auto px-1'>
