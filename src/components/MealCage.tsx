@@ -87,7 +87,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                         {label}
                       </Label>
                       <div className='col-span-3 h-10' id={item}>
-                        <SelectSearch form={form} query='accounts' item={item} />
+                        <SelectSearch form={form} query='accounts/?role=TRAINER' item={item} />
                       </div>
                       {errors[item] && (
                         <div

@@ -23,7 +23,8 @@ import Error from '@/pages/Error'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import { GiCancel } from 'react-icons/gi'
 import { GrStatusDisabled } from 'react-icons/gr'
-import { Order, OrderStatusEnum } from '@/types'
+import { Order, OrderStatusEnum, RoleEnum } from '@/types'
+import useCheckRole from '@/hooks/useCheckRole'
 const columns: ColumnDef<Order>[] = [
   {
     id: 'select',
@@ -78,7 +79,10 @@ const columns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: 'total',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Total' />
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Total' />,
+    cell: ({ row, column }) => {
+      return <>{Number(row.getValue(column.id)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</>
+    }
   },
   {
     accessorKey: 'status',
@@ -139,13 +143,18 @@ const columns: ColumnDef<Order>[] = [
 ]
 
 export default function DemoPage() {
+  const user = useCheckRole()
   const order_data = useQueryCustom({ query: '/orders/', queryKey: ['orders'], data: {} as Order })
   return (
     <div className='w-full p-2  py-2 h-full shadow-2xl border rounded-md '>
       {order_data.isError ? (
         <Error />
       ) : !order_data.isLoading ? (
-        <DataTable columns={columns} data={!order_data.data ? [] : (order_data.data as Order[])} />
+        <DataTable
+          columns={columns}
+          data={!order_data.data ? [] : (order_data.data as Order[])}
+          canCreate={user.role && user.role == RoleEnum.ADMIN}
+        />
       ) : (
         <LoadingScreen></LoadingScreen>
       )}

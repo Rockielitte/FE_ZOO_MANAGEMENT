@@ -138,7 +138,24 @@ const columns: ColumnDef<Animal>[] = [
   {
     accessorKey: 'status',
     header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
-    cell: defaultColumn<Animal>('select', [...Object.values(AnimalStatusEnum)]).cell
+    cell: ({ row, column }) => {
+      const value: AnimalStatusEnum = row.getValue(column.id)
+      return (
+        <Badge
+          className={clsx(
+            'px-2 py-1 min-w-[70px] text-center flex justify-center gap-1 items-center  ',
+            value == AnimalStatusEnum.HEALTHY && 'bg-green-400 ',
+            value == AnimalStatusEnum.SICK && 'bg-yellow-400',
+            value == AnimalStatusEnum.IN_DANGER && 'bg-red-400',
+            value == AnimalStatusEnum.DEAD && 'bg-slate-400'
+          )}
+        >
+          {value}
+        </Badge>
+      )
+    },
+    enableSorting: false,
+    filterFn: 'equalsString'
   },
   {
     id: 'action',
@@ -167,7 +184,13 @@ const columns: ColumnDef<Animal>[] = [
   }
 ]
 
-export default function CageAnimalTable({ cage_data }: { cage_data: UseQueryResult<Cage, unknown> }) {
+export default function CageAnimalTable({
+  cage_data,
+  cageId
+}: {
+  cage_data: UseQueryResult<Cage, unknown>
+  cageId: string
+}) {
   return (
     <div className='w-full  h-full  px-2 border rounded-md relative overflow-auto '>
       {cage_data.isError ? (
@@ -176,7 +199,8 @@ export default function CageAnimalTable({ cage_data }: { cage_data: UseQueryResu
         <DataTable
           columns={columns}
           data={!cage_data.data ? [] : (cage_data.data.animals as Animal[])}
-          pathName='/dashboard/animals'
+          pathName={`/dashboard/animals/create?cageId=${cageId}&animalspeciesId=${cage_data.data?.animalSpecies
+            .id}&redirect=${`/dashboard/cages/${cageId}`}`}
         />
       ) : (
         <LoadingScreen></LoadingScreen>

@@ -202,12 +202,18 @@ export type NewType = {
   postedAt: string
   author: User
 }
+export enum TicketStatusEnum {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE'
+}
+
 export type Ticket = {
   id: number
   name: string
   description: string
   price: number
   createdBy: User
+  status: TicketStatusEnum
 }
 
 export enum OrderStatusEnum {
@@ -242,7 +248,7 @@ export enum FeedStatusEnum {
   FED = 'FED'
 }
 export type MealReCord = {
-  cageMeal:CageMeal,
+  cageMeal: CageMeal
   id: number
   status: FeedStatusEnum
   createdAt: string

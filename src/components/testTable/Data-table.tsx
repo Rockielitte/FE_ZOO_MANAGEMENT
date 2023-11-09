@@ -44,6 +44,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   pathName?: string
   // tessData?: TData[]
+  canCreate?: boolean
 }
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -171,7 +172,7 @@ function useSkipper() {
   return [shouldSkip, skip] as const
 }
 
-export function DataTable<TData, TValue>({ columns, data, pathName }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, pathName, canCreate = true }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
@@ -181,7 +182,7 @@ export function DataTable<TData, TValue>({ columns, data, pathName }: DataTableP
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const path = useLocation().pathname
-  const token = useUserStore((state) => state.user)
+  const token = useUserStore((state) => state.user)?.token
   const segmentEndpoint = useMemo(() => {
     if (path.includes('animals')) return { segment: 'animals' }
   }, [path])
@@ -297,15 +298,17 @@ export function DataTable<TData, TValue>({ columns, data, pathName }: DataTableP
             <span>Delete</span>
           </Button>
         )}
-        <Button
-          className='flex items-center gap-1 hover:scale-110 transition-all ml-auto'
-          onClick={() => {
-            navigate(pathName ? `${pathName}/create` : 'create')
-          }}
-        >
-          <IoMdCreate />
-          <span>Create</span>
-        </Button>
+        {canCreate && (
+          <Button
+            className='flex items-center gap-1 hover:scale-110 transition-all ml-auto'
+            onClick={() => {
+              navigate(pathName ? `${pathName}` : 'create')
+            }}
+          >
+            <IoMdCreate />
+            <span>Create</span>
+          </Button>
+        )}
       </div>
       <div className='rounded-md border'></div>
       <div className='flex-1 overflow-auto  border rounded-md '>
