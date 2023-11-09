@@ -7,6 +7,7 @@ import Search from '@/components/Search'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { useTransition, animated } from '@react-spring/web'
 import { BreadcrumbDemo } from '@/components/Appbreadcrumb'
+import { useWindowDimensions } from '@/hooks/useWindowDimensions'
 
 interface MainLayoutProps {
   children?: ReactNode
@@ -14,10 +15,12 @@ interface MainLayoutProps {
 const smSize = 768
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const routeList = useSideBar()
+  const { width } = useWindowDimensions()
+
   const [isShow, setIsShow] = useState(true)
-  const transitions = useTransition(isShow, {
-    from: { opacity: 0, x: -100 },
-    enter: { opacity: 1, x: 0 }
+  const transitions = useTransition(isShow && width > 900, {
+    from: { opacity: 0, transform: 'translateX(-100%)' },
+    enter: { opacity: 1, transform: 'translateX(0%)' }
   })
   console.log('shu')
 
