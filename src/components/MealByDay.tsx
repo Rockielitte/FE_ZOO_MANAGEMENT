@@ -5,16 +5,30 @@ import { CalendarIcon } from 'lucide-react'
 import format from 'date-fns/format'
 import { cn } from '@/lib/utils'
 import { Calendar } from './ui/calendar'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
-import { Input } from './ui/input'
+import { useParams } from 'react-router-dom'
+import useQueryCustom from '@/hooks/useQueryCustom'
+import { MealReCord } from '@/types'
+import Error from '@/pages/Error'
+import LoadingScreen from './Loading'
+import MealByDateForm from './MealByDayForm'
+import { MdOutlineNoMeals } from 'react-icons/md'
 
 const MealByDay = () => {
+  const cageId = useParams().id
   const [date, setDate] = useState(new Date())
+
+  const meals = useQueryCustom({
+    query: `/meal-records/?cageId=${cageId}&date=${
+      date?.toLocaleString('sv').replace(' ', 'T') ? date?.toLocaleString('sv').replace(' ', 'T') + '.027293Z' : ''
+    }`,
+    queryKey: ['meal-records', String(cageId), date?.toUTCString().substring(0, 16) || ''],
+    data: {} as MealReCord
+  })
   return (
-    <div className='ư-full h-full flex flex-col gap-2 '>
-      <div className='grid'>
+    <div className='w-full h-full relative overflow-auto flex flex-col gap-2'>
+      <div className='w-full'>
         <Popover>
-          <PopoverTrigger asChild id={date?.toISOString() || 'date'}>
+          <PopoverTrigger asChild id={date?.toLocaleString('sv').replace(' ', 'T') || 'date'}>
             <Button
               variant={'outline'}
               className={cn('w-full justify-start text-left font-normal', date && 'text-muted-foreground')}
@@ -36,44 +50,35 @@ const MealByDay = () => {
           </PopoverContent>
         </Popover>
       </div>
+      <div className='flex justify-items-center font-extrabold  gap-2 uppercase text-center text-sm border p-2 rounded-lg shadow-xl'>
+        <div className='w-2/12'>Time</div>
+        <div className='flex-1'>Food</div>
+        <div className='w-3/12'>Status</div>
+      </div>
       <div
-        className='flex-1 flex flex-col p-2 rounded-lg   overflow-auto gap-2
-    '
+        className='  flex flex-col py-2  rounded-lg   gap-2 flex-1
+ '
       >
-        <div className='flex justify-items-center font-extrabold  gap-2 uppercase text-center text-sm border p-2 rounded-lg shadow-xl'>
-          <div className='w-2/12'>Time</div>
-          <div className='flex-1'>Food</div>
-          <div className='w-3/12'>Status</div>
-        </div>
-
-        <div className='flex justify-items-center font-bold items-center gap-2 uppercase text-center text-sm border p-2 rounded-lg shadow-xl'>
-          <div className='w-2/12'>
-            <Select>
-              <SelectTrigger className='w-full'>
-                <SelectValue placeholder='Time' />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value='light'>Light</SelectItem>
-                <SelectItem value='dark'>Dark</SelectItem>
-                <SelectItem value='system'>System</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className='flex-1 font-light'>
-            <Input placeholder='Foods for feed' readOnly />
-          </div>
-          <div className='w-3/12'>
-            <Select>
-              <SelectTrigger className='w-full'>
-                <SelectValue placeholder='Status' />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value='FED'>FED</SelectItem>
-                <SelectItem value='NOT'>NOT YET</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+        {meals.isError ? (
+          <Error />
+        ) : meals.isLoading ? (
+          <LoadingScreen />
+        ) : (
+          <>
+            <div className='flex-1  overflow-auto flex flex-col w-full'>
+              <>
+                {(meals.data as MealReCord[]).length ? (
+                  (meals.data as MealReCord[]).map((item) => <MealByDateForm mealItem={item} key={item.id} />)
+                ) : (
+                  <div className='w-full h-full flex justify-center items-center flex-col gap-4'>
+                    <MdOutlineNoMeals className={'text-6xl'} />
+                    No meal planned !
+                  </div>
+                )}
+              </>
+            </div>
+          </>
+        )}{' '}
       </div>
     </div>
   )

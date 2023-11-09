@@ -3,7 +3,6 @@ import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,29 +25,29 @@ import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
 import useQueryCustom from '@/hooks/useQueryCustom'
 const columns: ColumnDef<Animal>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        className='border-white'
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-        onClick={(e) => {
-          e.stopPropagation()
-        }}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
-  },
+  // {
+  //   id: 'select',
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       className='border-white'
+  //       checked={table.getIsAllPageRowsSelected()}
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label='Select all'
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label='Select row'
+  //       onClick={(e) => {
+  //         e.stopPropagation()
+  //       }}
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false
+  // },
   {
     accessorKey: 'id',
     header: ({ column }) => <DataTableColumnHeader column={column} title='ID' />,
@@ -132,7 +131,24 @@ const columns: ColumnDef<Animal>[] = [
   {
     accessorKey: 'status',
     header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
-    cell: defaultColumn<Animal>('select', [...Object.values(AnimalStatusEnum)]).cell
+    cell: ({ row, column }) => {
+      const value: AnimalStatusEnum = row.getValue(column.id)
+      return (
+        <Badge
+          className={clsx(
+            'px-2 py-1 min-w-[70px] text-center flex justify-center gap-1 items-center  ',
+            value == AnimalStatusEnum.HEALTHY && 'bg-green-400 ',
+            value == AnimalStatusEnum.SICK && 'bg-yellow-400',
+            value == AnimalStatusEnum.IN_DANGER && 'bg-red-400',
+            value == AnimalStatusEnum.DEAD && 'bg-slate-400'
+          )}
+        >
+          {value}
+        </Badge>
+      )
+    },
+    enableSorting: false,
+    filterFn: 'equalsString'
   },
   {
     id: 'action',

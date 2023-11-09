@@ -19,7 +19,7 @@ type SelectMap<T extends FieldValues> = {
 }
 export function SelectSearch<T extends FieldValues>({ query, item, form }: SelectMap<T>) {
   const [search, setSearch] = React.useState('')
-  const token = useUserStore((state) => state.user)
+  const token = useUserStore((state) => state.user)?.token
   const select_data = useQuery<
     AxiosResponse<{ id: string; name: string; code: string; animalSpecies?: Species; email?: string }[]>,
     unknown,

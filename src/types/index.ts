@@ -263,3 +263,21 @@ export interface Order {
   status: OrderStatusEnum
   details: OrderDetail[]
 }
+export type CageMeal = {
+  id: number
+  time: string
+  food: string
+  createdBy: User
+}
+export enum FeedStatusEnum {
+  NOT_FEED = 'NOT_FEED',
+  FED = 'FED'
+}
+export type MealReCord = {
+  cageMeal:CageMeal,
+  id: number
+  status: FeedStatusEnum
+  createdAt: string
+  updatedAt: string
+  updatedBy: User
+}

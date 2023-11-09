@@ -56,7 +56,7 @@ const AreaTag: React.FC<{ row: Row<Area> }> = ({ row }) => {
       <div className='px-4 py-2 flex items-center w-full gap-4 bg-secondary  border-primary rounded-md'>
         <TfiLocationPin className='text-4xl bg-primary rounded-full shadow-md p-2 text-white' />
         <div className='flex flex-1 flex-col'>
-          <h1 className=' font-semibold uppercase'>Area {row.getValue('code')}</h1>
+          <h1 className=' font-semibold uppercase text-base '>Area {row.getValue('code')}</h1>
           <span className='text-sm'>{row.getValue('location')}</span>
         </div>
         <DropdownMenu>
