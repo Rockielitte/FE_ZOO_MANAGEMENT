@@ -201,8 +201,8 @@ const Dashboard = () => {
       {fetch_statistics.isError || sale_statistics.isError ? (
         <Error />
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
-        <div className='flex-1 overflow-auto p-5'>
-          <div className='mx-auto my-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-4'>
+        <div className='flex-1 overflow-auto p-5 flex flex-col gap-4 h-full'>
+          <div className='mx-auto my-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-00 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-4'>
             <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
               <div className='flex items-center justify-between gap-3'>
                 <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
@@ -282,174 +282,235 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className={cn('flex gap-2 ')}>
-            <div className=' flex items-center flex-col justify-center border w-fit p-5 rounded-[0.5rem] shadow-md '>
-              <div className='flex items-start justify-between  gap-14'>
-                <div className=''>
-                  <p className=' text-muted-foreground'>Animal Statistics</p>
-                  <h1>{ZooStatistics?.totalAnimal}</h1>
+
+          <div className='grid grid-rows-4 grid-flow-col  gap-4 w-full h-full'>
+            <div className='row-span-1 lg:row-span-2 lg:col-span-2 col-span-2 flex items-center justify-center  rounded'>
+              <div className='h-full col-span-3  p-4 rounded-[0.5rem] border shadow-md border-gray-200 flex flex-col w-full'>
+                <div className='flex items-start justify-between  gap-14'>
+                  <div className=''>
+                    <p className=' text-muted-foreground'>Tota l Renueve</p>
+                    <strong className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</strong>
+                  </div>
+                  <Link
+                    to='/dashboard/animal'
+                    className='flex items-center text-muted-foreground text-sm justify-between '
+                  >
+                    View All <Icons.ArrowRight className='text-sm' />
+                  </Link>
                 </div>
-                <Link
-                  to='/dashboard/animal'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
-                >
-                  View All <Icons.ArrowRight className='text-sm' />
-                </Link>
-              </div>
-
-              <AnimalPieChart data={dataAnimal} width={250} height={250} />
-            </div>
-
-            <div className=' flex items-center flex-col justify-center border w-fit p-5 rounded-[0.5rem] shadow-md '>
-              <div className='flex items-start justify-between  gap-14'>
-                <div className=''>
-                  <p className=' text-muted-foreground'>Species Statistics</p>
-                  <h1>{speciesStatic.length}</h1>
-                </div>
-                <Link
-                  to='/dashboard/animal'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
-                >
-                  View All <Icons.ArrowRight className='text-sm' />
-                </Link>
-              </div>
-
-              <SpeciesPieChart data={speciesStatic} width={700} height={250} />
-            </div>
-          </div>
-
-          <div className='barChart flex flex-1 items-end  justify-between p-5'>
-            <div className={cn('flex gap-2 items-center justify-between')}>
-              <Label>Type: </Label>
-              <Select
-                value={type?.toString()}
-                onValueChange={(value) => {
-                  handleChange(value)
-                }}
-              >
-                <SelectTrigger className='pr-1.5 focus:ring-0'>
-                  {type != '' ? capitalizeFirstLetter(type) : 'Select Type'}
-                </SelectTrigger>
-                <SelectContent position='popper'>
-                  {options.map((option, id: number) => (
-                    <SelectItem key={`${option.value}-${id}`} value={option.type?.toString() ?? ''}>
-                      {option.value}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {type == 'YEAR' ? (
-              <div className={cn('flex items-center gap-2 justify-between ')}>
-                <Select
-                  value={yearRange.from}
-                  onValueChange={(value) => {
-                    handleYearStartChange(value)
-                  }}
-                >
-                  <SelectTrigger className=' focus:ring-0'>
-                    {' '}
-                    {yearRange.from != '' ? yearRange.from : 'Select Start Year'}
-                  </SelectTrigger>
-                  <SelectContent position='popper'>
-                    <ScrollArea className='h-80'>
-                      {years.map((option, id: number) => (
-                        <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </ScrollArea>
-                  </SelectContent>
-                </Select>
-                <Select
-                  value={yearRange.to}
-                  onValueChange={(value) => {
-                    handleYearEndChange(value)
-                  }}
-                >
-                  <SelectTrigger className='pr-1.5 focus:ring-0'>
-                    {' '}
-                    {yearRange.to != '' ? yearRange.to : 'Select End Year'}
-                  </SelectTrigger>
-                  <SelectContent position='popper'>
-                    <ScrollArea className='h-80'>
-                      {years.map((option, id: number) => (
-                        <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </ScrollArea>
-                  </SelectContent>
-                </Select>
-              </div>
-            ) : type === 'MONTH' ? (
-              <div className={cn('grid gap-2')}>
-                <Select
-                  value={yearOfMonth}
-                  onValueChange={(value) => {
-                    handleYearOfMonthEndChange(value)
-                  }}
-                >
-                  <SelectTrigger className='pr-1.5 focus:ring-0'>
-                    {' '}
-                    {yearOfMonth != '' ? yearOfMonth : 'Select Year'}
-                  </SelectTrigger>
-                  <SelectContent position='popper'>
-                    <ScrollArea className='h-80'>
-                      {years.map((option, id: number) => (
-                        <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </ScrollArea>
-                  </SelectContent>
-                </Select>
-              </div>
-            ) : (
-              <div className={cn('grid gap-2')}>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      id='date'
-                      variant={'outline'}
-                      className={cn('w-[260px] justify-start text-left font-normal', !date && 'text-muted-foreground')}
+                <div className=' flex items-end  justify-between p-5'>
+                  <div className={cn('flex gap-2 items-center justify-between')}>
+                    <Label>Type: </Label>
+                    <Select
+                      value={type?.toString()}
+                      onValueChange={(value) => {
+                        handleChange(value)
+                      }}
                     >
-                      <CalendarIcon className='mr-2 h-4 w-4' />
-                      {date?.from ? (
-                        date.to ? (
-                          <>
-                            {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
-                          </>
-                        ) : (
-                          format(date.from, 'LLL dd, y')
-                        )
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className='w-auto p-0' align='end'>
-                    <Calendar
-                      initialFocus
-                      mode='range'
-                      defaultMonth={date?.from}
-                      captionLayout='dropdown-buttons'
-                      selected={date}
-                      disabled={(date) => date > new Date() || date < new Date('1800-01-01')}
-                      onDayClick={handleDayClick}
-                      onDayMouseEnter={handleDayMouseEnter}
-                      onDayMouseLeave={handleDayMouseLeave}
-                      fromYear={1800}
-                      toYear={2050}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-            )}
-          </div>
+                      <SelectTrigger className='pr-1.5 focus:ring-0'>
+                        {type != '' ? capitalizeFirstLetter(type) : 'Select Type'}
+                      </SelectTrigger>
+                      <SelectContent position='popper'>
+                        {options.map((option, id: number) => (
+                          <SelectItem key={`${option.value}-${id}`} value={option.type?.toString() ?? ''}>
+                            {option.value}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-          <SaleBarChart data={statistics} />
+                  {type == 'YEAR' ? (
+                    <div className={cn('flex items-center gap-2 justify-between ')}>
+                      <Select
+                        value={yearRange.from}
+                        onValueChange={(value) => {
+                          handleYearStartChange(value)
+                        }}
+                      >
+                        <SelectTrigger className=' focus:ring-0'>
+                          {' '}
+                          {yearRange.from != '' ? yearRange.from : 'Select Start Year'}
+                        </SelectTrigger>
+                        <SelectContent position='popper'>
+                          <ScrollArea className='h-80'>
+                            {years.map((option, id: number) => (
+                              <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
+                                {option}
+                              </SelectItem>
+                            ))}
+                          </ScrollArea>
+                        </SelectContent>
+                      </Select>
+                      <Select
+                        value={yearRange.to}
+                        onValueChange={(value) => {
+                          handleYearEndChange(value)
+                        }}
+                      >
+                        <SelectTrigger className='pr-1.5 focus:ring-0'>
+                          {' '}
+                          {yearRange.to != '' ? yearRange.to : 'Select End Year'}
+                        </SelectTrigger>
+                        <SelectContent position='popper'>
+                          <ScrollArea className='h-80'>
+                            {years.map((option, id: number) => (
+                              <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
+                                {option}
+                              </SelectItem>
+                            ))}
+                          </ScrollArea>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  ) : type === 'MONTH' ? (
+                    <div className={cn('grid gap-2')}>
+                      <Select
+                        value={yearOfMonth}
+                        onValueChange={(value) => {
+                          handleYearOfMonthEndChange(value)
+                        }}
+                      >
+                        <SelectTrigger className='pr-1.5 focus:ring-0'>
+                          {' '}
+                          {yearOfMonth != '' ? yearOfMonth : 'Select Year'}
+                        </SelectTrigger>
+                        <SelectContent position='popper'>
+                          <ScrollArea className='h-80'>
+                            {years.map((option, id: number) => (
+                              <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
+                                {option}
+                              </SelectItem>
+                            ))}
+                          </ScrollArea>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  ) : (
+                    <div className={cn('grid gap-2')}>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            id='date'
+                            variant={'outline'}
+                            className={cn(
+                              'w-[260px] justify-start text-left font-normal',
+                              !date && 'text-muted-foreground'
+                            )}
+                          >
+                            <CalendarIcon className='mr-2 h-4 w-4' />
+                            {date?.from ? (
+                              date.to ? (
+                                <>
+                                  {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
+                                </>
+                              ) : (
+                                format(date.from, 'LLL dd, y')
+                              )
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className='w-auto p-0' align='end'>
+                          <Calendar
+                            initialFocus
+                            mode='range'
+                            defaultMonth={date?.from}
+                            captionLayout='dropdown-buttons'
+                            selected={date}
+                            disabled={(date) => date > new Date() || date < new Date('1800-01-01')}
+                            onDayClick={handleDayClick}
+                            onDayMouseEnter={handleDayMouseEnter}
+                            onDayMouseLeave={handleDayMouseLeave}
+                            fromYear={1800}
+                            toYear={2050}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  )}
+                </div>
+                <div className='mt-3 w-full flex-1 text-xs h-full'>
+                  <SaleBarChart data={statistics} />
+                </div>
+              </div>
+            </div>
+            <div className='grid grid-cols-1 sm:grid-cols-1 md:row-span-2 lg:row-span-2 lg:grid-cols-3 lg:col-span-2 gap-2 w-full h-fit'>
+              <div className='  flex items-center flex-col justify-center border   rounded-[0.5rem] shadow-md  h-[22rem]  p-4  border-gray-200 '>
+                <div className='flex items-start justify-between  gap-14'>
+                  <div className=''>
+                    <p className=' text-muted-foreground'>Animal Statistics</p>
+                    <strong className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</strong>
+                  </div>
+                  <Link
+                    to='/dashboard/animal'
+                    className='flex items-center text-muted-foreground text-sm justify-between '
+                  >
+                    View All <Icons.ArrowRight className='text-sm' />
+                  </Link>
+                </div>
+                <div className='mt-3 w-full flex-1 text-xs'>
+                  <AnimalPieChart data={dataAnimal} width={400} height={300} />
+                </div>
+              </div>
+
+              <div className=' flex items-center flex-col justify-center border  p-5 rounded-[0.5rem] shadow-md '>
+                <div className='flex items-start justify-between  gap-14'>
+                  <div className=''>
+                    <p className=' text-muted-foreground'>Species Statistics</p>
+                    <h1>{speciesStatic.length}</h1>
+                  </div>
+                  <Link
+                    to='/dashboard/animal'
+                    className='flex items-center text-muted-foreground text-sm justify-between '
+                  >
+                    View All <Icons.ArrowRight className='text-sm' />
+                  </Link>
+                </div>
+                <div className='mt-3 w-full flex-1 text-xs'>
+                  <SpeciesPieChart data={speciesStatic} width={400} height={300} />
+                </div>
+              </div>
+
+              <div className=' flex items-center flex-col justify-center border  p-5 rounded-[0.5rem] shadow-md '>
+                <div className='flex items-start justify-between  gap-14'>
+                  <div className=''>
+                    <p className=' text-muted-foreground'>Species Statistics</p>
+                    <h1>{speciesStatic.length}</h1>
+                  </div>
+                  <Link
+                    to='/dashboard/animal'
+                    className='flex items-center text-muted-foreground text-sm justify-between '
+                  >
+                    View All <Icons.ArrowRight className='text-sm' />
+                  </Link>
+                </div>
+                <div className='mt-3 w-full flex-1 text-xs'>
+                  <SpeciesPieChart data={speciesStatic} width={400} height={300} />
+                </div>
+              </div>
+            </div>
+            <div className='lg:row-span-4 md:row-span-2  flex items-center justify-center w-full h-full rounded'>
+              <div className=' flex items-center flex-col justify-center border h-full p-5 rounded-[0.5rem] shadow-md '>
+                <div className='flex items-start justify-between  gap-14'>
+                  <div className=''>
+                    <p className=' text-muted-foreground'>Species Statistics</p>
+                    <h1>{speciesStatic.length}</h1>
+                  </div>
+                  <Link
+                    to='/dashboard/animal'
+                    className='flex items-center text-muted-foreground text-sm justify-between '
+                  >
+                    View All <Icons.ArrowRight className='text-sm' />
+                  </Link>
+                </div>
+                <div className='mt-3 w-full flex-1 text-xs'>
+                  <SpeciesPieChart data={speciesStatic} width={400} height={300} />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <LoadingScreen></LoadingScreen>
@@ -459,3 +520,13 @@ const Dashboard = () => {
 }
 
 export default Dashboard
+
+// sale bar chart
+
+// sale bar chart
+
+// animal statistics
+
+// animal statistics
+
+// species  statistics
