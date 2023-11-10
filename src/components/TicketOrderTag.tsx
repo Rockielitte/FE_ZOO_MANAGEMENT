@@ -14,7 +14,9 @@ const TicketOrderTag = ({ quantity, price, ticketName }: Props) => {
         <span className='font-medium '>Ticket for {ticketName}</span>
         <span className='text-sm'>Quantity: {quantity}</span>
       </div>
-      <div className='text-xl font-semibold'>${price || 0 * quantity}</div>
+      <div className='text-xl font-semibold'>
+        {(price || 0 * quantity).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+      </div>
     </div>
   )
 }

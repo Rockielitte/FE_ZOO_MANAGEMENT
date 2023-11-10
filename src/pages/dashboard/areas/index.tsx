@@ -13,7 +13,7 @@ import useMutationCustom from '@/hooks/useMutationCustom'
 
 const formSchema = z.object({
   // code: z.string().regex(regexPattern),
-  code: z.string().min(3),
+  code: z.string().min(1),
 
   name: z.string().min(1),
   location: z.string().min(1)

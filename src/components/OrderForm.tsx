@@ -13,7 +13,7 @@ import { UseFormReturn, FieldValues, Path, SubmitHandler, PathValue } from 'reac
 import { useState } from 'react'
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 import { BsCart4, BsImages } from 'react-icons/bs'
-import { OrderStatusEnum, User } from '@/types'
+import { OrderStatusEnum, TicketStatusEnum, User } from '@/types'
 import { UseMutationResult } from 'react-query'
 import { AxiosResponse } from 'axios'
 import LoadingScreen from './Loading'
@@ -41,6 +41,7 @@ interface OrderFormProps<T extends FieldValues, R> {
   fields: Path<T>[]
   canEdit: Path<T>[]
   deleteFn?: UseMutationResult<AxiosResponse<R>, unknown, object, unknown>
+  canAuth?: boolean
 }
 
 const OrderForm = <T extends FieldValues, R>({
@@ -49,7 +50,8 @@ const OrderForm = <T extends FieldValues, R>({
   formMutation,
   fields,
   canEdit,
-  formSideMutation
+  formSideMutation,
+  canAuth
 }: OrderFormProps<T, R>) => {
   const [orderCart, setOrderCart] = useState<'tickets' | 'order'>('order')
   const location = useLocation()
@@ -109,7 +111,7 @@ const OrderForm = <T extends FieldValues, R>({
         <span className='font-normal text-base min-h-[24px] tracking-wide font-roboto'>
           {getValues('id' as Path<T>) || 'Order tickets'}
         </span>
-        {id && (
+        {canAuth && id && (
           <div className='m-auto flex items-center gap-2 shadow-2xl absolute top-0 right-4 bottom-0 uppercase'>
             <AlertDialog>
               <AlertDialogTrigger>
@@ -152,13 +154,15 @@ const OrderForm = <T extends FieldValues, R>({
       </div>
       <div className='flex-1 flex flex-col-reverse sm:flex-row gap-2  sm:overflow-auto pt-4  sm:px-0'>
         <form className='w-full md:w-3/5 md:h-full relative  ' onSubmit={handleSubmit(onSubmit)}>
-          <Button
-            type='submit'
-            className='absolute flex z-20 items-center gap-1 bottom-1 right-1 sm:right-3 sm:bottom-2 opacity-70  font-bold hover:opacity-100 hover:scale-110 transition-all'
-          >
-            <RiSendPlaneLine className='text-xl' />
-            Submit
-          </Button>
+          {canAuth && (
+            <Button
+              type='submit'
+              className='absolute flex z-20 items-center gap-1 bottom-1 right-1 sm:right-3 sm:bottom-2 opacity-70  font-bold hover:opacity-100 hover:scale-110 transition-all'
+            >
+              <RiSendPlaneLine className='text-xl' />
+              Submit
+            </Button>
+          )}
 
           <div className='w-full  md:border-r  flex flex-col  gap-4 px-6 overflow-auto h-full py-2 '>
             {fields.map((item) => {
@@ -224,7 +228,10 @@ const OrderForm = <T extends FieldValues, R>({
                         id={item}
                         placeholder={`Type ${item} here . . .`}
                         className='w-full'
-                        value={`You chose ${orderSum.ticketCount || 0} tickets costed $${orderSum.total} in total!`}
+                        value={`You chose ${orderSum.ticketCount || 0} tickets costed ${orderSum.total.toLocaleString(
+                          'vi-VN',
+                          { style: 'currency', currency: 'VND' }
+                        )} in total!`}
                       />
                     ) : (
                       <Input
@@ -310,7 +317,8 @@ const OrderForm = <T extends FieldValues, R>({
                               name: item.ticketName as string,
                               price: item.price as number,
                               description: '',
-                              createdBy: {} as User
+                              createdBy: {} as User,
+                              status: TicketStatusEnum.ACTIVE
                             }}
                             form={form}
                           />
@@ -326,7 +334,10 @@ const OrderForm = <T extends FieldValues, R>({
                       <span>
                         Total:{' '}
                         <span className='uppercase font-medium text-xl'>
-                          ${getValues('total' as Path<T>) || orderSum.total || 0}
+                          {(getValues('total' as Path<T>) || orderSum.total || 0).toLocaleString('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND'
+                          })}
                         </span>
                       </span>
                     </div>

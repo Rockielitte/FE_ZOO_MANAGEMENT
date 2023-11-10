@@ -12,7 +12,7 @@ export default function SaleBarChart({ data }: Props) {
     return <div className='flex items-center justify-center p-10'>No data available.</div> // Render a message when data is empty
   }
   return (
-    <ResponsiveContainer width='100%' height='100%'>
+    <ResponsiveContainer width={'99%'} height={'99%'}>
       <BarChart
         width={500}
         height={300}

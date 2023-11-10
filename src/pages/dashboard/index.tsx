@@ -3,6 +3,7 @@ import { Icons } from '@/components/Icon'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import {
   AnimalStatusStatistics,
+  NewType,
   OverallStatistics,
   SaleOverallStatistics,
   SaleStatistics,
@@ -14,7 +15,7 @@ import { Link } from 'react-router-dom'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { addDays, eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns'
 import { DateRange } from 'react-day-picker'
-import { capitalizeFirstLetter, cn } from '@/lib/utils'
+import { capitalizeFirstLetter, cn, getDate } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -35,7 +36,12 @@ const options = [
 const Dashboard = () => {
   const minYear = 1800
   const maxYear = 2023
-
+  const new_data = useQueryCustom<NewType, []>({
+    query: '/news/?status=HIDDEN',
+    queryKey: ['newGuests'],
+    data: {} as NewType
+  })
+  const BlogData = new_data.data as NewType[]
   const years = []
   for (let i = minYear; i <= maxYear; i++) {
     years.push(i)
@@ -202,7 +208,7 @@ const Dashboard = () => {
         <Error />
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
         <div className='flex-1 overflow-auto p-5 flex flex-col gap-4 h-full'>
-          <div className='mx-auto my-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-00 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-4'>
+          <div className='mx-auto my-10 grid max-w-2xl grid-cols-2 md:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4'>
             <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
               <div className='flex items-center justify-between gap-3'>
                 <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
@@ -283,13 +289,73 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className='grid grid-rows-4 grid-flow-col  gap-4 w-full h-full'>
-            <div className='row-span-1 lg:row-span-2 lg:col-span-2 col-span-2 flex items-center justify-center  rounded'>
-              <div className='h-full col-span-3  p-4 rounded-[0.5rem] border shadow-md border-gray-200 flex flex-col w-full'>
+          {/* 
+            pie chart here */}
+          <div className='grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3  gap-4  h-fit w-full '>
+            <div className='  flex flex-col  border  h-[22rem] rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+              <div className='flex items-start justify-between  gap-14'>
+                <div className=''>
+                  <p className=' text-muted-foreground'>Animal Statistics</p>
+                  <h1 className='text-gray-700 font-medium '>{ZooStatistics?.totalAnimal}</h1>
+                </div>
+                <Link
+                  to='/dashboard/animal'
+                  className='flex items-center text-muted-foreground text-sm justify-between '
+                >
+                  View All <Icons.ArrowRight className='text-sm' />
+                </Link>
+              </div>
+              <div className='mt-3 w-full flex-1 text-xs'>
+                <AnimalPieChart data={dataAnimal} width={400} height={300} />
+              </div>
+            </div>
+
+            <div className=' flex flex-col  border h-[22rem]  p-5 rounded-[0.5rem] shadow-md '>
+              <div className='flex items-start justify-between  gap-14'>
+                <div className=''>
+                  <p className=' text-muted-foreground'>Species Statistics</p>
+                  <h1 className='text-gray-700 font-medium '>{speciesStatic.length}</h1>
+                </div>
+                <Link
+                  to='/dashboard/animal'
+                  className='flex items-center text-muted-foreground text-sm justify-between '
+                >
+                  View All <Icons.ArrowRight className='text-sm' />
+                </Link>
+              </div>
+              <div className='mt-3 w-full flex-1 text-xs'>
+                <SpeciesPieChart data={speciesStatic} width={400} height={300} />
+              </div>
+            </div>
+
+            <div className=' flex  flex-col  border h-[22rem]  p-5 rounded-[0.5rem] shadow-md '>
+              <div className='flex items-start justify-between  gap-14'>
+                <div className=''>
+                  <p className=' text-muted-foreground'>Species Statistics</p>
+                  <h1 className='text-gray-700 font-medium '>{speciesStatic.length}</h1>
+                </div>
+                <Link
+                  to='/dashboard/animal'
+                  className='flex items-center text-muted-foreground text-sm justify-between '
+                >
+                  View All <Icons.ArrowRight className='text-sm' />
+                </Link>
+              </div>
+              <div className='mt-3 w-full flex-1 text-xs'>
+                <SpeciesPieChart data={speciesStatic} width={400} height={300} />
+              </div>
+            </div>
+          </div>
+
+          <div className='grid  lg:grid-cols-3 md:grid-cols-1  gap-4 w-full h-full'>
+            {/* 
+            Bar chart here */}
+            <div className=' lg:col-span-2 col-span-1 block  rounded'>
+              <div className='h-full   p-5 rounded-[0.5rem] border shadow-md border-gray-200 flex  flex-col w-full'>
                 <div className='flex items-start justify-between  gap-14'>
                   <div className=''>
                     <p className=' text-muted-foreground'>Tota l Renueve</p>
-                    <strong className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</strong>
+                    <h1 className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</h1>
                   </div>
                   <Link
                     to='/dashboard/animal'
@@ -322,46 +388,52 @@ const Dashboard = () => {
 
                   {type == 'YEAR' ? (
                     <div className={cn('flex items-center gap-2 justify-between ')}>
-                      <Select
-                        value={yearRange.from}
-                        onValueChange={(value) => {
-                          handleYearStartChange(value)
-                        }}
-                      >
-                        <SelectTrigger className=' focus:ring-0'>
-                          {' '}
-                          {yearRange.from != '' ? yearRange.from : 'Select Start Year'}
-                        </SelectTrigger>
-                        <SelectContent position='popper'>
-                          <ScrollArea className='h-80'>
-                            {years.map((option, id: number) => (
-                              <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
-                                {option}
-                              </SelectItem>
-                            ))}
-                          </ScrollArea>
-                        </SelectContent>
-                      </Select>
-                      <Select
-                        value={yearRange.to}
-                        onValueChange={(value) => {
-                          handleYearEndChange(value)
-                        }}
-                      >
-                        <SelectTrigger className='pr-1.5 focus:ring-0'>
-                          {' '}
-                          {yearRange.to != '' ? yearRange.to : 'Select End Year'}
-                        </SelectTrigger>
-                        <SelectContent position='popper'>
-                          <ScrollArea className='h-80'>
-                            {years.map((option, id: number) => (
-                              <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
-                                {option}
-                              </SelectItem>
-                            ))}
-                          </ScrollArea>
-                        </SelectContent>
-                      </Select>
+                      <div className='flex items-center gap-2 '>
+                        <Label>Start Year: </Label>
+                        <Select
+                          value={yearRange.from}
+                          onValueChange={(value) => {
+                            handleYearStartChange(value)
+                          }}
+                        >
+                          <SelectTrigger className=' focus:ring-0'>
+                            {' '}
+                            {yearRange.from != '' ? yearRange.from : 'Select Start Year'}
+                          </SelectTrigger>
+                          <SelectContent position='popper'>
+                            <ScrollArea className='h-80'>
+                              {years.map((option, id: number) => (
+                                <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
+                                  {option}
+                                </SelectItem>
+                              ))}
+                            </ScrollArea>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className='flex items-center gap-2'>
+                        <Label>End Year: </Label>
+                        <Select
+                          value={yearRange.to}
+                          onValueChange={(value) => {
+                            handleYearEndChange(value)
+                          }}
+                        >
+                          <SelectTrigger className='pr-1.5 focus:ring-0'>
+                            {' '}
+                            {yearRange.to != '' ? yearRange.to : 'Select End Year'}
+                          </SelectTrigger>
+                          <SelectContent position='popper'>
+                            <ScrollArea className='h-80'>
+                              {years.map((option, id: number) => (
+                                <SelectItem key={`${option}-${id}`} value={option?.toString() ?? ''}>
+                                  {option}
+                                </SelectItem>
+                              ))}
+                            </ScrollArea>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   ) : type === 'MONTH' ? (
                     <div className={cn('grid gap-2')}>
@@ -431,35 +503,20 @@ const Dashboard = () => {
                     </div>
                   )}
                 </div>
-                <div className='mt-3 w-full flex-1 text-xs h-full'>
+                <div className='mt-3 w-full h-[22rem] text-xs '>
                   <SaleBarChart data={statistics} />
                 </div>
               </div>
             </div>
-            <div className='grid grid-cols-1 sm:grid-cols-1 md:row-span-2 lg:row-span-2 lg:grid-cols-3 lg:col-span-2 gap-2 w-full h-fit'>
-              <div className='  flex items-center flex-col justify-center border   rounded-[0.5rem] shadow-md  h-[22rem]  p-4  border-gray-200 '>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Animal Statistics</p>
-                    <strong className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</strong>
-                  </div>
-                  <Link
-                    to='/dashboard/animal'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
-                  >
-                    View All <Icons.ArrowRight className='text-sm' />
-                  </Link>
-                </div>
-                <div className='mt-3 w-full flex-1 text-xs'>
-                  <AnimalPieChart data={dataAnimal} width={400} height={300} />
-                </div>
-              </div>
 
-              <div className=' flex items-center flex-col justify-center border  p-5 rounded-[0.5rem] shadow-md '>
+            {/* 
+            News chart here */}
+            <div className='lg:col-span-1  flex items-center justify-center w-full h-full rounded'>
+              <div className=' border w-full h-full p-5 rounded-[0.5rem] shadow-md '>
                 <div className='flex items-start justify-between  gap-14'>
                   <div className=''>
-                    <p className=' text-muted-foreground'>Species Statistics</p>
-                    <h1>{speciesStatic.length}</h1>
+                    <p className=' text-muted-foreground'>News is Un Published</p>
+                    <h1>{speciesStatic?.length}</h1>
                   </div>
                   <Link
                     to='/dashboard/animal'
@@ -468,45 +525,58 @@ const Dashboard = () => {
                     View All <Icons.ArrowRight className='text-sm' />
                   </Link>
                 </div>
-                <div className='mt-3 w-full flex-1 text-xs'>
-                  <SpeciesPieChart data={speciesStatic} width={400} height={300} />
-                </div>
-              </div>
+                <div className='mt-3 w-full  text-xs h-fit'>
+                  {' '}
+                  {new_data.isError ? (
+                    <Error />
+                  ) : !new_data.isLoading ? (
+                    BlogData.map((el: NewType, id: number) => {
+                      return (
+                        <article className='md:grid md:grid-cols-4 md:items-baseline m-4 gap-x-8 w-full' key={id}>
+                          <div className='md:col-span-3 group relative flex flex-col  items-start'>
+                            <div className='flex items-start  gap-4 w-full p-4'>
+                              <div className='w-full'>
+                                <h2 className='text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100'>
+                                  {/* <div className='absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl'></div> */}
+                                  <Link to={`/dashboard/news/${el.id}`}>
+                                    {/* <span className='absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl'></span> */}
+                                    <div className='relative z-10 truncate w-24'>{el.title}</div>
+                                  </Link>
+                                </h2>
+                                <p className='relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400'>
+                                  {!el?.author ? 'Unknown' : el.author.email}
+                                </p>
+                              </div>
+                              <div
+                                aria-hidden='true'
+                                className='relative z-10 flex items-start  text-sm font-medium text-teal-500'
+                              >
+                                Published
+                              </div>
+                            </div>
 
-              <div className=' flex items-center flex-col justify-center border  p-5 rounded-[0.5rem] shadow-md '>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Species Statistics</p>
-                    <h1>{speciesStatic.length}</h1>
-                  </div>
-                  <Link
-                    to='/dashboard/animal'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
-                  >
-                    View All <Icons.ArrowRight className='text-sm' />
-                  </Link>
-                </div>
-                <div className='mt-3 w-full flex-1 text-xs'>
-                  <SpeciesPieChart data={speciesStatic} width={400} height={300} />
-                </div>
-              </div>
-            </div>
-            <div className='lg:row-span-4 md:row-span-2  flex items-center justify-center w-full h-full rounded'>
-              <div className=' flex items-center flex-col justify-center border h-full p-5 rounded-[0.5rem] shadow-md '>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Species Statistics</p>
-                    <h1>{speciesStatic.length}</h1>
-                  </div>
-                  <Link
-                    to='/dashboard/animal'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
-                  >
-                    View All <Icons.ArrowRight className='text-sm' />
-                  </Link>
-                </div>
-                <div className='mt-3 w-full flex-1 text-xs'>
-                  <SpeciesPieChart data={speciesStatic} width={400} height={300} />
+                            <time
+                              className='md:hidden relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500 pl-3.5'
+                              dateTime={getDate(el?.postedAt)}
+                            >
+                              <span className='absolute inset-y-0 left-0 flex items-center' aria-hidden='true'>
+                                <span className='h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500'></span>
+                              </span>
+                              <span className='ml-3'>{getDate(el?.postedAt)}</span>
+                            </time>
+                          </div>
+                          <time
+                            className='mt-1 hidden md:block relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500'
+                            dateTime={getDate(el?.postedAt)}
+                          >
+                            {getDate(el?.postedAt)}
+                          </time>
+                        </article>
+                      )
+                    })
+                  ) : (
+                    <LoadingScreen></LoadingScreen>
+                  )}
                 </div>
               </div>
             </div>
