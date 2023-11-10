@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom'
 import { useMemo } from 'react'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
+// import useCheckRole from '@/hooks/useCheckRole'
 // const columns: ColumnDef<Cage>[] = [
 //   {
 //     accessorKey: 'id',
@@ -147,7 +148,7 @@ export default function DemoPage() {
     reset: true,
     data: {} as Cage
   })
-
+  // const user = useCheckRole()
   return (
     <div className='w-full  h-full '>
       {cage_data.isError ? (
@@ -165,6 +166,7 @@ export default function DemoPage() {
               formMutation,
               fields: ['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']
             }}
+            // canCreate={user.role && user.role == RoleEnum.ADMIN}
           />
         </div>
       ) : (

@@ -1,5 +1,5 @@
 import { useState, type FC, type ReactNode } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import logo from '../assets/logo/white.svg'
 import logoBlack from '../assets/logo/dark.svg'
 import useSideBar from '@/hooks/useSideBar'
@@ -25,7 +25,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     enter: { opacity: 1, transform: 'translateX(0%)' }
   })
   const { theme } = useTheme()
-  console.log(theme, 'LLL')
+  const url = useLocation().pathname
 
   return (
     <div className='w-screen h-screen  flex relative font-roboto  '>
@@ -56,16 +56,48 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                   )}
                 </div>
                 <div className='flex flex-col  py-2 px-2 pl-4 flex-1 overflow-y-auto overflow-x-hidden'>
-                  {routeList.map((route) => (
+                  {routeList.slice(0, 1).map((route) => (
+                    <Link
+                      key={route.name}
+                      to={route.href}
+                      className={clsx(
+                        '  border-l-4  rounded-sm transition-all duration-500 ease-out hover:bg-slate-300 dark:hover:text-black hover:scale-110',
+                        url == '/dashboard'
+                          ? 'shadow-lg  border-l-secondary-foreground bg-primary  text-secondary '
+                          : 'border-l-transparent '
+                      )}
+                    >
+                      <div
+                        className=' flex gap-2 items-center  p-4 '
+                        onClick={() => {
+                          if (window.innerWidth < smSize) {
+                            setIsShow(false)
+                          }
+                        }}
+                      >
+                        <span className='text-xl font-extralight'>
+                          <route.Icon />
+                        </span>
+                        <span className='text-base font-medium '>{route.name}</span>
+                      </div>
+                    </Link>
+                  ))}
+                  {routeList.slice(1).map((route) => (
                     <NavLink
                       key={route.name}
                       to={route.href}
                       className={({ isActive }) => {
                         return clsx(
                           '  border-l-4  rounded-sm transition-all duration-500 ease-out hover:bg-slate-300 dark:hover:text-black hover:scale-110',
-                          isActive
+                          route.href != '' && isActive
+                            ? 'shadow-lg  border-l-secondary-foreground bg-primary  text-secondary '
+                            : 'border-l-transparent ',
+                          route.href == '' && url == '/dashboard'
                             ? 'shadow-lg  border-l-secondary-foreground bg-primary  text-secondary '
                             : 'border-l-transparent '
+                          // isActive && url != '/dashboard'
+                          //   ? 'shadow-lg  border-l-secondary-foreground bg-primary  text-secondary '
+                          //   : 'border-l-transparent '
                         )
                       }}
                     >
