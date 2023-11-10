@@ -1,4 +1,4 @@
-import { dataSpecies } from '@/types'
+import { Animal } from '@/types'
 import { Table } from '@tanstack/react-table'
 import { EyeIcon } from 'lucide-react'
 import Lin from '@/assets/image14.png'
@@ -6,15 +6,20 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const GridAnimal: React.FC<{
-  data: Table<dataSpecies>
+  data: Table<Animal>
 }> = ({ data }) => {
+  const addDefaultImg = (ev: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = ev.target as HTMLImageElement;
+    target.src = Lin;
+  }
   return (
     <div className='w-full  flex flex-col flex-1 gap-1 items-start align-top p-2'>
       {data.getRowModel().rows.map((row) => {
         console.log('row animal: ', row.original)
         return (
           <div className='w-full flex justify-start align-middle border-2 rounded-[0.5rem] gap-2 overflow-hidden'>
-            <img className='max-h-[150px] min-w-[200px] object-cover' src={Lin} alt='' />
+            <img className='h-[150px] w-[200px] object-cover' src={`${row.original?.imageList[0]}`}
+              onError={addDefaultImg} alt='' />
 
             <div className='p-6'>
               <Link to={`/dashboard/animals/${row.original.id}`}>
