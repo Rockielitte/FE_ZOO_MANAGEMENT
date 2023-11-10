@@ -11,13 +11,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from '@/components/ui/alert-dialog'
-import { toast } from '@/components/ui/use-toast'
+import { useUpdateNewStatus } from '@/hooks/useUpdateStatusNew'
+
+import { NewType } from '@/types'
 interface ModalConfirmUpdate {
   showDeleteDialog: boolean
   setShowDeleteDialog: (prevState: boolean) => void
+  newUpdate: NewType | string
 }
 
-const ModalConfirmUpdate: FC<ModalConfirmUpdate> = ({ showDeleteDialog, setShowDeleteDialog }) => {
+const ModalConfirmUpdate: FC<ModalConfirmUpdate> = ({ showDeleteDialog, setShowDeleteDialog, newUpdate }) => {
+  const { updateNew } = useUpdateNewStatus()
   return (
     <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
       <AlertDialogContent>
@@ -33,11 +37,8 @@ const ModalConfirmUpdate: FC<ModalConfirmUpdate> = ({ showDeleteDialog, setShowD
           <Button
             variant='default'
             onClick={() => {
+              updateNew(newUpdate as NewType)
               setShowDeleteDialog(false)
-              toast({
-                variant: 'success',
-                title: 'success'
-              })
             }}
           >
             Confirm

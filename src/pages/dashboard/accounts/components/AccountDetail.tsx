@@ -60,7 +60,7 @@ const accountFormSchema = z.object({
   avt: z.string({
     required_error: 'Please select a avt.'
   }),
-  status: z.string()
+  status: z.string().optional()
   // avt: z
   //   .custom<FileList>((val) => val instanceof FileList, 'Required')
   //   .refine((files) => files.length > 0, `Required`)
@@ -99,7 +99,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
     role: accountDetail.role || '',
     gender: accountDetail.gender || '',
     avt: accountDetail?.avt || '',
-    status: 'ACTIVE'
+    status: accountDetail?.status || ''
   }
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),

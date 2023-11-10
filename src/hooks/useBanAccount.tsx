@@ -19,10 +19,16 @@ export const useBanAccount = (): UseBanAccount => {
     mutationFn: (data: BanAccount) => {
       return Account.banAccount(data.status, data.id)
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('ban data: ' + data.data.status)
+
       client.invalidateQueries(['accounts'])
 
-      toast.success('Banned!')
+      if (data.data.status == 'ACTIVE') {
+        toast.success('Active successful!')
+      } else {
+        toast.success('Banned!')
+      }
 
       navigate('/dashboard/accounts')
       // window.location.reload()
