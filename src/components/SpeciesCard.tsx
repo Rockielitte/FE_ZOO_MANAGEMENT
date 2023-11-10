@@ -3,7 +3,7 @@ import { buttonVariants } from './ui/button'
 import { EditSpecies } from '@/pages/dashboard/Species/components/UpdateSpecies'
 import { Link } from 'react-router-dom';
 import Lin from '@/assets/image14.png'
-import { log } from 'console';
+
 
 
 type Props = { id: number; name: string; description: string; image: string, user: User }
