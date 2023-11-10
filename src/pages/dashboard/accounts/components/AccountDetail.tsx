@@ -24,7 +24,8 @@ import LocalFile from '@/utils/api/LocalFile'
 interface AccountDetailProps {}
 const roles = [
   { label: 'Staff', value: 'STAFF' },
-  { label: 'Zoo Trainer', value: 'TRAINER' }
+  { label: 'Zoo Trainer', value: 'TRAINER' },
+  { label: 'Admin', value: 'Admin' }
 ] as const
 const genders = [
   { label: 'Male', value: 'MALE' },
@@ -238,11 +239,12 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                       <FormItem className='flex flex-col'>
                         <FormLabel>Role</FormLabel>
                         <Popover>
-                          <PopoverTrigger asChild>
+                          <PopoverTrigger asChild disabled>
                             <FormControl>
                               <Button
                                 variant='outline'
                                 role='combobox'
+                                disabled
                                 className={cn('justify-between', !field.value && 'text-muted-foreground')}
                               >
                                 {field.value ? roles.find((role) => role.value === field.value)?.label : 'Select role'}
