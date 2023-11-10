@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { Order } from '@/types'
+import { Order, RoleEnum } from '@/types'
 import useMutationCustom from '@/hooks/useMutationCustom'
 import OrderForm from '@/components/OrderForm'
+import useCheckRole from '@/hooks/useCheckRole'
 const formSchema = z.object({
   email: z.string().min(1),
   phone: z.string().min(1),
@@ -39,6 +40,7 @@ const OrderCreate = () => {
     reset: true,
     data: {} as Order
   })
+  const user = useCheckRole()
   return (
     <div className='w-full h-full'>
       <OrderForm
@@ -46,6 +48,7 @@ const OrderCreate = () => {
         formMutation={formMutation}
         fields={['name', 'email', 'phone', 'visitDate', 'details']}
         canEdit={['name', 'email', 'phone', 'visitDate', 'details']}
+        canAuth={user && user?.role == RoleEnum.ADMIN}
       ></OrderForm>
     </div>
   )

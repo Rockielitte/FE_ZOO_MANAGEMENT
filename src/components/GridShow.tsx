@@ -28,6 +28,7 @@ type DataTableProps<TData, TValue, X, T extends FieldValues> = {
   data: TData[]
   GridBox: React.FC<{ data: Table<TData> }>
   form?: PropsFormModal<X, T>
+  canCreate?: boolean
 }
 
 declare module '@tanstack/react-table' {
@@ -67,7 +68,8 @@ export function GridShow<TData, TValue, X, T extends FieldValues>({
   columns,
   data,
   GridBox,
-  form
+  form,
+  canCreate = true
 }: DataTableProps<TData, TValue, X, T>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -121,7 +123,7 @@ export function GridShow<TData, TValue, X, T extends FieldValues>({
             <Filter table={table} />
           </DropdownMenuContent>
         </DropdownMenu>
-        <div className='ml-auto transition-all'>{form && <ModalForm {...form} />}</div>
+        {canCreate && <div className='ml-auto transition-all'>{form && <ModalForm {...form} />}</div>}
       </div>
 
       <div className='flex-1 overflow-auto border rounded-md '>

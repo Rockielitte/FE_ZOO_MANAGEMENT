@@ -1,8 +1,12 @@
+import useCheckRole from '@/hooks/useCheckRole'
 import MealByDay from './MealByDay'
 import MealStrategy from './MealStrategy'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
+import { RoleEnum } from '@/types'
 
 const CageMealTabe = () => {
+  const user = useCheckRole()
+
   return (
     <div className='w-full h-full flex flex-col gap-2'>
       <Tabs defaultValue='meals' className='w-full  h-full flex-col flex  '>
@@ -13,12 +17,14 @@ const CageMealTabe = () => {
           >
             Meals
           </TabsTrigger>
-          <TabsTrigger
-            value='strategy'
-            className=' uppercase data-[state=active]:bg-primary data-[state=active]:text-white'
-          >
-            Meal Schedule
-          </TabsTrigger>
+          {user && user?.role != RoleEnum.TRAINER && (
+            <TabsTrigger
+              value='strategy'
+              className=' uppercase data-[state=active]:bg-primary data-[state=active]:text-white'
+            >
+              Meal Schedule
+            </TabsTrigger>
+          )}
         </TabsList>
         <TabsContent value='meals' className='w-full flex-1 overflow-auto  px-1'>
           <MealByDay />

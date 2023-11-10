@@ -64,9 +64,9 @@ import useMutationCustom from '@/hooks/useMutationCustom'
 //     enableColumnFilter: false
 //   }
 // ]
-const regexPattern = /^[A-Za-z][0-9]{4}$/
+// const regexPattern = /^[A-Za-z][0-9]{4}$/
 const formSchema = z.object({
-  code: z.string().regex(regexPattern),
+  code: z.string().min(1),
   areaId: z.coerce.number(),
   animalSpeciesId: z.coerce.number(),
   managedById: z.string().min(1),

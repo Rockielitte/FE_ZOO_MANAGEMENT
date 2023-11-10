@@ -29,7 +29,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
     queryKey: ['select', query],
     queryFn: () => {
       return request<{ id: string; name: string; code: string; animalSpecies?: Species; email?: string }[]>(
-        `/${query}/`,
+        `/${query}${query.indexOf('?') >= 0 ? '' : '/'}`,
         'GET',
         {
           Authorization: `Bearer ${token} `
@@ -110,7 +110,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
           }}
         >
           <SelectTrigger className='w-full' id={String(item)}>
-            <SelectValue placeholder={`Select ${query} . . .`} />
+            <SelectValue placeholder={`Select ${query.split('/?')[0]} . . .`} />
           </SelectTrigger>
           <SelectContent className='h-[210px] w-full  font-normal '>
             <div className='w-full h-full flex  flex-col overflow-auto gap-2 shadow-xl'>
@@ -120,14 +120,14 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
                   value={search}
                   onChange={(value) => setSearch(String(value))}
                   className='flex-1 '
-                  placeholder={`Search ${query} . . .`}
+                  placeholder={`Search ${query.split('/?')[0]} . . .`}
                 />
               </div>
               <div className='flex-1 flex flex-col w-full overflow-auto h-full pt-2 border shadow-2xl rounded-md p-2'>
                 {selectMap.length ? (
                   <>
                     {selectMap.map((item) => (
-                      <SelectItem key={item.value} value={item.value} className='capitalize'>
+                      <SelectItem key={item.value} value={item.value} className=''>
                         {item.label}
                       </SelectItem>
                     ))}
@@ -152,7 +152,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
           }}
         >
           <SelectTrigger className='w-full h-full' id={item}>
-            <SelectValue placeholder={`Select ${query} . . .`} />
+            <SelectValue placeholder={`Select ${query.split('/?')[0]} . . .`} />
           </SelectTrigger>
           <SelectContent className='h-[210px] w-full  font-normal '>
             <div className='w-full h-full flex  flex-col overflow-auto gap-2 shadow-xl'>
@@ -162,14 +162,14 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
                   value={search}
                   onChange={(value) => setSearch(String(value))}
                   className='flex-1 '
-                  placeholder={`Search ${query} . . .`}
+                  placeholder={`Search  ${query.split('/?')[0]} . . .`}
                 />
               </div>
               <div className='flex-1 flex flex-col w-full overflow-auto h-full pt-2 border shadow-2xl rounded-md p-2'>
                 {selectMap.length ? (
                   <>
                     {selectMap.map((item) => (
-                      <SelectItem key={item.value} value={item.value} className='capitalize'>
+                      <SelectItem key={item.value} value={item.value} className=''>
                         {item.label}
                       </SelectItem>
                     ))}
