@@ -2,17 +2,17 @@
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import AnimalSpecies from '@/utils/api/AnimalSpecies'
-import { useParams } from 'react-router-dom'
+import { useParams, useRouteLoaderData } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { SpeciesTable } from './SpeciesTable'
 import GridAnimal from './GridAnimal'
 import axios from 'axios'
 import GridCage from './GridCage'
 import { ColumnDef } from '@tanstack/react-table'
-import { Cage, dataSpecies } from '@/types'
+import { Animal, Cage, User, dataSpecies } from '@/types'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
-export interface IAppProps {}
+export interface IAppProps { }
 
 export const speciesDetailQuery = (id?: string) => ({
   queryKey: ['species', 'detail', id],
@@ -28,7 +28,10 @@ export const speciesDetailQuery = (id?: string) => ({
   }
 })
 export default function SpeciesDetail() {
-  const columnsAnimal: ColumnDef<dataSpecies>[] = [
+  const { data: user } = useRouteLoaderData('dashboard') as { data: User }
+  console.log('role user: ' + user?.role)
+
+  const columnsAnimal: ColumnDef<Animal>[] = [
     {
       accessorKey: 'id',
       header: 'ID',
@@ -50,9 +53,14 @@ export default function SpeciesDetail() {
       cell: ({ row }) => <span>{row.getValue('description')}</span>
     },
     {
-      accessorKey: 'image',
-      header: 'Image',
-      cell: ({ row }) => <span>{row.getValue('image')}</span>
+      accessorKey: 'imageList',
+      header: 'imageList',
+      cell: ({ row }) => <span>{row.getValue('imageList')}</span>
+    },
+    {
+      accessorKey: 'nation',
+      header: 'Nation',
+      cell: ({ row }) => <span>{row.getValue('nation')}</span>
     }
   ]
 
@@ -88,7 +96,7 @@ export default function SpeciesDetail() {
     queryFn: () => {
       return AnimalSpecies.getCageBySpeciesId(id)
     },
-    onSuccess: () => {},
+    onSuccess: () => { },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         console.log(error.message)
@@ -99,8 +107,11 @@ export default function SpeciesDetail() {
     }
   })
   console.log('cage_data: ', cage_data)
+
   const { data: species } = useQuery(speciesDetailQuery(id))
-  console.log(species)
+
+  console.log("animal: " + species.animals)
+
   return (
     <div className='w-full p-5 py-2 h-full flex  flex-col  shadow-2xl border rounded-[0.5rem]  '>
       <div className='p-5'>
@@ -115,14 +126,14 @@ export default function SpeciesDetail() {
           <TabsTrigger value='cage'>Cage {`(${cage_data?.length ? cage_data?.length : `...`})`}</TabsTrigger>
         </TabsList>
         <TabsContent value='animal' className='w-full h-full flex-auto flex-col overflow-auto'>
-          <SpeciesTable columns={columnsAnimal} data={species.animals} GridBox={GridAnimal} />
+          <SpeciesTable columns={columnsAnimal} data={species.animals} GridBox={GridAnimal} user={user} />
         </TabsContent>
 
         <TabsContent value='cage' className='w-full h-full flex-auto flex-col overflow-auto'>
           {isError ? (
             <Error />
           ) : !isLoading ? (
-            <SpeciesTable columns={columnsCage} data={cage_data} GridBox={GridCage} />
+            <SpeciesTable columns={columnsCage} data={cage_data} GridBox={GridCage} user={user} />
           ) : (
             <LoadingScreen></LoadingScreen>
           )}

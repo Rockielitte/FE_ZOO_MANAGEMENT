@@ -1,10 +1,14 @@
+import { User } from '@/types';
 import { buttonVariants } from './ui/button'
 import { EditSpecies } from '@/pages/dashboard/Species/components/UpdateSpecies'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-type Props = { id: number; name: string; description: string; image: string }
+
+type Props = { id: number; name: string; description: string; image: string, user: User }
 
 export const SpeciesCard = (props: Props) => {
+  console.log("user role: " + props.user?.role);
+
   return (
     <div className='species-img bg-[url(@/assets/image14.png)] bg-center bg-cover box-content  min-h-[200px] p-4 border-4 rounded-[1rem]'>
       <div className='flex justify-between flex-col h-full p-3'>
@@ -17,7 +21,8 @@ export const SpeciesCard = (props: Props) => {
           <Link to={`/dashboard/animal_species/${props.id}`} className={buttonVariants({ variant: 'secondary' })}>
             View
           </Link>
-          <EditSpecies id={props.id} />
+          {props.user?.role === 'ADMIN' ? (<EditSpecies id={props.id} />) : (<></>)}
+
         </div>
       </div>
     </div>

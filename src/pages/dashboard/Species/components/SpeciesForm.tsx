@@ -3,7 +3,7 @@ import { Path, useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { Textarea } from '@/components/ui/textarea'
 // import AnimalSpecies from '@/utils/api/AnimalSpecies'
@@ -12,6 +12,10 @@ import { dataSpecies } from '@/types'
 // import { useQueryClient } from 'react-query'
 import useMutationCustom from '@/hooks/useMutationCustom'
 import axios from 'axios'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { cn } from '@/lib/utils'
+import LocalFile from '@/utils/api/LocalFile'
+import { ChangeEvent, useState } from 'react'
 // import { useLocation, useNavigate } from 'react-router-dom'
 
 interface Species {
@@ -52,6 +56,24 @@ export function SpeciesForm(props: Species) {
     resolver: zodResolver(animalSpeciesFormSchema),
     defaultValues: props.species
   })
+
+  const [preview, setPreview] = useState(props.species?.image)
+
+  async function getImageData(event: ChangeEvent<HTMLInputElement>) {
+    // FileList is immutable, so we need to create a new one
+    const dataTransfer = new DataTransfer()
+
+    // Add newly uploaded images
+    Array.from(event.target.files!).forEach((image) => dataTransfer.items.add(image))
+
+    const files = dataTransfer.files
+    const displayUrl = await LocalFile.uploadFile({ file: files[0] })
+    // const displayUrl = URL.createObjectURL(event.target.files![0])
+    console.log(displayUrl)
+
+    return { files, displayUrl }
+  }
+
   // const location = useLocation()
   // const queryParams = new URLSearchParams(location.search)
   // const navigate = useNavigate()
@@ -73,6 +95,8 @@ export function SpeciesForm(props: Species) {
   // const client = useQueryClient()
 
   async function onSubmit(data: SpeciesFormValue) {
+    console.log('lijne: ' + data.image);
+
     if (props.id) {
       updateMutation.mutate(data, {
         onSuccess: () => {
@@ -122,52 +146,87 @@ export function SpeciesForm(props: Species) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-        <FormField
-          control={form.control}
-          name='name'
-          render={({ field }) => (
+      <form onSubmit={form.handleSubmit(onSubmit)} >
+        <div className='grid grid-cols-1 gap-x-10 gap-y-14 lg:grid-cols-1 flex-row-reverse '>
+
+          <div className=' flex items-center justify-start flex-col space-y-4'>
+            <Avatar className='w-60 h-60'>
+              <AvatarImage src={preview} />
+              <AvatarFallback>Unknown</AvatarFallback>
+            </Avatar>
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>
+                <p className={cn(buttonVariants({ variant: 'default' }))}>upload</p>
+              </FormLabel>
               <FormControl>
-                <Input placeholder='Species name' {...field} />
+                <input
+                  type='file'
+                  accept='image/*'
+                  hidden
+                  onChange={async (event) => {
+                    const { displayUrl } = await getImageData(event)
+                    console.log('displayUrl ' + displayUrl)
+                    setPreview(displayUrl as string)
+                    form.setValue('image', displayUrl as string)
+                  }}
+                />
               </FormControl>
-              <FormDescription>This is the name that will be displayed on species profile.</FormDescription>
+
               <FormMessage />
             </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='description'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea placeholder='Type your message here.' {...field} />
-              </FormControl>
-              <FormDescription>This is the description that will be displayed on species profile.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='image'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image</FormLabel>
-              <FormControl>
-                <Input id='picture' type='file' {...field} value={undefined} />
-              </FormControl>
-              <FormDescription>This is the image that will be displayed on species profile.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <DialogFooter>
-          <Button type='submit'>Submit</Button>
-        </DialogFooter>
+          </div>
+
+          <div className='space-y-8'>
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Species name' {...field} />
+                  </FormControl>
+                  <FormDescription>This is the name that will be displayed on species profile.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='description'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder='Type your message here.' {...field} />
+                  </FormControl>
+                  <FormDescription>This is the description that will be displayed on species profile.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* <FormField
+              control={form.control}
+              name='image'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <Input id='picture' type='file' {...field} value={undefined} />
+                  </FormControl>
+                  <FormDescription>This is the image that will be displayed on species profile.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+            <DialogFooter>
+              <Button type='submit'>Submit</Button>
+            </DialogFooter>
+          </div>
+
+        </div>
+
+
       </form>
     </Form>
   )

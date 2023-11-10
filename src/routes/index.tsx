@@ -5,12 +5,13 @@ import GuestGuard from './GuestGuard'
 import Loadable from './Loadable'
 import { QueryClient } from 'react-query'
 import Error from '@/pages/Error'
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, useRouteLoaderData } from 'react-router-dom'
 import { loaderSpeciesDetail } from '@/lib/loader/loaderSpecies'
 import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
 import { loaderAccountDetail, GetInfoUser } from '@/lib/loader/AccountsLoader'
 import { loaderNewDetail } from '@/lib/loader/NewsLoader'
+import { User } from '@/types'
 
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
@@ -159,11 +160,16 @@ const routes: RouteObject[] = [
               }
             ]
           },
+
           {
+            id: 'animal_species',
             path: 'animal_species',
-            element: Species
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
+            children: [
+              { index: true, element: Species },
+              { path: ':id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) }
+            ]
           },
-          { path: 'animal_species/:id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) },
           {
             path: 'animals',
             children: [

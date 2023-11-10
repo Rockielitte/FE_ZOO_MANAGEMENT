@@ -2,7 +2,7 @@ import { post } from '../apiCaller'
 
 const LocalFile = {
   uploadFile: async (data: { file: File }) => {
-    const endpoint = `/upload`
+    const endpoint = `/utils/upload`
     console.log('data: ' + data.file.name)
     const formData = new FormData()
     formData.append('file', data.file)

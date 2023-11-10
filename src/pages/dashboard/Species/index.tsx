@@ -1,12 +1,16 @@
 import { SpeciesTable } from './components/SpeciesTable'
 import { ColumnDef } from '@tanstack/react-table'
-import { Species, dataSpecies } from '@/types'
+import { Species, User, dataSpecies } from '@/types'
 import GridSpecies from './components/GridSpecies'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
+import { useRouteLoaderData } from 'react-router-dom'
 
 export default function Species() {
+  const { data } = useRouteLoaderData('dashboard') as { data: User }
+  console.log('role user: ' + data?.role)
+
   const columnsSpecies: ColumnDef<dataSpecies>[] = [
     {
       accessorKey: 'id',
@@ -48,6 +52,7 @@ export default function Species() {
           columns={columnsSpecies}
           data={!animal_species_data.data ? [] : (animal_species_data.data as Species[])}
           GridBox={GridSpecies}
+          user={data}
         />
       ) : (
         <LoadingScreen></LoadingScreen>
