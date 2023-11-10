@@ -129,11 +129,11 @@ const News = () => {
   ]
 
   return (
-    <div className='w-full h-full border rounded-md shadow-md flex flex-col p-2 gap-2'>
+    <div className='w-full h-full border rounded-md shadow-md flex flex-col  gap-2'>
       {news_data.isError ? (
         <Error />
       ) : !news_data.isLoading ? (
-        <div className='flex-1 overflow-auto p-5'>
+        <div className='flex-1 overflow-auto p-2'>
           <DataTable
             columns={columnsAccount}
             // !animal_data.data ? [] : (animal_data.data as Animal[])

@@ -9,15 +9,20 @@ import {
 import { SpeciesTablePagination } from './SpeciesPagination'
 import { Input } from '@/components/ui/input'
 import { CreateSpecies } from './CreateSpecies'
+import { User } from '@/types'
+
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface DataTableProps<TData, TValue, _X> {
+interface DataTableProps<TData, TValue, _X, _Y> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  GridBox: React.FC<{ data: Table<TData> }>
+  GridBox: React.FC<{ data: Table<TData>, user: User }>
+  user: User
 }
 
-export function SpeciesTable<TData, TValue, X>({ columns, data, GridBox }: DataTableProps<TData, TValue, X>) {
+export function SpeciesTable<TData, TValue, X, Y>({ columns, data, GridBox, user }: DataTableProps<TData, TValue, X, Y>) {
+  console.log("role user: ", user.role);
+
   const table = useReactTable({
     data,
     columns,
@@ -40,7 +45,7 @@ export function SpeciesTable<TData, TValue, X>({ columns, data, GridBox }: DataT
             onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
             className='max-w-sm'
           />
-          {table.getColumn('nation')?.id ?
+          {table.getColumn('nation')?.id || user?.role === 'STAFF' || user?.role === 'TRAINER' ?
             (<></>) : (<CreateSpecies />)}
         </div>
       ) : (
@@ -56,7 +61,7 @@ export function SpeciesTable<TData, TValue, X>({ columns, data, GridBox }: DataT
 
       <div className='flex-1 flex overflow-auto h-full'>
         {table.getRowModel().rows?.length ? (
-          <div className='w-full h-full'>{<GridBox data={table} />}</div>
+          <div className='w-full h-full'>{<GridBox data={table} user={user} />}</div>
         ) : (
           <div className='text-center w-full h-full text-2xl'>No results.</div>
         )}

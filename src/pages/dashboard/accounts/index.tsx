@@ -161,7 +161,7 @@ const Accounts: FC<Accounts> = () => {
       {accounts_data.isError ? (
         <Error />
       ) : !accounts_data.isLoading ? (
-        <div className='flex-1 overflow-auto p-5'>
+        <div className='flex-1 overflow-auto p-2'>
           <AccountTable columns={columnsAccount} data={!accounts_data.data ? [] : (accounts_data.data as User[])} />
         </div>
       ) : (
