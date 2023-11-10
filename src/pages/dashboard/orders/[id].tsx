@@ -2,13 +2,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { useEffect, useMemo } from 'react'
-import { Order, OrderStatusEnum } from '@/types'
+import { Order, OrderStatusEnum, RoleEnum } from '@/types'
 import { useParams } from 'react-router-dom'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import OrderForm from '@/components/OrderForm'
 import useSideMutation from '@/hooks/useSideMutation'
+import useCheckRole from '@/hooks/useCheckRole'
 const formSchema = z.object({
   id: z.string(),
   email: z.string(),
@@ -78,6 +79,7 @@ const OrderDetail = () => {
     queryKey: ['orders', String(id)],
     returnType: {} as Order
   })
+  const user = useCheckRole()
   return (
     <div className='w-full h-full'>
       {order_data.isError ? (
@@ -88,7 +90,8 @@ const OrderDetail = () => {
           form={form}
           formSideMutation={formMutation}
           fields={['id', 'name', 'email', 'phone', 'visitDate', 'status', 'total']}
-          canEdit={['status']}
+          canEdit={user && user?.role == RoleEnum.ADMIN ? ['status'] : []}
+          canAuth={user && user?.role == RoleEnum.ADMIN}
         ></OrderForm>
       ) : (
         <LoadingScreen></LoadingScreen>

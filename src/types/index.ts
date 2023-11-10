@@ -235,12 +235,18 @@ export type NewType = {
   author: User
   status: 'HIDDEN' | 'PUBLISHED'
 }
+export enum TicketStatusEnum {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE'
+}
+
 export type Ticket = {
   id: number
   name: string
   description: string
   price: number
   createdBy: User
+  status: TicketStatusEnum
 }
 
 export enum OrderStatusEnum {

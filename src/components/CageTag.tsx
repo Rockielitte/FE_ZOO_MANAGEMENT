@@ -25,7 +25,7 @@ const formSchema = z.object({
   code: z.string().regex(regexPattern),
   areaId: z.coerce.number(),
   animalSpeciesId: z.coerce.number(),
-  managedById: z.string().min(1),
+  managedById: z.string().optional(),
   description: z.string().optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
@@ -71,7 +71,7 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
           <h1 className='text-base tracking-wide font-extrabold uppercase'>
             <span>Cage </span> {form.getValues('code') || row.getValue('code')}
           </h1>
-          <span className='text-sm'>Species: {form.getValues('animalSpeciesId') || row.getValue('species')}</span>
+          <span className='text-sm'>Species: {row.getValue('species')}</span>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger>

@@ -1,6 +1,7 @@
 import { useState, type FC, type ReactNode } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import logo from '../assets/logo.webp'
+import logo from '../assets/logo/white.svg'
+import logoBlack from '../assets/logo/dark.svg'
 import useSideBar from '@/hooks/useSideBar'
 import clsx from 'clsx'
 import Search from '@/components/Search'
@@ -8,6 +9,7 @@ import { AiOutlineMenu } from 'react-icons/ai'
 import { useTransition, animated } from '@react-spring/web'
 import { BreadcrumbDemo } from '@/components/Appbreadcrumb'
 import { useWindowDimensions } from '@/hooks/useWindowDimensions'
+import { useTheme } from '@/components/theme-provider'
 
 interface MainLayoutProps {
   children?: ReactNode
@@ -22,7 +24,8 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     from: { opacity: 0, transform: 'translateX(-100%)' },
     enter: { opacity: 1, transform: 'translateX(0%)' }
   })
-  console.log('shu')
+  const { theme } = useTheme()
+  console.log(theme, 'LLL')
 
   return (
     <div className='w-screen h-screen  flex relative font-roboto  '>
@@ -34,11 +37,11 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
               className='min-w-[280px] h-full shadow-md border-r-2 absolute inset-0  backdrop-blur-md  z-50 sm:block md:relative '
             >
               <div className='w-5/6 md:w-full bg-background h-full flex flex-col'>
-                <div className='p-4  bg-background flex gap-2 items-center shadow-md justify-center'>
+                <div className='p-4  bg-background flex gap-2 items-center shadow-md justify-center text-primary'>
                   <img
                     alt='logo'
-                    src={logo}
-                    className='w-10 sm:w-16 transition-all  object-contain bg-clip-padding bg-black py-1 px-0.5 sm:p-1 sm:py-2 rounded-full shadow-md'
+                    src={theme == 'dark' ? logo : logoBlack}
+                    className='w-10 sm:w-20 transition-all  object-contain bg-clip-padding  py-1 px-0.5 sm:p-1 sm:py-2 '
                   />
                   <span className='font-luck text-2xl md:text-5xl  '>TheZoo</span>
                   {item && (
