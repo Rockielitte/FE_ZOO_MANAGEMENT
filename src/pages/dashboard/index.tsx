@@ -36,7 +36,11 @@ const options = [
 const Dashboard = () => {
   const minYear = 1800
   const maxYear = 2023
-  const new_data = useQueryCustom<NewType, []>({ query: '/news/', queryKey: ['newGuests'], data: {} as NewType })
+  const new_data = useQueryCustom<NewType, []>({
+    query: '/news/?status=HIDDEN',
+    queryKey: ['newGuests'],
+    data: {} as NewType
+  })
   const BlogData = new_data.data as NewType[]
   const years = []
   for (let i = minYear; i <= maxYear; i++) {

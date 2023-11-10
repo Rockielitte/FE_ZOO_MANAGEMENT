@@ -29,12 +29,11 @@ export const useUpdateNewStatus = (): UseUpdateNew => {
       toast.error('Failed')
     },
     onSuccess: () => {
-      client.invalidateQueries(['news', 'newDetail'])
-
       // form.re
       navigae('/dashboard/news')
 
       toast.success('Update Successfully')
+      client.invalidateQueries(['news'])
       // window.location.reload()
     }
   })
