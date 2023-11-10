@@ -28,6 +28,7 @@ import SaleBarChart from '@/components/BarChart'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import SpeciesPieChart from '@/components/SpeciesPieChart'
+import ModalConfirmUpdate from './news/components/ModalUpdateStatus'
 const options = [
   { type: 'DAY', value: 'Day' },
   { type: 'MONTH', value: 'Month' },
@@ -58,6 +59,9 @@ const Dashboard = () => {
     from: new Date().getFullYear().toString(),
     to: new Date().getFullYear().toString()
   })
+  const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false)
+  const [newUpdate, setNewUpdate] = useState<NewType | string>('')
+
   const [yearOfMonth, setYearOfMonth] = useState('2023')
   const [type, setSelectType] = useState('YEAR')
   const fetch_statistics = useQueryCustom({
@@ -358,10 +362,10 @@ const Dashboard = () => {
                     <h1 className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</h1>
                   </div>
                   <Link
-                    to='/dashboard/animal'
+                    to='/dashboard/orders'
                     className='flex items-center text-muted-foreground text-sm justify-between '
                   >
-                    View All <Icons.ArrowRight className='text-sm' />
+                    View Orders <Icons.ArrowRight className='text-sm' />
                   </Link>
                 </div>
                 <div className=' flex items-end  justify-between p-5'>
@@ -515,14 +519,15 @@ const Dashboard = () => {
               <div className=' border w-full h-full p-5 rounded-[0.5rem] shadow-md '>
                 <div className='flex items-start justify-between  gap-14'>
                   <div className=''>
-                    <p className=' text-muted-foreground'>News is Un Published</p>
-                    <h1>{speciesStatic?.length}</h1>
+                    <p className=' text-muted-foreground'>News is unPublished</p>
+                    <h1>{BlogData?.length}</h1>
                   </div>
                   <Link
-                    to='/dashboard/animal'
+                    to='/dashboard/news'
                     className='flex items-center text-muted-foreground text-sm justify-between '
                   >
-                    View All <Icons.ArrowRight className='text-sm' />
+                    View All News
+                    <Icons.ArrowRight className='text-sm' />
                   </Link>
                 </div>
                 <div className='mt-3 w-full  text-xs h-fit'>
@@ -530,50 +535,58 @@ const Dashboard = () => {
                   {new_data.isError ? (
                     <Error />
                   ) : !new_data.isLoading ? (
-                    BlogData.map((el: NewType, id: number) => {
-                      return (
-                        <article className='md:grid md:grid-cols-4 md:items-baseline m-4 gap-x-8 w-full' key={id}>
-                          <div className='md:col-span-3 group relative flex flex-col  items-start'>
-                            <div className='flex items-start  gap-4 w-full p-4'>
-                              <div className='w-full'>
-                                <h2 className='text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100'>
-                                  {/* <div className='absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl'></div> */}
-                                  <Link to={`/dashboard/news/${el.id}`}>
-                                    {/* <span className='absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl'></span> */}
-                                    <div className='relative z-10 truncate w-24'>{el.title}</div>
-                                  </Link>
-                                </h2>
-                                <p className='relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400'>
-                                  {!el?.author ? 'Unknown' : el.author.email}
-                                </p>
-                              </div>
-                              <div
-                                aria-hidden='true'
-                                className='relative z-10 flex items-start  text-sm font-medium text-teal-500'
-                              >
-                                Published
-                              </div>
-                            </div>
-
+                    BlogData.length == 0 ? (
+                      <div>No New is unPublished </div>
+                    ) : (
+                      BlogData.map((el: NewType, id: number) => {
+                        return (
+                          <article className=' mb-4 w-full overflow-auto' key={id}>
                             <time
-                              className='md:hidden relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500 pl-3.5'
+                              className=' hidden md:block relative z-10 order-first flex items-center text-sm text-zinc-400 dark:text-zinc-500'
                               dateTime={getDate(el?.postedAt)}
                             >
-                              <span className='absolute inset-y-0 left-0 flex items-center' aria-hidden='true'>
-                                <span className='h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500'></span>
-                              </span>
-                              <span className='ml-3'>{getDate(el?.postedAt)}</span>
+                              {getDate(el?.postedAt)}
                             </time>
-                          </div>
-                          <time
-                            className='mt-1 hidden md:block relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500'
-                            dateTime={getDate(el?.postedAt)}
-                          >
-                            {getDate(el?.postedAt)}
-                          </time>
-                        </article>
-                      )
-                    })
+                            <div className='   flex flex-col  items-start'>
+                              <div className='flex items-start flex-col border rounded-[0.5rem] p-4  gap-4 w-full'>
+                                <div className=''>
+                                  <h2 className='text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100'>
+                                    {/* <div className='absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl'></div> */}
+                                    <Link to={`/dashboard/news/${el.id}`}>
+                                      {/* <span className='absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl'></span> */}
+                                      <div className='relative z-10 truncate w-fit'>{el.title}</div>
+                                    </Link>
+                                  </h2>
+                                  <p className=' z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400'>
+                                    {!el?.author ? 'Unknown' : el.author.email}
+                                  </p>
+                                </div>
+                                <div
+                                  aria-hidden='true'
+                                  onClick={() => {
+                                    setNewUpdate(el)
+                                    setShowDeleteDialog(true)
+                                  }}
+                                  className=' z-10 flex items-start  text-sm font-medium text-teal-500 hover:bg-teal-300 rounded-sm duration-100 transition-all cursor-pointer p-2'
+                                >
+                                  Published
+                                </div>
+                              </div>
+
+                              <time
+                                className='md:hidden relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500 pl-3.5'
+                                dateTime={getDate(el?.postedAt)}
+                              >
+                                <span className='absolute inset-y-0 left-0 flex items-center' aria-hidden='true'>
+                                  <span className='h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500'></span>
+                                </span>
+                                <span className='ml-3'>{getDate(el?.postedAt)}</span>
+                              </time>
+                            </div>
+                          </article>
+                        )
+                      })
+                    )
                   ) : (
                     <LoadingScreen></LoadingScreen>
                   )}
@@ -581,6 +594,11 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+          <ModalConfirmUpdate
+            newUpdate={newUpdate}
+            showDeleteDialog={showDeleteDialog}
+            setShowDeleteDialog={setShowDeleteDialog}
+          />
         </div>
       ) : (
         <LoadingScreen></LoadingScreen>

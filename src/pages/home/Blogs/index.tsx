@@ -5,7 +5,11 @@ import { NewType } from '@/types'
 import { getDate } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 export default function Blogs() {
-  const new_data = useQueryCustom<NewType, []>({ query: '/news/', queryKey: ['newGuests'], data: {} as NewType })
+  const new_data = useQueryCustom<NewType, []>({
+    query: '/news/?status=PUBLISHED',
+    queryKey: ['newGuests'],
+    data: {} as NewType
+  })
   const data = new_data.data as NewType[]
 
   return (
