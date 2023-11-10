@@ -37,7 +37,7 @@ type Props = {
 }
 export default function SpeciesPieChart({ data, width, height }: Props) {
   return (
-    <ResponsiveContainer width='100%' height='100%'>
+    <ResponsiveContainer width={'99%'} height={'99%'}>
       <PieChart width={width} height={height} className='flex items-center justify-center'>
         <Pie
           data={data}
