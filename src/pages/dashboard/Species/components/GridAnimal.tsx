@@ -18,7 +18,7 @@ const GridAnimal: React.FC<{
         console.log('row animal: ', row.original)
         return (
           <div className='w-full flex justify-start align-middle border-2 rounded-[0.5rem] gap-2 overflow-hidden'>
-            <img className='max-h-[150px] min-w-[200px] object-cover' src={`http://service.zoomanagement.online/utils/files?fileName=${row.original?.imageList[0]}`}
+            <img className='h-[150px] w-[200px] object-cover' src={`${row.original?.imageList[0]}`}
               onError={addDefaultImg} alt='' />
 
             <div className='p-6'>
