@@ -66,7 +66,7 @@ const formSchema = z.object({
   code: z.string().regex(regexPattern),
   areaId: z.coerce.number(),
   animalSpeciesId: z.coerce.number(),
-  managedById: z.string().min(1),
+  managedById: z.string().optional(),
   description: z.string().optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>

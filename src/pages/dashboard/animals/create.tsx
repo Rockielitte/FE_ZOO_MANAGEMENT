@@ -4,6 +4,7 @@ import * as z from 'zod'
 import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
 import AnimalForm from '@/components/AnimalForm'
 import useMutationCustom from '@/hooks/useMutationCustom'
+import { useLocation } from 'react-router-dom'
 const formSchema = z.object({
   name: z.string().min(1, { message: "This field can't be empty" }),
   speciesId: z.coerce.number().min(1),
@@ -27,13 +28,21 @@ const formSchema = z.object({
   imageList: z.string().array().optional().default([])
 })
 export type FormSchemaType = z.infer<typeof formSchema>
+
 const AnimalCreate = () => {
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const cageId = queryParams.get('cageId')
+  const speciesId = queryParams.get('animalspeciesId')
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      status: AnimalStatusEnum.HEALTHY
+      status: AnimalStatusEnum.HEALTHY,
+      cageId: cageId ? Number(cageId) : undefined,
+      speciesId: speciesId ? Number(speciesId) : undefined
     }
   })
+
   const formMutation = useMutationCustom({
     query: `/animals/`,
     queryKey: ['animals', 'create'],

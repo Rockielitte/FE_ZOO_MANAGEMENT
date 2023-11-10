@@ -45,31 +45,46 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
   const queryParams = new URLSearchParams(location.search)
   const navigate = useNavigate()
 
-  const [image, setImage] = useState<File>()
-  const imageUrl = useMemo(() => image && URL.createObjectURL(image as Blob), [image])
+  const [image, setImage] = useState<FileList>()
+  const imageUrl = useMemo(() => {
+    const length = image?.length
+    const list = []
+    if (length) {
+      for (let i = 0; i < length; i++) {
+        list.push(URL.createObjectURL(image[i] as Blob))
+      }
+    }
+    return list
+  }, [image])
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (e.target.files?.length) setImage(e.target.files[0])
+    if (e.target.files?.length) setImage(e.target.files)
   }
 
   const imageMutation = useSideMutation({
-    query: `/upload`,
+    query: `/utils/upload-many`,
     queryKey: ['upload'],
-    returnType: ''
+    returnType: [''] as string[]
   })
 
   const handleSubmitImage: React.MouseEventHandler<HTMLButtonElement> = () => {
-    const formData = new FormData()
-    formData.append('file', image as File)
-    if (image)
+    const length = image?.length
+    if (length) {
+      const formData = new FormData()
+
+      for (let i = 0; i < length; i++) {
+        formData.append('files', image[i])
+      }
+
       imageMutation.mutate(formData, {
         onSuccess: (data) => {
           const currentValue = [...(form.getValues('imageList' as Path<T>) || [])]
-          const newValue = [...currentValue, data.data] as PathValue<T, Path<T>>
-          console.log(newValue, 'kkkkk')
+          const newValue = [...currentValue, ...data.data] as PathValue<T, Path<T>>
           form.setValue('imageList' as Path<T>, newValue), setImage(undefined)
         }
       })
+    }
   }
+
   const {
     register,
     watch,
@@ -91,11 +106,9 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
     <div className='w-full h-full border shadow-xl rounded-lg p-2 overflow-auto flex-col flex '>
       {formMutation.isLoading && <LoadingScreen label='submitting'></LoadingScreen>}
       <div className=' text-white flex flex-col border-b-2  border-secondary shadow-lg font-ime bg-primary px-5 sm:-m-2 leading-tight rounded-md'>
-        <span className='text-xl uppercase font-bold tracking-wider pt-1 font-ime min-h-[32px]'>
-          {watch('name' as Path<T>) || 'Create animal'}
-        </span>
+        <span className='text-xl uppercase font-bold tracking-wider pt-1 font-ime min-h-[32px]'>{'Create animal'}</span>
         <span className='font-normal text-base min-h-[24px] tracking-wide'>
-          {watch('speciesId' as Path<T>) || 'Spiecies'}
+          {watch('name' as Path<T>) || 'Animal name'}
         </span>
       </div>
       <div className='flex-1 flex flex-col-reverse sm:flex-row gap-2  sm:overflow-auto pt-4  sm:px-0'>
@@ -142,6 +155,11 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                                 setValue(item, value as PathValue<T, Path<T>>, { shouldValidate: true })
                               }}
                               initialFocus
+                              disabled={(date) => {
+                                const today = new Date()
+                                today.setHours(23, 59, 59, 0)
+                                return date > today
+                              }}
                             />
                           </PopoverContent>
                         </Popover>
@@ -296,12 +314,14 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                       type='file'
                       accept='image/jpeg, image/png, image/gif'
                       className='hidden'
+                      multiple
                       onChange={handleFileChange}
                     />
                   </label>
                 ) : (
                   <div className='flex flex-col items-center justify-center relative  w-full h-52  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer transition-all hover:bg-slate-100 dark:hover:bg-slate-500'>
-                    <img alt='' src={imageUrl} className='w-full h-full rounded-md object-contain' />
+                    {/* <img alt='' src={imageUrl} className='w-full h-full rounded-md object-contain' /> */}
+                    <Carousel images={imageUrl as string[]} />
                     <AiTwotoneDelete
                       className='text-2xl transition-all hover:scale-125 opacity-50 hover:opacity-100 p-1 rounded-full bg-slate-100 absolute text-red-600 top-2 right-2'
                       onClick={() => {

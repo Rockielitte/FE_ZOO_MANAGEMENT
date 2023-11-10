@@ -41,7 +41,7 @@ const New = {
 
     return response
   },
-  updateNew: async (data: PostCreationRequest, id: string) => {
+  updateNew: async (data: PostCreationRequest, id: string | number) => {
     const endpoint = `/news/${id}`
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const test = useAuthorizationHeader()

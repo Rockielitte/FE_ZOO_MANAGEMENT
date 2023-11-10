@@ -133,17 +133,21 @@ const columns: ColumnDef<Animal>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row, column }) => {
       const value: AnimalStatusEnum = row.getValue(column.id)
+
       return (
         <Badge
           className={clsx(
             'px-2 py-1 min-w-[70px] text-center flex justify-center gap-1 items-center  ',
-            value == AnimalStatusEnum.HEALTHY && 'bg-green-400 ',
-            value == AnimalStatusEnum.SICK && 'bg-yellow-400',
-            value == AnimalStatusEnum.IN_DANGER && 'bg-red-400',
-            value == AnimalStatusEnum.DEAD && 'bg-slate-400'
+            value == AnimalStatusEnum.HEALTHY && 'bg-green-400 hover:bg-green-200 ',
+            value == AnimalStatusEnum.SICK && 'bg-yellow-400 hover:bg-yellow-200 ',
+            value == AnimalStatusEnum.IN_DANGER && 'bg-red-400 hover:bg-red-200',
+            value == AnimalStatusEnum.DEAD && 'bg-slate-400 hover:bg-slate-200 '
           )}
         >
-          {value}
+          {value == AnimalStatusEnum.HEALTHY && 'Healthy'}
+          {value == AnimalStatusEnum.SICK && 'Sick'}
+          {value == AnimalStatusEnum.IN_DANGER && 'In danger'}
+          {value == AnimalStatusEnum.DEAD && 'Dead'}
         </Badge>
       )
     },

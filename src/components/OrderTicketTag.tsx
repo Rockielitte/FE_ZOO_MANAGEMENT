@@ -82,7 +82,9 @@ const OrderTicketTag = <T extends FieldValues>({ form, ticket }: Props<T>) => {
           />
         </div>
       </div>
-      <div className='text-xl font-semibold'>${count * ticket.price}</div>
+      <div className='text-xl font-semibold'>
+        {(count * ticket.price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+      </div>
     </div>
   )
 }

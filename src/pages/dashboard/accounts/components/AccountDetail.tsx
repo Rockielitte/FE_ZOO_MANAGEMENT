@@ -24,7 +24,8 @@ import LocalFile from '@/utils/api/LocalFile'
 interface AccountDetailProps {}
 const roles = [
   { label: 'Staff', value: 'STAFF' },
-  { label: 'Zoo Trainer', value: 'TRAINER' }
+  { label: 'Zoo Trainer', value: 'TRAINER' },
+  { label: 'Admin', value: 'Admin' }
 ] as const
 const genders = [
   { label: 'Male', value: 'MALE' },
@@ -60,7 +61,7 @@ const accountFormSchema = z.object({
   avt: z.string({
     required_error: 'Please select a avt.'
   }),
-  status: z.string()
+  status: z.string().optional()
   // avt: z
   //   .custom<FileList>((val) => val instanceof FileList, 'Required')
   //   .refine((files) => files.length > 0, `Required`)
@@ -99,7 +100,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
     role: accountDetail.role || '',
     gender: accountDetail.gender || '',
     avt: accountDetail?.avt || '',
-    status: 'ACTIVE'
+    status: accountDetail?.status || ''
   }
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
@@ -238,11 +239,12 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                       <FormItem className='flex flex-col'>
                         <FormLabel>Role</FormLabel>
                         <Popover>
-                          <PopoverTrigger asChild>
+                          <PopoverTrigger asChild disabled>
                             <FormControl>
                               <Button
                                 variant='outline'
                                 role='combobox'
+                                disabled
                                 className={cn('justify-between', !field.value && 'text-muted-foreground')}
                               >
                                 {field.value ? roles.find((role) => role.value === field.value)?.label : 'Select role'}

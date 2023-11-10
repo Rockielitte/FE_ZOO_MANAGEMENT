@@ -6,7 +6,9 @@ export default function DefaultCarousel({ images }: { images: string[] }) {
     <div className='w-full relative h-full'>
       {images?.length > 0 ? (
         <Carousel className='w-full h-full' slideInterval={15000}>
-          {images?.map((item, index) => <img key={index} alt='...' src={item} />)}
+          {images?.map((item, index) => (
+            <img key={index} alt='...' src={item} className='  w-full h-full object-contain ' />
+          ))}
         </Carousel>
       ) : (
         <div className='w-full h-full rounded-xl bg-secondary shadow-lg border gap-2 flex flex-col justify-center items-center'>

@@ -19,7 +19,7 @@ const formSchema = z.object({
   code: z.string().regex(regexPattern),
   areaId: z.coerce.number(),
   animalSpeciesId: z.coerce.number(),
-  managedById: z.string().min(1),
+  managedById: z.string().optional(),
   description: z.string().optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
@@ -76,7 +76,7 @@ const DetailCage = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value='animals' className='w-full flex-1 overflow-auto'>
-          <CageAnimalTable cage_data={cage_data as UseQueryResult<Cage, unknown>} />
+          <CageAnimalTable cage_data={cage_data as UseQueryResult<Cage, unknown>} cageId={cageId as string} />
         </TabsContent>
         <TabsContent value='meals' className='w-full flex-1 overflow-auto'>
           {cage_data.isError ? (

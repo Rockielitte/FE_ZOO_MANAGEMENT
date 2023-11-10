@@ -160,11 +160,16 @@ const routes: RouteObject[] = [
               }
             ]
           },
+
           {
+            id: 'animal_species',
             path: 'animal_species',
-            element: Species
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
+            children: [
+              { index: true, element: Species },
+              { path: ':id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) }
+            ]
           },
-          { path: 'animal_species/:id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) },
           {
             path: 'animals',
             children: [

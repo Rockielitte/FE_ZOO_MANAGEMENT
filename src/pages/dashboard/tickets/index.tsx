@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Ticket } from '@/types'
+import { RoleEnum, Ticket, TicketStatusEnum } from '@/types'
 
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
@@ -11,11 +11,13 @@ import { ColumnDef } from '@tanstack/react-table'
 import GridTicket from '@/components/GridTicket'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
+import useCheckRole from '@/hooks/useCheckRole'
 
 const formSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
-  price: z.coerce.number().min(0)
+  price: z.coerce.number().min(0),
+  status: z.nativeEnum(TicketStatusEnum)
 })
 export type formSchemaType = z.infer<typeof formSchema>
 export const columns: ColumnDef<Ticket>[] = [
@@ -34,6 +36,10 @@ export const columns: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'price',
     filterFn: 'includesString'
+  },
+  {
+    accessorKey: 'status',
+    filterFn: 'includesString'
   }
 ]
 const index = () => {
@@ -41,7 +47,8 @@ const index = () => {
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      price: 0
+      price: 0,
+      status: TicketStatusEnum.INACTIVE
     }
   })
 
@@ -50,10 +57,10 @@ const index = () => {
     queryKey: ['tickets'],
     form: form,
     invalidQuery: ['tickets'],
-    resetData: { description: '', name: '', price: Number(undefined) },
+    resetData: { description: '', name: '', price: Number(undefined), status: TicketStatusEnum.ACTIVE },
     data: {} as Ticket
   })
-
+  const user = useCheckRole()
   return (
     <div className='w-full h-full shadow-2xl'>
       {ticket_data.isError ? (
@@ -71,6 +78,7 @@ const index = () => {
               formMutation,
               fields: ['name', 'price', 'description']
             }}
+            canCreate={user && user?.role == RoleEnum.ADMIN}
           />
         </div>
       ) : (

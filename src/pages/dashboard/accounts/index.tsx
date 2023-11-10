@@ -127,9 +127,26 @@ const Accounts: FC<Accounts> = () => {
                 <DropdownMenuItem>View Info</DropdownMenuItem>
               </Link>
               <DropdownMenuItem>View News</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => banAccount({ status: 'INACTIVE', id: row.original.id })}>
-                Ban
-              </DropdownMenuItem>
+              {row.original.status == 'ACTIVE' && (
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    banAccount({ status: 'INACTIVE', id: row.original.id })
+                  }}
+                >
+                  Ban
+                </DropdownMenuItem>
+              )}
+              {row.original.status == 'INACTIVE' && (
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    banAccount({ status: 'ACTIVE', id: row.original.id })
+                  }}
+                >
+                  Active
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         )
@@ -144,7 +161,7 @@ const Accounts: FC<Accounts> = () => {
       {accounts_data.isError ? (
         <Error />
       ) : !accounts_data.isLoading ? (
-        <div className='flex-1 overflow-auto p-5'>
+        <div className='flex-1 overflow-auto p-2'>
           <AccountTable columns={columnsAccount} data={!accounts_data.data ? [] : (accounts_data.data as User[])} />
         </div>
       ) : (
