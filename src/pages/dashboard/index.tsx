@@ -3,6 +3,7 @@ import { Icons } from '@/components/Icon'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import {
   AnimalStatusStatistics,
+  NewType,
   OverallStatistics,
   SaleOverallStatistics,
   SaleStatistics,
@@ -14,7 +15,7 @@ import { Link } from 'react-router-dom'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { addDays, eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns'
 import { DateRange } from 'react-day-picker'
-import { capitalizeFirstLetter, cn } from '@/lib/utils'
+import { capitalizeFirstLetter, cn, getDate } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -35,7 +36,8 @@ const options = [
 const Dashboard = () => {
   const minYear = 1800
   const maxYear = 2023
-
+  const new_data = useQueryCustom<NewType, []>({ query: '/news/', queryKey: ['newGuests'], data: {} as NewType })
+  const BlogData = new_data.data as NewType[]
   const years = []
   for (let i = minYear; i <= maxYear; i++) {
     years.push(i)
@@ -202,7 +204,7 @@ const Dashboard = () => {
         <Error />
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
         <div className='flex-1 overflow-auto p-5 flex flex-col gap-4 h-full'>
-          <div className='mx-auto my-10 grid max-w-2xl grid-cols-2 md:grid-cols-2 gap-x-8   lg:mx-0 lg:max-w-none lg:grid-cols-4'>
+          <div className='mx-auto my-10 grid max-w-2xl grid-cols-2 md:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4'>
             <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
               <div className='flex items-center justify-between gap-3'>
                 <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
@@ -519,7 +521,59 @@ const Dashboard = () => {
                     View All <Icons.ArrowRight className='text-sm' />
                   </Link>
                 </div>
-                <div className='mt-3 w-full  text-xs h-full'>this tis content</div>
+                <div className='mt-3 w-full  text-xs h-fit'>
+                  {' '}
+                  {new_data.isError ? (
+                    <Error />
+                  ) : !new_data.isLoading ? (
+                    BlogData.map((el: NewType, id: number) => {
+                      return (
+                        <article className='md:grid md:grid-cols-4 md:items-baseline m-4 gap-x-8 w-full' key={id}>
+                          <div className='md:col-span-3 group relative flex flex-col  items-start'>
+                            <div className='flex items-start  gap-4 w-full p-4'>
+                              <div className='w-full'>
+                                <h2 className='text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100'>
+                                  {/* <div className='absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl'></div> */}
+                                  <Link to={`/dashboard/news/${el.id}`}>
+                                    {/* <span className='absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl'></span> */}
+                                    <div className='relative z-10 truncate w-24'>{el.title}</div>
+                                  </Link>
+                                </h2>
+                                <p className='relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400'>
+                                  {!el?.author ? 'Unknown' : el.author.email}
+                                </p>
+                              </div>
+                              <div
+                                aria-hidden='true'
+                                className='relative z-10 flex items-start  text-sm font-medium text-teal-500'
+                              >
+                                Published
+                              </div>
+                            </div>
+
+                            <time
+                              className='md:hidden relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500 pl-3.5'
+                              dateTime={getDate(el?.postedAt)}
+                            >
+                              <span className='absolute inset-y-0 left-0 flex items-center' aria-hidden='true'>
+                                <span className='h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500'></span>
+                              </span>
+                              <span className='ml-3'>{getDate(el?.postedAt)}</span>
+                            </time>
+                          </div>
+                          <time
+                            className='mt-1 hidden md:block relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500'
+                            dateTime={getDate(el?.postedAt)}
+                          >
+                            {getDate(el?.postedAt)}
+                          </time>
+                        </article>
+                      )
+                    })
+                  ) : (
+                    <LoadingScreen></LoadingScreen>
+                  )}
+                </div>
               </div>
             </div>
           </div>

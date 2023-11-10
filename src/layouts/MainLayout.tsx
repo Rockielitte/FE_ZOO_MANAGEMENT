@@ -18,7 +18,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const { width } = useWindowDimensions()
 
   const [isShow, setIsShow] = useState(true)
-  const transitions = useTransition(isShow && width > 900, {
+  const transitions = useTransition(isShow || width > 900, {
     from: { opacity: 0, transform: 'translateX(-100%)' },
     enter: { opacity: 1, transform: 'translateX(0%)' }
   })

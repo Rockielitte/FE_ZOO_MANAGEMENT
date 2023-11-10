@@ -4,32 +4,6 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recha
 
 const COLORS = ['#1DDD8D', '#D1F765', '#DB4E66', '#FF8042']
 
-const RADIAN = Math.PI / 180
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent
-}: {
-  cx: string
-  cy: string
-  midAngle: number
-  innerRadius: number
-  outerRadius: number
-  percent: number
-}) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-  const x = cx + radius * Math.cos(-midAngle * RADIAN)
-  const y = cy + radius * Math.sin(-midAngle * RADIAN)
-
-  return (
-    <text x={x} y={y} fill='white' textAnchor={x > cx ? 'start' : 'end'} dominantBaseline='central'>
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  )
-}
 type Props = {
   data: AnimalStatusStatistics[]
   width: number
@@ -43,8 +17,9 @@ export default function AnimalPieChart({ data, width, height }: Props) {
           data={data}
           cx={'50%'}
           cy={'45%'}
-          labelLine={false}
-          label={renderCustomizedLabel}
+          labelLine={true}
+          label
+          innerRadius={60}
           outerRadius={80}
           fill='#8884d8'
           dataKey='value'
