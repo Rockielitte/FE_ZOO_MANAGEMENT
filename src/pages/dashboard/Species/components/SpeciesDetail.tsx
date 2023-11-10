@@ -9,7 +9,7 @@ import GridAnimal from './GridAnimal'
 import axios from 'axios'
 import GridCage from './GridCage'
 import { ColumnDef } from '@tanstack/react-table'
-import { Animal, Cage, User, dataSpecies } from '@/types'
+import { Animal, Cage, User } from '@/types'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 export interface IAppProps { }

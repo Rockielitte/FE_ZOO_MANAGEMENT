@@ -1,4 +1,4 @@
-import { Animal, dataSpecies } from '@/types'
+import { Animal } from '@/types'
 import { Table } from '@tanstack/react-table'
 import { EyeIcon } from 'lucide-react'
 import Lin from '@/assets/image14.png'
