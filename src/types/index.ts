@@ -233,6 +233,7 @@ export type NewType = {
   title: string
   postedAt: string
   author: User
+  status: 'HIDDEN' | 'PUBLISHED'
 }
 export type Ticket = {
   id: number
@@ -274,7 +275,7 @@ export enum FeedStatusEnum {
   FED = 'FED'
 }
 export type MealReCord = {
-  cageMeal:CageMeal,
+  cageMeal: CageMeal
   id: number
   status: FeedStatusEnum
   createdAt: string

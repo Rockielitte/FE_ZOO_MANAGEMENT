@@ -19,6 +19,8 @@ import ModalConfirmUpdate from './components/ModalUpdateStatus'
 const News = () => {
   const news_data = useQueryCustom({ query: '/news/', queryKey: ['news'], data: {} as NewType })
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false)
+  const [newUpdate, setNewUpdate] = useState<NewType | string>('')
+
   const columnsAccount: ColumnDef<NewType>[] = [
     {
       accessorKey: 'id',
@@ -102,16 +104,20 @@ const News = () => {
               {/* <Link to={`/dashboard/news/update/${row.original.id}`}>
                 <DropdownMenuItem>Preview</DropdownMenuItem>
               </Link> */}
+
+              {row.original.status == 'HIDDEN'}
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation()
-                }}
-                onSelect={() => {
+                  setNewUpdate(row.original)
                   setShowDeleteDialog(true)
                 }}
-                className='text-green-600'
+                className={clsx(
+                  row.original.status == 'HIDDEN' && 'bg-green-400 text-foreground',
+                  row.original.status == 'PUBLISHED' && 'bg-red-400 dark:bg-red-200 hover:bg-red-600 text-foreground'
+                )}
               >
-                Published
+                {row.original.status == 'HIDDEN' ? 'Published' : 'Hidden'}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -137,7 +143,11 @@ const News = () => {
       ) : (
         <LoadingScreen></LoadingScreen>
       )}
-      <ModalConfirmUpdate showDeleteDialog={showDeleteDialog} setShowDeleteDialog={setShowDeleteDialog} />
+      <ModalConfirmUpdate
+        newUpdate={newUpdate}
+        showDeleteDialog={showDeleteDialog}
+        setShowDeleteDialog={setShowDeleteDialog}
+      />
     </div>
   )
 }
