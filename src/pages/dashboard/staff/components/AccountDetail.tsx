@@ -117,12 +117,10 @@ const AccountDetail: FC<AccountDetailProps> = () => {
     const files = dataTransfer.files
     const displayUrl = await LocalFile.uploadFile({ file: files[0] })
     // const displayUrl = URL.createObjectURL(event.target.files![0])
-    console.log(displayUrl)
 
     return { files, displayUrl }
   }
   async function onSubmit(data: AccountFormValues) {
-    console.log('updated!:' + data)
     updateAccount(data)
   }
 
@@ -153,7 +151,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                       hidden
                       onChange={async (event) => {
                         const { displayUrl } = await getImageData(event)
-                        console.log('displayUrl ' + displayUrl)
+
                         setPreview(displayUrl)
                         form.setValue('avt', displayUrl as string)
                       }}

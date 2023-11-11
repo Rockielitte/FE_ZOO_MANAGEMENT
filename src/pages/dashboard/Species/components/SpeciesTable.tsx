@@ -11,18 +11,20 @@ import { Input } from '@/components/ui/input'
 import { CreateSpecies } from './CreateSpecies'
 import { User } from '@/types'
 
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface DataTableProps<TData, TValue, _X, _Y> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  GridBox: React.FC<{ data: Table<TData>, user: User }>
+  GridBox: React.FC<{ data: Table<TData>; user: User }>
   user: User
 }
 
-export function SpeciesTable<TData, TValue, X, Y>({ columns, data, GridBox, user }: DataTableProps<TData, TValue, X, Y>) {
-  console.log("role user: ", user.role);
-
+export function SpeciesTable<TData, TValue, X, Y>({
+  columns,
+  data,
+  GridBox,
+  user
+}: DataTableProps<TData, TValue, X, Y>) {
   const table = useReactTable({
     data,
     columns,
@@ -30,9 +32,9 @@ export function SpeciesTable<TData, TValue, X, Y>({ columns, data, GridBox, user
     // Pipeline
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: getPaginationRowModel()
     //
-    debugTable: true
+    // debugTable: true
   })
 
   return (
@@ -45,8 +47,11 @@ export function SpeciesTable<TData, TValue, X, Y>({ columns, data, GridBox, user
             onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
             className='max-w-sm'
           />
-          {table.getColumn('nation')?.id || user?.role === 'STAFF' || user?.role === 'TRAINER' ?
-            (<></>) : (<CreateSpecies />)}
+          {table.getColumn('nation')?.id || user?.role === 'STAFF' || user?.role === 'TRAINER' ? (
+            <></>
+          ) : (
+            <CreateSpecies />
+          )}
         </div>
       ) : (
         <div className='flex items-center justify-start py-2 gap-2 space-y-4 '>

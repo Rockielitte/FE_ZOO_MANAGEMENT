@@ -43,9 +43,6 @@ const ModalForm = <X, T extends FieldValues>({
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
   const onSubmit: SubmitHandler<T> = async (data) => {
-    console.log('reload ne')
-
-    console.log('submit data')
     formMutation.mutate(data, {
       onSuccess: () => {
         setOpen(false),
@@ -60,7 +57,6 @@ const ModalForm = <X, T extends FieldValues>({
         }, 2000)
       }
     })
-    console.log(data)
   }
   const {
     register,
@@ -401,7 +397,7 @@ const ModalForm = <X, T extends FieldValues>({
               type='submit'
               disabled={isSubmitting}
               onClick={() => {
-                console.log('click ne'), handleSubmit(onSubmit)
+                handleSubmit(onSubmit)
               }}
             >
               Submit

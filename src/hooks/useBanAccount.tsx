@@ -20,8 +20,6 @@ export const useBanAccount = (): UseBanAccount => {
       return Account.banAccount(data.status, data.id)
     },
     onSuccess: (data) => {
-      console.log('ban data: ' + data.data.status)
-
       client.invalidateQueries(['accounts'])
 
       if (data.data.status == 'ACTIVE') {

@@ -5,9 +5,6 @@ export const useAuthorizationHeader = () => {
   const { user } = useUserStore.getState()
 
   if (user) {
-    console.log('user: ' + user.token)
-
-    // Return an object with the Authorization header
     return {
       headers: {
         Authorization: `Bearer ${user.token}`

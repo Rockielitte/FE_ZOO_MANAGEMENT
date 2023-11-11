@@ -69,7 +69,6 @@ export function SpeciesForm(props: Species) {
     const files = dataTransfer.files
     const displayUrl = await LocalFile.uploadFile({ file: files[0] })
     // const displayUrl = URL.createObjectURL(event.target.files![0])
-    console.log(displayUrl)
 
     return { files, displayUrl }
   }
@@ -95,8 +94,6 @@ export function SpeciesForm(props: Species) {
   // const client = useQueryClient()
 
   async function onSubmit(data: SpeciesFormValue) {
-    console.log('lijne: ' + data.image)
-
     if (props.id) {
       updateMutation.mutate(data, {
         onSuccess: () => {
@@ -164,7 +161,7 @@ export function SpeciesForm(props: Species) {
                   hidden
                   onChange={async (event) => {
                     const { displayUrl } = await getImageData(event)
-                    console.log('displayUrl ' + displayUrl)
+
                     setPreview(displayUrl as string)
                     form.setValue('image', displayUrl as string)
                   }}

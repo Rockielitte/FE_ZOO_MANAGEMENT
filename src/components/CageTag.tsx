@@ -14,19 +14,21 @@ import { useNavigate } from 'react-router-dom'
 
 import { GiBirdCage } from 'react-icons/gi'
 import { Row } from '@tanstack/react-table'
-import { Cage } from '@/types'
+import { Cage, RoleEnum } from '@/types'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ModalForm from './ModalForm'
 import useMutationCustom from '@/hooks/useMutationCustom'
+import useCheckRole from '@/hooks/useCheckRole'
 const regexPattern = /^[A-Za-z][0-9]{4}$/
 const formSchema = z.object({
   code: z.string().regex(regexPattern),
   areaId: z.coerce.number(),
   animalSpeciesId: z.coerce.number(),
   managedById: z.string().optional(),
-  description: z.string().optional()
+  description: z.string().optional(),
+  managerName: z.string().optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
 const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
@@ -38,7 +40,8 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
       areaId: row.getValue('areaId'),
       animalSpeciesId: row.getValue('animalSpeciesId'),
       managedById: row.getValue('manageBy'),
-      description: row.getValue('infor')
+      description: row.getValue('infor'),
+      managerName: row.getValue('manager')
     }
   })
   const formMutation = useMutationCustom({
@@ -55,9 +58,11 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
       areaId: row.getValue('areaId'),
       animalSpeciesId: row.getValue('animalSpeciesId'),
       managedById: row.getValue('manageBy'),
-      description: row.getValue('infor')
+      description: row.getValue('infor'),
+      managerName: row.getValue('manager')
     })
   }, [row])
+  const user = useCheckRole()
   return (
     <div
       className='border-2 rounded-md shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all'
@@ -73,39 +78,41 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
           </h1>
           <span className='text-sm'>Species: {row.getValue('species')}</span>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <BsThreeDots className='text-2xl font-bold text-primary ' />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className='min-w-[200px] relative right-[20px] '>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <div
-              className='w-full hover:bg-secondary p-2 text-sm'
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            >
-              <ModalForm
-                title='Edit cage'
-                form={form}
-                formMutation={formMutation}
-                fields={['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']}
-                Trigger={
-                  <>
-                    <AiFillEdit className='text-2xl pr-2' />
-                    Edit cage
-                  </>
-                }
-              />
-            </div>
+        {user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF) && (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <BsThreeDots className='text-2xl font-bold text-primary ' />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className='min-w-[200px] relative right-[20px] '>
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <div
+                className='w-full hover:bg-secondary p-2 text-sm'
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+              >
+                <ModalForm
+                  title='Edit cage'
+                  form={form}
+                  formMutation={formMutation}
+                  fields={['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']}
+                  Trigger={
+                    <>
+                      <AiFillEdit className='text-2xl pr-2' />
+                      Edit cage
+                    </>
+                  }
+                />
+              </div>
 
-            <DropdownMenuItem>
-              <MdGridView className='text-2xl pr-2' />
-              View details
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <DropdownMenuItem>
+                <MdGridView className='text-2xl pr-2' />
+                View details
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
       <div className='flex flex-col  font-light py-2 text-sm'>
         <div className='flex items-center justify-between px-4 py-1 b border-b font-normal'>

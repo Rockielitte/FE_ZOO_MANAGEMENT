@@ -13,8 +13,6 @@ const AuthGuard: FC<AuthGuardProps> = ({ allowedRoles, children }) => {
   const location = useLocation()
   const { data } = useRouteLoaderData('dashboard') as { data: User }
 
-  console.log('role: ' + data.role)
-
   return allowedRoles.includes(data.role) ? (
     <Outlet /> || { children }
   ) : (

@@ -102,7 +102,6 @@ export const defaultColumn = <T extends object>(type?: string, options?: string[
     ) : type == 'select' ? (
       <Select
         onValueChange={(e) => {
-          console.log()
           table.options.meta?.updateData(index, id, e)
         }}
         value={value}
@@ -208,9 +207,6 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
   useEffect(() => {
     setTableData(data)
   }, [data])
-  console.log('Data: ' + data.length)
-  console.log('tableData: ' + tableData.length)
-
   const table = useReactTable({
     data: tableData,
     columns,
@@ -231,7 +227,7 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
       rowSelection,
       globalFilter
     },
-    autoResetPageIndex,
+    autoResetPageIndex
     // Provide our updateData function to our table meta
     // meta: {
     //   updateData: (rowIndex, columnId, value) => {
@@ -251,7 +247,7 @@ export function AccountTable<TData, TValue>({ columns, data, pathName }: DataTab
     //     )
     //   }
     // },
-    debugTable: true
+    // debugTable: true
   })
 
   return (

@@ -45,6 +45,7 @@ interface DataTableProps<TData, TValue> {
   pathName?: string
   // tessData?: TData[]
   canCreate?: boolean
+  navigate?: string
 }
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -99,7 +100,6 @@ export const defaultColumn = <T extends object>(type?: string, options?: string[
     ) : type == 'select' ? (
       <Select
         onValueChange={(e) => {
-          console.log()
           table.options.meta?.updateData(index, id, e)
         }}
         value={value}
@@ -172,7 +172,13 @@ function useSkipper() {
   return [shouldSkip, skip] as const
 }
 
-export function DataTable<TData, TValue>({ columns, data, pathName, canCreate = true }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  pathName,
+  canCreate = true,
+  navigate: nav
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
@@ -246,7 +252,6 @@ export function DataTable<TData, TValue>({ columns, data, pathName, canCreate = 
     // },
     debugTable: true
   })
-  // console.log(isLoading, 'loadie')
 
   return (
     <div className='w-full h-full flex flex-col '>
@@ -334,7 +339,7 @@ export function DataTable<TData, TValue>({ columns, data, pathName, canCreate = 
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   onClick={() => {
-                    navigate(pathName ? `${pathName}/${row.getValue('id')}` : `${row.getValue('id')}`)
+                    navigate(nav ? `${nav}/${row.getValue('id')}` : `${row.getValue('id')}`)
                   }}
                   onMouseEnter={() => {
                     prefetchId(Number(row.getValue('id')))

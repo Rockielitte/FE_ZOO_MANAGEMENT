@@ -125,9 +125,7 @@ const DemoPage = () => {
         Authorization: `Bearer ${token} `
       })
     },
-    onSuccess: () => {
-      console.log(tickets)
-    },
+    onSuccess: () => {},
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         console.log(error.message)

@@ -109,7 +109,7 @@ export default function DemoPage() {
         enableColumnFilter: false
       },
       {
-        accessorFn: ({ managedBy }) => managedBy?.fname,
+        accessorFn: ({ managedBy }) => managedBy?.email,
         id: 'manager',
         filterFn: 'includesString'
       },

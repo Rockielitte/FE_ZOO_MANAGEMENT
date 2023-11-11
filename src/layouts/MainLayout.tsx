@@ -1,4 +1,4 @@
-import { useState, type FC, type ReactNode } from 'react'
+import { useState, type FC, type ReactNode, useEffect } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import logo from '../assets/logo/white.svg'
 import logoBlack from '../assets/logo/dark.svg'
@@ -18,15 +18,18 @@ const smSize = 768
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const routeList = useSideBar()
   const { width } = useWindowDimensions()
-
   const [isShow, setIsShow] = useState(true)
-  const transitions = useTransition(isShow && width > 900, {
+  const transitions = useTransition(isShow, {
     from: { opacity: 0, transform: 'translateX(-100%)' },
     enter: { opacity: 1, transform: 'translateX(0%)' }
   })
   const { theme } = useTheme()
   const url = useLocation().pathname
-
+  useEffect(() => {
+    if (width < 900) {
+      setIsShow(false)
+    }
+  }, [width])
   return (
     <div className='w-screen h-screen  flex relative font-roboto  '>
       {transitions(
@@ -37,7 +40,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
               className='min-w-[280px] h-full shadow-md border-r-2 absolute inset-0  backdrop-blur-md  z-50 sm:block md:relative '
             >
               <div className='w-5/6 md:w-full bg-background h-full flex flex-col'>
-                <div className='p-4  bg-background flex gap-2 items-center shadow-md justify-center text-primary'>
+                <div className='p-4  bg-background flex gap-2 items-center shadow-md justify-center '>
                   <img
                     alt='logo'
                     src={theme == 'dark' ? logo : logoBlack}

@@ -63,8 +63,6 @@ const AnimalDetail = () => {
     }
   }, [animal_data.data])
   useEffect(() => {
-    console.log(animalDataForm)
-
     form.reset(animalDataForm)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animalDataForm])

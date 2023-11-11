@@ -9,21 +9,23 @@ const GridAnimal: React.FC<{
   data: Table<Animal>
 }> = ({ data }) => {
   const addDefaultImg = (ev: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = ev.target as HTMLImageElement;
-    target.src = Lin;
+    const target = ev.target as HTMLImageElement
+    target.src = Lin
   }
   return (
     <div className='w-full  flex flex-col flex-1 gap-1 items-start align-top p-2'>
       {data.getRowModel().rows.map((row) => {
-        console.log('row animal: ', row.original)
         return (
           <div className='w-full flex justify-start align-middle border-2 rounded-[0.5rem] gap-2 overflow-hidden'>
-            <img className='h-[150px] w-[200px] object-cover' src={`${row.original?.imageList[0]}`}
-              onError={addDefaultImg} alt='' />
+            <img
+              className='h-[150px] w-[200px] object-cover'
+              src={`${row.original?.imageList[0]}`}
+              onError={addDefaultImg}
+              alt=''
+            />
 
             <div className='p-6'>
               <Link to={`/dashboard/animals/${row.original.id}`}>
-
                 <h3 className='font-normal text-4xl flex items-center gap-3'>
                   {row.original.name} <EyeIcon />
                 </h3>

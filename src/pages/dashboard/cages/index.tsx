@@ -2,7 +2,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 // import { useUserStore } from '@/stores'
 // import { useQueryClient } from 'react-query'
-import { Cage } from '@/types'
+import { Cage, RoleEnum } from '@/types'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
 import { GridShow } from '@/components/GridShow'
@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
+import useCheckRole from '@/hooks/useCheckRole'
 export const columns: ColumnDef<Cage>[] = [
   {
     accessorKey: 'id',
@@ -38,7 +39,7 @@ export const columns: ColumnDef<Cage>[] = [
     enableColumnFilter: false
   },
   {
-    accessorFn: ({ managedBy }) => managedBy?.fname,
+    accessorFn: ({ managedBy }) => managedBy?.email,
     id: 'manager',
     filterFn: 'includesString'
   },
@@ -85,7 +86,7 @@ export default function DemoPage() {
     resetData: { code: '', animalSpeciesId: 0, areaId: 0, description: '', managedById: '' },
     data: {} as Cage
   })
-
+  const user = useCheckRole()
   return (
     <div className='w-full  h-full '>
       {cage_data.isError ? (
@@ -103,6 +104,7 @@ export default function DemoPage() {
               formMutation,
               fields: ['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']
             }}
+            canCreate={user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF)}
           />
         </div>
       ) : (

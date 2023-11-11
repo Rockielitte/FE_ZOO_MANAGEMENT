@@ -19,7 +19,7 @@ const NewsDetail = () => {
     initialData
   })
   const getContent = (content: string) => JSON.parse(content)
-  console.log('newDetail: ' + newDetail.postedAt)
+
   const getDate = (postedAt: string) => {
     const date = new Date(postedAt)
     return format(date, 'PPP')

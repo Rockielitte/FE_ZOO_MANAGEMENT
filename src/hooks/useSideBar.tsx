@@ -119,7 +119,7 @@ const useSideBar = () => {
         name: 'News',
         Icon: Icons.NewsPaper,
         href: 'news'
-      }
+      },
       // {
       //   name: 'My News',
       //   Icon: Icons.BookUser,
@@ -134,12 +134,12 @@ const useSideBar = () => {
       //   name: 'Ticket',
       //   Icon: BsTicketPerforated,
       //   href: 'tickets'
-      // },
-      // {
-      //   name: 'Order',
-      //   Icon: LiaFileInvoiceDollarSolid,
-      //   href: 'orders'
-      // }
+      // },,
+      {
+        name: 'Order',
+        Icon: LiaFileInvoiceDollarSolid,
+        href: 'orders'
+      }
     ],
     []
   )

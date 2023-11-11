@@ -1,21 +1,16 @@
-import { User } from '@/types';
+import { User } from '@/types'
 import { buttonVariants } from './ui/button'
 import { EditSpecies } from '@/pages/dashboard/Species/components/UpdateSpecies'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import Lin from '@/assets/image14.png'
 
-
-
-type Props = { id: number; name: string; description: string; image: string, user: User }
+type Props = { id: number; name: string; description: string; image: string; user: User }
 
 export const SpeciesCard = (props: Props) => {
-  console.log("user role: " + props?.image);
   const bgImage = props?.image ? props?.image : Lin
-  console.log("image: " + bgImage);
-  // !props?.image ? "http://service.zoomanagement.online/utils/files?fileName=pass.jpg" : 
+
+  // !props?.image ? "http://service.zoomanagement.online/utils/files?fileName=pass.jpg" :
   return (
-
-
     <div className={` species-img box-content h-full  border-4 rounded-[1rem] overflow-clip`}>
       <div className='h-[200px]'>
         <img src={bgImage} alt={props.name} className='h-full w-full object-cover  saturate-50 brightness-125 ' />
@@ -31,8 +26,7 @@ export const SpeciesCard = (props: Props) => {
           <Link to={`/dashboard/animal_species/${props.id}`} className={buttonVariants({ variant: 'secondary' })}>
             View
           </Link>
-          {props.user?.role === 'ADMIN' ? (<EditSpecies id={props.id} />) : (<></>)}
-
+          {props.user?.role === 'ADMIN' ? <EditSpecies id={props.id} /> : <></>}
         </div>
       </div>
     </div>

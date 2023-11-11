@@ -15,14 +15,13 @@
 // const useAuth = ({ data }: User): AuthHook => {
 //   const { user, setUser } = useAuthStore()
 
-//   // console.log('check ' + user)
 //   useEffect(() => {
 //     const fetchUser = () => {
 //       // Set the user in the auth store
 //       setUser(data)
 
 //       // if (userData) {
-//       //   console.log('check run: ' + userData)
+
 //       //   setUser(userData)
 //       // }
 //     }

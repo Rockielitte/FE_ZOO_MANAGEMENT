@@ -21,7 +21,7 @@ export const EditSpecies = (props: Props) => {
   useEffect(() => {
     async function fetchMyAPI() {
       const response = await AnimalSpecies.getById(props.id.toString())
-      console.log(response)
+
       setSpecies(response)
     }
 
