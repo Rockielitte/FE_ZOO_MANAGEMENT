@@ -13,7 +13,6 @@ const GridCage: React.FC<{
   return (
     <div className='grid grid-cols-2 gap-10 justify-center items-center p-7'>
       {data.getRowModel().rows.map((row) => {
-        console.log('row cage: ', row.original)
         return (
           <Link to={`/dashboard/cages/${row.original.id}`}>
             <div className='box-content w-full min-h-[150px] border-4 rounded-[1rem] flex flex-col'>

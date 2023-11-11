@@ -34,7 +34,6 @@ const Login: FC = () => {
       return apiCaller.get('/auth/login-google', credentialResponse)
     },
     onSuccess: (data) => {
-      console.log('data: ', data)
       setUser({ token: data.data.accessToken })
       // setUser(data.data)
       toast({
@@ -86,9 +85,8 @@ const Login: FC = () => {
             <div className='shadow-2xl'>
               <GoogleLogin
                 onSuccess={(credentialResponse: CredentialResponse) => {
-                  console.log('credentialResponse: ', credentialResponse)
                   // apiCaller.post<string>('/test-login-google', credentialResponse, {}, {}).then((data) => {
-                  //   console.log('data: ', data)
+
                   //   setUser({ token: data.data })
                   // })
                   // const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)

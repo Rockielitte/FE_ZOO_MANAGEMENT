@@ -24,7 +24,6 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
   } = form
   const queryClient = useQueryClient()
   const onSubmit: SubmitHandler<T> = async (data) => {
-    console.log('submit data', data)
     formMutation.mutate(data, {
       onSettled: () => {
         setTimeout(() => {
@@ -37,7 +36,6 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
         })
       }
     })
-    console.log(data)
   }
   const user = useCheckRole()
   return (
@@ -228,7 +226,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
               type='submit'
               disabled={isSubmitting}
               onClick={() => {
-                console.log('click ne'), handleSubmit(onSubmit)
+                handleSubmit(onSubmit)
               }}
             >
               Submit

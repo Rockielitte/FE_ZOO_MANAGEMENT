@@ -19,12 +19,10 @@ const useQueryCustom = <T, X>({ query, queryKey }: Props<T, X>) => {
         Authorization: `Bearer ${token} `
       })
     },
-    onSuccess: (data) => {
-      console.log(data, queryKey)
-    },
+    onSuccess: () => {},
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        console.log(error.message)
+        // console.log(error.message)
       }
     },
     select: (data) => {

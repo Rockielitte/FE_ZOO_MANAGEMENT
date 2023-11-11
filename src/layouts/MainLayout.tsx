@@ -18,7 +18,6 @@ const smSize = 768
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const routeList = useSideBar()
   const { width } = useWindowDimensions()
-  console.log(width, 'kdkkd')
   const [isShow, setIsShow] = useState(true)
   const transitions = useTransition(isShow, {
     from: { opacity: 0, transform: 'translateX(-100%)' },
@@ -41,7 +40,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
               className='min-w-[280px] h-full shadow-md border-r-2 absolute inset-0  backdrop-blur-md  z-50 sm:block md:relative '
             >
               <div className='w-5/6 md:w-full bg-background h-full flex flex-col'>
-                <div className='p-4  bg-background flex gap-2 items-center shadow-md justify-center text-primary'>
+                <div className='p-4  bg-background flex gap-2 items-center shadow-md justify-center '>
                   <img
                     alt='logo'
                     src={theme == 'dark' ? logo : logoBlack}

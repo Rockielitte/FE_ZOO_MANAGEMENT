@@ -66,7 +66,6 @@ const columns: ColumnDef<Animal>[] = [
     id: 'avatar',
     header: 'Avatar',
     cell: ({ row, column }) => {
-      // console.log(row.getValue);
       const value: string = row.getValue(column.id)
       return (
         <Avatar>
@@ -204,6 +203,7 @@ export default function CageAnimalTable({
           pathName={`/dashboard/animals/create?cageId=${cageId}&animalspeciesId=${cage_data.data?.animalSpecies
             .id}&redirect=${`/dashboard/cages/${cageId}`}`}
           canCreate={user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF)}
+          navigate={`/dashboard/animals`}
         />
       ) : (
         <LoadingScreen></LoadingScreen>

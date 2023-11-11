@@ -7,7 +7,6 @@ const MyOrder = {
 
     // try {
     const response = await get(endpoint)
-    console.log('response: ', response)
 
     return response
     // } catch (error: AxiosError) {
@@ -22,7 +21,6 @@ const MyOrder = {
 
     // try {
     const response = await post(endpoint, data)
-    console.log('response: ', response)
 
     return response
     // } catch (error: AxiosError) {
@@ -37,7 +35,6 @@ const MyOrder = {
 
     // try {
     const response = await put(endpoint, { status })
-    console.log('response: ', response)
 
     return response
     // } catch (error: AxiosError) {
@@ -52,7 +49,6 @@ const MyOrder = {
 
     // try {
     const response = await remove(endpoint)
-    console.log('response: ', response)
 
     return response
     // } catch (error: AxiosError) {

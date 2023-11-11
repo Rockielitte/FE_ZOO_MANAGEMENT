@@ -6,12 +6,11 @@ import { useAuthorizationHeader } from '../authHeader'
 
 const AnimalSpecies = {
   createSpecies: async (data: dataSpecies) => {
-    console.log(data)
     const endpoint = `/animal-species/`
     const test = useAuthorizationHeader()
     try {
       const response = await post(endpoint, data, {}, test.headers)
-      console.log(response)
+
       return response
     } catch (error) {
       console.log(error)
@@ -26,7 +25,7 @@ const AnimalSpecies = {
     const test = useAuthorizationHeader()
     try {
       const response = await get(endpoint, {}, test.headers)
-      console.log(response)
+
       return response
     } catch (error) {
       console.log(error)
@@ -41,7 +40,7 @@ const AnimalSpecies = {
     const test = useAuthorizationHeader()
     try {
       const response = await get(endpoint, {}, test.headers)
-      console.log(response)
+
       return response.data
     } catch (error) {
       console.log(error)
@@ -56,7 +55,7 @@ const AnimalSpecies = {
     const test = useAuthorizationHeader()
     try {
       const response = await get(endpoint, {}, test.headers)
-      console.log(response)
+
       return response.data
     } catch (error) {
       console.log(error)
@@ -65,12 +64,11 @@ const AnimalSpecies = {
   },
 
   updateSpecies: async (data: dataSpecies, id: number) => {
-    console.log(data)
     const endpoint = `/animal-species/${id}`
     const test = useAuthorizationHeader()
     try {
       const response = await put(endpoint, data, {}, test.headers)
-      console.log(response)
+
       return response
     } catch (error) {
       console.log(error)

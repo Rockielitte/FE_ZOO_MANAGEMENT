@@ -111,7 +111,6 @@ const Dashboard = () => {
   // const ticketDistributionData = saleData?.ticketDistribution as TicketStatistic[]
 
   function handleDayClick() {
-    console.log('selectedDays: ' + date)
     setRange({ from: date?.from, to: date?.to })
   }
 

@@ -10,7 +10,9 @@ import { Icons } from './Icon'
 import { Link } from 'react-router-dom'
 import useScrollListener from '@/hooks/useScrollListener'
 import clsx from 'clsx'
-import { Theme } from 'react-toastify'
+import { useTheme } from './theme-provider'
+import { Switch } from './ui/switch'
+import { Label } from './ui/label'
 
 interface NavBarProps {}
 const menuContent = [
@@ -36,11 +38,12 @@ const menuContent = [
   }
 ]
 const NavBar: FC<NavBarProps> = () => {
+  const { theme, setTheme } = useTheme()
   const [open, setOpen] = useState(true)
   const [navClassList, setNavClassList] = useState<string[]>([])
   // const scrollLimit = 200 // Set your desired scroll limit here
   const scroll = useScrollListener()
-  const theme = localStorage.getItem('vite-ui-theme') as Theme
+
   // update classList of nav on scroll
   useEffect(() => {
     const _classList = []
@@ -115,6 +118,20 @@ const NavBar: FC<NavBarProps> = () => {
           <a href='/#contact' className='text-foreground font-semibold lg:text-lg sm:text-sm'>
             Contact
           </a>
+          <div className='flex items-center space-x-2 '>
+            <Switch
+              id='airplane-mode'
+              onClick={() => setTheme('light' == theme ? 'dark' : 'light')}
+              checked={theme == 'dark'}
+            />
+            <Label
+              htmlFor='airplane-mode'
+              className='capitalize'
+              onClick={() => setTheme('light' == theme ? 'dark' : 'light')}
+            >
+              {theme + ' mode'}
+            </Label>
+          </div>
         </div>
         {/* <div className='hidden lg:flex lg:flex-1 lg:justify-end'>
           <a href='#' className='text-sm font-semibold leading-6 text-gray-900'>
@@ -180,6 +197,20 @@ const NavBar: FC<NavBarProps> = () => {
                     >
                       Contact
                     </a>
+                    <div className='flex items-center space-x-2 '>
+                      <Switch
+                        id='airplane-mode'
+                        onClick={() => setTheme('light' == theme ? 'dark' : 'light')}
+                        checked={theme == 'dark'}
+                      />
+                      <Label
+                        htmlFor='airplane-mode'
+                        className='capitalize'
+                        onClick={() => setTheme('light' == theme ? 'dark' : 'light')}
+                      >
+                        {theme + ' mode'}
+                      </Label>
+                    </div>
                   </div>
                   {/* <div className='py-6'>
                 <a

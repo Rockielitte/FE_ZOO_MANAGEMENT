@@ -37,9 +37,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
         }
       )
     },
-    onSuccess: (data) => {
-      console.log(data)
-    },
+    onSuccess: () => {},
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         console.log(error.message)
@@ -86,7 +84,6 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
       : []
     setSelectMap(data)
   }, [select_data.data, search])
-  console.log(String(form.watch(item)), 'LLL')
 
   return (
     <div className='w-full overflow-auto h-full '>

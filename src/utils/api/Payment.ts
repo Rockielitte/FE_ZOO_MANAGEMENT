@@ -6,7 +6,6 @@ const Payment = {
 
     // try {
     const response = await get(endpoint)
-    console.log('response: ', response)
 
     return response
   },
@@ -16,7 +15,6 @@ const Payment = {
 
     // try {
     const response = await post(endpoint, { url })
-    console.log('response: ', response)
 
     return response
   }

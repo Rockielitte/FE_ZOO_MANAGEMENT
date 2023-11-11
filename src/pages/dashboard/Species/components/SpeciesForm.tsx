@@ -69,7 +69,6 @@ export function SpeciesForm(props: Species) {
     const files = dataTransfer.files
     const displayUrl = await LocalFile.uploadFile({ file: files[0] })
     // const displayUrl = URL.createObjectURL(event.target.files![0])
-    console.log(displayUrl)
 
     return { files, displayUrl }
   }
@@ -95,8 +94,6 @@ export function SpeciesForm(props: Species) {
   // const client = useQueryClient()
 
   async function onSubmit(data: SpeciesFormValue) {
-    console.log('lijne: ' + data.image);
-
     if (props.id) {
       updateMutation.mutate(data, {
         onSuccess: () => {
@@ -146,9 +143,8 @@ export function SpeciesForm(props: Species) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className='grid grid-cols-1 gap-x-10 gap-y-14 lg:grid-cols-1 flex-row-reverse '>
-
           <div className=' flex items-center justify-start flex-col space-y-4'>
             <Avatar className='w-60 h-60'>
               <AvatarImage src={preview} />
@@ -165,7 +161,7 @@ export function SpeciesForm(props: Species) {
                   hidden
                   onChange={async (event) => {
                     const { displayUrl } = await getImageData(event)
-                    console.log('displayUrl ' + displayUrl)
+
                     setPreview(displayUrl as string)
                     form.setValue('image', displayUrl as string)
                   }}
@@ -223,10 +219,7 @@ export function SpeciesForm(props: Species) {
               <Button type='submit'>Submit</Button>
             </DialogFooter>
           </div>
-
         </div>
-
-
       </form>
     </Form>
   )

@@ -60,7 +60,6 @@ const columns: ColumnDef<Animal>[] = [
     id: 'avatar',
     header: 'Avatar',
     cell: ({ row, column }) => {
-      // console.log(row.getValue);
       const value: string = row.getValue(column.id)
       return (
         <Avatar>
