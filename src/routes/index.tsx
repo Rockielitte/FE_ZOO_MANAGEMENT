@@ -11,6 +11,7 @@ import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
 import { loaderAccountDetail, GetInfoUser } from '@/lib/loader/AccountsLoader'
 import { loaderNewDetail } from '@/lib/loader/NewsLoader'
+import Qrcode from '@/pages/qrcode'
 
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
@@ -210,6 +211,10 @@ const routes: RouteObject[] = [
         ]
       }
     ]
+  },
+  {
+    path: 'qrcode',
+    element: <Qrcode />
   },
   {
     path: '*',
