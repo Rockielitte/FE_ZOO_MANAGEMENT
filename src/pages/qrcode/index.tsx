@@ -63,7 +63,7 @@ const Qrcode = () => {
               console.info(error)
             }
           }}
-          constraints={{ facingMode: 'user' }}
+          constraints={{ facingMode: 'environment' }}
         />
         <div className='text-lg mt-[-50px] text-[#16A34A] font-medium'>
           <Label>Scanned Code: </Label>

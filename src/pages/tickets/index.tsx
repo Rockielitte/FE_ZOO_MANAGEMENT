@@ -121,7 +121,7 @@ const DemoPage = () => {
   const tickets = useQuery<AxiosResponse<Ticket[]>, unknown, Ticket[]>({
     queryKey: ['tickets'],
     queryFn: () => {
-      return request<Ticket[]>('/tickets/?status=ACTIVE', 'GET', {
+      return request<Ticket[]>('/tickets/', 'GET', {
         Authorization: `Bearer ${token} `
       })
     },
