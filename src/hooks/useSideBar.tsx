@@ -143,8 +143,33 @@ const useSideBar = () => {
     ],
     []
   )
+  const routeListTrainer = useMemo(
+    () => [
+      {
+        name: 'Dashboard',
+        Icon: AiFillHome,
+        href: ''
+      },
+
+      {
+        name: 'Animal',
+        Icon: GiElephant,
+        href: 'animals'
+      },
+
+      {
+        name: 'Cage',
+        Icon: GiBirdCage,
+        href: 'cages'
+      }
+    ],
+    []
+  )
   if (data.role === 'STAFF') {
     return routeListStaff
+  }
+  if (data.role === 'TRAINER') {
+    return routeListTrainer
   }
   return routeList
 }
