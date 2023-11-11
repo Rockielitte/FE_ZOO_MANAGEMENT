@@ -4,6 +4,7 @@ import useQueryCustom from '@/hooks/useQueryCustom'
 import { NewType } from '@/types'
 import { getDate } from '@/lib/utils'
 import { Link } from 'react-router-dom'
+import BgBlog from '@/assets/background/SWP.png'
 export default function Blogs() {
   const new_data = useQueryCustom<NewType, []>({
     query: '/news/?status=PUBLISHED',
@@ -13,15 +14,20 @@ export default function Blogs() {
   const data = new_data.data as NewType[]
 
   return (
-    <div className='flex w-full bg-green-300 backdrop-blur-lg'>
-      <div className='fixed inset-0 flex justify-center sm:px-8'>
-        <div className='flex w-full max-w-7xl lg:px-8'>
-          <div className='w-full bg-slate-200 ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20'></div>
+    <div className='relative flex w-full min-h-screen  backdrop-blur-lg'>
+      <img
+        src={BgBlog}
+        alt='background'
+        className='relative top-0 left-0 right-0 bottom-0 z-5 object-cover min-h-screen'
+      />
+      <div className='fixed inset-0 flex justify-center sm:px-8 top-32'>
+        <div className='flex w-full max-w-7xl lg:px-8 z-7 min-h-full'>
+          <div className='w-full bg-green-300  ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20'></div>
         </div>
       </div>
-      <div className='relative flex w-full flex-col'>
+      <div className='fixed flex w-full flex-col z-10 min-h-screen'>
         <main className='flex-auto'>
-          <div className='sm:px-8 mt-36 sm:mt-44'>
+          <div className='sm:px-8 mt-36 sm:mt-44 min-h-full mb-36'>
             <div className='mx-auto w-full max-w-7xl lg:px-8'>
               <div className='relative px-4 sm:px-8 lg:px-12'>
                 <div className='mx-auto max-w-2xl lg:max-w-5xl'>

@@ -33,12 +33,12 @@ const animalSpeciesFormSchema = z.object({
       message: 'Name must not be longer than 30 characters.'
     }),
 
-  description: z.string().max(255, {
-    message: 'Description must not be longer than 255 characters.'
+  description: z.string().max(1000, {
+    message: 'Description must not be longer than 1000 characters.'
   }),
 
-  image: z.string().max(255, {
-    message: 'Image must not be longer than 255 characters.'
+  image: z.string().max(1000, {
+    message: 'Image must not be longer than 1000 characters.'
   })
 })
 
@@ -95,7 +95,7 @@ export function SpeciesForm(props: Species) {
   // const client = useQueryClient()
 
   async function onSubmit(data: SpeciesFormValue) {
-    console.log('lijne: ' + data.image);
+    console.log('lijne: ' + data.image)
 
     if (props.id) {
       updateMutation.mutate(data, {
@@ -146,9 +146,8 @@ export function SpeciesForm(props: Species) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className='grid grid-cols-1 gap-x-10 gap-y-14 lg:grid-cols-1 flex-row-reverse '>
-
           <div className=' flex items-center justify-start flex-col space-y-4'>
             <Avatar className='w-60 h-60'>
               <AvatarImage src={preview} />
@@ -223,10 +222,7 @@ export function SpeciesForm(props: Species) {
               <Button type='submit'>Submit</Button>
             </DialogFooter>
           </div>
-
         </div>
-
-
       </form>
     </Form>
   )

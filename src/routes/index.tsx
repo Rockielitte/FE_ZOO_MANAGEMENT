@@ -83,31 +83,23 @@ const routes: RouteObject[] = [
           { index: true, element: Blogs },
           { path: ':id', element: BlogDetail }
         ]
+      },
+      {
+        path: 'price_tickets',
+        element: TicketOrder
+      },
+      {
+        path: 'success-noti',
+        element: SuccessOrderNotification
       }
     ]
   },
 
   {
-    path: 'price_tickets',
-    // element: <HomeLayout />,
-    children: [
-      {
-        children: [{ index: true, element: TicketOrder }]
-      }
-    ]
-  },
-  {
     path: 'unauthorized',
     element: Error403
   },
-  {
-    path: 'success-noti',
-    children: [
-      {
-        children: [{ index: true, element: SuccessOrderNotification }]
-      }
-    ]
-  },
+
   {
     path: 'dashboard',
     element: <AuthGuard allowedRoles={['ADMIN', 'STAFF', 'TRAINER']} />,
