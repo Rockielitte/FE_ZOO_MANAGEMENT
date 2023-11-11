@@ -10,7 +10,6 @@ const authApi = {
 
     try {
       const response = await get(endpoint, {}, test.headers)
-      console.log('accountDetail: ', response)
 
       return response
     } catch (error) {

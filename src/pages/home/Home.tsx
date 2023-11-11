@@ -6,8 +6,6 @@ import Banner2 from '@/assets/background/SWP2.png'
 import Banner3 from '@/assets/background/SWP1.png'
 interface HomeProps {}
 const Home: FC<HomeProps> = () => {
-  console.log('Home')
-
   // const { setTheme } = useTheme()
 
   return (

@@ -102,7 +102,6 @@ export function GridShow<TData, TValue, X, T extends FieldValues>({
     // Provide our updateData function to our table meta
     debugTable: true
   })
-  // console.log(isLoading, 'loadie')
 
   return (
     <div className='w-full h-full flex flex-col '>

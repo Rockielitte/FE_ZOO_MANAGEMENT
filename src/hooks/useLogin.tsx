@@ -18,7 +18,6 @@ interface UseLogin {
 export const useLogin = (): UseLogin => {
   const setUser = useUserStore((state) => state.setUser)
   // const { user } = useUserStore()
-  console.log('login run')
 
   const {
     mutate: login,

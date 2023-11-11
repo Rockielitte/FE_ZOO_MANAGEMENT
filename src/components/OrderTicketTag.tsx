@@ -48,7 +48,6 @@ const OrderTicketTag = <T extends FieldValues>({ form, ticket }: Props<T>) => {
                 }[]) || []
               let newDetail: typeof currentdetail = []
               const index = _.findIndex(currentdetail, { ticketId: ticket.id })
-              console.log(index, 'idex ne')
 
               if (index >= 0) {
                 if (count == 0) {
@@ -72,7 +71,6 @@ const OrderTicketTag = <T extends FieldValues>({ form, ticket }: Props<T>) => {
                 })
                 newDetail = [...currentdetail]
               }
-              console.log(newDetail, 'new detail ne')
 
               form?.setValue('details' as Path<T>, newDetail as PathValue<T, Path<T>>, {
                 shouldValidate: true

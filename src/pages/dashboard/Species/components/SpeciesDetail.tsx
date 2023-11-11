@@ -12,7 +12,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Animal, Cage, User } from '@/types'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
-export interface IAppProps { }
+export interface IAppProps {}
 
 export const speciesDetailQuery = (id?: string) => ({
   queryKey: ['species', 'detail', id],
@@ -29,7 +29,6 @@ export const speciesDetailQuery = (id?: string) => ({
 })
 export default function SpeciesDetail() {
   const { data: user } = useRouteLoaderData('dashboard') as { data: User }
-  console.log('role user: ' + user?.role)
 
   const columnsAnimal: ColumnDef<Animal>[] = [
     {
@@ -96,7 +95,7 @@ export default function SpeciesDetail() {
     queryFn: () => {
       return AnimalSpecies.getCageBySpeciesId(id)
     },
-    onSuccess: () => { },
+    onSuccess: () => {},
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         console.log(error.message)
@@ -106,11 +105,8 @@ export default function SpeciesDetail() {
       return data
     }
   })
-  console.log('cage_data: ', cage_data)
 
   const { data: species } = useQuery(speciesDetailQuery(id))
-
-  console.log("animal: " + species.animals)
 
   return (
     <div className='w-full p-5 py-2 h-full flex  flex-col  shadow-2xl border rounded-[0.5rem]  '>

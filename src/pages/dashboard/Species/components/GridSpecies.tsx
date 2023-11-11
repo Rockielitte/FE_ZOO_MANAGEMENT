@@ -10,7 +10,6 @@ const GridSpecies: React.FC<{
   return (
     <div className='grid grid-cols-1 gap-x-4 gap-y-7 lg:grid-cols-3 p-4'>
       {data.getRowModel().rows.map((row) => {
-        console.log('row: ', row.original)
         return (
           <SpeciesCard
             key={row.original.id}

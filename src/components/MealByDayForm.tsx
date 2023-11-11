@@ -46,8 +46,6 @@ const MealByDateForm: React.FC<Props> = ({ mealItem }) => {
   })
 
   const submitHandler: SubmitHandler<formSchemaType> = async (data) => {
-    console.log('asdkfj', data)
-
     formMutation.mutate(
       {
         status: data.status

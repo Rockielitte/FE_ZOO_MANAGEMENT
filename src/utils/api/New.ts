@@ -37,7 +37,6 @@ const New = {
     const test = useAuthorizationHeader()
 
     const response = await post<NewType>(endpoint, data, {}, test.headers)
-    console.log('response: ', response)
 
     return response
   },
@@ -45,11 +44,8 @@ const New = {
     const endpoint = `/news/${id}`
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const test = useAuthorizationHeader()
-
     // try {
     const response = await put(endpoint, data, {}, test.headers)
-    console.log('response: ', response)
-
     return response
     // } catch (error: AxiosError) {
     //   console.log('Error code:', error.response)
