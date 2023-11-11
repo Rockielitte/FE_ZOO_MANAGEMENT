@@ -221,21 +221,18 @@ const DemoPage = () => {
           </DialogContent>
         </Dialog>
       )}
-      <div className='relative flex w-full min-h-screen  backdrop-blur-lg'>
-        <img
-          src={BgBlog}
-          alt='background'
-          className='relative top-0 left-0 right-0 bottom-0 z-5 object-cover min-h-screen '
-        />
-        <div className=' fixed w-full  z-10 mt-32 min-h-screen  '>
+      <div className='relative z-4 flex w-full min-h-screen  backdrop-blur-lg'>
+        <img src={BgBlog} alt='background' className='fixed bg-repeat-y z-2 object-cover min-h-full  ' />
+        <div className=' relative w-full  z-10 mt-32 min-h-screen  '>
           <div className='sm:px-8 mt-20 min-h-screen '>
-            <div className=' w-full flex  lg:px-8 justify-center gap-10'>
+            <div className=' w-full flex  xsm:flex-col lg:flex-row lg:px-8 justify-center xsm:items-center lg:items-start gap-10 pb-8'>
               {/* ticket list here  */}
-              <div className='w-full lg:w-5/12 bg-[#30AF21] rounded-lg h-[600px]  flex flex-col gap-4 justify-center mb-5  py-4  px-4'>
+              <div className='w-fit lg:w-5/12 bg-teal-700 rounded-lg h-[600px]  flex flex-col gap-4 justify-center mb-5  py-4  px-4'>
                 <p className='text-3xl text-white flex font-bold justify-center text-background font-ime'>
                   Ticket Type
                 </p>
-                <ScrollArea className='h-full'>
+
+                <ScrollArea className=''>
                   {tickets.isLoading ? (
                     <LoadingScreen />
                   ) : (
@@ -248,11 +245,8 @@ const DemoPage = () => {
               {/* ticket list here  */}
 
               {/* Order   here  */}
-              <div
-                className='w-full  lg:w-5/12 rounded-md  flex flex-col gap-4 p-2 px-6 py-4'
-                style={{ backgroundColor: 'rgba(48, 175, 33, 0.13)' }}
-              >
-                <p className='text-xl text-primary flex font-bold justify-center mt-5 font-ime uppercase'>
+              <div className='w-full  lg:w-5/12 rounded-md  bg-teal-700 flex flex-col gap-4 p-2 px-6 py-4'>
+                <p className='text-3xl text-white flex font-bold justify-center text-background font-ime'>
                   Order Information
                 </p>
                 <OrderForm form={form} order={order} setOrder={setOrder} />
@@ -260,17 +254,24 @@ const DemoPage = () => {
                 {order.details.length > 0 && <hr className='border-[#30AF21] mt-3' />}
                 <div className='flex flex-col'>
                   {order.details.length > 0 && (
-                    <div className='w-full flex mt-3'>
+                    <div className='w-full flex mt-3 text-slate-300'>
                       <p className='flex-1 opacity-50'>Ticket</p>
                       <p className='flex-1 text-center opacity-50'>Single price</p>
                       <p className='flex-1 text-center opacity-50'>Quantity</p>
                       <p className='flex-1 opacity-50 text-right'>Total </p>
                     </div>
                   )}
-                  {order.details.length > 0 && order.details.map((detail) => <OrderRow detail={detail} />)}
+                  {order.details.length > 0 && (
+                    <ScrollArea className='h-40 w-full '>
+                      {' '}
+                      {order.details.map((detail) => (
+                        <OrderRow detail={detail} />
+                      ))}
+                    </ScrollArea>
+                  )}
                   {order.details.length > 0 && <hr className='border-[#30AF21] mt-3' />}
                   {order.details.length > 0 && (
-                    <div className='w-full flex mt-3'>
+                    <div className='w-full flex mt-3 text-slate-300'>
                       <p className='flex-1 font-bold '></p>
                       <p className='flex-1 text-center'></p>
                       <p className='flex-1 text-center font-bold'>
@@ -286,6 +287,7 @@ const DemoPage = () => {
                   )}
                 </div>
               </div>
+              {/* Order   here  */}
             </div>
           </div>
         </div>

@@ -21,14 +21,14 @@ const TicketItem: React.FC<{
   return (
     <div key={ticket.id} className='flex w-full gap-4 justify-between items-center mb-4'>
       <div className='rounded-lg p-2 flex-1 bg-white text-black flex items-center px-4 gap-4'>
-        <Icons.darkLogo className='w-24 ' />
-        <div className='flex flex-col gap-2 flex-1 p-4'>
-          <p className='xl:text-2xl text-lg font-bold '>{ticket.name} </p>
-          <p className='  xl:text-lg text-md  '>{ticket.description}</p>
+        <Icons.darkLogo className='w-16 h-16  scale-150' />
+        <div className='flex flex-col  flex-1'>
+          <p className='xl:text-2xl text-lg font-bold truncate'>{ticket.name} </p>
+          <p className='  text-sm text-muted-foreground truncate-4'>{ticket.description}</p>
+          <TicketCounter form={form} order={order} setOrder={setOrder} ticket={ticket} />
         </div>
-        <p className='font-bold  xl:text-3xl text-lg'>{ticket.price} VND</p>
+        <p className='font-bold '>{ticket.price} VND</p>
       </div>
-      <TicketCounter form={form} order={order} setOrder={setOrder} ticket={ticket} />
     </div>
   )
 }
