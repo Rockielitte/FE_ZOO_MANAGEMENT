@@ -181,7 +181,11 @@ const routes: RouteObject[] = [
             path: 'animals',
             children: [
               { index: true, element: Animal },
-              { path: 'create', element: AnimalCreate },
+              {
+                path: 'create',
+                element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
+                children: [{ index: true, element: AnimalCreate }]
+              },
               { path: ':id', element: AnimalDetail }
             ]
           },
@@ -210,13 +214,17 @@ const routes: RouteObject[] = [
             element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
             children: [
               { index: true, element: Order },
-              { path: 'create', element: OrderCreate },
+              {
+                path: 'create',
+                element: <AuthGuard allowedRoles={['ADMIN']} />,
+                children: [{ index: true, element: OrderCreate }]
+              },
               { path: ':id', element: OrderDetail }
             ]
           },
           {
             path: '*',
-            element: Home
+            element: <Error></Error>
           }
         ]
       }

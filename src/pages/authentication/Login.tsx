@@ -45,12 +45,12 @@ const Login: FC = () => {
       navigate('/dashboard')
     },
     onError: (error) => {
-      if (axios.isAxiosError(error) && error.response) {
+      if (axios.isAxiosError(error) && (error.response || error.message)) {
         console.log('error: ', error)
         toast({
           variant: 'destructive',
           title: 'Uh oh! Something went wrong.',
-          description: error.response.data.message
+          description: error.response?.data.message || error.message
         })
       }
     }

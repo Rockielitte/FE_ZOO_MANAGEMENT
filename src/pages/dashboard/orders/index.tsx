@@ -119,6 +119,7 @@ const columns: ColumnDef<Order>[] = [
     id: 'action',
     header: 'Action',
     cell: () => {
+      const user = useCheckRole()
       return (
         <DropdownMenu>
           <DropdownMenuTrigger>
@@ -127,9 +128,11 @@ const columns: ColumnDef<Order>[] = [
           <DropdownMenuContent>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <AiFillEdit></AiFillEdit>Edit
-            </DropdownMenuItem>
+            {user && user?.role == RoleEnum.ADMIN && (
+              <DropdownMenuItem>
+                <AiFillEdit></AiFillEdit>Edit
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem>
               <BiDetail></BiDetail>View details
             </DropdownMenuItem>

@@ -7,6 +7,8 @@ import { Button } from './ui/button'
 import CageMealTabe from './CageMealTabe'
 import { SelectSearch } from './SelectSearch'
 import LoadingScreen from './Loading'
+import useCheckRole from '@/hooks/useCheckRole'
+import { RoleEnum } from '@/types'
 
 type Props<X, T extends FieldValues> = {
   form: UseFormReturn<T>
@@ -37,6 +39,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
     })
     console.log(data)
   }
+  const user = useCheckRole()
   return (
     <div className='border w-full h-full rounded-xl shadow-md p-2 flex flex-col-reverse md:flex-row  gap-2 overflow-auto'>
       <div className='md:h-full w-full md:w-1/2  border p-2 shadow-xl rounded-lg relative'>
@@ -55,7 +58,12 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                         {label}
                       </Label>
                       <div className='col-span-3' id={item}>
-                        <SelectSearch form={form} query='areas' item={item} />
+                        <SelectSearch
+                          form={form}
+                          query='areas'
+                          item={item}
+                          disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
+                        />
                       </div>
                       {errors[item] && (
                         <div
@@ -87,7 +95,12 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                         {label}
                       </Label>
                       <div className='col-span-3 h-10' id={item}>
-                        <SelectSearch form={form} query='accounts/?role=TRAINER' item={item} />
+                        <SelectSearch
+                          form={form}
+                          query='accounts/?role=TRAINER'
+                          item={item}
+                          disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
+                        />
                       </div>
                       {errors[item] && (
                         <div
@@ -119,7 +132,12 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                         {label}
                       </Label>
                       <div className='col-span-3 h-10' id={item}>
-                        <SelectSearch form={form} query='animal-species' item={item} />
+                        <SelectSearch
+                          form={form}
+                          query='animal-species'
+                          item={item}
+                          disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
+                        />
                       </div>
                       {errors[item] && (
                         <div
@@ -155,6 +173,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                         className='col-span-3'
                         placeholder={`Type ${item} here . . .`}
                         {...register(item)}
+                        disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
                       />
 
                       {errors[item] && (
@@ -204,16 +223,17 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
               </div>
             </div>
           )}
-
-          <Button
-            type='submit'
-            disabled={isSubmitting}
-            onClick={() => {
-              console.log('click ne'), handleSubmit(onSubmit)
-            }}
-          >
-            Submit
-          </Button>
+          {user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF) && (
+            <Button
+              type='submit'
+              disabled={isSubmitting}
+              onClick={() => {
+                console.log('click ne'), handleSubmit(onSubmit)
+              }}
+            >
+              Submit
+            </Button>
+          )}
         </form>
       </div>
       <div className='md:h-full md:w-1/2 w-full p-2 shadow-2xl border rounded-lg '>

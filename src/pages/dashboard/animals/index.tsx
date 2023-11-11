@@ -19,11 +19,12 @@ import { BsGenderFemale, BsGenderMale } from 'react-icons/bs'
 import { MdOutlineMore } from 'react-icons/md'
 import { IoMaleFemale } from 'react-icons/io5'
 import { format } from 'date-fns'
-import { Animal, AnimalGenderEnum, AnimalStatusEnum } from '@/types'
+import { Animal, AnimalGenderEnum, AnimalStatusEnum, RoleEnum } from '@/types'
 import { FaGenderless } from 'react-icons/fa'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
 import useQueryCustom from '@/hooks/useQueryCustom'
+import useCheckRole from '@/hooks/useCheckRole'
 const columns: ColumnDef<Animal>[] = [
   // {
   //   id: 'select',
@@ -183,13 +184,18 @@ const columns: ColumnDef<Animal>[] = [
 
 export default function DemoPage() {
   const animal_data = useQueryCustom({ query: '/animals/', queryKey: ['animals'], data: {} as Animal })
+  const user = useCheckRole()
 
   return (
     <div className='w-full p-2  py-2 h-full shadow-2xl border rounded-md '>
       {animal_data.isError ? (
         <Error />
       ) : !animal_data.isLoading ? (
-        <DataTable columns={columns} data={!animal_data.data ? [] : (animal_data.data as Animal[])} />
+        <DataTable
+          columns={columns}
+          data={!animal_data.data ? [] : (animal_data.data as Animal[])}
+          canCreate={user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF)}
+        />
       ) : (
         <LoadingScreen></LoadingScreen>
       )}

@@ -16,8 +16,9 @@ type SelectMap<T extends FieldValues> = {
   query: string
   item: Path<T>
   form: UseFormReturn<T>
+  disabled?: boolean
 }
-export function SelectSearch<T extends FieldValues>({ query, item, form }: SelectMap<T>) {
+export function SelectSearch<T extends FieldValues>({ query, item, form, disabled = false }: SelectMap<T>) {
   const [search, setSearch] = React.useState('')
   const token = useUserStore((state) => state.user)?.token
   const select_data = useQuery<
@@ -85,12 +86,15 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
       : []
     setSelectMap(data)
   }, [select_data.data, search])
+  console.log(String(form.watch(item)), 'LLL')
+
   return (
     <div className='w-full overflow-auto h-full '>
       {select_data.isLoading ? (
         <Skeleton className='w-full h-full' />
       ) : form.watch(item) ? (
         <Select
+          disabled={disabled}
           defaultValue={String(form.watch(item))}
           value={String(form.watch(item))}
           onValueChange={(value) => {
@@ -124,6 +128,11 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
                 />
               </div>
               <div className='flex-1 flex flex-col w-full overflow-auto h-full pt-2 border shadow-2xl rounded-md p-2'>
+                {_.findIndex(selectMap, { value: form.getValues(item) }) < 0 && (
+                  <SelectItem key={form.getValues(item)} value={form.getValues(item) as string} className=''>
+                    {item == 'managedById' ? form.getValues('managerName' as Path<T>) : 'Assigned'}
+                  </SelectItem>
+                )}
                 {selectMap.length ? (
                   <>
                     {selectMap.map((item) => (
@@ -141,6 +150,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form }: Selec
         </Select>
       ) : (
         <Select
+          disabled={disabled}
           onValueChange={(value) => {
             if (String(item) == 'cageId') {
               const map = _.find(selectMap, { value: String(value) })

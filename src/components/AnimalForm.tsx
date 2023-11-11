@@ -17,7 +17,7 @@ import { AiOutlineCloudUpload, AiTwotoneDelete } from 'react-icons/ai'
 import { BsImages, BsUpload } from 'react-icons/bs'
 import Carousel from '@/components/Carousel'
 
-import { AnimalGenderEnum, AnimalStatusEnum } from '@/types'
+import { AnimalGenderEnum, AnimalStatusEnum, RoleEnum } from '@/types'
 import { UseMutationResult } from 'react-query'
 
 import LoadingScreen from './Loading'
@@ -25,6 +25,7 @@ import LoadingScreen from './Loading'
 import { SelectSearch } from './SelectSearch'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useSideMutation from '@/hooks/useSideMutation'
+import useCheckRole from '@/hooks/useCheckRole'
 
 interface AnimalFormProps<T extends FieldValues> {
   form: UseFormReturn<T>
@@ -102,11 +103,14 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
       }
     })
   }
+  const user = useCheckRole()
   return (
     <div className='w-full h-full border shadow-xl rounded-lg p-2 overflow-auto flex-col flex '>
       {formMutation.isLoading && <LoadingScreen label='submitting'></LoadingScreen>}
       <div className=' text-white flex flex-col border-b-2  border-secondary shadow-lg font-ime bg-primary px-5 sm:-m-2 leading-tight rounded-md'>
-        <span className='text-xl uppercase font-bold tracking-wider pt-1 font-ime min-h-[32px]'>{'Create animal'}</span>
+        <span className='text-xl uppercase font-bold tracking-wider pt-1 font-ime min-h-[32px]'>
+          {!getValues('name' as Path<T>) ? 'Create animal' : 'Update animal'}
+        </span>
         <span className='font-normal text-base min-h-[24px] tracking-wide'>
           {watch('name' as Path<T>) || 'Animal name'}
         </span>
@@ -131,10 +135,15 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                           placeholder='Type content here . . .'
                           id={item}
                           className='flex-1'
+                          disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
                         />
                       ) : item == 'dob' ? (
                         <Popover>
-                          <PopoverTrigger asChild id={item}>
+                          <PopoverTrigger
+                            asChild
+                            id={item}
+                            disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
+                          >
                             <Button
                               id={item}
                               variant={'outline'}
@@ -170,6 +179,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                           }}
                           value={watch(item)}
                           defaultValue={watch(item)}
+                          disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
                         >
                           <SelectTrigger className='w-full capitalize' id={item}>
                             <SelectValue placeholder={`Select gender here . . .`} className='capitalize' />
@@ -189,6 +199,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                           }}
                           value={watch(item)}
                           defaultValue={getValues(item)}
+                          disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
                         >
                           <SelectTrigger className='w-full capitalize' id={item}>
                             <SelectValue placeholder={`Select status here . . .`} />
@@ -204,11 +215,21 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                       ) : item == 'speciesId' ? (
                         <div className='flex-1 relative h-10' id={item}>
                           <div className='absolute inset-0  z-10 rounded-md cursor-not-allowed'></div>
-                          <SelectSearch query='animal-species' form={form} item={item} />
+                          <SelectSearch
+                            query='animal-species'
+                            form={form}
+                            item={item}
+                            disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
+                          />
                         </div>
                       ) : item == 'cageId' ? (
                         <div className='flex-1' id={item}>
-                          <SelectSearch query='cages' form={form} item={item} />
+                          <SelectSearch
+                            query='cages'
+                            form={form}
+                            item={item}
+                            disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
+                          />
                         </div>
                       ) : (
                         <Input
@@ -216,6 +237,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                           placeholder={`Type ${item} here . . .`}
                           className='w-full'
                           {...register(item)}
+                          disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
                         />
                       )}
                     </div>
@@ -245,12 +267,12 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
               )
             })}
           </div>
-          {
+          {user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF) && (
             <Button type='submit' className=' mt-4' disabled={formMutation.isLoading}>
               <RiSendPlaneLine className='text-xl' />
               Submit
             </Button>
-          }
+          )}
         </form>
         <div className='border-2 border-dashed my-2 block sm:hidden'></div>
         <div className='w-full md:w-2/5 px-6 flex flex-col gap-4 overflow-auto py-2'>
@@ -263,14 +285,16 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
               <BsImages className='text-xl'></BsImages>
               Images
             </Button>
-            <Button
-              className='flex-1 transition-all duration-500  flex items-center gap-2'
-              variant={imageShow == 'post' ? 'default' : 'secondary'}
-              onClick={() => setImageShow('post')}
-            >
-              <AiOutlineCloudUpload className='text-xl' />
-              Upload
-            </Button>
+            {user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF) && (
+              <Button
+                className='flex-1 transition-all duration-500  flex items-center gap-2'
+                variant={imageShow == 'post' ? 'default' : 'secondary'}
+                onClick={() => setImageShow('post')}
+              >
+                <AiOutlineCloudUpload className='text-xl' />
+                Upload
+              </Button>
+            )}
           </div>
 
           <div className='h-[300px] sm:flex-1 overflow-auto '>

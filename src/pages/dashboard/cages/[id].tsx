@@ -20,7 +20,8 @@ const formSchema = z.object({
   areaId: z.coerce.number(),
   animalSpeciesId: z.coerce.number(),
   managedById: z.string().optional(),
-  description: z.string().optional()
+  description: z.string().optional(),
+  managerName: z.string().optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
 const DetailCage = () => {
@@ -50,7 +51,8 @@ const DetailCage = () => {
         areaId: data.area?.id,
         animalSpeciesId: data?.animalSpecies?.id,
         managedById: data.managedBy?.id,
-        description: data.description
+        description: data.description,
+        managerName: data.managedBy?.email
       }
     }
   }, [cage_data.data])

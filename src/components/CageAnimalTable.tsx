@@ -24,10 +24,11 @@ import { IoMaleFemale } from 'react-icons/io5'
 import { format } from 'date-fns'
 import { UseQueryResult } from 'react-query'
 
-import { Animal, AnimalGenderEnum, AnimalStatusEnum, Cage } from '@/types'
+import { Animal, AnimalGenderEnum, AnimalStatusEnum, Cage, RoleEnum } from '@/types'
 import { FaGenderless } from 'react-icons/fa'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
+import useCheckRole from '@/hooks/useCheckRole'
 
 // type DataType = (typeof animalData)[0]
 const columns: ColumnDef<Animal>[] = [
@@ -191,6 +192,7 @@ export default function CageAnimalTable({
   cage_data: UseQueryResult<Cage, unknown>
   cageId: string
 }) {
+  const user = useCheckRole()
   return (
     <div className='w-full  h-full  px-2 border rounded-md relative overflow-auto '>
       {cage_data.isError ? (
@@ -201,6 +203,7 @@ export default function CageAnimalTable({
           data={!cage_data.data ? [] : (cage_data.data.animals as Animal[])}
           pathName={`/dashboard/animals/create?cageId=${cageId}&animalspeciesId=${cage_data.data?.animalSpecies
             .id}&redirect=${`/dashboard/cages/${cageId}`}`}
+          canCreate={user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF)}
         />
       ) : (
         <LoadingScreen></LoadingScreen>
