@@ -55,7 +55,7 @@ const News = () => {
         return (
           <Badge
             className={clsx(
-              'px-2 py-1 w-fit text-center flex justify-center gap-1 items-center  ',
+              'px-2 py-1 w-full text-center flex justify-center gap-1 items-center  ',
               value == NewsStatusEnum.PUBLISHED && 'bg-green-400 ',
               value == NewsStatusEnum.HIDDEN && 'bg-red-400 dark:bg-red-200 hover:bg-red-600'
             )}
@@ -115,7 +115,7 @@ const News = () => {
                     row.original.status == 'PUBLISHED' && 'bg-red-400 dark:bg-red-200 hover:bg-red-600 text-foreground'
                   )}
                 >
-                  {row.original.status == 'HIDDEN' ? 'Published' : 'Hidden'}
+                  {row.original.status == 'HIDDEN' ? 'Publish' : 'Hidden'}
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>

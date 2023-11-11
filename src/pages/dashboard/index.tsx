@@ -519,7 +519,7 @@ const Dashboard = () => {
               <div className=' border w-full h-full p-5 rounded-[0.5rem] shadow-md '>
                 <div className='flex items-start justify-between  gap-14'>
                   <div className=''>
-                    <p className=' text-muted-foreground'>News is unPublished</p>
+                    <p className=' text-muted-foreground'>Unpublished news</p>
                     <h1>{BlogData?.length}</h1>
                   </div>
                   <Link
@@ -536,7 +536,7 @@ const Dashboard = () => {
                     <Error />
                   ) : !new_data.isLoading ? (
                     BlogData.length == 0 ? (
-                      <div>No New is unPublished </div>
+                      <div>No data available </div>
                     ) : (
                       BlogData.map((el: NewType, id: number) => {
                         return (
@@ -569,7 +569,7 @@ const Dashboard = () => {
                                   }}
                                   className=' z-10 flex items-start  text-sm font-medium text-teal-500 hover:bg-teal-300 rounded-sm duration-100 transition-all cursor-pointer p-2'
                                 >
-                                  Published
+                                  Publish
                                 </div>
                               </div>
 
