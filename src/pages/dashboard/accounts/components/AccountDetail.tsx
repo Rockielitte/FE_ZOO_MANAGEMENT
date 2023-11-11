@@ -25,7 +25,7 @@ interface AccountDetailProps {}
 const roles = [
   { label: 'Staff', value: 'STAFF' },
   { label: 'Zoo Trainer', value: 'TRAINER' },
-  { label: 'Admin', value: 'Admin' }
+  { label: 'Admin', value: 'ADMIN' }
 ] as const
 const genders = [
   { label: 'Male', value: 'MALE' },

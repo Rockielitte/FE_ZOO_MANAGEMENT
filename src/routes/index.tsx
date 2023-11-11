@@ -33,7 +33,7 @@ const Dashboard = Loadable({ loader: () => import('../pages/dashboard/index') })
 const Blogs = Loadable({ loader: () => import('../pages/home/Blogs/index') })
 const BlogDetail = Loadable({ loader: () => import('../pages/home/Blogs/[id]') })
 
-// const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
+const Error403 = Loadable({ loader: () => import('../pages/403') })
 
 const Ticket = Loadable({ loader: () => import('../pages/dashboard/tickets/index') })
 const Order = Loadable({ loader: () => import('../pages/dashboard/orders/index') })
@@ -96,6 +96,10 @@ const routes: RouteObject[] = [
     ]
   },
   {
+    path: 'unauthorized',
+    element: Error403
+  },
+  {
     path: 'success-noti',
     children: [
       {
@@ -118,6 +122,7 @@ const routes: RouteObject[] = [
 
           {
             path: 'accounts',
+            element: <AuthGuard allowedRoles={['ADMIN']} />,
             children: [
               { index: true, element: Accounts },
               {
@@ -129,6 +134,7 @@ const routes: RouteObject[] = [
           },
           {
             path: 'staffs',
+            element: <AuthGuard allowedRoles={['STAFF']} />,
             children: [
               { index: true, element: Staffs },
               {
@@ -141,6 +147,7 @@ const routes: RouteObject[] = [
 
           {
             path: 'news',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
             children: [
               { index: true, element: News },
               {
@@ -179,6 +186,7 @@ const routes: RouteObject[] = [
           },
           {
             path: 'areas',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
             children: [
               { index: true, element: Area },
               { path: ':id', element: AreaDetail }
@@ -193,10 +201,12 @@ const routes: RouteObject[] = [
           },
           {
             path: 'tickets',
+            element: <AuthGuard allowedRoles={['ADMIN']} />,
             children: [{ index: true, element: Ticket }]
           },
           {
             path: 'orders',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
             children: [
               { index: true, element: Order },
               { path: 'create', element: OrderCreate },

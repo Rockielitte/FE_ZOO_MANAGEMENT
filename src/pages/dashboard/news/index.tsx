@@ -6,21 +6,21 @@ import { Badge } from '@/components/ui/badge'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import Error from '@/pages/Error'
-import { NewType, NewsStatusEnum } from '@/types'
+import { NewType, NewsStatusEnum, User } from '@/types'
 import { ColumnDef } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { format } from 'date-fns'
 import { useState } from 'react'
 import { FaGenderless } from 'react-icons/fa'
 import { MdOutlineMore } from 'react-icons/md'
-import { Link } from 'react-router-dom'
+import { Link, useRouteLoaderData } from 'react-router-dom'
 import ModalConfirmUpdate from './components/ModalUpdateStatus'
 
 const News = () => {
   const news_data = useQueryCustom({ query: '/news/', queryKey: ['news'], data: {} as NewType })
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false)
   const [newUpdate, setNewUpdate] = useState<NewType | string>('')
-
+  const { data } = useRouteLoaderData('dashboard') as { data: User }
   const columnsAccount: ColumnDef<NewType>[] = [
     {
       accessorKey: 'id',
@@ -67,7 +67,7 @@ const News = () => {
             ) : (
               <FaGenderless className='text-xl' />
             )}
-            {value}
+            {value == 'HIDDEN' ? 'Hidden' : 'Published'}
           </Badge>
         )
       }
@@ -100,25 +100,24 @@ const News = () => {
                   View New
                 </DropdownMenuItem>
               </Link>
-
               {/* <Link to={`/dashboard/news/update/${row.original.id}`}>
                 <DropdownMenuItem>Preview</DropdownMenuItem>
               </Link> */}
-
-              {row.original.status == 'HIDDEN'}
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setNewUpdate(row.original)
-                  setShowDeleteDialog(true)
-                }}
-                className={clsx(
-                  row.original.status == 'HIDDEN' && 'bg-green-400 text-foreground',
-                  row.original.status == 'PUBLISHED' && 'bg-red-400 dark:bg-red-200 hover:bg-red-600 text-foreground'
-                )}
-              >
-                {row.original.status == 'HIDDEN' ? 'Published' : 'Hidden'}
-              </DropdownMenuItem>
+              {data.role === 'ADMIN' && (
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setNewUpdate(row.original)
+                    setShowDeleteDialog(true)
+                  }}
+                  className={clsx(
+                    row.original.status == 'HIDDEN' && 'bg-green-400 text-foreground',
+                    row.original.status == 'PUBLISHED' && 'bg-red-400 dark:bg-red-200 hover:bg-red-600 text-foreground'
+                  )}
+                >
+                  {row.original.status == 'HIDDEN' ? 'Published' : 'Hidden'}
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         )

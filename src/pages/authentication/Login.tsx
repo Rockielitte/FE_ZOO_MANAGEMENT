@@ -18,6 +18,8 @@ import { useNavigate } from 'react-router-dom'
 import { useUserStore } from '@/stores'
 import { useMutation } from 'react-query'
 import { apiCaller } from '@/utils'
+import { toast } from '@/components/ui/use-toast'
+import axios from 'axios'
 
 const Login: FC = () => {
   // const token = useUserStore((state) => state.user)?.token
@@ -35,10 +37,22 @@ const Login: FC = () => {
       console.log('data: ', data)
       setUser({ token: data.data.accessToken })
       // setUser(data.data)
+      toast({
+        variant: 'success',
+        title: 'login Success!'
+        // description: 'Your request has been processed successfully.'
+      })
       navigate('/dashboard')
     },
     onError: (error) => {
-      if (error instanceof Error) console.log('error: ', error)
+      if (axios.isAxiosError(error) && error.response) {
+        console.log('error: ', error)
+        toast({
+          variant: 'destructive',
+          title: 'Uh oh! Something went wrong.',
+          description: error.response.data.message
+        })
+      }
     }
   })
   // if (isSuccess) {
