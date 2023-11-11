@@ -33,12 +33,12 @@ const animalSpeciesFormSchema = z.object({
       message: 'Name must not be longer than 30 characters.'
     }),
 
-  description: z.string().max(255, {
-    message: 'Description must not be longer than 255 characters.'
+  description: z.string().max(1000, {
+    message: 'Description must not be longer than 1000 characters.'
   }),
 
-  image: z.string().max(255, {
-    message: 'Image must not be longer than 255 characters.'
+  image: z.string().max(1000, {
+    message: 'Image must not be longer than 1000 characters.'
   })
 })
 

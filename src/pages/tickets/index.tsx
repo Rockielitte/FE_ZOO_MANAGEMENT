@@ -9,6 +9,8 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+import BgBlog from '@/assets/background/SWP.png'
+
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -26,6 +28,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import OrderForm from './OrderForm'
 import MyOrder from '@/utils/api/MyOrder'
 import Payment from '@/utils/api/Payment'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const today = new Date()
 today.setHours(0, 0, 0, 0)
@@ -118,7 +121,7 @@ const DemoPage = () => {
   const tickets = useQuery<AxiosResponse<Ticket[]>, unknown, Ticket[]>({
     queryKey: ['tickets'],
     queryFn: () => {
-      return request<Ticket[]>('/tickets/?status=ACTIVE', 'GET', {
+      return request<Ticket[]>('/tickets/', 'GET', {
         Authorization: `Bearer ${token} `
       })
     },
@@ -218,48 +221,72 @@ const DemoPage = () => {
           </DialogContent>
         </Dialog>
       )}
-      <div className='flex flex-col lg:flex-row gap-4 min-h-screen w-screen justify-around items-center p-2 '>
-        <div className='w-full lg:w-5/12 bg-[#30AF21] rounded-lg lg:min-h-[300px] flex flex-col gap-4 justify-center mb-5  py-4  px-4'>
-          <p className='text-3xl text-white flex font-bold justify-center text-background font-ime'>Ticket Type</p>
-          {tickets.isLoading ? (
-            <LoadingScreen />
-          ) : (
-            tickets.data?.map((ticket) => <TicketItem form={form} ticket={ticket} order={order} setOrder={setOrder} />)
-          )}
-        </div>
-        <div
-          className='w-full lg:w-5/12 rounded-md lg:min-h-[600px] flex flex-col gap-4 p-2 px-6 py-4'
-          style={{ backgroundColor: 'rgba(48, 175, 33, 0.13)' }}
-        >
-          <p className='text-xl text-primary flex font-bold justify-center mt-5 font-ime uppercase'>
-            Order Information
-          </p>
-          <OrderForm form={form} order={order} setOrder={setOrder} />
+      <div className='relative flex w-full min-h-screen  backdrop-blur-lg'>
+        <img
+          src={BgBlog}
+          alt='background'
+          className='relative top-0 left-0 right-0 bottom-0 z-5 object-cover min-h-screen '
+        />
+        <div className=' fixed w-full  z-10 mt-32 min-h-screen  '>
+          <div className='sm:px-8 mt-20 min-h-screen '>
+            <div className=' w-full flex  lg:px-8 justify-center gap-10'>
+              {/* ticket list here  */}
+              <div className='w-full lg:w-5/12 bg-[#30AF21] rounded-lg h-[600px]  flex flex-col gap-4 justify-center mb-5  py-4  px-4'>
+                <p className='text-3xl text-white flex font-bold justify-center text-background font-ime'>
+                  Ticket Type
+                </p>
+                <ScrollArea className='h-full'>
+                  {tickets.isLoading ? (
+                    <LoadingScreen />
+                  ) : (
+                    tickets.data?.map((ticket) => (
+                      <TicketItem form={form} ticket={ticket} order={order} setOrder={setOrder} />
+                    ))
+                  )}
+                </ScrollArea>
+              </div>
+              {/* ticket list here  */}
 
-          {order.details.length > 0 && <hr className='border-[#30AF21] mt-3' />}
-          <div className='flex flex-col'>
-            {order.details.length > 0 && (
-              <div className='w-full flex mt-3'>
-                <p className='flex-1 opacity-50'>Ticket</p>
-                <p className='flex-1 text-center opacity-50'>Single price</p>
-                <p className='flex-1 text-center opacity-50'>Quantity</p>
-                <p className='flex-1 opacity-50 text-right'>Total </p>
-              </div>
-            )}
-            {order.details.length > 0 && order.details.map((detail) => <OrderRow detail={detail} />)}
-            {order.details.length > 0 && <hr className='border-[#30AF21] mt-3' />}
-            {order.details.length > 0 && (
-              <div className='w-full flex mt-3'>
-                <p className='flex-1 font-bold '></p>
-                <p className='flex-1 text-center'></p>
-                <p className='flex-1 text-center font-bold'>
-                  {Math.round(order.details.reduce((acc, detail) => acc + detail.quantity, 0))}
+              {/* Order   here  */}
+              <div
+                className='w-full  lg:w-5/12 rounded-md  flex flex-col gap-4 p-2 px-6 py-4'
+                style={{ backgroundColor: 'rgba(48, 175, 33, 0.13)' }}
+              >
+                <p className='text-xl text-primary flex font-bold justify-center mt-5 font-ime uppercase'>
+                  Order Information
                 </p>
-                <p className='flex-1 text-right font-bold'>
-                  {Math.round(order.details.reduce((acc, detail) => acc + detail.quantity * detail.ticketPrice, 0))}$
-                </p>
+                <OrderForm form={form} order={order} setOrder={setOrder} />
+
+                {order.details.length > 0 && <hr className='border-[#30AF21] mt-3' />}
+                <div className='flex flex-col'>
+                  {order.details.length > 0 && (
+                    <div className='w-full flex mt-3'>
+                      <p className='flex-1 opacity-50'>Ticket</p>
+                      <p className='flex-1 text-center opacity-50'>Single price</p>
+                      <p className='flex-1 text-center opacity-50'>Quantity</p>
+                      <p className='flex-1 opacity-50 text-right'>Total </p>
+                    </div>
+                  )}
+                  {order.details.length > 0 && order.details.map((detail) => <OrderRow detail={detail} />)}
+                  {order.details.length > 0 && <hr className='border-[#30AF21] mt-3' />}
+                  {order.details.length > 0 && (
+                    <div className='w-full flex mt-3'>
+                      <p className='flex-1 font-bold '></p>
+                      <p className='flex-1 text-center'></p>
+                      <p className='flex-1 text-center font-bold'>
+                        {Math.round(order.details.reduce((acc, detail) => acc + detail.quantity, 0))}
+                      </p>
+                      <p className='flex-1 text-right font-bold'>
+                        {Math.round(
+                          order.details.reduce((acc, detail) => acc + detail.quantity * detail.ticketPrice, 0)
+                        )}
+                        $
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
