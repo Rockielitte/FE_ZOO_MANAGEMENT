@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios'
 import { get, post, put } from '../apiCaller'
 import { dataSpecies } from '@/types'
@@ -9,12 +10,7 @@ const AnimalSpecies = {
     const endpoint = `/animal-species/`
     const test = useAuthorizationHeader()
     try {
-      const response = await post(
-        endpoint,
-        data,
-        {},
-        test.headers
-      )
+      const response = await post(endpoint, data, {}, test.headers)
       console.log(response)
       return response
     } catch (error) {
@@ -56,7 +52,7 @@ const AnimalSpecies = {
   },
 
   getCageBySpeciesId: async (id?: string | undefined) => {
-    const endpoint = `/cages/`
+    const endpoint = `/cages/${id}`
     const test = useAuthorizationHeader()
     try {
       const response = await get(endpoint, {}, test.headers)
@@ -66,7 +62,6 @@ const AnimalSpecies = {
       console.log(error)
       return null
     }
-
   },
 
   updateSpecies: async (data: dataSpecies, id: number) => {
@@ -74,12 +69,7 @@ const AnimalSpecies = {
     const endpoint = `/animal-species/${id}`
     const test = useAuthorizationHeader()
     try {
-      const response = await put(
-        endpoint,
-        data,
-        {},
-        test.headers
-      )
+      const response = await put(endpoint, data, {}, test.headers)
       console.log(response)
       return response
     } catch (error) {
