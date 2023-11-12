@@ -33,6 +33,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from './ui/alert-dialog'
+import { Checkbox } from './ui/checkbox'
 
 interface OrderFormProps<T extends FieldValues, R> {
   form: UseFormReturn<T>
@@ -75,7 +76,7 @@ const OrderForm = <T extends FieldValues, R>({
       }
     })
     formSideMutation?.mutate(
-      { status: data['status'] },
+      { status: data['status'], isUsed: data['isUsed'] },
       {
         onSuccess: () => {
           navigate(`${queryParams.get('redirect') || '/dashboard/orders/'}`)
@@ -212,7 +213,7 @@ const OrderForm = <T extends FieldValues, R>({
                         disabled={canEdit.indexOf(item) < 0}
                       >
                         <SelectTrigger className='w-full' id={item}>
-                          <SelectValue placeholder={`Select gender here . . .`} />
+                          <SelectValue placeholder={`Select status here . . .`} />
                         </SelectTrigger>
                         <SelectContent>
                           {Object.values(OrderStatusEnum).map((item) => (
@@ -233,6 +234,18 @@ const OrderForm = <T extends FieldValues, R>({
                           { style: 'currency', currency: 'VND' }
                         )} in total!`}
                       />
+                    ) : item == 'isUsed' ? (
+                      <div className='w-full'>
+                        <Checkbox
+                          id={item}
+                          checked={watch(item)}
+                          defaultChecked={false}
+                          onClick={() => {
+                            const currentState = getValues(item)
+                            setValue(item, !currentState as PathValue<T, Path<T>>)
+                          }}
+                        />
+                      </div>
                     ) : (
                       <Input
                         disabled={canEdit.indexOf(item) < 0}

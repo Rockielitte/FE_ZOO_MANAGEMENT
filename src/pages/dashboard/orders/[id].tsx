@@ -25,7 +25,8 @@ const formSchema = z.object({
       ticketName: z.string().optional(),
       price: z.coerce.number().min(0).optional()
     })
-    .array()
+    .array(),
+  isUsed: z.boolean()
 })
 export type FormSchemaType = z.infer<typeof formSchema>
 const OrderDetail = () => {
@@ -54,7 +55,8 @@ const OrderDetail = () => {
         total: data.total,
         visitDate: new Date(data.visitDate),
         status: data.status,
-        details: details
+        details: details,
+        isUsed: data.used
       }
       return order
     }
@@ -89,8 +91,8 @@ const OrderDetail = () => {
           deleteFn={formMutationDel}
           form={form}
           formSideMutation={formMutation}
-          fields={['id', 'name', 'email', 'phone', 'visitDate', 'status', 'total']}
-          canEdit={user && user?.role == RoleEnum.ADMIN ? ['status'] : []}
+          fields={['id', 'name', 'email', 'phone', 'visitDate', 'status', 'total', 'isUsed']}
+          canEdit={user && user?.role == RoleEnum.ADMIN ? ['status', 'isUsed'] : []}
           canAuth={user && user?.role == RoleEnum.ADMIN}
         ></OrderForm>
       ) : (

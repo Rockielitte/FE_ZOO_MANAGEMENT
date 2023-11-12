@@ -125,9 +125,9 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
                 />
               </div>
               <div className='flex-1 flex flex-col w-full overflow-auto h-full pt-2 border shadow-2xl rounded-md p-2'>
-                {_.findIndex(selectMap, { value: form.getValues(item) }) < 0 && (
+                {item == 'managedById' && _.findIndex(selectMap, { value: form.getValues(item) }) < 0 && (
                   <SelectItem key={form.getValues(item)} value={form.getValues(item) as string} className=''>
-                    {item == 'managedById' ? form.getValues('managerName' as Path<T>) : 'Assigned'}
+                    {form.getValues('managerName' as Path<T>)}
                   </SelectItem>
                 )}
                 {selectMap.length ? (
@@ -173,6 +173,11 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
                 />
               </div>
               <div className='flex-1 flex flex-col w-full overflow-auto h-full pt-2 border shadow-2xl rounded-md p-2'>
+                {item == 'managedById' && _.findIndex(selectMap, { value: form.getValues(item) }) < 0 && (
+                  <SelectItem key={form.getValues(item)} value={form.getValues(item) as string} className=''>
+                    {item == 'managedById' ? form.getValues('managerName' as Path<T>) : 'Assigned'}
+                  </SelectItem>
+                )}
                 {selectMap.length ? (
                   <>
                     {selectMap.map((item) => (

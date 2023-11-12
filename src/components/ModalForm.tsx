@@ -17,7 +17,7 @@ import { Input } from './ui/input'
 import LoadingScreen from './Loading'
 import { AxiosError } from 'axios'
 import { SelectSearch } from './SelectSearch'
-import { DebouncedInput } from './GridShow'
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { TicketStatusEnum } from '@/types'
 
@@ -221,7 +221,12 @@ const ModalForm = <X, T extends FieldValues>({
                         {label}
                       </Label>
                       <div className='col-span-3 h-10'>
-                        <SelectSearch form={form} query='animal-species' item={item} />
+                        <SelectSearch
+                          form={form}
+                          query='animal-species'
+                          item={item}
+                          disabled={title.includes('Edit')}
+                        />
                       </div>
                       {errors[item] && (
                         <div
@@ -288,27 +293,22 @@ const ModalForm = <X, T extends FieldValues>({
                       <Label htmlFor={item} className='text-right capitalize'>
                         {label}
                       </Label>
-                      <DebouncedInput
+                      <Input
                         id={item}
-                        className='col-span-3'
+                        className='col-span-1'
                         placeholder={`Type price here . . .`}
                         {...register(item)}
-                        value={
-                          watch(item)
-                            ? Number(watch(item)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-                            : ''
-                        }
-                        onChange={(value) => {
-                          setValue(
-                            item,
-                            isNaN(Number(value))
-                              ? (0 as PathValue<T, Path<T>>)
-                              : (Number(value) as PathValue<T, Path<T>>)
-                          )
-                        }}
-                        // debounce={200}
+                        type='number'
+                        hidden
+                        min={0}
                       />
-
+                      <Input
+                        id={item}
+                        className='col-span-2'
+                        placeholder={`Type ${item} here . . .`}
+                        readOnly
+                        value={Number(watch(item)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                      />
                       {errors[item] && (
                         <div
                           className='col-span-4 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 '

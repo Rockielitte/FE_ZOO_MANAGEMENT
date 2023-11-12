@@ -3,7 +3,7 @@ import { DataTable } from '@/components/testTable/Data-table'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 
 import { Badge } from '@/components/ui/badge'
-import { Checkbox } from '@/components/ui/checkbox'
+import { CgUnavailable } from 'react-icons/cg'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +16,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import clsx from 'clsx'
 import { AiFillEdit, AiOutlineCheck } from 'react-icons/ai'
 import { BiDetail } from 'react-icons/bi'
-import { MdOutlineMore, MdPendingActions } from 'react-icons/md'
+import { MdEventAvailable, MdOutlineMore, MdPendingActions } from 'react-icons/md'
 import { format } from 'date-fns'
 import LoadingScreen from '@/components/Loading'
 import Error from '@/pages/Error'
@@ -26,29 +26,6 @@ import { GrStatusDisabled } from 'react-icons/gr'
 import { Order, OrderStatusEnum, RoleEnum } from '@/types'
 import useCheckRole from '@/hooks/useCheckRole'
 const columns: ColumnDef<Order>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        className='border-white'
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-        onClick={(e) => {
-          e.stopPropagation()
-        }}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
-  },
   {
     accessorKey: 'id',
     header: ({ column }) => <DataTableColumnHeader column={column} title='ID' />,
@@ -71,17 +48,10 @@ const columns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: 'visitDate',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Visit Date' />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title='VisitDate' />,
     cell: ({ row, column }) => {
       const date = new Date(row.getValue(column.id))
       return date ? <span className='text-ellipsis'>{format(date, 'PPP')}</span> : <span>N/A</span>
-    }
-  },
-  {
-    accessorKey: 'total',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Total' />,
-    cell: ({ row, column }) => {
-      return <>{Number(row.getValue(column.id)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</>
     }
   },
   {
@@ -113,6 +83,43 @@ const columns: ColumnDef<Order>[] = [
     },
     enableSorting: false,
     filterFn: 'equalsString'
+  },
+  {
+    accessorKey: 'used',
+    header: ({ column }) => <DataTableColumnHeader column={column} title='IsUsed' />,
+    cell: ({ row, column }) => {
+      const value: boolean = row.getValue(column.id)
+      return (
+        <Badge
+          className={clsx(
+            'px-2 py-1 min-w-[70px] text-center flex justify-center gap-1 items-center  ',
+            !value && 'bg-blue-400 ',
+
+            value && 'bg-red-400'
+          )}
+        >
+          {!value ? <MdEventAvailable className='text-xl'></MdEventAvailable> : <CgUnavailable className='text-xl' />}
+          {value ? 'USED' : 'AVAILABLE'}
+        </Badge>
+      )
+    },
+    enableSorting: false,
+    filterFn: 'equalsString'
+  },
+  {
+    accessorKey: 'total',
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Total' />,
+    cell: ({ row, column }) => {
+      return <>{Number(row.getValue(column.id)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</>
+    }
+  },
+  {
+    accessorKey: 'createdAt',
+    header: ({ column }) => <DataTableColumnHeader column={column} title='CreatedAt' />,
+    cell: ({ row, column }) => {
+      const date = new Date(row.getValue(column.id))
+      return date ? <span className='text-ellipsis'>{format(date, 'PPP')}</span> : <span>N/A</span>
+    }
   },
 
   {
