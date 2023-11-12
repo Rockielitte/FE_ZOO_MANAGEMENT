@@ -39,7 +39,6 @@ const Qrcode = () => {
       setData(orderId)
       const res = await MyOrder.getOrder(orderId)
       const order = res.data as Order
-      console.log(order)
       const visitDate = new Date(order.visitDate)
       if (order.status != OrderStatusEnum.DONE) setError('This ticket is not approved')
       else if (!isToday(visitDate)) setError('The visit date is not today')
