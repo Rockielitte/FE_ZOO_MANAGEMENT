@@ -228,7 +228,11 @@ const routes: RouteObject[] = [
   },
   {
     path: '*',
-    element: <Error />
+    element: (
+      <div className='w-screen h-screen justify-center items-center'>
+        <Error />
+      </div>
+    )
   }
 ]
 const router = createBrowserRouter(routes)
