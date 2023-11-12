@@ -121,7 +121,7 @@ const DemoPage = () => {
   const tickets = useQuery<AxiosResponse<Ticket[]>, unknown, Ticket[]>({
     queryKey: ['tickets'],
     queryFn: () => {
-      return request<Ticket[]>('/tickets/', 'GET', {
+      return request<Ticket[]>('/tickets/?status=ACTIVE', 'GET', {
         Authorization: `Bearer ${token} `
       })
     },
@@ -235,6 +235,8 @@ const DemoPage = () => {
                 <ScrollArea className=''>
                   {tickets.isLoading ? (
                     <LoadingScreen />
+                  ) : tickets.data?.length == 0 ? (
+                    <div> data is empty</div>
                   ) : (
                     tickets.data?.map((ticket) => (
                       <TicketItem form={form} ticket={ticket} order={order} setOrder={setOrder} />
@@ -245,7 +247,7 @@ const DemoPage = () => {
               {/* ticket list here  */}
 
               {/* Order   here  */}
-              <div className='w-full  lg:w-5/12 rounded-md  bg-teal-700 flex flex-col gap-4 p-2 px-6 py-4'>
+              <div className='w-full  lg:w-5/12 rounded-md text-white   bg-teal-700 flex flex-col gap-4 p-2 px-6 py-4'>
                 <p className='text-3xl text-white flex font-bold justify-center text-background font-ime'>
                   Order Information
                 </p>

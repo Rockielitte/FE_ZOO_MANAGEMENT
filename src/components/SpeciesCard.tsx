@@ -18,8 +18,8 @@ export const SpeciesCard = (props: Props) => {
 
       <div className='flex justify-between flex-col h-fit p-3 '>
         {/* <p className='text-black font-extralight'>{props.id}</p> */}
-        <div className='text-black my-4'>
-          <h3 className='font-normal truncate text-4xl'>{props.name}</h3>
+        <div className='text-foreground my-4'>
+          <h3 className='font-normal truncate text-4xl '>{props.name}</h3>
           <p className='font-extralight truncate-4 my-3'>{props.description}</p>
         </div>
         <div className='font-normal flex space-x-3'>

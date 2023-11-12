@@ -26,7 +26,7 @@ export const EditSpecies = (props: Props) => {
     }
 
     fetchMyAPI()
-  }, [])
+  }, [open, props.id])
   return (
     species && (
       <Dialog open={open} onOpenChange={setOpen}>

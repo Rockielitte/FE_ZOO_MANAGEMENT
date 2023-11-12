@@ -126,7 +126,7 @@ const Accounts: FC<Accounts> = () => {
               <Link to={`/dashboard/accounts/${row.original.id}`}>
                 <DropdownMenuItem>View Info</DropdownMenuItem>
               </Link>
-              <DropdownMenuItem>View News</DropdownMenuItem>
+              =
               {row.original.status == 'ACTIVE' && (
                 <DropdownMenuItem
                   onClick={(e) => {
