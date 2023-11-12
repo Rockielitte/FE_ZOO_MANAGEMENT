@@ -9,7 +9,7 @@ type Props<T extends FieldValues> = {
   form: UseFormReturn<T>
 }
 const TickerListOrder = <T extends FieldValues>({ form }: Props<T>) => {
-  const ticket_data = useQueryCustom({ query: '/tickets/?status=ACTIVE', queryKey: ['tickets'], data: {} as Ticket })
+  const ticket_data = useQueryCustom({ query: '/tickets/', queryKey: ['tickets'], data: {} as Ticket })
   return (
     <div className='w-full h-full shadow-2xl'>
       {ticket_data.isError ? (

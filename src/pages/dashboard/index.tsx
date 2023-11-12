@@ -8,6 +8,7 @@ import {
   SaleOverallStatistics,
   SaleStatistics,
   SpeciesStatistics,
+  TicketStatistic,
   ZooStatistics
 } from '@/types'
 import { useMemo, useState } from 'react'
@@ -108,7 +109,7 @@ const Dashboard = () => {
   })
   const saleData = sale_statistics.data as SaleStatistics
   const overallData = saleData?.overallStatistics as OverallStatistics[]
-  // const ticketDistributionData = saleData?.ticketDistribution as TicketStatistic[]
+  const ticketDistributionData = saleData?.ticketDistribution as TicketStatistic[]
 
   function handleDayClick() {
     setRange({ from: date?.from, to: date?.to })
@@ -188,7 +189,23 @@ const Dashboard = () => {
     return newArray as AnimalStatusStatistics[]
   }
 
+  function useGenerateTicketDistribution(data: TicketStatistic[]) {
+    if (data?.length === 0 || data == undefined) {
+      return []
+    }
+    const generateItem = (item: TicketStatistic) => {
+      const { ticketName, money } = item
+
+      return { name: ticketName, value: money }
+    }
+
+    const newArray = data?.map(generateItem)
+
+    return newArray as AnimalStatusStatistics[]
+  }
+
   const speciesStatic = useGenerateSpeciesStatistic(ZooStatistics?.animalSpeciesStatistics)
+  const ticketStatistics = useGenerateTicketDistribution(ticketDistributionData)
 
   ///////////////////////////////WeekPicker////////////////////////////////////////////////////
 
@@ -212,7 +229,7 @@ const Dashboard = () => {
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
         <div className='flex-1 overflow-auto p-5 flex flex-col gap-4 h-full'>
           <div className='mx-auto my-10 grid max-w-2xl grid-cols-2 md:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4'>
-            <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
+            <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
               <div className='flex items-center justify-between gap-3'>
                 <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
                   <Icons.Home />
@@ -230,7 +247,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
+            <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
               <div className='flex items-center justify-between gap-3'>
                 <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
                   <Icons.MayIn />
@@ -248,7 +265,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
+            <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
               <div className='flex items-center justify-between gap-3'>
                 <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
                   <Icons.NewsPaper />
@@ -262,7 +279,7 @@ const Dashboard = () => {
                 <h2>{ZooStatistics?.totalNewsPublished}</h2>
               </div>
             </div>
-            <div className='border-2 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3 '>
+            <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3 '>
               <div className='flex items-center justify-between gap-3'>
                 <div className='flex gap-5 items-center justify-center'>
                   <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
@@ -271,7 +288,7 @@ const Dashboard = () => {
                   Human Resources
                 </div>
                 <Link
-                  to='/dashboard/cages'
+                  to='/dashboard/accounts'
                   className='flex items-center text-muted-foreground text-sm justify-between '
                 >
                   View All <Icons.ArrowRight className='text-sm' />
@@ -293,16 +310,103 @@ const Dashboard = () => {
           </div>
 
           {/* 
-            pie chart here */}
-          <div className='grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3  gap-4  h-fit w-full '>
-            <div className='  flex flex-col  border  h-[22rem] rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+            pie chart here 
+            grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3
+            */}
+          <div className='grid  lg:grid-cols-3 xsm:grid-cols-1  gap-4   h-fit w-full '>
+            {/* 
+            News chart here */}
+            <div className='row-span-3 col-span-2 flex items-center justify-center min-w-full h-full rounded '>
+              <div className=' border w-full h-full p-5 rounded-[0.5rem] shadow-md border-gray-200'>
+                <div className='flex items-start justify-between  gap-14'>
+                  <div className=''>
+                    <p className=' text-muted-foreground'>Unpublished news</p>
+                    <h1>{BlogData?.length}</h1>
+                  </div>
+                  <Link
+                    to='/dashboard/news'
+                    className='flex items-center text-muted-foreground text-sm justify-between '
+                  >
+                    View All News
+                    <Icons.ArrowRight className='text-sm' />
+                  </Link>
+                </div>
+                <div className='mt-3 w-full  text-xs h-fit'>
+                  {' '}
+                  {new_data.isError ? (
+                    <Error />
+                  ) : !new_data.isLoading ? (
+                    BlogData.length == 0 ? (
+                      <div>No data available </div>
+                    ) : (
+                      BlogData.map((el: NewType, id: number) => {
+                        return (
+                          <article className=' mb-4 w-full overflow-auto' key={id}>
+                            <time
+                              className=' hidden md:block relative z-10 order-first flex items-center text-sm text-zinc-400 dark:text-zinc-500'
+                              dateTime={getDate(el?.postedAt)}
+                            >
+                              {getDate(el?.postedAt)}
+                            </time>
+                            <div className='   flex flex-col  items-start'>
+                              <div className='flex items-start flex-col border rounded-[0.5rem] p-4  gap-4 w-full'>
+                                <div className=''>
+                                  <h2 className='text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100'>
+                                    {/* <div className='absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl'></div> */}
+                                    <Link to={`/dashboard/news/${el.id}`}>
+                                      {/* <span className='absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl'></span> */}
+                                      <div className='relative z-10 truncate w-fit'>{el.title}</div>
+                                    </Link>
+                                  </h2>
+                                  <p className=' z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400'>
+                                    {!el?.author ? 'Unknown' : el.author.email}
+                                  </p>
+                                </div>
+                                <div
+                                  aria-hidden='true'
+                                  onClick={() => {
+                                    setNewUpdate(el)
+                                    setShowDeleteDialog(true)
+                                  }}
+                                  className=' z-10 flex items-start  text-sm font-medium text-teal-500 hover:bg-teal-300 rounded-sm duration-100 transition-all cursor-pointer p-2'
+                                >
+                                  Publish
+                                </div>
+                              </div>
+
+                              <time
+                                className='md:hidden relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500 pl-3.5'
+                                dateTime={getDate(el?.postedAt)}
+                              >
+                                <span className='absolute inset-y-0 left-0 flex items-center' aria-hidden='true'>
+                                  <span className='h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500'></span>
+                                </span>
+                                <span className='ml-3'>{getDate(el?.postedAt)}</span>
+                              </time>
+                            </div>
+                          </article>
+                        )
+                      })
+                    )
+                  ) : (
+                    <LoadingScreen></LoadingScreen>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* 
+            pie chart here 
+            grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3
+            */}
+            <div className='flex flex-col md:row-span-1  lg:row-span-1   xsm:col-span-2 border md:col-span-1 lg:col-span-1  h-[22rem] rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
               <div className='flex items-start justify-between  gap-14'>
                 <div className=''>
                   <p className=' text-muted-foreground'>Animal Statistics</p>
                   <h1 className='text-gray-700 font-medium '>{ZooStatistics?.totalAnimal}</h1>
                 </div>
                 <Link
-                  to='/dashboard/animal'
+                  to='/dashboard/animals'
                   className='flex items-center text-muted-foreground text-sm justify-between '
                 >
                   View All <Icons.ArrowRight className='text-sm' />
@@ -313,39 +417,25 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className=' flex flex-col  border h-[22rem]  p-5 rounded-[0.5rem] shadow-md '>
-              <div className='flex items-start justify-between  gap-14'>
-                <div className=''>
-                  <p className=' text-muted-foreground'>Species Statistics</p>
-                  <h1 className='text-gray-700 font-medium '>{speciesStatic.length}</h1>
+            {/* 
+            pie chart here */}
+            <div className=' flex flex-col md:row-span-1  lg:row-span-2   xsm:col-span-2 border md:col-span-1 lg:col-span-1  h-[22rem] rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+              <div className='flex flex-col w-full h-full mx-auto'>
+                <div className='flex items-start justify-between  gap-14'>
+                  <div className=''>
+                    <p className=' text-muted-foreground'>Species Statistics</p>
+                    <h1 className='text-gray-700 font-medium '>{speciesStatic.length}</h1>
+                  </div>
+                  <Link
+                    to='/dashboard/animal_species'
+                    className='flex items-center text-muted-foreground text-sm justify-between '
+                  >
+                    View All <Icons.ArrowRight className='text-sm' />
+                  </Link>
                 </div>
-                <Link
-                  to='/dashboard/animal'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
-                >
-                  View All <Icons.ArrowRight className='text-sm' />
-                </Link>
-              </div>
-              <div className='mt-3 w-full flex-1 text-xs'>
-                <SpeciesPieChart data={speciesStatic} width={400} height={300} />
-              </div>
-            </div>
-
-            <div className=' flex  flex-col  border h-[22rem]  p-5 rounded-[0.5rem] shadow-md '>
-              <div className='flex items-start justify-between  gap-14'>
-                <div className=''>
-                  <p className=' text-muted-foreground'>Species Statistics</p>
-                  <h1 className='text-gray-700 font-medium '>{speciesStatic.length}</h1>
+                <div className='mt-3 w-full flex-1 text-xs'>
+                  <SpeciesPieChart data={speciesStatic} width={400} height={300} />
                 </div>
-                <Link
-                  to='/dashboard/animal'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
-                >
-                  View All <Icons.ArrowRight className='text-sm' />
-                </Link>
-              </div>
-              <div className='mt-3 w-full flex-1 text-xs'>
-                <SpeciesPieChart data={speciesStatic} width={400} height={300} />
               </div>
             </div>
           </div>
@@ -353,11 +443,11 @@ const Dashboard = () => {
           <div className='grid  lg:grid-cols-3 md:grid-cols-1  gap-4 w-full h-full'>
             {/* 
             Bar chart here */}
-            <div className=' lg:col-span-2 col-span-1 block  rounded'>
+            <div className=' lg:col-span-2 col-span-1 block  rounded-[0.5rem]'>
               <div className='h-full   p-5 rounded-[0.5rem] border shadow-md border-gray-200 flex  flex-col w-full'>
                 <div className='flex items-start justify-between  gap-14'>
                   <div className=''>
-                    <p className=' text-muted-foreground'>Tota l Renueve</p>
+                    <p className=' text-muted-foreground'>Total Revenue</p>
                     <h1 className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</h1>
                   </div>
                   <Link
@@ -511,84 +601,24 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-
             {/* 
-            News chart here */}
-            <div className='lg:col-span-1  flex items-center justify-center w-full h-full rounded'>
-              <div className=' border w-full h-full p-5 rounded-[0.5rem] shadow-md '>
+               ticket distribution here */}
+            <div className='flex row-span-1   border  flex-col border-gray-200 p-5 rounded-[0.5rem] shadow-md '>
+              <div className='flex   flex-col'>
                 <div className='flex items-start justify-between  gap-14'>
                   <div className=''>
-                    <p className=' text-muted-foreground'>Unpublished news</p>
-                    <h1>{BlogData?.length}</h1>
+                    <p className=' text-muted-foreground'>Ticket Distribution</p>
+                    <h1 className='text-gray-700 font-medium '>{ticketDistributionData?.length}</h1>
                   </div>
                   <Link
-                    to='/dashboard/news'
+                    to='/dashboard/animals'
                     className='flex items-center text-muted-foreground text-sm justify-between '
                   >
-                    View All News
-                    <Icons.ArrowRight className='text-sm' />
+                    View All <Icons.ArrowRight className='text-sm' />
                   </Link>
                 </div>
-                <div className='mt-3 w-full  text-xs h-fit'>
-                  {' '}
-                  {new_data.isError ? (
-                    <Error />
-                  ) : !new_data.isLoading ? (
-                    BlogData.length == 0 ? (
-                      <div>No data available </div>
-                    ) : (
-                      BlogData.map((el: NewType, id: number) => {
-                        return (
-                          <article className=' mb-4 w-full overflow-auto' key={id}>
-                            <time
-                              className=' hidden md:block relative z-10 order-first flex items-center text-sm text-zinc-400 dark:text-zinc-500'
-                              dateTime={getDate(el?.postedAt)}
-                            >
-                              {getDate(el?.postedAt)}
-                            </time>
-                            <div className='   flex flex-col  items-start'>
-                              <div className='flex items-start flex-col border rounded-[0.5rem] p-4  gap-4 w-full'>
-                                <div className=''>
-                                  <h2 className='text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100'>
-                                    {/* <div className='absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl'></div> */}
-                                    <Link to={`/dashboard/news/${el.id}`}>
-                                      {/* <span className='absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl'></span> */}
-                                      <div className='relative z-10 truncate w-fit'>{el.title}</div>
-                                    </Link>
-                                  </h2>
-                                  <p className=' z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400'>
-                                    {!el?.author ? 'Unknown' : el.author.email}
-                                  </p>
-                                </div>
-                                <div
-                                  aria-hidden='true'
-                                  onClick={() => {
-                                    setNewUpdate(el)
-                                    setShowDeleteDialog(true)
-                                  }}
-                                  className=' z-10 flex items-start  text-sm font-medium text-teal-500 hover:bg-teal-300 rounded-sm duration-100 transition-all cursor-pointer p-2'
-                                >
-                                  Publish
-                                </div>
-                              </div>
-
-                              <time
-                                className='md:hidden relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500 pl-3.5'
-                                dateTime={getDate(el?.postedAt)}
-                              >
-                                <span className='absolute inset-y-0 left-0 flex items-center' aria-hidden='true'>
-                                  <span className='h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500'></span>
-                                </span>
-                                <span className='ml-3'>{getDate(el?.postedAt)}</span>
-                              </time>
-                            </div>
-                          </article>
-                        )
-                      })
-                    )
-                  ) : (
-                    <LoadingScreen></LoadingScreen>
-                  )}
+                <div className='mt-3 w-full  h-[22rem] text-xs'>
+                  <SpeciesPieChart data={ticketStatistics} width={400} height={300} />
                 </div>
               </div>
             </div>
@@ -607,13 +637,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-
-// sale bar chart
-
-// sale bar chart
-
-// animal statistics
-
-// animal statistics
-
-// species  statistics

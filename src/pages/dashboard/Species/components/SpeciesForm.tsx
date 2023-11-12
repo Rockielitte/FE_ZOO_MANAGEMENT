@@ -4,7 +4,7 @@ import * as z from 'zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
+
 import { Textarea } from '@/components/ui/textarea'
 // import AnimalSpecies from '@/utils/api/AnimalSpecies'
 import { DialogFooter } from '@/components/ui/dialog'
@@ -98,15 +98,11 @@ export function SpeciesForm(props: Species) {
       updateMutation.mutate(data, {
         onSuccess: () => {
           props.setOpen(false)
-
-          toast({
-            title: 'Update Successfull',
-            description: (
-              <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-                <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-              </pre>
-            )
-          })
+          form.reset(props.species)
+          // toast({
+          //   variant: 'success',
+          //   title: 'Update Successfull'
+          // })
         },
         onError: (data) => {
           if (axios.isAxiosError(data) && data.response) {
@@ -121,14 +117,10 @@ export function SpeciesForm(props: Species) {
         onSuccess: () => {
           props.setOpen(false)
 
-          toast({
-            title: 'Create Successfull',
-            description: (
-              <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-                <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-              </pre>
-            )
-          })
+          // toast({
+          //   variant: 'success',
+          //   title: 'Create Successfull'
+          // })
         },
         onError: (data) => {
           if (axios.isAxiosError(data) && data.response) {

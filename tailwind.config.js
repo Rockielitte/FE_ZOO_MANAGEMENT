@@ -19,7 +19,7 @@ module.exports = {
     },
     extend: {
       screens: {
-        xsm: '376px',
+        xsm: '375px',
         '3xl': '1920px'
       },
       colors: {

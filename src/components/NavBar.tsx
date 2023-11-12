@@ -16,7 +16,7 @@ const menuContent = [
   },
   {
     id: 2,
-    title: 'Price Ticket',
+    title: 'Buy Ticket',
     href: '/price_tickets'
   },
   // {
@@ -109,20 +109,6 @@ const NavBar: FC<NavBarProps> = () => {
           <a href='/#contact' className='text-white font-semibold lg:text-lg sm:text-sm'>
             Contact
           </a>
-          <div className='flex items-center space-x-2 '>
-            <Switch
-              id='airplane-mode'
-              onClick={() => setTheme('light' == theme ? 'dark' : 'light')}
-              checked={theme == 'dark'}
-            />
-            <Label
-              htmlFor='airplane-mode'
-              className='capitalize'
-              onClick={() => setTheme('light' == theme ? 'dark' : 'light')}
-            >
-              {theme + ' mode'}
-            </Label>
-          </div>
         </div>
         {/* <div className='hidden lg:flex lg:flex-1 lg:justify-end'>
           <a href='#' className='text-sm font-semibold leading-6 text-gray-900'>
