@@ -30,11 +30,15 @@ const MyOrder = {
     // }
   },
 
-  updateOrderStatus: async (orderId: string, status: string) => {
+  updateOrderStatus: async (orderId: string, status: string, isUsed?: boolean) => {
     const endpoint = `/orders/${orderId}`
 
     // try {
-    const response = await put(endpoint, { status })
+    let bodyData
+    if (!isUsed) bodyData = { status }
+    else bodyData = { status, isUsed }
+
+    const response = await put(endpoint, bodyData)
 
     return response
     // } catch (error: AxiosError) {
