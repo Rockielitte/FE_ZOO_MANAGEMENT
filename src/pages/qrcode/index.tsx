@@ -83,6 +83,8 @@ const Qrcode = () => {
               <Input className='text-[#16A34A]' value={order.status} />
               <Label>Name</Label>
               <Input className='text-[#16A34A]' value={order.name} />
+              <Label>Email</Label>
+              <Input className='text-[#16A34A]' value={order.email} />
               <Label>Vist date</Label>
               <Input className='text-[#16A34A]' value={order.visitDate.split('T')[0]} />
               <Label>Ticket</Label>
