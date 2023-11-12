@@ -19,7 +19,7 @@ const Qrcode = () => {
   }
 
   const confirm = () => {
-    MyOrder.updateOrderStatus(data, 'DONE')
+    MyOrder.updateOrderStatus(data, 'DONE', true)
     toast.success('Confirm ticket successfully!!')
     clear()
   }
@@ -42,6 +42,7 @@ const Qrcode = () => {
       const visitDate = new Date(order.visitDate)
       if (order.status != OrderStatusEnum.DONE) setError('This ticket is not approved')
       else if (!isToday(visitDate)) setError('The visit date is not today')
+      else if (order.used) setError('This ticket was used')
       setOrder(order)
     } catch (error) {
       setError('Ticket not found')
@@ -82,6 +83,8 @@ const Qrcode = () => {
               <Input className='text-[#16A34A]' value={order.status} />
               <Label>Name</Label>
               <Input className='text-[#16A34A]' value={order.name} />
+              <Label>Email</Label>
+              <Input className='text-[#16A34A]' value={order.email} />
               <Label>Vist date</Label>
               <Input className='text-[#16A34A]' value={order.visitDate.split('T')[0]} />
               <Label>Ticket</Label>
