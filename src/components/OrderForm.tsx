@@ -237,6 +237,7 @@ const OrderForm = <T extends FieldValues, R>({
                     ) : item == 'isUsed' ? (
                       <div className='w-full'>
                         <Checkbox
+                          disabled={canEdit.indexOf(item) < 0}
                           id={item}
                           checked={watch(item)}
                           defaultChecked={false}
