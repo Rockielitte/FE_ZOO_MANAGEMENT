@@ -269,6 +269,7 @@ export interface Order {
   visitDate: string
   status: OrderStatusEnum
   details: OrderDetail[]
+  used: boolean
 }
 export type CageMeal = {
   id: number
