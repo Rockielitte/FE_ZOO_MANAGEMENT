@@ -40,8 +40,8 @@ const accountFormSchema = z.object({
     }),
   lname: z
     .string()
-    .min(3, {
-      message: 'Name must be at least 3 characters.'
+    .min(2, {
+      message: 'Name must be at least 2 characters.'
     })
     .max(100, {
       message: 'Name must not be longer than 30 characters.'
