@@ -295,12 +295,12 @@ const Dashboard = () => {
                 </Link>
               </div>
 
-              <div className='p-5 flex items-center gap-4 justify-between'>
+              <div className='p-5 flex items-center gap-4 sm:justify-between sm:flex-row xsm:flex-col xsm:justify-start'>
                 <div className='justify-items-stretch'>
                   <h3>Staff</h3>
                   <h2>{ZooStatistics?.totalStaff}</h2>
                 </div>
-                <Separator orientation='vertical' className='justify-self-center' />
+                <Separator orientation='vertical' className='xsm:hidden justify-self-center sm:flex' />
                 <div className='justify-self-center'>
                   <h3>Trainer</h3>
                   <h2>{ZooStatistics?.totalTrainer}</h2>
