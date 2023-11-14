@@ -23,6 +23,7 @@ import MyOrder from '@/utils/api/MyOrder'
 import { OrderBeforeSaving } from '@/types'
 import Payment from '@/utils/api/Payment'
 import { Icons } from '@/components/Icon'
+import { PiPaypalLogoBold } from 'react-icons/pi'
 const today = new Date()
 today.setHours(0, 0, 0, 0)
 const OrderForm: React.FC<{
@@ -71,7 +72,7 @@ const OrderForm: React.FC<{
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='p-4'>
         <FormField
           control={form.control}
           name='name'
@@ -81,7 +82,7 @@ const OrderForm: React.FC<{
               <FormControl>
                 <Input placeholder='Your Name' autoComplete='off' {...field} />
               </FormControl>
-              <FormMessage />
+              <FormMessage className='capitalize px-2 text-lg text-red-400' />
             </FormItem>
           )}
         />
@@ -94,7 +95,7 @@ const OrderForm: React.FC<{
               <FormControl>
                 <Input placeholder='Your Email' autoComplete='off' {...field} />
               </FormControl>
-              <FormMessage />
+              <FormMessage className='capitalize px-2 text-lg text-red-400' />
             </FormItem>
           )}
         />
@@ -107,7 +108,7 @@ const OrderForm: React.FC<{
               <FormControl>
                 <Input placeholder='Your phone' autoComplete='off' {...field} />
               </FormControl>
-              <FormMessage />
+              <FormMessage className='capitalize px-2 text-lg text-red-400' />
             </FormItem>
           )}
         />
@@ -139,19 +140,25 @@ const OrderForm: React.FC<{
                   />
                 </PopoverContent>
               </Popover>
-              <FormMessage />
+              <FormMessage className='capitalize px-1 text-lg text-red-400' />
             </FormItem>
           )}
         />
         <br />
         {!form.formState.isValid ? (
-          <Button className='w-full' type='submit'>
+          <Button className='w-full text-white uppercase text-xl font-bold flex gap-2 items-center' type='submit'>
+            <PiPaypalLogoBold />
             Check out
           </Button>
         ) : (
           <Dialog>
             <DialogTrigger asChild>
-              <Button type='submit' className='bg-primary w-full text-white' variant='outline'>
+              <Button
+                type='submit'
+                className='w-full text-white uppercase text-xl font-bold flex gap-2 items-center'
+                variant='outline'
+              >
+                <PiPaypalLogoBold />
                 Check out
               </Button>
             </DialogTrigger>
@@ -201,13 +208,23 @@ const OrderForm: React.FC<{
                     <p className='font-bold col-span-2'>
                       {detail.quantity} x {detail.ticketName}
                     </p>
-                    <p className='font-bold text-right'>{Math.round(detail.quantity * detail.ticketPrice)}$ </p>
+                    <p className='font-bold text-right'>
+                      {Math.round(detail.quantity * detail.ticketPrice).toLocaleString('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                      })}
+                    </p>
                   </div>
                 ))}
                 <hr className='border-[#30AF21]' />
                 <div className='grid grid-cols-5'>
                   <p className='col-span-3'></p>
-                  <p className='font-bold text-right'>{Math.round(order.total)}$ </p>
+                  <p className='font-bold text-right'>
+                    {Math.round(order.total).toLocaleString('vi-VN', {
+                      style: 'currency',
+                      currency: 'VND'
+                    })}
+                  </p>
                 </div>
               </div>
               <DialogFooter>
@@ -223,7 +240,7 @@ const OrderForm: React.FC<{
           name='details'
           render={() => (
             <FormItem className='mb-3'>
-              <FormMessage />
+              <FormMessage className='capitalize px-2 text-lg text-red-400' />
             </FormItem>
           )}
         />
