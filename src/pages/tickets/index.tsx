@@ -28,7 +28,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import OrderForm from './OrderForm'
 import MyOrder from '@/utils/api/MyOrder'
 import Payment from '@/utils/api/Payment'
-import { ScrollArea } from '@/components/ui/scroll-area'
 
 const today = new Date()
 today.setHours(0, 0, 0, 0)
@@ -143,7 +142,7 @@ const DemoPage = () => {
   }
 
   return (
-    <>
+    <div className='w-full relative '>
       {showDialog && (
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
           <DialogTrigger asChild></DialogTrigger>
@@ -195,13 +194,23 @@ const DemoPage = () => {
                   <p className='font-bold col-span-2'>
                     {detail.quantity} x {detail.ticket.name}
                   </p>
-                  <p className='font-bold text-right'>{Math.round(detail.quantity * detail.ticketPrice)}$ </p>
+                  <p className='font-bold text-right'>
+                    {Math.round(detail.quantity * detail.ticketPrice).toLocaleString('vi-VN', {
+                      style: 'currency',
+                      currency: 'VND'
+                    })}
+                  </p>
                 </div>
               ))}
               <hr className='border-[#30AF21]' />
               <div className='grid grid-cols-5'>
                 <p className='col-span-3'></p>
-                <p className='font-bold text-right'>{Math.round(existOrder.total)}$ </p>
+                <p className='font-bold text-right'>
+                  {Math.round(existOrder.total).toLocaleString('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                  })}
+                </p>
               </div>
             </div>
             <DialogFooter>
@@ -227,12 +236,12 @@ const DemoPage = () => {
           <div className='sm:px-8 mt-20 min-h-screen '>
             <div className=' w-full flex  xsm:flex-col lg:flex-row lg:px-8 justify-center xsm:items-center lg:items-start gap-10 pb-8'>
               {/* ticket list here  */}
-              <div className='w-fit lg:w-5/12 bg-teal-700 rounded-lg h-[600px]  flex flex-col gap-4 justify-center mb-5  py-4  px-4'>
+              <div className='border-4 border-double border-white w-fit lg:w-5/12 bg-[#052e16]  h-[600px] rounded-xl shadow-2xl flex flex-col gap-4 justify-center mb-5  py-4  px-4'>
                 <p className='text-3xl text-white flex font-bold justify-center text-background font-ime'>
                   Ticket Type
                 </p>
 
-                <ScrollArea className=''>
+                <div className='flex-1 px-2  w-full flex flex-col overflow-auto gap-4'>
                   {tickets.isLoading ? (
                     <LoadingScreen />
                   ) : tickets.data?.length == 0 ? (
@@ -242,19 +251,19 @@ const DemoPage = () => {
                       <TicketItem form={form} ticket={ticket} order={order} setOrder={setOrder} />
                     ))
                   )}
-                </ScrollArea>
+                </div>
               </div>
               {/* ticket list here  */}
 
               {/* Order   here  */}
-              <div className='w-full  lg:w-5/12 rounded-md text-white   bg-teal-700 flex flex-col gap-4 p-2 px-6 py-4'>
-                <p className='text-3xl text-white flex font-bold justify-center text-background font-ime'>
+              <div className='w-full  h-[600px] overflow-auto lg:w-5/12 rounded-xl text-white border-4 border-double relative   border-white bg-[#052e16] flex flex-col gap-4 '>
+                <p className='text-3xl text-white flex font-bold justify-center text-background font-ime sticky top-0 backdrop-blur-xl p-2 py-4'>
                   Order Information
                 </p>
                 <OrderForm form={form} order={order} setOrder={setOrder} />
 
                 {order.details.length > 0 && <hr className='border-[#30AF21] mt-3' />}
-                <div className='flex flex-col'>
+                <div className='flex flex-col flex-1 p-2 px-4'>
                   {order.details.length > 0 && (
                     <div className='w-full flex mt-3 text-slate-300'>
                       <p className='flex-1 opacity-50'>Ticket</p>
@@ -264,12 +273,12 @@ const DemoPage = () => {
                     </div>
                   )}
                   {order.details.length > 0 && (
-                    <ScrollArea className='h-40 w-full '>
+                    <div className='h-40 w-full overflow-auto p-2'>
                       {' '}
                       {order.details.map((detail) => (
                         <OrderRow detail={detail} />
                       ))}
-                    </ScrollArea>
+                    </div>
                   )}
                   {order.details.length > 0 && <hr className='border-[#30AF21] mt-3' />}
                   {order.details.length > 0 && (
@@ -282,8 +291,10 @@ const DemoPage = () => {
                       <p className='flex-1 text-right font-bold'>
                         {Math.round(
                           order.details.reduce((acc, detail) => acc + detail.quantity * detail.ticketPrice, 0)
-                        )}
-                        $
+                        ).toLocaleString('vi-VN', {
+                          style: 'currency',
+                          currency: 'VND'
+                        })}
                       </p>
                     </div>
                   )}
@@ -295,7 +306,7 @@ const DemoPage = () => {
         </div>
       </div>
       )
-    </>
+    </div>
   )
 }
 

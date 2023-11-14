@@ -19,16 +19,24 @@ const TicketItem: React.FC<{
   setOrder: React.Dispatch<React.SetStateAction<OrderBeforeSaving>>
 }> = ({ ticket, order, setOrder, form }) => {
   return (
-    <div key={ticket.id} className='flex w-full gap-4 justify-between items-center mb-4'>
-      <div className='rounded-lg p-2 flex-1 bg-white text-black flex items-center px-4 gap-4'>
-        <Icons.darkLogo className='w-16 h-16  scale-150' />
-        <div className='flex flex-col  flex-1'>
-          <p className='xl:text-2xl text-lg font-bold truncate'>{ticket.name} </p>
-          <p className='  text-sm text-muted-foreground truncate-4'>{ticket.description}</p>
-          <TicketCounter form={form} order={order} setOrder={setOrder} ticket={ticket} />
-        </div>
-        <p className='font-bold '>{ticket.price} VND</p>
+    <div
+      key={ticket.id}
+      className='flex w-full gap-4 justify-between items-center shadow-lg border b border-foreground rounded-lg  bg-background text-foreground p-3'
+    >
+      <div className='w-2/12 bg-primary rounded-lg h-full border-x-2 border-dashed'>
+        <Icons.whiteLogo className='w-full h-full object-cover' />
       </div>
+      <div className='flex flex-col gap-1 flex-1'>
+        <p className='xl:text-2xl text-lg font-bold truncate'>{ticket.name} </p>
+        <p className='  text-sm text-muted-foreground truncate-4'>{ticket.description}</p>
+        <TicketCounter form={form} order={order} setOrder={setOrder} ticket={ticket} />
+      </div>
+      <p className='font-bold '>
+        {ticket.price.toLocaleString('vi-VN', {
+          style: 'currency',
+          currency: 'VND'
+        })}
+      </p>
     </div>
   )
 }

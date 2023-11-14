@@ -8,7 +8,6 @@ import MealForm from './MealForm'
 import { useState } from 'react'
 import { Button } from './ui/button'
 import { MdCreate, MdOutlineNoMeals } from 'react-icons/md'
-
 const MealStrategy = () => {
   const cageId = useParams().id
   const meals = useQueryCustom({
