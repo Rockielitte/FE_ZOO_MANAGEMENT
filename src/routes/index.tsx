@@ -50,7 +50,6 @@ const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Specie
 
 const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/index') })
 const Staffs = Loadable({ loader: () => import('../pages/dashboard/staff/index') })
-
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -112,7 +111,11 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: Dashboard },
           // { path: 'staffs', element: Staff },
-
+          {
+            path: 'qrcode',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
+            children: [{ index: true, element: <Qrcode /> }]
+          },
           {
             path: 'accounts',
             element: <AuthGuard allowedRoles={['ADMIN']} />,
@@ -222,10 +225,7 @@ const routes: RouteObject[] = [
       }
     ]
   },
-  {
-    path: 'qrcode',
-    element: <Qrcode />
-  },
+
   {
     path: '*',
     element: (

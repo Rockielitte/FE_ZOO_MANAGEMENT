@@ -52,13 +52,13 @@ const Qrcode = () => {
 
   return (
     <div
-      className='w-screen h-screen flex items-center bg-cover  overflow-auto p-2'
+      className='w-full h-full flex items-center bg-cover  overflow-auto p-2'
       style={{
         backgroundImage: `url(${bg})`
       }}
     >
       <div className=' p-8 w-full h-full items-center flex gap-8   lg:gap-20 flex-col lg:flex-row lg:justify-around'>
-        <div className='flex flex-col lg:w-1/2 gap-2 w-full h-full items-center justify-between backdrop-blur-md   border-4 border-white shadow-xl p-2 rounded-lg'>
+        <div className='flex flex-col lg:w-1/2 gap-2 w-full  lg:overflow-auto lg:h-full items-center justify-between backdrop-blur-md   border-4 border-white shadow-xl p-2 rounded-lg'>
           <Button className='w-full uppercase text-xl text-white'>QR Code Scan</Button>
 
           <QrReader
@@ -77,13 +77,15 @@ const Qrcode = () => {
 
           <div className='text-lg text-black p-2 rounded-md shadow-lg font-medium bg-primary w-full'>
             <Label className='uppercase text-white '>Scanned Code: </Label>
-            {data && <Textarea className='text-[16px]' value={data} />}
+            {data && <Textarea className='text-[16px] text-foreground' value={data} />}
           </div>
         </div>
-        <div className='lg:w-1/2 w-full border-4 border-white shadow-xl p-2 rounded-lg backdrop-blur-md'>
-          <Button className='w-full uppercase text-xl text-white'>ORDER</Button>
-          {error && <Button className='mt-[10px] bg-red-500 text-white hover:bg-red-500 uppercase'>{error}</Button>}
-          <div className='rounded-lg mt-[20px] w-full px-[20px] py-[30px] border-solid border-2 min-h-[500px] '>
+        <div className='lg:w-1/2 w-full border-4 border-white shadow-xl lg:overflow-auto lg:h-full  rounded-lg backdrop-blur-md'>
+          <Button className='w-full uppercase text-xl text-white sticky top-0'>ORDER</Button>
+          {error && (
+            <Button className='mt-[10px] bg-red-500 text-white hover:bg-red-500 uppercase p-2 mx-4'>{error}</Button>
+          )}
+          <div className='p-2 mt-2 w-full px-[20px] py-[30px] border-t-2 border-white border-dashed min-h-[500px] '>
             {order && (
               <div className=' lg:flex w-full h-full flex-col gap-2 text-white'>
                 <Label>ID</Label>
