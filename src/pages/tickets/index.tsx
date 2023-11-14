@@ -236,7 +236,7 @@ const DemoPage = () => {
           <div className='sm:px-8 mt-20 min-h-screen '>
             <div className=' w-full flex  xsm:flex-col lg:flex-row lg:px-8 justify-center xsm:items-center lg:items-start gap-10 pb-8'>
               {/* ticket list here  */}
-              <div className='border-4 border-double border-white w-fit lg:w-5/12 bg-primary-foreground  h-[600px] rounded-xl shadow-2xl flex flex-col gap-4 justify-center mb-5  py-4  px-4'>
+              <div className='border-4 border-double border-white w-fit lg:w-5/12 bg-[#052e16]  h-[600px] rounded-xl shadow-2xl flex flex-col gap-4 justify-center mb-5  py-4  px-4'>
                 <p className='text-3xl text-white flex font-bold justify-center text-background font-ime'>
                   Ticket Type
                 </p>
@@ -256,7 +256,7 @@ const DemoPage = () => {
               {/* ticket list here  */}
 
               {/* Order   here  */}
-              <div className='w-full  h-[600px] overflow-auto lg:w-5/12 rounded-xl text-white border-4 border-double relative   border-white bg-primary-foreground flex flex-col gap-4 '>
+              <div className='w-full  h-[600px] overflow-auto lg:w-5/12 rounded-xl text-white border-4 border-double relative   border-white bg-[#052e16] flex flex-col gap-4 '>
                 <p className='text-3xl text-white flex font-bold justify-center text-background font-ime sticky top-0 backdrop-blur-xl p-2 py-4'>
                   Order Information
                 </p>
