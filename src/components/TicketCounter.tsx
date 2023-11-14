@@ -97,7 +97,7 @@ const TicketCounter: React.FC<{
 
   return (
     <div className='flex gap-2 '>
-      <p className=' text-[30px] cursor-pointer' onClick={() => handleDecrement()}>
+      <p className=' text-xl cursor-pointer' onClick={() => handleDecrement()}>
         -
       </p>
       <input
@@ -109,9 +109,9 @@ const TicketCounter: React.FC<{
             e.preventDefault()
           }
         }}
-        className='text-black text-center text-2xl place-content-between rounded outline-none place-self-center w-[30px] h-[30px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+        className='text-black text-center text-xl place-content-between rounded outline-none place-self-center w-[30px] h-[30px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
       />
-      <p className=' text-[30px] cursor-pointer' onClick={() => handleIncrement()}>
+      <p className=' text-xl cursor-pointer' onClick={() => handleIncrement()}>
         +
       </p>
     </div>
