@@ -67,7 +67,7 @@ const NavBar: FC<NavBarProps> = () => {
 
             <Icons.whiteLogo className='h-16 w-auto' />
 
-            <p className='hidden text-white text-xl font-bold md:block'>Zoo</p>
+            <p className='hidden text-white text-xl font-bold md:block'>THE ZOO</p>
           </Link>
         </div>
         {/* burger */}

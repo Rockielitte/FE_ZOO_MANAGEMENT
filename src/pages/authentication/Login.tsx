@@ -2,10 +2,9 @@ import { FC } from 'react'
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import videoBg from '@/assets/bg-video.mp4'
 import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { HiChevronDoubleDown } from 'react-icons/hi'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-import ZooLogo from '@/assets/logo.webp'
+import ZooLogo from '@/assets/logo/white.svg'
 // import { useNavigate } from 'react-router-dom'
 // import { useMutation } from 'react-query'
 
@@ -68,13 +67,10 @@ const Login: FC = () => {
             className='scale-150 animate-fade animate-once animate-duration-[5000ms]
 '
           >
-            <Avatar>
-              <AvatarImage src={ZooLogo} className='object-cover' />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <img src={ZooLogo} className='w-20 h-auto first-line:object-cover' loading='lazy' alt='The zoo' />
           </div>
           <span className='drop-shadow-lg animate-pulse animate-infinite animate-duration-[3000ms] uppercase text-5xl md:text-7xl font-extrabold bg-gradient-to-tr from-gray-200 to-slate-50  text-transparent bg-clip-text  '>
-            zoocamp
+            THE ZOO
           </span>
           {/* <span className=' text-white italic font-sans text-4xl font-extrabold capitalize'>welcome</span> */}
         </h1>
