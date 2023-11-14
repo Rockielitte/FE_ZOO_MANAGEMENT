@@ -4,12 +4,21 @@ import { Icons } from '@/components/Icon'
 import Elephant from '@/assets/elephant1.png'
 import Banner2 from '@/assets/background/SWP2.png'
 import Banner3 from '@/assets/background/SWP1.png'
+import { Carousel } from 'flowbite-react'
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
+const images = [
+  'https://cdn.mos.cms.futurecdn.net/HjFE8NKWuCmgfHCcndJ3rK-1200-80.jpg',
+  'https://media.istockphoto.com/id/492611032/photo/the-african-king.jpg?s=612x612&w=0&k=20&c=SPP0WTaFwSTmB_QX7WrWbVBPXiKTg4e8ArZrUAo2G6k=',
+  'https://static.wixstatic.com/media/119740_c0df174c120f47e2a6928f13ee53f9c8~mv2.jpg/v1/fill/w_560,h_374,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/Ryan%20Kilpatrick.jpg',
+  'https://d1jyxxz9imt9yb.cloudfront.net/animal/219/meta_image/regular/20---IMG_0865_reduced.jpg',
+  'https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg'
+]
 interface HomeProps {}
 const Home: FC<HomeProps> = () => {
   // const { setTheme } = useTheme()
 
   return (
-    <div className='w-full h-full'>
+    <div className='w-full h-full bg-primary'>
       <Banner />
 
       <div className='flex flex-col items-center pt-14 bg-primary' id='about'>
@@ -18,10 +27,10 @@ const Home: FC<HomeProps> = () => {
         <div className='flex justify-center items-center self-stretch flex-1 p-24 gap-16'>
           <div className='flex flex-col items-start gap-20 w-[915px] h-[690px]'>
             <p className='mt-4 text-3xl leading-9 text-justify text-white tracking-tight text-foreground self-stretch'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu sem a felis porta eleifend. Sed
-              fringilla diam sed sem egestas lacinia. Morbi ornare eget ante id efficitur Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit. Aliquam eu sem a felis porta eleifend. Sed fringilla diam sed sem egestas
-              lacinia. Morbi ornare eget ante id efficitur
+              Step into a world where wildlife and wonder converge at TheZoo. As a bastion of nature's beauty and
+              diversity, TheZoo stands as a beacon for animal lovers, families, and anyone with a thirst for knowledge
+              about our planet's precious wildlife. We are thrilled to open our gates and welcome you into a space where
+              every visit contributes to the greater good of conservation and education.
             </p>
 
             <div className='flex justify-center items-center gap-7'>
@@ -62,55 +71,26 @@ const Home: FC<HomeProps> = () => {
         <img src={Banner2} alt='' className='w-full ' />
       </div>
 
-      <div className='flex flex-col items-center p-14  bg-primary' id='ticket'>
-        <h1 className='mt-4 text-7xl font-bold tracking-tight text-white sm:text-7xl items-center'>
-          Ticket Price List
+      <div className='flex flex-col items-center mx-auto  max-w-7xl p-10' id='ticket'>
+        <h1 className='mt-4 mb-10 text-7xl font-bold tracking-tight text-white sm:text-7xl items-center'>
+          Exploring our Zoo
         </h1>
 
-        <div className='relative flex justify-center items-center gap-40 pt-14'>
-          <div className='border-2 rounded-3xl bg-lime-500 w-[522px] h-[725px] flex flex-col justify-between gap-14 items-center mt-4 pt-12'>
-            <p className='text-9xl font-bold text-white text-center pt-8'>$33</p>
-
-            <div className=''>
-              <p className='text-7xl font-semibold text-white text-center p-4'>Child</p>
-              <p className='text-4xl font-normal text-white text-center p-4'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu sem a felis porta eleifend. Sed
-                fringilla diam sed sem egestas lacinia.{' '}
-              </p>
-            </div>
-
-            <div className='border-0 rounded-xl bg-green-600 w-[162px] h-[21px] align-bottom'></div>
-            <Icons.leafUp className='absolute -bottom-18 -left-36 w-64' />
-          </div>
-
-          <div className='border-2 rounded-3xl bg-green-600 w-[522px] h-[725px] flex flex-col justify-between gap-14 items-center mt-4 pt-12'>
-            <p className='text-9xl font-bold text-white text-center pt-8'>$45</p>
-
-            <div className=''>
-              <p className='text-7xl font-semibold text-white text-center p-4'>Adult</p>
-              <p className='text-4xl font-normal text-white text-center p-4'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu sem a felis porta eleifend. Sed
-                fringilla diam sed sem egestas lacinia.{' '}
-              </p>
-            </div>
-
-            <div className='border-0 rounded-xl bg-lime-500 w-[162px] h-[21px] align-bottom'></div>
-          </div>
-
-          <div className='relative border-2 rounded-3xl bg-lime-500 w-[522px] h-[725px] flex flex-col justify-between gap-14 items-center mt-4 pt-12'>
-            <p className='text-9xl font-bold text-white text-center pt-8'>$45</p>
-
-            <div className=''>
-              <p className='text-7xl font-semibold text-white text-center p-4'>Adult</p>
-              <p className='text-4xl font-normal text-white text-center p-4'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu sem a felis porta eleifend. Sed
-                fringilla diam sed sem egestas lacinia.{' '}
-              </p>
-            </div>
-
-            <div className='border-0 rounded-xl bg-green-600 w-[162px] h-[21px] align-bottom'></div>
-            <Icons.leafDown className='absolute -top-20 -right-10 w-56' />
-          </div>
+        <div className='relative mx-auto  h-screen w-full border rounded-[0.5rem]'>
+          <Carousel
+            className='w-full h-full'
+            slideInterval={15000}
+            leftControl={
+              <AiOutlineLeft className='text-4xl text-primary p-2 active:ring-4 ring-primary text-white font-bold shadow-md bg-green-400 opacity-30 hover:opacity-100 transition-all rounded-full' />
+            }
+            rightControl={
+              <AiOutlineRight className='text-4xl text-primary p-2 active:ring-4 ring-primary text-white font-bold shadow-md bg-green-400 opacity-30 hover:opacity-100 transition-all rounded-full' />
+            }
+          >
+            {images?.map((item, index) => (
+              <img key={index} alt='...' src={item} className='  w-full h-full object-cover ' />
+            ))}
+          </Carousel>
         </div>
       </div>
 
