@@ -37,7 +37,7 @@ const Search = () => {
         </Label>
       </div>
       <div className='pl-4 border-l-2'>
-        <AvatarFull />
+        <AvatarFull profile={user.profile} />
       </div>
     </div>
   )

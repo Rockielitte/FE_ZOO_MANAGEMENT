@@ -126,6 +126,7 @@ const columns: ColumnDef<Order>[] = [
     id: 'action',
     header: 'Action',
     cell: () => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       const user = useCheckRole()
       return (
         <DropdownMenu>

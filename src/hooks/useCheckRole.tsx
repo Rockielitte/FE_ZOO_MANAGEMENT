@@ -9,7 +9,8 @@ const useCheckRole = () => {
   })
   return {
     loading: profile.isLoading,
-    role: (profile.data as User)?.role
+    role: (profile.data as User)?.role,
+    profile: profile.data as User
   }
 }
 
