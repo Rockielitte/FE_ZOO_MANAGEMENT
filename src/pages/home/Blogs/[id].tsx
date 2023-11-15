@@ -19,19 +19,15 @@ export default function BlogDetail() {
   const newDetail = new_data.data as NewType
   return (
     <div className='relative flex w-full min-h-screen  backdrop-blur-lg'>
-      <img
-        src={BgBlog}
-        alt='background'
-        className='relative top-0 left-0 right-0 bottom-0 z-5 object-cover min-h-screen'
-      />
+      <img src={BgBlog} alt='background' className='fixed   w-full  z-2 object-cover min-h-full' />
 
       <div className='fixed inset-0 flex justify-center sm:px-8 top-32'>
         <div className='flex w-full max-w-7xl lg:px-8 z-7 min-h-full'>
-          <div className='w-full bg-green-300  ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20'></div>
+          <div className='w-full bg-green-200   ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20'></div>
         </div>
       </div>
-      <div className='fixed flex w-full flex-col z-10 min-h-screen'>
-        <main className='flex-auto'>
+      <div className='relative flex w-full flex-col z-10 min-h-screen h-full'>
+        <main className='flex-auto h-full'>
           <div className='sm:px-8 mt-36 sm:mt-44 min-h-full mb-36'>
             <div className='mx-auto w-full max-w-7xl lg:px-8'>
               <div className='relative px-4 sm:px-8 lg:px-12'>

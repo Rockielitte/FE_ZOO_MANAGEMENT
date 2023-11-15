@@ -31,6 +31,14 @@ export type dataSpecies = {
   description: string
   image: string
 }
+export type food = {
+  id: number
+  name: string
+  type: string
+  unit: string
+  description: string
+  image: string
+}
 export type credential = {
   clientId: string
   credential: string

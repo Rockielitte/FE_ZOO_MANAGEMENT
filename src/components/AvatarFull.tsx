@@ -10,21 +10,21 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { useLogout } from '@/hooks/useLogout'
-import { Link, useRouteLoaderData } from 'react-router-dom'
-import { User } from '@/types'
-
-const AvatarFull = () => {
-  const { data } = useRouteLoaderData('dashboard') as { data: User }
-
+import { Link } from 'react-router-dom'
+import { RoleEnum, User } from '@/types'
+type AvatarFull = {
+  profile: User
+}
+const AvatarFull = ({ profile }: AvatarFull) => {
   const { logout } = useLogout()
   return (
     <div className='flex gap-2 items-center w-full h-full'>
       <Avatar className='hidden xsm:block'>
-        <AvatarImage src={data?.avt} />
+        <AvatarImage src={profile?.avt} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
       <div className='flex gap-2 items-center '>
-        <span className='hidden md:block text-base font-medium'>{data?.fname + ' ' + data?.lname}</span>
+        <span className='hidden md:block text-base font-medium'>{profile?.fname + ' ' + profile?.lname}</span>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <AiFillCaretDown />
@@ -32,9 +32,16 @@ const AvatarFull = () => {
           <DropdownMenuContent className='min-w-[250px] relative -left-[15px] top-[20px] '>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <Link to={`/dashboard/accounts/${data?.id}`}>
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-            </Link>
+            {profile?.role && profile.role == RoleEnum.ADMIN && (
+              <Link to={`/dashboard/accounts/${profile?.id}`}>
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+              </Link>
+            )}
+            {profile?.role && profile.role == RoleEnum.STAFF && (
+              <Link to={`/dashboard/staffs/${profile?.id}`}>
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+              </Link>
+            )}
             <DropdownMenuItem
               onClick={() => {
                 logout()

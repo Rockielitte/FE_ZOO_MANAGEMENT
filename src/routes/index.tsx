@@ -48,9 +48,10 @@ const SuccessOrderNotification = Loadable({ loader: () => import('../pages/ticke
 const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
 
+const Food = Loadable({ loader: () => import('../pages/dashboard/foods/index') })
+
 const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/index') })
 const Staffs = Loadable({ loader: () => import('../pages/dashboard/staff/index') })
-
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -112,7 +113,11 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: Dashboard },
           // { path: 'staffs', element: Staff },
-
+          {
+            path: 'qrcode',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
+            children: [{ index: true, element: <Qrcode /> }]
+          },
           {
             path: 'accounts',
             element: <AuthGuard allowedRoles={['ADMIN']} />,
@@ -170,6 +175,13 @@ const routes: RouteObject[] = [
             ]
           },
           {
+            path: 'foods',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
+            children: [
+              { index: true, element: Food }
+            ]
+          },
+          {
             path: 'animals',
             children: [
               { index: true, element: Animal },
@@ -222,10 +234,7 @@ const routes: RouteObject[] = [
       }
     ]
   },
-  {
-    path: 'qrcode',
-    element: <Qrcode />
-  },
+
   {
     path: '*',
     element: (
