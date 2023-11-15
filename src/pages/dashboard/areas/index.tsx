@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Area } from '@/types'
+import { Area, RoleEnum } from '@/types'
 import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 import { z } from 'zod'
@@ -10,6 +10,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import GridArea from '@/components/GridArea'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
+import useCheckRole from '@/hooks/useCheckRole'
 
 const formSchema = z.object({
   // code: z.string().regex(regexPattern),
@@ -45,6 +46,7 @@ export const columns: ColumnDef<Area>[] = [
   }
 ]
 const index = () => {
+  const user = useCheckRole()
   const area_data = useQueryCustom({ query: '/areas/', queryKey: ['areas'], data: {} as Area })
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema)
@@ -75,6 +77,7 @@ const index = () => {
               formMutation,
               fields: ['code', 'name', 'location']
             }}
+            canCreate={user.role && user.role == RoleEnum.ADMIN}
           />
         </div>
       ) : (

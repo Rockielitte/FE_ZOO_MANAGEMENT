@@ -60,7 +60,7 @@ const accountFormSchema = z.object({
   avt: z.string({
     required_error: 'Please select a avt.'
   }),
-  status: z.string()
+  status: z.string().optional()
   // avt: z
   //   .custom<FileList>((val) => val instanceof FileList, 'Required')
   //   .refine((files) => files.length > 0, `Required`)
@@ -99,7 +99,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
     role: accountDetail.role || '',
     gender: accountDetail.gender || '',
     avt: accountDetail?.avt || '',
-    status: 'ACTIVE'
+    status: accountDetail?.status || ''
   }
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
@@ -117,12 +117,10 @@ const AccountDetail: FC<AccountDetailProps> = () => {
     const files = dataTransfer.files
     const displayUrl = await LocalFile.uploadFile({ file: files[0] })
     // const displayUrl = URL.createObjectURL(event.target.files![0])
-    console.log(displayUrl)
 
     return { files, displayUrl }
   }
   async function onSubmit(data: AccountFormValues) {
-    console.log('updated!:' + data)
     updateAccount(data)
   }
 
@@ -153,7 +151,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                       hidden
                       onChange={async (event) => {
                         const { displayUrl } = await getImageData(event)
-                        console.log('displayUrl ' + displayUrl)
+
                         setPreview(displayUrl)
                         form.setValue('avt', displayUrl as string)
                       }}
@@ -238,7 +236,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                       <FormItem className='flex flex-col'>
                         <FormLabel>Role</FormLabel>
                         <Popover>
-                          <PopoverTrigger asChild>
+                          <PopoverTrigger asChild disabled>
                             <FormControl>
                               <Button
                                 variant='outline'

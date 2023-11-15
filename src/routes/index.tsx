@@ -11,6 +11,7 @@ import HomeLayout from '@/layouts/HomeLayout'
 import MainLayout from '@/layouts/MainLayout'
 import { loaderAccountDetail, GetInfoUser } from '@/lib/loader/AccountsLoader'
 import { loaderNewDetail } from '@/lib/loader/NewsLoader'
+import Qrcode from '@/pages/qrcode'
 
 // *  AUTHENTICATION PAGES
 const Login = Loadable({ loader: () => import('../pages/authentication/Login') })
@@ -33,7 +34,7 @@ const Dashboard = Loadable({ loader: () => import('../pages/dashboard/index') })
 const Blogs = Loadable({ loader: () => import('../pages/home/Blogs/index') })
 const BlogDetail = Loadable({ loader: () => import('../pages/home/Blogs/[id]') })
 
-// const Register = Loadable({ loader: () => import('../pages/authentication/Register') })
+const Error403 = Loadable({ loader: () => import('../pages/403') })
 
 const Ticket = Loadable({ loader: () => import('../pages/dashboard/tickets/index') })
 const Order = Loadable({ loader: () => import('../pages/dashboard/orders/index') })
@@ -82,27 +83,23 @@ const routes: RouteObject[] = [
           { index: true, element: Blogs },
           { path: ':id', element: BlogDetail }
         ]
+      },
+      {
+        path: 'price_tickets',
+        element: TicketOrder
+      },
+      {
+        path: 'success-noti',
+        element: SuccessOrderNotification
       }
     ]
   },
 
   {
-    path: 'price_tickets',
-    // element: <HomeLayout />,
-    children: [
-      {
-        children: [{ index: true, element: TicketOrder }]
-      }
-    ]
+    path: 'unauthorized',
+    element: Error403
   },
-  {
-    path: 'success-noti',
-    children: [
-      {
-        children: [{ index: true, element: SuccessOrderNotification }]
-      }
-    ]
-  },
+
   {
     path: 'dashboard',
     element: <AuthGuard allowedRoles={['ADMIN', 'STAFF', 'TRAINER']} />,
@@ -118,6 +115,7 @@ const routes: RouteObject[] = [
 
           {
             path: 'accounts',
+            element: <AuthGuard allowedRoles={['ADMIN']} />,
             children: [
               { index: true, element: Accounts },
               {
@@ -129,6 +127,7 @@ const routes: RouteObject[] = [
           },
           {
             path: 'staffs',
+            element: <AuthGuard allowedRoles={['STAFF']} />,
             children: [
               { index: true, element: Staffs },
               {
@@ -141,6 +140,7 @@ const routes: RouteObject[] = [
 
           {
             path: 'news',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
             children: [
               { index: true, element: News },
               {
@@ -173,12 +173,17 @@ const routes: RouteObject[] = [
             path: 'animals',
             children: [
               { index: true, element: Animal },
-              { path: 'create', element: AnimalCreate },
+              {
+                path: 'create',
+                element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
+                children: [{ index: true, element: AnimalCreate }]
+              },
               { path: ':id', element: AnimalDetail }
             ]
           },
           {
             path: 'areas',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
             children: [
               { index: true, element: Area },
               { path: ':id', element: AreaDetail }
@@ -193,27 +198,41 @@ const routes: RouteObject[] = [
           },
           {
             path: 'tickets',
+            element: <AuthGuard allowedRoles={['ADMIN']} />,
             children: [{ index: true, element: Ticket }]
           },
           {
             path: 'orders',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
             children: [
               { index: true, element: Order },
-              { path: 'create', element: OrderCreate },
+              {
+                path: 'create',
+                element: <AuthGuard allowedRoles={['ADMIN']} />,
+                children: [{ index: true, element: OrderCreate }]
+              },
               { path: ':id', element: OrderDetail }
             ]
           },
           {
             path: '*',
-            element: Home
+            element: <Error></Error>
           }
         ]
       }
     ]
   },
   {
+    path: 'qrcode',
+    element: <Qrcode />
+  },
+  {
     path: '*',
-    element: <Error />
+    element: (
+      <div className='w-screen h-screen justify-center items-center'>
+        <Error />
+      </div>
+    )
   }
 ]
 const router = createBrowserRouter(routes)

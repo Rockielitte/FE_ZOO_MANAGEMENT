@@ -18,6 +18,8 @@ import { useNavigate } from 'react-router-dom'
 import { useUserStore } from '@/stores'
 import { useMutation } from 'react-query'
 import { apiCaller } from '@/utils'
+import { toast } from '@/components/ui/use-toast'
+import axios from 'axios'
 
 const Login: FC = () => {
   // const token = useUserStore((state) => state.user)?.token
@@ -32,13 +34,24 @@ const Login: FC = () => {
       return apiCaller.get('/auth/login-google', credentialResponse)
     },
     onSuccess: (data) => {
-      console.log('data: ', data)
       setUser({ token: data.data.accessToken })
       // setUser(data.data)
+      toast({
+        variant: 'success',
+        title: 'login Success!'
+        // description: 'Your request has been processed successfully.'
+      })
       navigate('/dashboard')
     },
     onError: (error) => {
-      if (error instanceof Error) console.log('error: ', error)
+      if (axios.isAxiosError(error) && (error.response || error.message)) {
+        console.log('error: ', error)
+        toast({
+          variant: 'destructive',
+          title: 'Uh oh! Something went wrong.',
+          description: error.response?.data.message || error.message
+        })
+      }
     }
   })
   // if (isSuccess) {
@@ -72,9 +85,8 @@ const Login: FC = () => {
             <div className='shadow-2xl'>
               <GoogleLogin
                 onSuccess={(credentialResponse: CredentialResponse) => {
-                  console.log('credentialResponse: ', credentialResponse)
                   // apiCaller.post<string>('/test-login-google', credentialResponse, {}, {}).then((data) => {
-                  //   console.log('data: ', data)
+
                   //   setUser({ token: data.data })
                   // })
                   // const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)

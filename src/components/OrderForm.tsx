@@ -33,6 +33,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from './ui/alert-dialog'
+import { Checkbox } from './ui/checkbox'
 
 interface OrderFormProps<T extends FieldValues, R> {
   form: UseFormReturn<T>
@@ -75,7 +76,7 @@ const OrderForm = <T extends FieldValues, R>({
       }
     })
     formSideMutation?.mutate(
-      { status: data['status'] },
+      { status: data['status'], isUsed: data['isUsed'] },
       {
         onSuccess: () => {
           navigate(`${queryParams.get('redirect') || '/dashboard/orders/'}`)
@@ -109,7 +110,7 @@ const OrderForm = <T extends FieldValues, R>({
           {watch('name' as Path<T>) || 'Customer name'}
         </span>
         <span className='font-normal text-base min-h-[24px] tracking-wide font-roboto'>
-          {getValues('id' as Path<T>) || 'Order tickets'}
+          {getValues('phone' as Path<T>) || 'Order tickets'}
         </span>
         {canAuth && id && (
           <div className='m-auto flex items-center gap-2 shadow-2xl absolute top-0 right-4 bottom-0 uppercase'>
@@ -212,7 +213,7 @@ const OrderForm = <T extends FieldValues, R>({
                         disabled={canEdit.indexOf(item) < 0}
                       >
                         <SelectTrigger className='w-full' id={item}>
-                          <SelectValue placeholder={`Select gender here . . .`} />
+                          <SelectValue placeholder={`Select status here . . .`} />
                         </SelectTrigger>
                         <SelectContent>
                           {Object.values(OrderStatusEnum).map((item) => (
@@ -233,6 +234,19 @@ const OrderForm = <T extends FieldValues, R>({
                           { style: 'currency', currency: 'VND' }
                         )} in total!`}
                       />
+                    ) : item == 'isUsed' ? (
+                      <div className='w-full'>
+                        <Checkbox
+                          disabled={canEdit.indexOf(item) < 0}
+                          id={item}
+                          checked={watch(item)}
+                          defaultChecked={false}
+                          onClick={() => {
+                            const currentState = getValues(item)
+                            setValue(item, !currentState as PathValue<T, Path<T>>)
+                          }}
+                        />
+                      </div>
                     ) : (
                       <Input
                         disabled={canEdit.indexOf(item) < 0}
@@ -269,15 +283,16 @@ const OrderForm = <T extends FieldValues, R>({
         <div className='border-2 border-dashed my-2 block sm:hidden'></div>
         <div className='w-full md:w-2/5 px-6 flex flex-col gap-4 overflow-auto py-2'>
           <div className='flex items-center gap-1 text-xl font-bold'>
-            <Button
-              className='flex-1 transition-all duration-500 flex items-center gap-2'
-              variant={orderCart == 'tickets' ? 'default' : 'secondary'}
-              onClick={() => setOrderCart('tickets')}
-              disabled={id != undefined}
-            >
-              <BsImages className='text-xl'></BsImages>
-              Ticket list
-            </Button>
+            {id == undefined && (
+              <Button
+                className='flex-1 transition-all duration-500 flex items-center gap-2'
+                variant={orderCart == 'tickets' ? 'default' : 'secondary'}
+                onClick={() => setOrderCart('tickets')}
+              >
+                <BsImages className='text-xl'></BsImages>
+                Ticket list
+              </Button>
+            )}
             <Button
               className='flex-1 transition-all duration-500  flex items-center gap-2'
               variant={orderCart == 'order' ? 'default' : 'secondary'}

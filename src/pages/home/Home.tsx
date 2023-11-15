@@ -4,10 +4,8 @@ import { Icons } from '@/components/Icon'
 import Elephant from '@/assets/elephant1.png'
 import Banner2 from '@/assets/background/SWP2.png'
 import Banner3 from '@/assets/background/SWP1.png'
-interface HomeProps {}
+interface HomeProps { }
 const Home: FC<HomeProps> = () => {
-  console.log('Home')
-
   // const { setTheme } = useTheme()
 
   return (
@@ -15,51 +13,57 @@ const Home: FC<HomeProps> = () => {
       <Banner />
 
       <div className='flex flex-col items-center pt-14 bg-primary' id='about'>
-        <h1 className='mt-4 text-7xl font-bold tracking-tight text-white sm:text-7xl items-center'>About Our Zoo</h1>
+        <h1 className='mt-4 text-7xl font-bold tracking-tight text-white sm:text-6xl sm:pb-10 items-center'>About Our Zoo</h1>
 
-        <div className='flex justify-center items-center self-stretch flex-1 p-24 gap-16'>
-          <div className='flex flex-col items-start gap-20 w-[915px] h-[690px]'>
-            <p className='mt-4 text-3xl leading-9 text-justify text-white tracking-tight text-foreground self-stretch'>
+        <div className='flex justify-between items-start lg:flex-row sm:flex-col-reverse sm:gap-4 p-24 gap-24'>
+
+          <div className=' flex flex-col items-center justify-center gap-32 '>
+            <p className='mt-4 text-6xl leading-9 text-justify lg:pt-7 text-white tracking-tight text-foreground sm:text-2xl sm:pt-24 '>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu sem a felis porta eleifend. Sed
               fringilla diam sed sem egestas lacinia. Morbi ornare eget ante id efficitur Lorem ipsum dolor sit amet,
               consectetur adipiscing elit. Aliquam eu sem a felis porta eleifend. Sed fringilla diam sed sem egestas
               lacinia. Morbi ornare eget ante id efficitur
             </p>
 
-            <div className='flex justify-center items-center gap-7'>
-              <div className='border-2 rounded-3xl bg-lime-500 w-[285px] h-[392px] flex flex-col justify-end gap-14 items-center mt-4 pt-12'>
-                <div className='flex flex-col justify-center items-center'>
-                  <Icons.feedingTheAnimalLogo />
-                  <p className='text-4xl font-semibold text-white overflow-auto text-center p-4'>Feeding The Animal</p>
-                </div>
-                <div className='border-0 rounded-xl bg-green-600 w-[162px] h-[21px] align-bottom'></div>
-              </div>
-
-              <div className='border-2 rounded-3xl bg-green-600 w-[285px] h-[392px] flex flex-col justify-end gap-14 items-center mt-4 pt-12'>
+            <div className='flex justify-center items-center gap-12'>
+              <div className='border-2 rounded-3xl bg-lime-500 w-full lg:h-96 sm:h-64 flex flex-col justify-end gap-16 items-center p-4  overflow-clip'>
                 <div className='flex flex-col justify-center items-center px-6'>
-                  <Icons.animalShowLogo />
-                  <p className='text-4xl font-semibold text-white overflow-auto text-center p-4'>Animal Show</p>
+                  <Icons.feedingTheAnimalLogo className='w-8/12' />
+                  <p className='md:text-2xl lg:text-3xl font-semibold text-white  text-center'>Feeding Animal</p>
                 </div>
-                <div className='border-0 rounded-xl bg-lime-500 w-[162px] h-[21px] align-bottom'></div>
+                <div className='border-0 rounded-xl bg-green-600 w-2/3 h-6  align-bottom'></div>
               </div>
 
-              <div className='border-2 rounded-3xl bg-lime-500 w-[285px] h-[392px] flex flex-col justify-end gap-14 items-center mt-4 pt-12'>
-                <div className='flex flex-col justify-center items-center px-2'>
-                  <Icons.takeAPhotoLogo />
-                  <p className='text-4xl font-semibold text-white overflow-auto text-center p-4'>Taking a Photo</p>
+              <div className='border-2 rounded-3xl bg-green-600 w-full lg:h-96 sm:h-64 flex flex-col justify-end gap-16 items-center p-4 overflow-clip'>
+                <div className='flex flex-col justify-center items-center px-6'>
+                  <Icons.animalShowLogo className='w-8/12' />
+                  <p className='md:text-2xl lg:text-3xl font-semibold text-white text-center '>Animal Show</p>
                 </div>
-                <div className='border-0 rounded-xl bg-green-600 w-[162px] h-[21px] align-bottom'></div>
+                <div className='border-0 rounded-xl bg-lime-500 w-2/3 h-6  align-bottom'></div>
+              </div>
+
+              <div className='border-2 rounded-3xl bg-lime-500 w-full lg:h-96 sm:h-64 flex flex-col justify-end gap-16 items-center p-4  overflow-clip'>
+                <div className='flex flex-col justify-center items-center px-6'>
+                  <Icons.takeAPhotoLogo className='w-8/12' />
+                  <p className='md:text-2xl lg:text-3xl font-semibold text-white text-center '>Taking a Photo</p>
+                </div>
+                <div className='border-0 rounded-xl bg-green-600 w-2/3 h-6 align-bottom'></div>
               </div>
             </div>
           </div>
 
-          <div className='relative w-[726px] h-[726px]'>
-            <img src={Elephant} alt='' />
+          <div className='relative '>
+            <img src={Elephant} alt='' className='lg:min-w-[700px] sm:min-w-[500px]' />
             <Icons.leafUp className='absolute -bottom-40 -left-10 w-64' />
             <Icons.leafDown className='absolute -top-40 -right-10 w-56' />
           </div>
         </div>
       </div>
+
+
+
+
+
       <div>
         <img src={Banner2} alt='' className='w-full ' />
       </div>
@@ -69,8 +73,8 @@ const Home: FC<HomeProps> = () => {
           Ticket Price List
         </h1>
 
-        <div className='relative flex justify-center items-center gap-40 pt-14'>
-          <div className='border-2 rounded-3xl bg-lime-500 w-[522px] h-[725px] flex flex-col justify-between gap-14 items-center mt-4 pt-12'>
+        <div className='relative flex justify-center items-center gap-40 pt-14 lg:flex-row sm:flex-col'>
+          <div className='border-2 rounded-3xl bg-lime-500 w-full  flex flex-col justify-between gap-14 items-center mt-4 pt-12'>
             <p className='text-9xl font-bold text-white text-center pt-8'>$33</p>
 
             <div className=''>
@@ -85,7 +89,7 @@ const Home: FC<HomeProps> = () => {
             <Icons.leafUp className='absolute -bottom-18 -left-36 w-64' />
           </div>
 
-          <div className='border-2 rounded-3xl bg-green-600 w-[522px] h-[725px] flex flex-col justify-between gap-14 items-center mt-4 pt-12'>
+          <div className='border-2 rounded-3xl bg-green-600 w-full  flex flex-col justify-between gap-14 items-center mt-4 pt-12'>
             <p className='text-9xl font-bold text-white text-center pt-8'>$45</p>
 
             <div className=''>
@@ -99,7 +103,7 @@ const Home: FC<HomeProps> = () => {
             <div className='border-0 rounded-xl bg-lime-500 w-[162px] h-[21px] align-bottom'></div>
           </div>
 
-          <div className='relative border-2 rounded-3xl bg-lime-500 w-[522px] h-[725px] flex flex-col justify-between gap-14 items-center mt-4 pt-12'>
+          <div className='relative border-2 rounded-3xl bg-lime-500 w-full  flex flex-col justify-between gap-14 items-center mt-4 pt-12'>
             <p className='text-9xl font-bold text-white text-center pt-8'>$45</p>
 
             <div className=''>

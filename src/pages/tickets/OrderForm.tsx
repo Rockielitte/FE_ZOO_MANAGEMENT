@@ -22,6 +22,7 @@ import { OrderFormValues } from '.'
 import MyOrder from '@/utils/api/MyOrder'
 import { OrderBeforeSaving } from '@/types'
 import Payment from '@/utils/api/Payment'
+import { Icons } from '@/components/Icon'
 const today = new Date()
 today.setHours(0, 0, 0, 0)
 const OrderForm: React.FC<{
@@ -52,15 +53,16 @@ const OrderForm: React.FC<{
     setOrder({ ...order, name, email, phone, visitDate, total })
     setFormData(data)
   }
-
+  const [loading, setLoading] = useState<boolean>(false)
   async function createOrderHandler() {
+    setLoading(true)
     const response = await MyOrder.createOrder(formData)
     localStorage.setItem('order', JSON.stringify(response.data))
 
     if (response.status == 200 && typeof response.data == 'object') {
       const url = (await Payment.createPaymentURL(JSON.parse(localStorage.getItem('order') as string).id))
         .data as string
-
+      setLoading(false)
       localStorage.setItem('order', JSON.stringify({ ...response.data, url }))
 
       window.location.href = url
@@ -209,8 +211,8 @@ const OrderForm: React.FC<{
                 </div>
               </div>
               <DialogFooter>
-                <Button onClick={() => createOrderHandler()} type='submit'>
-                  Pay
+                <Button onClick={() => createOrderHandler()} type='button' disabled={loading}>
+                  {loading ? <Icons.loadingSpin className='mr-2 h-4 w-4 animate-spin' /> : 'Pay'}
                 </Button>
               </DialogFooter>
             </DialogContent>

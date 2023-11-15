@@ -4,7 +4,7 @@ import * as z from 'zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
+
 import { Textarea } from '@/components/ui/textarea'
 // import AnimalSpecies from '@/utils/api/AnimalSpecies'
 import { DialogFooter } from '@/components/ui/dialog'
@@ -33,12 +33,12 @@ const animalSpeciesFormSchema = z.object({
       message: 'Name must not be longer than 30 characters.'
     }),
 
-  description: z.string().max(255, {
-    message: 'Description must not be longer than 255 characters.'
+  description: z.string().max(1000, {
+    message: 'Description must not be longer than 1000 characters.'
   }),
 
-  image: z.string().max(255, {
-    message: 'Image must not be longer than 255 characters.'
+  image: z.string().max(1000, {
+    message: 'Image must not be longer than 1000 characters.'
   })
 })
 
@@ -69,7 +69,6 @@ export function SpeciesForm(props: Species) {
     const files = dataTransfer.files
     const displayUrl = await LocalFile.uploadFile({ file: files[0] })
     // const displayUrl = URL.createObjectURL(event.target.files![0])
-    console.log(displayUrl)
 
     return { files, displayUrl }
   }
@@ -95,21 +94,15 @@ export function SpeciesForm(props: Species) {
   // const client = useQueryClient()
 
   async function onSubmit(data: SpeciesFormValue) {
-    console.log('lijne: ' + data.image);
-
     if (props.id) {
       updateMutation.mutate(data, {
         onSuccess: () => {
           props.setOpen(false)
-
-          toast({
-            title: 'Update Successfull',
-            description: (
-              <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-                <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-              </pre>
-            )
-          })
+          form.reset(props.species)
+          // toast({
+          //   variant: 'success',
+          //   title: 'Update Successfull'
+          // })
         },
         onError: (data) => {
           if (axios.isAxiosError(data) && data.response) {
@@ -124,14 +117,10 @@ export function SpeciesForm(props: Species) {
         onSuccess: () => {
           props.setOpen(false)
 
-          toast({
-            title: 'Create Successfull',
-            description: (
-              <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-                <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-              </pre>
-            )
-          })
+          // toast({
+          //   variant: 'success',
+          //   title: 'Create Successfull'
+          // })
         },
         onError: (data) => {
           if (axios.isAxiosError(data) && data.response) {
@@ -146,9 +135,8 @@ export function SpeciesForm(props: Species) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className='grid grid-cols-1 gap-x-10 gap-y-14 lg:grid-cols-1 flex-row-reverse '>
-
           <div className=' flex items-center justify-start flex-col space-y-4'>
             <Avatar className='w-60 h-60'>
               <AvatarImage src={preview} />
@@ -165,7 +153,7 @@ export function SpeciesForm(props: Species) {
                   hidden
                   onChange={async (event) => {
                     const { displayUrl } = await getImageData(event)
-                    console.log('displayUrl ' + displayUrl)
+
                     setPreview(displayUrl as string)
                     form.setValue('image', displayUrl as string)
                   }}
@@ -223,10 +211,7 @@ export function SpeciesForm(props: Species) {
               <Button type='submit'>Submit</Button>
             </DialogFooter>
           </div>
-
         </div>
-
-
       </form>
     </Form>
   )

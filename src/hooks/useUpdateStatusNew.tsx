@@ -14,7 +14,6 @@ export const useUpdateNewStatus = (): UseUpdateNew => {
 
   const { mutateAsync: updateNew } = useMutation({
     mutationFn: async ({ title, content, status, id }: NewType) => {
-      console.log('status: ' + status)
       let newStatus
       if (status == 'HIDDEN') {
         newStatus = 'PUBLISHED'

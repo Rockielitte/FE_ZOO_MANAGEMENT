@@ -138,7 +138,7 @@ const Staffs: FC<Accounts> = () => {
               <Link to={`/dashboard/staffs/${row.original.id}`}>
                 <DropdownMenuItem>View Info</DropdownMenuItem>
               </Link>
-              {/* <DropdownMenuItem>View News</DropdownMenuItem> */}
+
               {/* <DropdownMenuItem onClick={() => banAccount({ status: 'INACTIVE', id: row.original.id })}>
                 Ban
               </DropdownMenuItem> */}

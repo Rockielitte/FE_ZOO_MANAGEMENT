@@ -7,7 +7,6 @@ const MyOrder = {
 
     // try {
     const response = await get(endpoint)
-    console.log('response: ', response)
 
     return response
     // } catch (error: AxiosError) {
@@ -22,7 +21,6 @@ const MyOrder = {
 
     // try {
     const response = await post(endpoint, data)
-    console.log('response: ', response)
 
     return response
     // } catch (error: AxiosError) {
@@ -32,12 +30,15 @@ const MyOrder = {
     // }
   },
 
-  updateOrderStatus: async (orderId: string, status: string) => {
+  updateOrderStatus: async (orderId: string, status: string, isUsed?: boolean) => {
     const endpoint = `/orders/${orderId}`
 
     // try {
-    const response = await put(endpoint, { status })
-    console.log('response: ', response)
+    let bodyData
+    if (!isUsed) bodyData = { status }
+    else bodyData = { status, isUsed }
+
+    const response = await put(endpoint, bodyData)
 
     return response
     // } catch (error: AxiosError) {
@@ -52,7 +53,6 @@ const MyOrder = {
 
     // try {
     const response = await remove(endpoint)
-    console.log('response: ', response)
 
     return response
     // } catch (error: AxiosError) {

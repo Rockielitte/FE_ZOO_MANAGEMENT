@@ -15,7 +15,7 @@
 //       ) : type == 'select' ? (
 //         <Select
 //           onValueChange={(e) => {
-//             console.log()
+
 //             table.options.meta?.updateData(index, id, e)
 //           }}
 //           value={value}

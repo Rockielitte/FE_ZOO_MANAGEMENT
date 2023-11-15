@@ -119,7 +119,7 @@ const useSideBar = () => {
         name: 'News',
         Icon: Icons.NewsPaper,
         href: 'news'
-      }
+      },
       // {
       //   name: 'My News',
       //   Icon: Icons.BookUser,
@@ -134,17 +134,42 @@ const useSideBar = () => {
       //   name: 'Ticket',
       //   Icon: BsTicketPerforated,
       //   href: 'tickets'
-      // },
-      // {
-      //   name: 'Order',
-      //   Icon: LiaFileInvoiceDollarSolid,
-      //   href: 'orders'
-      // }
+      // },,
+      {
+        name: 'Order',
+        Icon: LiaFileInvoiceDollarSolid,
+        href: 'orders'
+      }
+    ],
+    []
+  )
+  const routeListTrainer = useMemo(
+    () => [
+      {
+        name: 'Dashboard',
+        Icon: AiFillHome,
+        href: ''
+      },
+
+      {
+        name: 'Animal',
+        Icon: GiElephant,
+        href: 'animals'
+      },
+
+      {
+        name: 'Cage',
+        Icon: GiBirdCage,
+        href: 'cages'
+      }
     ],
     []
   )
   if (data.role === 'STAFF') {
     return routeListStaff
+  }
+  if (data.role === 'TRAINER') {
+    return routeListTrainer
   }
   return routeList
 }

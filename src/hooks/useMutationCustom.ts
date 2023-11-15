@@ -39,8 +39,7 @@ const useMutationCustom = <T, X extends FieldValues>({
         data as object
       )
     },
-    onSuccess: (data) => {
-      console.log(data.data)
+    onSuccess: () => {
       toast.success('Send sucessfully')
       if (resetData) {
         form.reset(resetData)
@@ -54,7 +53,6 @@ const useMutationCustom = <T, X extends FieldValues>({
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        console.log(error.message, 'dasklfj')
         toast.error(error.message)
       }
     }

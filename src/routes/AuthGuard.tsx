@@ -1,6 +1,6 @@
 import { User } from '@/types'
 
-import type { FC, ReactNode } from 'react'
+import { type FC, type ReactNode } from 'react'
 
 import { Navigate, Outlet, useLocation, useRouteLoaderData } from 'react-router-dom'
 
@@ -9,14 +9,12 @@ interface AuthGuardProps {
   allowedRoles: string[]
 }
 
-const AuthGuard: FC<AuthGuardProps> = ({ allowedRoles }) => {
+const AuthGuard: FC<AuthGuardProps> = ({ allowedRoles, children }) => {
   const location = useLocation()
   const { data } = useRouteLoaderData('dashboard') as { data: User }
 
-  console.log('role: ' + data.role)
-
   return allowedRoles.includes(data.role) ? (
-    <Outlet />
+    <Outlet /> || { children }
   ) : (
     <Navigate to='/unauthorized' state={{ from: location }} replace />
   )

@@ -1,16 +1,11 @@
 import { FC, useEffect, useState } from 'react'
 import { Icons } from './Icon'
-// import {
-//   NavigationMenu,
-//   NavigationMenuItem,
-//   NavigationMenuLink,
-//   NavigationMenuList,
-//   navigationMenuTriggerStyle
-// } from '@/components/ui/NavigationMenu'
 import { Link } from 'react-router-dom'
 import useScrollListener from '@/hooks/useScrollListener'
 import clsx from 'clsx'
-import { Theme } from 'react-toastify'
+import { useTheme } from './theme-provider'
+import { Switch } from './ui/switch'
+import { Label } from './ui/label'
 
 interface NavBarProps {}
 const menuContent = [
@@ -21,7 +16,7 @@ const menuContent = [
   },
   {
     id: 2,
-    title: 'Price Ticket',
+    title: 'Buy Ticket',
     href: '/price_tickets'
   },
   // {
@@ -36,11 +31,12 @@ const menuContent = [
   }
 ]
 const NavBar: FC<NavBarProps> = () => {
+  const { theme, setTheme } = useTheme()
   const [open, setOpen] = useState(true)
   const [navClassList, setNavClassList] = useState<string[]>([])
   // const scrollLimit = 200 // Set your desired scroll limit here
   const scroll = useScrollListener()
-  const theme = localStorage.getItem('vite-ui-theme') as Theme
+
   // update classList of nav on scroll
   useEffect(() => {
     const _classList = []
@@ -68,12 +64,10 @@ const NavBar: FC<NavBarProps> = () => {
           <Link to='/' className='-m-1.5 p-1.5 flex items-center justify-between'>
             <span className='sr-only'>Your Company</span>
             {/* <img  src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600' alt='' /> */}
-            {theme == 'light' ? (
-              <Icons.darkLogo className='h-16 w-auto' />
-            ) : (
-              <Icons.whiteLogo className='h-16 w-auto' />
-            )}
-            <p className='hidden text-gray-700 dark:text-white text-xl font-bold md:block'>Zoo</p>
+
+            <Icons.whiteLogo className='h-16 w-auto' />
+
+            <p className='hidden text-white text-xl font-bold md:block'>Zoo</p>
           </Link>
         </div>
         {/* burger */}
@@ -103,16 +97,16 @@ const NavBar: FC<NavBarProps> = () => {
         <div className='hidden lg:flex lg:gap-x-12'>
           {menuContent.map((el) => (
             <Link to={el.href} key={el.id}>
-              <span className='text-foreground   font-semibold lg:text-lg sm:text-sm'>{el.title}</span>
+              <span className='text-white   font-semibold lg:text-lg sm:text-sm'>{el.title}</span>
             </Link>
           ))}
-          <Link to='/#about' className='text-foreground font-semibold lg:text-lg sm:text-sm'>
+          <Link to='/#about' className='text-white font-semibold lg:text-lg sm:text-sm'>
             About
           </Link>
           {/* <a href='/#ticket' className='text-foreground font-semibold lg:text-lg sm:text-sm'>
             Ticket
           </a> */}
-          <a href='/#contact' className='text-foreground font-semibold lg:text-lg sm:text-sm'>
+          <a href='/#contact' className='text-white font-semibold lg:text-lg sm:text-sm'>
             Contact
           </a>
         </div>
@@ -180,6 +174,20 @@ const NavBar: FC<NavBarProps> = () => {
                     >
                       Contact
                     </a>
+                    <div className='flex items-center space-x-2 '>
+                      <Switch
+                        id='airplane-mode'
+                        onClick={() => setTheme('light' == theme ? 'dark' : 'light')}
+                        checked={theme == 'dark'}
+                      />
+                      <Label
+                        htmlFor='airplane-mode'
+                        className='capitalize'
+                        onClick={() => setTheme('light' == theme ? 'dark' : 'light')}
+                      >
+                        {theme + ' mode'}
+                      </Label>
+                    </div>
                   </div>
                   {/* <div className='py-6'>
                 <a

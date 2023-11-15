@@ -9,7 +9,6 @@ import { useRouteLoaderData } from 'react-router-dom'
 
 export default function Species() {
   const { data } = useRouteLoaderData('dashboard') as { data: User }
-  console.log('role user: ' + data?.role)
 
   const columnsSpecies: ColumnDef<dataSpecies>[] = [
     {

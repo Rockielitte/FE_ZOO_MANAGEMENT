@@ -22,7 +22,6 @@ const Account = {
 
     try {
       const response = await get(endpoint, {}, test.headers)
-      console.log('accountDetail: ', response.data)
 
       return response.data
     } catch (error) {
@@ -36,7 +35,6 @@ const Account = {
 
     // try {
     const response = await post(endpoint, data, {}, test.headers)
-    console.log('response: ', response)
 
     return response
     // } catch (error: AxiosError) {
@@ -51,7 +49,6 @@ const Account = {
 
     // try {
     const response = await put(endpoint, data, {}, test.headers)
-    console.log('response: ', response)
 
     return response
     // } catch (error: AxiosError) {
@@ -66,7 +63,6 @@ const Account = {
 
     // try {
     const response = await put(endpoint, { status: status }, {}, test.headers)
-    console.log('response: ', response)
 
     return response
     // } catch (error: AxiosError) {
