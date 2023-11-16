@@ -228,7 +228,7 @@ const Dashboard = () => {
         <Error />
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
         <div className='flex-1 overflow-auto p-5 flex flex-col gap-4 h-full'>
-          <div className='mx-auto my-10 grid max-w-2xl grid-cols-2 md:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4'>
+          <div className='sm:mx-auto my-10 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4'>
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
               <div className='flex items-center justify-between gap-3'>
                 <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
@@ -280,8 +280,8 @@ const Dashboard = () => {
               </div>
             </div>
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3 '>
-              <div className='flex items-center justify-between gap-3'>
-                <div className='flex gap-5 items-center justify-center'>
+              <div className='flex  items-start justify-between gap-3'>
+                <div className='flex items-start flex-col '>
                   <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
                     <Icons.User2 />
                   </div>
@@ -295,12 +295,12 @@ const Dashboard = () => {
                 </Link>
               </div>
 
-              <div className='p-5 flex items-center gap-4 sm:justify-between sm:flex-row xsm:flex-col xsm:justify-start'>
+              <div className='p-5 flex items-start  gap-4   justify-between'>
                 <div className='justify-items-stretch'>
                   <h3>Staff</h3>
                   <h2>{ZooStatistics?.totalStaff}</h2>
                 </div>
-                <Separator orientation='vertical' className='xsm:hidden justify-self-center sm:flex' />
+                <Separator orientation='vertical' className=' justify-self-center ' />
                 <div className='justify-self-center'>
                   <h3>Trainer</h3>
                   <h2>{ZooStatistics?.totalTrainer}</h2>
@@ -313,7 +313,7 @@ const Dashboard = () => {
             pie chart here 
             grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3
             */}
-          <div className='grid  lg:grid-cols-3 xsm:grid-cols-1  gap-4   h-fit w-full '>
+          <div className='grid  lg:grid-cols-3 grid-cols-1  gap-4   h-fit w-full '>
             {/* 
             News chart here */}
             <div className='row-span-3 col-span-2 flex items-center justify-center min-w-full h-full rounded '>
@@ -399,7 +399,7 @@ const Dashboard = () => {
             pie chart here 
             grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3
             */}
-            <div className='flex flex-col md:row-span-1  lg:row-span-1   xsm:col-span-2 border md:col-span-1 lg:col-span-1  h-[22rem] rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+            <div className='flex flex-col md:row-span-1  lg:row-span-1   col-span-2 border md:col-span-1 lg:col-span-1  h-[22rem] rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
               <div className='flex items-start justify-between  gap-14'>
                 <div className=''>
                   <p className=' text-muted-foreground'>Animal Statistics</p>
@@ -419,7 +419,7 @@ const Dashboard = () => {
 
             {/* 
             pie chart here */}
-            <div className=' flex flex-col md:row-span-1  lg:row-span-2   xsm:col-span-2 border md:col-span-1 lg:col-span-1  h-[22rem] rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+            <div className=' flex flex-col md:row-span-1  lg:row-span-2   col-span-2 border md:col-span-1 lg:col-span-1  h-[22rem] rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
               <div className='flex flex-col w-full h-full mx-auto'>
                 <div className='flex items-start justify-between  gap-14'>
                   <div className=''>
