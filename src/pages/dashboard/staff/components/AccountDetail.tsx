@@ -236,7 +236,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                       <FormItem className='flex flex-col'>
                         <FormLabel>Role</FormLabel>
                         <Popover>
-                          <PopoverTrigger asChild>
+                          <PopoverTrigger asChild disabled>
                             <FormControl>
                               <Button
                                 variant='outline'
