@@ -4,6 +4,7 @@ import { User } from '@/types';
 import { ColumnDef, Table, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import * as React from 'react';
 import { SpeciesTablePagination } from '../../Species/components/SpeciesPagination';
+import { CreateFood } from './CreateFood';
 interface DataTableProps<TData, TValue, _X, _Y> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
@@ -37,7 +38,7 @@ export default function FoodTable<TData, TValue, X, Y>({
                     onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
                     className='max-w-sm'
                 />
-                <></>
+                <CreateFood />
 
             </div>
 

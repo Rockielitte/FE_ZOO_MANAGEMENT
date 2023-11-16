@@ -4,10 +4,11 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import useMutationCustom from '@/hooks/useMutationCustom';
 import { cn } from '@/lib/utils';
-import { food } from '@/types';
+import { FoodTypeEnum, food } from '@/types';
 import LocalFile from '@/utils/api/LocalFile';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
@@ -48,10 +49,6 @@ const foodFormSchema = z.object({
 
     description: z.string().max(1000, {
         message: 'Description must not be longer than 1000 characters.'
-    }),
-
-    image: z.string().max(1000, {
-        message: 'Image must not be longer than 1000 characters.'
     })
 })
 
@@ -62,21 +59,6 @@ export function FoodForm(props: Food) {
         defaultValues: props.foods
     })
 
-    const [preview, setPreview] = React.useState(props.foods?.image)
-
-    async function getImageData(event: React.ChangeEvent<HTMLInputElement>) {
-        // FileList is immutable, so we need to create a new one
-        const dataTransfer = new DataTransfer()
-
-        // Add newly uploaded images
-        Array.from(event.target.files!).forEach((image) => dataTransfer.items.add(image))
-
-        const files = dataTransfer.files
-        const displayUrl = await LocalFile.uploadFile({ file: files[0] })
-        // const displayUrl = URL.createObjectURL(event.target.files![0])
-
-        return { files, displayUrl }
-    }
 
     const createMutation = useMutationCustom({
         query: `/foods/`,
@@ -137,32 +119,6 @@ export function FoodForm(props: Food) {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div className='grid grid-cols-1 gap-x-10 gap-y-14 lg:grid-cols-1 flex-row-reverse '>
-                    <div className=' flex items-center justify-start flex-col space-y-4'>
-                        <Avatar className='w-60 h-60'>
-                            <AvatarImage src={preview} />
-                            <AvatarFallback>Unknown</AvatarFallback>
-                        </Avatar>
-                        <FormItem>
-                            <FormLabel>
-                                <p className={cn(buttonVariants({ variant: 'default' }))}>upload</p>
-                            </FormLabel>
-                            <FormControl>
-                                <input
-                                    type='file'
-                                    accept='image/*'
-                                    hidden
-                                    onChange={async (event) => {
-                                        const { displayUrl } = await getImageData(event)
-
-                                        setPreview(displayUrl as string)
-                                        form.setValue('image', displayUrl as string)
-                                    }}
-                                />
-                            </FormControl>
-
-                            <FormMessage />
-                        </FormItem>
-                    </div>
 
                     <div className='space-y-8'>
                         <FormField
@@ -172,7 +128,7 @@ export function FoodForm(props: Food) {
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder='Species name' {...field} />
+                                        <Input placeholder='Food name' {...field} />
                                     </FormControl>
                                     <FormDescription>This is the name of food.</FormDescription>
                                     <FormMessage />
@@ -184,9 +140,9 @@ export function FoodForm(props: Food) {
                             name='type'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Description</FormLabel>
+                                    <FormLabel>Type</FormLabel>
                                     <FormControl>
-                                        <Textarea placeholder='Type' {...field} />
+                                        <Input placeholder='Type' {...field} />
                                     </FormControl>
                                     <FormDescription>This is the type of food.</FormDescription>
                                     <FormMessage />
@@ -198,9 +154,9 @@ export function FoodForm(props: Food) {
                             name='unit'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Description</FormLabel>
+                                    <FormLabel>Unit</FormLabel>
                                     <FormControl>
-                                        <Textarea placeholder='Unit' {...field} />
+                                        <Input placeholder='Unit' {...field} />
                                     </FormControl>
                                     <FormDescription>This is the unit of food.</FormDescription>
                                     <FormMessage />
@@ -221,20 +177,8 @@ export function FoodForm(props: Food) {
                                 </FormItem>
                             )}
                         />
-                        {/* <FormField
-              control={form.control}
-              name='image'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image</FormLabel>
-                  <FormControl>
-                    <Input id='picture' type='file' {...field} value={undefined} />
-                  </FormControl>
-                  <FormDescription>This is the image that will be displayed on species profile.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
+
+
                         <DialogFooter>
                             <Button type='submit'>Submit</Button>
                         </DialogFooter>

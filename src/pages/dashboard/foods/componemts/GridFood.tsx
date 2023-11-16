@@ -6,16 +6,15 @@ import React from 'react'
 import { FoodCard } from './FoodCard'
 
 const GridFood: React.FC<{
-    //data: Table<food>
-    data
+    data: Table<food>
     user: User
 
 
 }> = ({ data, user }) => {
     console.log("data: ", data);
     return (
-        <div className='grid grid-cols-1 gap-x-4 gap-y-7 lg:grid-cols-3 p-4'>
-            {/* {data.getRowModel().rows.map((row) => {
+        <div className='grid grid-cols-1 gap-x-4 gap-y-7 lg:grid-cols-4 p-4'>
+            {data.getRowModel().rows.map((row) => {
                 return (
                     <FoodCard
                         key={row.original.id}
@@ -24,12 +23,11 @@ const GridFood: React.FC<{
                         type={row.original.type}
                         unit={row.original.unit}
                         description={row.original.description}
-                        image={row.original.image}
                         user={user}
                     />
                 )
-            })} */}
-            {data.map((row) => {
+            })}
+            {/* {data.map((row) => {
                 return (
                     <FoodCard
                         key={row.id}
@@ -42,7 +40,7 @@ const GridFood: React.FC<{
                         user={user}
                     />
                 )
-            })}
+            })} */}
         </div>
     )
 }
