@@ -30,14 +30,14 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import SpeciesPieChart from '@/components/SpeciesPieChart'
 import ModalConfirmUpdate from './news/components/ModalUpdateStatus'
-import useCheckRole from '@/hooks/useCheckRole'
+// import useCheckRole from '@/hooks/useCheckRole'
 const options = [
   { type: 'DAY', value: 'Day' },
   { type: 'MONTH', value: 'Month' },
   { type: 'YEAR', value: 'Year' }
 ]
 const Dashboard = () => {
-  const user = useCheckRole()
+  // const user = useCheckRole()
   const minYear = 1800
   const maxYear = 2023
   const new_data = useQueryCustom<NewType, []>({

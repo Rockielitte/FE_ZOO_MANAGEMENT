@@ -92,7 +92,7 @@ const ModalForm = <X, T extends FieldValues>({
           <MdCreate className='text-xl ' />
         )}
       </DialogTrigger>
-      <DialogContent className='max-h-[80%] overflow-auto  shadow-xl border-secondary flex flex-col gap-1'>
+      <DialogContent className='max-h-[80%]   shadow-xl border-secondary flex flex-col gap-1'>
         {formMutation.isLoading && <LoadingScreen label='Submitting'></LoadingScreen>}
         <DialogHeader>
           <DialogTitle className='uppercase pb-2'>{title}</DialogTitle>

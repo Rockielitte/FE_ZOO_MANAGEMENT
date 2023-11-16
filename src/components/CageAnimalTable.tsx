@@ -3,7 +3,7 @@ import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Checkbox } from '@/components/ui/checkbox'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
