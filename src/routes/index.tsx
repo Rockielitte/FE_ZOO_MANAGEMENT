@@ -130,7 +130,7 @@ const routes: RouteObject[] = [
           },
           {
             path: 'staffs',
-            element: <AuthGuard allowedRoles={['STAFF']} />,
+            element: <AuthGuard allowedRoles={['STAFF', 'TRAINER']} />,
             children: [
               { index: true, element: Staffs },
               {

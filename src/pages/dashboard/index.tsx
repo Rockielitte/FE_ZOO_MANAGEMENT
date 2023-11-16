@@ -30,12 +30,14 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import SpeciesPieChart from '@/components/SpeciesPieChart'
 import ModalConfirmUpdate from './news/components/ModalUpdateStatus'
+import useCheckRole from '@/hooks/useCheckRole'
 const options = [
   { type: 'DAY', value: 'Day' },
   { type: 'MONTH', value: 'Month' },
   { type: 'YEAR', value: 'Year' }
 ]
 const Dashboard = () => {
+  const user = useCheckRole()
   const minYear = 1800
   const maxYear = 2023
   const new_data = useQueryCustom<NewType, []>({
@@ -228,7 +230,7 @@ const Dashboard = () => {
         <Error />
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
         <div className='flex-1 overflow-auto p-5 flex flex-col gap-4 h-full'>
-          <div className='mx-auto my-10 grid max-w-2xl grid-cols-2 md:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4 '>
+          <div className='sm:mx-auto my-10 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4'>
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
               <div className='flex items-center justify-between gap-3 bg-green-100 rounded-xl shadow-lg p-2'>
                 <div className='p-3 border-2 border-slate-200  bg-primary text-white shadow-lg w-fit rounded-[0.5rem]'>
@@ -315,7 +317,7 @@ const Dashboard = () => {
             pie chart here 
             grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3
             */}
-          <div className='grid  lg:grid-cols-3 xsm:grid-cols-1  gap-4   h-fit w-full '>
+          <div className='grid  lg:grid-cols-3 grid-cols-1  gap-4   h-fit w-full '>
             {/* 
             News chart here */}
             <div className='row-span-3 col-span-2 flex items-center justify-center min-w-full h-full rounded '>
@@ -353,11 +355,11 @@ const Dashboard = () => {
                             <div className='   flex flex-col  items-start'>
                               <div className='flex items-start flex-col border rounded-[0.5rem] p-4  gap-4 w-full'>
                                 <div className=''>
-                                  <h2 className='text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100'>
+                                  <h2 className='text-base font-semibold tracking-tight w-1/2 line-clamp-2  text-zinc-800  dark:text-zinc-100'>
                                     {/* <div className='absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl'></div> */}
                                     <Link to={`/dashboard/news/${el.id}`}>
                                       {/* <span className='absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl'></span> */}
-                                      <div className='relative z-10 truncate w-fit'>{el.title}</div>
+                                      <div className='relative z-10 '>{el.title}</div>
                                     </Link>
                                   </h2>
                                   <p className=' z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400'>
@@ -370,7 +372,7 @@ const Dashboard = () => {
                                     setNewUpdate(el)
                                     setShowDeleteDialog(true)
                                   }}
-                                  className=' z-10 flex items-start  text-sm font-medium text-primary hover:bg-green-200 uppercase font-semibold rounded-sm duration-100 transition-all cursor-pointer p-2'
+                                  className=' z-10 flex items-start  text-sm  text-primary hover:bg-green-200 uppercase font-semibold rounded-sm duration-100 transition-all cursor-pointer p-2'
                                 >
                                   Publish
                                 </div>
@@ -401,7 +403,7 @@ const Dashboard = () => {
             pie chart here 
             grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3
             */}
-            <div className='flex flex-col md:row-span-1  lg:row-span-1   xsm:col-span-2 border md:col-span-1 lg:col-span-1  h-[22rem] rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+            <div className='flex flex-col md:row-span-1  lg:row-span-1   col-span-2 border md:col-span-1 lg:col-span-1   min-h-full rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
               <div className='flex items-start justify-between  gap-14'>
                 <div className=''>
                   <p className=' text-muted-foreground'>Animal Statistics</p>
@@ -421,7 +423,7 @@ const Dashboard = () => {
 
             {/* 
             pie chart here */}
-            <div className=' flex flex-col md:row-span-1  lg:row-span-2   xsm:col-span-2 border md:col-span-1 lg:col-span-1  h-[22rem] rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+            <div className=' flex flex-col md:row-span-1  lg:row-span-2   col-span-2 border md:col-span-1 lg:col-span-1  min-h-full rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
               <div className='flex flex-col w-full h-full mx-auto'>
                 <div className='flex items-start justify-between  gap-14'>
                   <div className=''>
@@ -449,8 +451,8 @@ const Dashboard = () => {
               <div className='h-full   p-5 rounded-[0.5rem] border shadow-md border-gray-200 flex  flex-col w-full'>
                 <div className='flex items-start justify-between  gap-14'>
                   <div className=''>
-                    <p className=' text-muted-foreground'>Total Revenue</p>
-                    <h1 className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</h1>
+                    <p className=' text-muted-foreground'>Revenue Statistic</p>
+                    {/* <h1 className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</h1> */}
                   </div>
                   <Link
                     to='/dashboard/orders'
@@ -459,7 +461,7 @@ const Dashboard = () => {
                     View Orders <Icons.ArrowRight className='text-sm' />
                   </Link>
                 </div>
-                <div className=' flex items-end  justify-between p-5'>
+                <div className=' flex sm:items-end gap-4 sm:flex-row flex-col items-start sm:justify-between p-5'>
                   <div className={cn('flex gap-2 items-center justify-between')}>
                     <Label>Type: </Label>
                     <Select
@@ -482,8 +484,8 @@ const Dashboard = () => {
                   </div>
 
                   {type == 'YEAR' ? (
-                    <div className={cn('flex items-center gap-2 justify-between ')}>
-                      <div className='flex items-center gap-2 '>
+                    <div className={cn('flex flex-col sm:flex-row items-center gap-2 justify-between ')}>
+                      <div className='flex sm:items-center  gap-2 '>
                         <Label>Start Year: </Label>
                         <Select
                           value={yearRange.from}
@@ -532,6 +534,8 @@ const Dashboard = () => {
                     </div>
                   ) : type === 'MONTH' ? (
                     <div className={cn('grid gap-2')}>
+                      <Label>Year: </Label>
+
                       <Select
                         value={yearOfMonth}
                         onValueChange={(value) => {
