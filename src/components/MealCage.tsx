@@ -2,7 +2,7 @@ import { FieldValues, Path, SubmitHandler, UseFormReturn } from 'react-hook-form
 import { UseMutationResult, useQueryClient } from 'react-query'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
-import { AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import { Button } from './ui/button'
 import CageMealTabe from './CageMealTabe'
 import { SelectSearch } from './SelectSearch'
@@ -20,7 +20,8 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    watch
   } = form
   const queryClient = useQueryClient()
   const onSubmit: SubmitHandler<T> = async (data) => {
@@ -34,6 +35,13 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
         queryClient.invalidateQueries(['cages'], {
           exact: true
         })
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response?.data?.data) {
+          error.response.data.data.forEach(({ field, message }: { field: string; message: string }) =>
+            form.setError(field as Path<T>, { type: 'focus', message })
+          )
+        }
       }
     })
   }
@@ -123,18 +131,23 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                       )}
                     </div>
                   )
-                case 'animalSpeciesId':
+                case 'capacity':
                   return (
                     <div className='grid grid-cols-4 items-center gap-4'>
                       <Label htmlFor={item} className='text-right capitalize'>
                         {label}
                       </Label>
-                      <div className='col-span-3 h-10' id={item}>
-                        <SelectSearch
-                          form={form}
-                          query='animal-species'
-                          item={item}
-                          disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
+                      <div className='col-span-3 h-10'>
+                        <Input
+                          id={item}
+                          className='col-span-1'
+                          placeholder={`Type ${item} here . . .`}
+                          {...register(item)}
+                          type='number'
+                          hidden
+                          min={1}
+                          step={1}
+                          value={parseInt(watch(item))}
                         />
                       </div>
                       {errors[item] && (

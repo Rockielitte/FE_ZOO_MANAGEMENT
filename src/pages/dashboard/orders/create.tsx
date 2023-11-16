@@ -5,10 +5,21 @@ import { Order, RoleEnum } from '@/types'
 import useMutationCustom from '@/hooks/useMutationCustom'
 import OrderForm from '@/components/OrderForm'
 import useCheckRole from '@/hooks/useCheckRole'
+const regexNotSpaceFirst = /^(?:[^ ]|$)/
+const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+const phoneRegex = /^0\d{8,10}$/
 const formSchema = z.object({
-  email: z.string().min(1),
-  phone: z.string().min(1),
-  name: z.string().min(1),
+  email: z
+    .string()
+    .min(1)
+    .regex(regexNotSpaceFirst, 'First character is not a space')
+    .regex(emailRegex, 'Email is in invaild format'),
+  phone: z
+    .string()
+    .min(1, 'Phone is required')
+    .regex(regexNotSpaceFirst, 'First character is not a space')
+    .regex(phoneRegex, 'Phone is in invalid Vietnamese format'),
+  name: z.string().min(1).regex(regexNotSpaceFirst, 'First character is not a space'),
   visitDate: z.date(),
   details: z
     .object({
@@ -18,7 +29,7 @@ const formSchema = z.object({
       price: z.coerce.number().min(0).optional()
     })
     .array()
-    .min(1)
+    .min(1, 'Please choose at least 1 ticket to finish your ordering')
 })
 export type FormSchemaType = z.infer<typeof formSchema>
 const OrderCreate = () => {

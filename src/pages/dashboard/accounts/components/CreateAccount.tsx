@@ -18,12 +18,12 @@ const CreateAccount: FC<CreateAccountProps> = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant='default' className='flex items-center gap-1 hover:scale-110 transition-all ml-auto'>
+        <Button variant='default' className='flex items-center gap-1 hover:scale-110 transition-all ml-auto uppercase'>
           <Icons.PlusCircleIcon className='mr-2' />
           Create Account
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[475px]'>
+      <DialogContent className='max-h-[80%] overflow-auto'>
         <DialogHeader>
           <DialogTitle> Create Account</DialogTitle>
           <DialogDescription>Fill out the required fields in the registration form</DialogDescription>

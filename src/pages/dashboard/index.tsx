@@ -228,80 +228,82 @@ const Dashboard = () => {
         <Error />
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
         <div className='flex-1 overflow-auto p-5 flex flex-col gap-4 h-full'>
-          <div className='mx-auto my-10 grid max-w-2xl grid-cols-2 md:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4'>
+          <div className='mx-auto my-10 grid max-w-2xl grid-cols-2 md:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4 '>
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
-              <div className='flex items-center justify-between gap-3'>
-                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+              <div className='flex items-center justify-between gap-3 bg-green-100 rounded-xl shadow-lg p-2'>
+                <div className='p-3 border-2 border-slate-200  bg-primary text-white shadow-lg w-fit rounded-[0.5rem]'>
                   <Icons.Home />
                 </div>
                 <Link
                   to='/dashboard/cages'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
+                  className='flex items-center  text-sm justify-between text-primary font-semibold '
                 >
                   View All <Icons.ArrowRight className='text-sm' />
                 </Link>
               </div>
-              <div className='p-5'>
-                <h3>Cage</h3>
+              <div className='p-2 py-4 text-md font-bold uppercase bg-secondary border-2  mt-2 rounded-lg bg-secondary'>
+                <h3>Cages</h3>
                 <h2>{ZooStatistics?.totalCage}</h2>
               </div>
             </div>
 
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
-              <div className='flex items-center justify-between gap-3'>
-                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+              <div className='flex items-center justify-between gap-3 bg-green-100 rounded-xl shadow-lg p-2'>
+                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem] bg-primary text-white shadow-lg'>
                   <Icons.MayIn />
                 </div>
                 <Link
                   to='/dashboard/areas'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
+                  className='flex items-center  text-sm justify-between  text-primary font-semibold '
                 >
                   View All <Icons.ArrowRight className='text-sm' />
                 </Link>
               </div>
-              <div className='p-5'>
-                <h3>Area</h3>
+              <div className='p-2 py-4 text-md font-bold uppercase border-2  mt-2 rounded-lg bg-secondary'>
+                <h3>Areas</h3>
                 <h2>{ZooStatistics?.totalArea}</h2>
               </div>
             </div>
 
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
-              <div className='flex items-center justify-between gap-3'>
-                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+              <div className='flex items-center justify-between gap-3 bg-green-100 rounded-xl shadow-lg p-2'>
+                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem] bg-primary text-white shadow-lg'>
                   <Icons.NewsPaper />
                 </div>
-                <Link to='/dashboard/news' className='flex items-center text-muted-foreground text-sm justify-between '>
+                <Link
+                  to='/dashboard/news'
+                  className='flex items-center text-primary font-semibold text-sm justify-between '
+                >
                   View All <Icons.ArrowRight className='text-sm' />
                 </Link>
               </div>
-              <div className='p-5'>
+              <div className='p-2 py-4 text-md font-bold uppercase border-2  mt-2 rounded-lg bg-secondary'>
                 <h3>Total News</h3>
                 <h2>{ZooStatistics?.totalNewsPublished}</h2>
               </div>
             </div>
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3 '>
-              <div className='flex items-center justify-between gap-3'>
+              <div className='flex items-center justify-between gap-3 bg-green-100 rounded-xl shadow-lg p-2'>
                 <div className='flex gap-5 items-center justify-center'>
-                  <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+                  <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem] bg-primary text-white shadow-lg'>
                     <Icons.User2 />
                   </div>
-                  Human Resources
                 </div>
                 <Link
                   to='/dashboard/accounts'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
+                  className='flex items-center text-primary font-semibold text-sm justify-between '
                 >
                   View All <Icons.ArrowRight className='text-sm' />
                 </Link>
               </div>
-
-              <div className='p-5 flex items-center gap-4 sm:justify-between sm:flex-row xsm:flex-col xsm:justify-start'>
-                <div className='justify-items-stretch'>
+              {/* flex items-center gap-4 sm:justify-between sm:flex-row xsm:flex-col xsm:justify-start */}
+              <div className='w-full flex gap-2 overflow-auto border-2  mt-2 rounded-lg bg-secondary '>
+                <div className='flex-1 p-2 py-4 text-md font-bold uppercase'>
                   <h3>Staff</h3>
                   <h2>{ZooStatistics?.totalStaff}</h2>
                 </div>
                 <Separator orientation='vertical' className='xsm:hidden justify-self-center sm:flex' />
-                <div className='justify-self-center'>
+                <div className='flex-1 p-2 py-4 text-md font-bold uppercase'>
                   <h3>Trainer</h3>
                   <h2>{ZooStatistics?.totalTrainer}</h2>
                 </div>
@@ -343,7 +345,7 @@ const Dashboard = () => {
                         return (
                           <article className=' mb-4 w-full overflow-auto' key={id}>
                             <time
-                              className=' hidden md:block relative z-10 order-first flex items-center text-sm text-zinc-400 dark:text-zinc-500'
+                              className=' hidden md:block relative z-10 order-first  items-center text-sm text-zinc-400 dark:text-zinc-500'
                               dateTime={getDate(el?.postedAt)}
                             >
                               {getDate(el?.postedAt)}
@@ -368,7 +370,7 @@ const Dashboard = () => {
                                     setNewUpdate(el)
                                     setShowDeleteDialog(true)
                                   }}
-                                  className=' z-10 flex items-start  text-sm font-medium text-teal-500 hover:bg-teal-300 rounded-sm duration-100 transition-all cursor-pointer p-2'
+                                  className=' z-10 flex items-start  text-sm font-medium text-primary hover:bg-green-200 uppercase font-semibold rounded-sm duration-100 transition-all cursor-pointer p-2'
                                 >
                                   Publish
                                 </div>

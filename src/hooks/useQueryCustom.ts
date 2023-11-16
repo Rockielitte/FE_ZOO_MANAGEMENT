@@ -2,6 +2,7 @@ import { useUserStore } from '@/stores'
 import { request } from '@/utils/apiCaller'
 import axios, { AxiosResponse } from 'axios'
 import { useQuery } from 'react-query'
+import { toast } from 'react-toastify'
 
 type Props<T, X> = {
   queryKey: string[]
@@ -22,7 +23,7 @@ const useQueryCustom = <T, X>({ query, queryKey }: Props<T, X>) => {
     onSuccess: () => {},
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        // console.log(error.message)
+        toast.error(error.response?.data?.message || error.message)
       }
     },
     select: (data) => {

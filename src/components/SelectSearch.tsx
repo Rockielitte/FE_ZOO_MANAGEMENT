@@ -95,19 +95,19 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
           defaultValue={String(form.watch(item))}
           value={String(form.watch(item))}
           onValueChange={(value) => {
-            if (String(item) == 'cageId') {
-              const map = _.find(selectMap, { value: String(value) })
-              if (map) {
-                form.setValue('speciesId' as Path<T>, map.speciesId as PathValue<T, Path<T>>)
-              }
-            }
+            // if (String(item) == 'cageId') {
+            //   const map = _.find(selectMap, { value: String(value) })
+            //   if (map) {
+            //     form.setValue('speciesId' as Path<T>, map.speciesId as PathValue<T, Path<T>>)
+            //   }
+            // }
             // if (String(item) == 'speciesId') {
             //   const map = _.find(selectMap, { value: String(value) })
             //   if (map) {
             //     form.setValue('speciesId' as Path<T>, map.speciesId as PathValue<T, Path<T>>)
             //   }
             // }
-            form.setValue(item, value as PathValue<T, Path<T>>)
+            form.setValue(item, value as PathValue<T, Path<T>>, { shouldValidate: true })
           }}
         >
           <SelectTrigger className='w-full' id={String(item)}>
@@ -125,11 +125,11 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
                 />
               </div>
               <div className='flex-1 flex flex-col w-full overflow-auto h-full pt-2 border shadow-2xl rounded-md p-2'>
-                {item == 'managedById' && _.findIndex(selectMap, { value: form.getValues(item) }) < 0 && (
+                {/* {item == 'managedById' && _.findIndex(selectMap, { value: form.getValues(item) }) < 0 && (
                   <SelectItem key={form.getValues(item)} value={form.getValues(item) as string} className=''>
                     {form.getValues('managerName' as Path<T>)}
                   </SelectItem>
-                )}
+                )} */}
                 {selectMap.length ? (
                   <>
                     {selectMap.map((item) => (
@@ -149,13 +149,13 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
         <Select
           disabled={disabled}
           onValueChange={(value) => {
-            if (String(item) == 'cageId') {
-              const map = _.find(selectMap, { value: String(value) })
-              if (map) {
-                form.setValue('speciesId' as Path<T>, map.speciesId as PathValue<T, Path<T>>)
-              }
-            }
-            form.setValue(item, value as PathValue<T, Path<T>>)
+            // if (String(item) == 'cageId') {
+            //   const map = _.find(selectMap, { value: String(value) })
+            //   if (map) {
+            //     form.setValue('speciesId' as Path<T>, map.speciesId as PathValue<T, Path<T>>)
+            //   }
+            // }
+            form.setValue(item, value as PathValue<T, Path<T>>, { shouldValidate: true })
           }}
         >
           <SelectTrigger className='w-full h-full' id={item}>
@@ -173,11 +173,11 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
                 />
               </div>
               <div className='flex-1 flex flex-col w-full overflow-auto h-full pt-2 border shadow-2xl rounded-md p-2'>
-                {item == 'managedById' && _.findIndex(selectMap, { value: form.getValues(item) }) < 0 && (
+                {/* {item == 'managedById' && _.findIndex(selectMap, { value: form.getValues(item) }) < 0 && (
                   <SelectItem key={form.getValues(item)} value={form.getValues(item) as string} className=''>
                     {item == 'managedById' ? form.getValues('managerName' as Path<T>) : 'Assigned'}
                   </SelectItem>
-                )}
+                )} */}
                 {selectMap.length ? (
                   <>
                     {selectMap.map((item) => (

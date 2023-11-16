@@ -15,7 +15,7 @@ import { UseMutationResult, useQueryClient } from 'react-query'
 import { Label } from 'flowbite-react'
 import { Input } from './ui/input'
 import LoadingScreen from './Loading'
-import { AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import { SelectSearch } from './SelectSearch'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
@@ -55,6 +55,13 @@ const ModalForm = <X, T extends FieldValues>({
         setTimeout(() => {
           formMutation.reset()
         }, 2000)
+      },
+      onError(error) {
+        if (axios.isAxiosError(error) && error.response?.data?.data) {
+          error.response.data.data.forEach(({ field, message }: { field: string; message: string }) =>
+            form.setError(field as Path<T>, { type: 'focus', message })
+          )
+        }
       }
     })
   }
@@ -85,7 +92,7 @@ const ModalForm = <X, T extends FieldValues>({
           <MdCreate className='text-xl ' />
         )}
       </DialogTrigger>
-      <DialogContent className='max-h-[400px]  shadow-xl border-secondary flex flex-col gap-1'>
+      <DialogContent className='max-h-[80%] overflow-auto  shadow-xl border-secondary flex flex-col gap-1'>
         {formMutation.isLoading && <LoadingScreen label='Submitting'></LoadingScreen>}
         <DialogHeader>
           <DialogTitle className='uppercase pb-2'>{title}</DialogTitle>
@@ -150,6 +157,48 @@ const ModalForm = <X, T extends FieldValues>({
                     </div>
                   )
                 }
+                case 'capacity':
+                  return (
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label htmlFor={item} className='text-right capitalize'>
+                        {label}
+                      </Label>
+                      <div className='col-span-3 h-10'>
+                        <Input
+                          id={item}
+                          className='col-span-1'
+                          placeholder={`Type ${item} here . . .`}
+                          type='number'
+                          hidden
+                          min={1}
+                          step={1}
+                          value={parseInt(watch(item))}
+                          {...register(item)}
+                        />
+                      </div>
+                      {errors[item] && (
+                        <div
+                          className='col-span-4 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 '
+                          role='alert'
+                        >
+                          <svg
+                            className='flex-shrink-0 inline w-4 h-4 mr-3'
+                            aria-hidden='true'
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='currentColor'
+                            viewBox='0 0 20 20'
+                          >
+                            <path d='M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z' />
+                          </svg>
+                          <span className='sr-only'>Info</span>
+                          <div>
+                            <span className='font-medium'>Validation alert! </span>
+                            {errors[item]?.message as string}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )
                 case 'areaId':
                   return (
                     <div className='grid grid-cols-4 items-center gap-4'>

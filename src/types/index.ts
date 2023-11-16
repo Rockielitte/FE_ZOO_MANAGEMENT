@@ -1,3 +1,4 @@
+import { Legend } from 'recharts'
 export interface IUser {
   name?: string
   email?: string
@@ -82,7 +83,9 @@ export type User = {
 
 export type Cage = {
   animals: Animal[]
-  animalSpecies: Species
+  // animalSpecies: Species
+  name: string
+  capacity: number
   area: Area | null
   cageMeals: [] | null
   code: string
@@ -160,6 +163,10 @@ export type Animal = {
   updatedAt: string
   updatedBy: User | null
   description: string
+  weight: number
+  height: number
+  length: number
+  feedingGuide: string
 }
 export type SpeciesStatistics = {
   speciesId: number

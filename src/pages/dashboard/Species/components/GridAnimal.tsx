@@ -13,24 +13,24 @@ const GridAnimal: React.FC<{
     target.src = Lin
   }
   return (
-    <div className='w-full  flex flex-col flex-1 gap-1 items-start align-top p-2'>
+    <div className='grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 pr-2'>
       {data.getRowModel().rows.map((row) => {
         return (
-          <div className='w-full flex justify-start align-middle border-2 rounded-[0.5rem] gap-2 overflow-hidden'>
+          <div className='w-full shadow-md flex justify-start align-middle border-2 rounded-[0.5rem] gap-2 overflow-hidden '>
             <img
-              className='h-[150px] w-[200px] object-cover'
+              className='h-full w-4/12 object-cover border-r-4 border-dashed border-black'
               src={`${row.original?.imageList[0]}`}
               onError={addDefaultImg}
               alt=''
             />
 
-            <div className='p-6'>
+            <div className='p-4'>
               <Link to={`/dashboard/animals/${row.original.id}`}>
-                <h3 className='font-normal text-4xl flex items-center gap-3'>
-                  {row.original.name} <EyeIcon />
+                <h3 className='font-bold text-2xl flex items-center gap-3 uppercase'>
+                  {row.original.name} <EyeIcon className='text-5xl text-primary' />
                 </h3>
               </Link>
-              <p className='truncate-4  pt-2'>{row.original.description}</p>
+              <p className='  pt-2 text-sm'>{row.original.description}</p>
             </div>
           </div>
         )

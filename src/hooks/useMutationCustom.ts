@@ -53,7 +53,9 @@ const useMutationCustom = <T, X extends FieldValues>({
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.message)
+        // console.log(error)
+
+        toast.error(error.response?.data?.message || error.message)
       }
     }
   })

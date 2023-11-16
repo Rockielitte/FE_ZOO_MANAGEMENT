@@ -38,14 +38,14 @@ export function SpeciesTable<TData, TValue, X, Y>({
   })
 
   return (
-    <div className='h-full flex-1 flex flex-col'>
+    <div className='h-full flex-1 flex flex-col px-2'>
       {table.getColumn('name')?.id ? (
-        <div className='flex items-center justify-between py-2 gap-2 space-y-4 '>
+        <div className=' flex items-center justify-between py-2 gap-2 space-y-4 w-full  '>
           <Input
-            placeholder='Search...'
+            placeholder='Search by name . . .'
             value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
             onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
-            className='max-w-sm'
+            className='max-w-sm '
           />
           {table.getColumn('nation')?.id || user?.role === 'STAFF' || user?.role === 'TRAINER' ? (
             <></>
@@ -54,9 +54,9 @@ export function SpeciesTable<TData, TValue, X, Y>({
           )}
         </div>
       ) : (
-        <div className='flex items-center justify-start py-2 gap-2 space-y-4 '>
+        <div className='flex items-center justify-start py-2 gap-2 space-y-4 w-full '>
           <Input
-            placeholder='Search...'
+            placeholder='Search . . .'
             value={(table.getColumn('code')?.getFilterValue() as string) ?? ''}
             onChange={(event) => table.getColumn('code')?.setFilterValue(event.target.value)}
             className='max-w-sm'
@@ -64,11 +64,11 @@ export function SpeciesTable<TData, TValue, X, Y>({
         </div>
       )}
 
-      <div className='flex-1 flex overflow-auto h-full'>
+      <div className='flex-1 flex overflow-auto h-full '>
         {table.getRowModel().rows?.length ? (
           <div className='w-full h-full'>{<GridBox data={table} user={user} />}</div>
         ) : (
-          <div className='text-center w-full h-full text-2xl'>No results.</div>
+          <div className='text-center w-full h-full text-base font-normal py-3'>No results.</div>
         )}
       </div>
       <div className='h-2' />
