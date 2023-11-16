@@ -230,7 +230,7 @@ const Dashboard = () => {
         <Error />
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
         <div className='flex-1 overflow-auto p-5 flex flex-col gap-4 h-full'>
-          <div className='sm:mx-auto my-10 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4'>
+          <div className=' grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4'>
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
               <div className='flex items-center justify-between gap-3 bg-green-100 rounded-xl shadow-lg p-2'>
                 <div className='p-3 border-2 border-slate-200  bg-primary text-white shadow-lg w-fit rounded-[0.5rem]'>
@@ -243,7 +243,7 @@ const Dashboard = () => {
                   View All <Icons.ArrowRight className='text-sm' />
                 </Link>
               </div>
-              <div className='p-2 py-4 text-md font-bold uppercase bg-secondary border-2  mt-2 rounded-lg bg-secondary'>
+              <div className='p-2 py-4 text-md font-bold uppercase bg-secondary border-2  mt-2 rounded-lg '>
                 <h3>Cages</h3>
                 <h2>{ZooStatistics?.totalCage}</h2>
               </div>
@@ -320,16 +320,16 @@ const Dashboard = () => {
           <div className='grid  lg:grid-cols-3 grid-cols-1  gap-4   h-fit w-full '>
             {/* 
             News chart here */}
-            <div className='row-span-3 col-span-2 flex items-center justify-center min-w-full h-full rounded '>
+            <div className='row-span-4 col-span-2 flex items-center justify-center min-w-full h-full rounded '>
               <div className=' border w-full h-full p-5 rounded-[0.5rem] shadow-md border-gray-200'>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Unpublished news</p>
+                <div className='flex items-start justify-between  gap-14 bg-green-100 rounded-xl shadow-lg p-4 opacity-80 hover:opacity-100'>
+                  <div className='text-primary font-bold uppercase '>
+                    <p className=''>Unpublished news</p>
                     <h1>{BlogData?.length}</h1>
                   </div>
                   <Link
                     to='/dashboard/news'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
+                    className='flex items-center  text-sm justify-between  text-primary font-bold'
                   >
                     View All News
                     <Icons.ArrowRight className='text-sm' />
@@ -403,15 +403,15 @@ const Dashboard = () => {
             pie chart here 
             grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3
             */}
-            <div className='flex flex-col md:row-span-1  lg:row-span-1   col-span-2 border md:col-span-1 lg:col-span-1   min-h-full rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
-              <div className='flex items-start justify-between  gap-14'>
-                <div className=''>
-                  <p className=' text-muted-foreground'>Animal Statistics</p>
-                  <h1 className='text-gray-700 font-medium '>{ZooStatistics?.totalAnimal}</h1>
+            <div className='flex flex-col h-[370px] md:row-span-2  lg:row-span-2   col-span-2 border md:col-span-1 lg:col-span-1 overflow-auto    min-h-full rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+              <div className='flex items-start justify-between  gap-14 bg-green-100 rounded-xl shadow-lg p-4 opacity-80 hover:opacity-100 '>
+                <div className='font-bold text-primary uppercase'>
+                  <p className=' '>Animal Statistics</p>
+                  <h1 className='font-medium '>{ZooStatistics?.totalAnimal}</h1>
                 </div>
                 <Link
                   to='/dashboard/animals'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
+                  className='flex items-center text-sm justify-between font-bold text-primary'
                 >
                   View All <Icons.ArrowRight className='text-sm' />
                 </Link>
@@ -423,16 +423,16 @@ const Dashboard = () => {
 
             {/* 
             pie chart here */}
-            <div className=' flex flex-col md:row-span-1  lg:row-span-2   col-span-2 border md:col-span-1 lg:col-span-1  min-h-full rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+            <div className=' flex flex-col h-[370px] md:row-span-2  lg:row-span-2   col-span-2 border md:col-span-1 lg:col-span-1  min-h-full rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
               <div className='flex flex-col w-full h-full mx-auto'>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Species Statistics</p>
-                    <h1 className='text-gray-700 font-medium '>{speciesStatic.length}</h1>
+                <div className='flex items-start justify-between  gap-14 bg-green-100 rounded-xl shadow-lg p-4 opacity-80 hover:opacity-100'>
+                  <div className='font-semibold text-primary uppercase'>
+                    <p className=' '>Species Statistics</p>
+                    <h1 className='font-medium '>{speciesStatic.length}</h1>
                   </div>
                   <Link
                     to='/dashboard/animal_species'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
+                    className='flex items-center t text-sm justify-between text-primary font-bold '
                   >
                     View All <Icons.ArrowRight className='text-sm' />
                   </Link>
@@ -449,14 +449,14 @@ const Dashboard = () => {
             Bar chart here */}
             <div className=' lg:col-span-2 col-span-1 block  rounded-[0.5rem]'>
               <div className='h-full   p-5 rounded-[0.5rem] border shadow-md border-gray-200 flex  flex-col w-full'>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Revenue Statistic</p>
+                <div className='flex items-start justify-between  gap-14  bg-green-100 rounded-xl shadow-lg p-4 opacity-80 hover:opacity-100'>
+                  <div className='font-bold text-primary uppercase'>
+                    <p className=' '>Revenue Statistic</p>
                     {/* <h1 className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</h1> */}
                   </div>
                   <Link
                     to='/dashboard/orders'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
+                    className='flex items-center  text-sm justify-between text-primary font-bold '
                   >
                     View Orders <Icons.ArrowRight className='text-sm' />
                   </Link>
@@ -611,14 +611,14 @@ const Dashboard = () => {
                ticket distribution here */}
             <div className='flex row-span-1   border  flex-col border-gray-200 p-5 rounded-[0.5rem] shadow-md '>
               <div className='flex   flex-col'>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Ticket Distribution</p>
-                    <h1 className='text-gray-700 font-medium '>{ticketDistributionData?.length}</h1>
+                <div className='flex items-start justify-between  gap-14  bg-green-100 rounded-xl shadow-lg p-4 opacity-80 hover:opacity-100 '>
+                  <div className='text-primary uppercase font-bold'>
+                    <p className=' '>Ticket Distribution</p>
+                    <h1 className=' font-medium '>{ticketDistributionData?.length}</h1>
                   </div>
                   <Link
                     to='/dashboard/animals'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
+                    className='flex items-center  text-sm justify-between text-primary font-bold '
                   >
                     View All <Icons.ArrowRight className='text-sm' />
                   </Link>

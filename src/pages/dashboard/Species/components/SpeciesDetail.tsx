@@ -70,6 +70,9 @@ export default function SpeciesDetail() {
       cell: ({ row }) => <span>{parseInt(row.id) + 1}</span>
     },
     {
+      accessorKey: 'name'
+    },
+    {
       accessorKey: 'code',
       header: 'Code',
 

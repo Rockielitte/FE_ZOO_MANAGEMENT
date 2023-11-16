@@ -17,7 +17,7 @@ const Search = () => {
       {user?.role && user.role != RoleEnum.TRAINER && (
         <div className='flex items-center space-x-2 ' onClick={() => navigate('qrcode')}>
           <IoQrCodeOutline className='text-2xl cursor-pointer text-primary' />
-          <Label htmlFor='airplane-mode' className='capitalize'>
+          <Label htmlFor='scan' className='capitalize'>
             Scan
           </Label>
         </div>

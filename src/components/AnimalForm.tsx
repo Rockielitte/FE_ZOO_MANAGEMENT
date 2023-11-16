@@ -145,7 +145,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                       {item == 'description' || item == 'note' || item == 'feedingGuide' ? (
                         <Textarea
                           {...register(item)}
-                          placeholder='Type content here . . .'
+                          placeholder={`Type ${item} here . . .`}
                           id={item}
                           className='flex-1'
                           disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
