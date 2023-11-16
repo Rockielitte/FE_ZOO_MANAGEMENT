@@ -66,12 +66,21 @@ import useMutationCustom from '@/hooks/useMutationCustom'
 //   }
 // ]
 // const regexPattern = /^[A-Za-z][0-9]{4}$/
+const regexPattern = /^[A-Za-z][0-9]{4}$/
+const regexNotSpaceFirst = /^(?:[^ ]|$)/
 const formSchema = z.object({
-  code: z.string().min(1),
-  areaId: z.coerce.number(),
-  animalSpeciesId: z.coerce.number(),
-  managedById: z.string().min(1),
-  description: z.string().optional()
+  code: z
+    .string()
+    .regex(regexPattern, 'Code should be followed format A0000')
+    .regex(regexNotSpaceFirst, 'First character is not a space'),
+  areaId: z.coerce.number({
+    invalid_type_error: 'Area is required'
+  }),
+  capacity: z.coerce.number().min(1, 'Capacity should be larger than or equal to 1'),
+  // animalSpeciesId: z.coerce.number(),
+  name: z.string().min(1, 'Name is required').regex(regexNotSpaceFirst, 'First character is not a space'),
+  managedById: z.string().optional(),
+  description: z.string().regex(regexNotSpaceFirst, 'First character is not a space').optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
 export default function DemoPage() {
@@ -94,14 +103,20 @@ export default function DemoPage() {
         accessorKey: 'code'
       },
       {
+        accessorKey: 'name'
+      },
+      {
+        accessorKey: 'capacity'
+      },
+      {
         accessorFn: ({ description }) => description,
         id: 'infor'
       },
 
-      {
-        accessorFn: ({ animalSpecies }) => animalSpecies?.name,
-        id: 'species'
-      },
+      // {
+      //   accessorFn: ({ animalSpecies }) => animalSpecies.name,
+      //   id: 'species'
+      // },
       {
         accessorFn: ({ managedBy }) => managedBy?.id,
         id: 'manageBy',
@@ -113,20 +128,20 @@ export default function DemoPage() {
         id: 'manager',
         filterFn: 'includesString'
       },
+      // {
+      //   accessorFn: ({ animalSpecies }) => animalSpecies.id,
+      //   id: 'animalSpeciesId',
+      //   enableGlobalFilter: false,
+      //   enableColumnFilter: false
+      // },
       {
-        accessorFn: ({ animalSpecies }) => animalSpecies?.id,
-        id: 'animalSpeciesId',
-        enableGlobalFilter: false,
-        enableColumnFilter: false
-      },
-      {
-        accessorFn: ({ animals }) => animals?.length || 0,
+        accessorFn: ({ animals }) => animals?.length,
         id: 'animalNum',
         enableGlobalFilter: false,
         enableColumnFilter: false
       },
       {
-        accessorFn: ({ area }) => area?.id || areaId,
+        accessorFn: ({ area }) => area?.id,
         id: 'areaId',
         enableGlobalFilter: false,
         enableColumnFilter: false
@@ -164,7 +179,7 @@ export default function DemoPage() {
               title: 'Create new cage',
               form,
               formMutation,
-              fields: ['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']
+              fields: ['name', 'code', 'areaId', 'capacity', 'managedById', 'description']
             }}
             // canCreate={user.role && user.role == RoleEnum.ADMIN}
           />

@@ -11,13 +11,13 @@ import GridArea from '@/components/GridArea'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
 import useCheckRole from '@/hooks/useCheckRole'
-
+const regexNotSpaceFirst = /^(?:[^ ]|$)/
 const formSchema = z.object({
   // code: z.string().regex(regexPattern),
-  code: z.string().min(1),
+  code: z.string().min(1, 'Code is required').regex(regexNotSpaceFirst, 'First character is not a space'),
 
-  name: z.string().min(1),
-  location: z.string().min(1)
+  name: z.string().min(1, 'Name is required').regex(regexNotSpaceFirst, 'First character is not a space'),
+  location: z.string().min(1, 'Location is required').regex(regexNotSpaceFirst, 'First character is not a space')
 })
 export type formSchemaType = z.infer<typeof formSchema>
 export const columns: ColumnDef<Area>[] = [

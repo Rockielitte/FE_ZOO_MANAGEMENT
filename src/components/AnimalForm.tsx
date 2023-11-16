@@ -23,9 +23,10 @@ import { UseMutationResult } from 'react-query'
 import LoadingScreen from './Loading'
 
 import { SelectSearch } from './SelectSearch'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import useSideMutation from '@/hooks/useSideMutation'
 import useCheckRole from '@/hooks/useCheckRole'
+import axios from 'axios'
 
 interface AnimalFormProps<T extends FieldValues> {
   form: UseFormReturn<T>
@@ -100,16 +101,25 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
     formMutation.mutate(data, {
       onSuccess: () => {
         navigate(`${queryParams.get('redirect') || '/dashboard/animals'}`)
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response?.data?.data) {
+          error.response.data.data.forEach(({ field, message }: { field: string; message: string }) =>
+            form.setError(field as Path<T>, { type: 'focus', message })
+          )
+        }
       }
     })
   }
+  const id = useParams().id
+
   const user = useCheckRole()
   return (
     <div className='w-full h-full border shadow-xl rounded-lg p-2 overflow-auto flex-col flex '>
       {formMutation.isLoading && <LoadingScreen label='submitting'></LoadingScreen>}
       <div className=' text-white flex flex-col border-b-2  border-secondary shadow-lg font-ime bg-primary px-5 sm:-m-2 leading-tight rounded-md'>
         <span className='text-xl uppercase font-bold tracking-wider pt-1 font-ime min-h-[32px]'>
-          {!getValues('name' as Path<T>) ? 'Create animal' : 'Update animal'}
+          {id == undefined ? 'Create animal' : 'Update animal'}
         </span>
         <span className='font-normal text-base min-h-[24px] tracking-wide'>
           {watch('name' as Path<T>) || 'Animal name'}
@@ -119,20 +129,23 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
         <form className='w-full md:w-3/5 md:h-full relative flex flex-col  ' onSubmit={handleSubmit(onSubmit)}>
           <div className='w-full flex-1  md:border-r  flex flex-col sm:flex-row  justify-between flex-wrap gap-4 px-6 overflow-auto h-full py-2 '>
             {fields.map((item) => {
-              const label = String(item).includes('Id')
+              let label = String(item).includes('Id')
                 ? String(item).substring(0, String(item).length - 2)
                 : String(item)
+              if (item == 'weight' || item == 'height' || item == 'length') {
+                label = item == 'weight' ? label + '(kg)' : label + '(m)'
+              }
               return (
                 item != 'images' && (
                   <div className='w-full  flex flex-col gap-2 relative ' key={item}>
                     <div className='flex w-full  justify-center  items-center gap-2 '>
-                      <Label htmlFor={item} className='min-w-[80px] capitalize text-base'>
+                      <Label htmlFor={item} className='min-w-[90px] uppercase text-sm'>
                         {label}
                       </Label>
-                      {item == 'description' || item == 'note' ? (
+                      {item == 'description' || item == 'note' || item == 'feedingGuide' ? (
                         <Textarea
                           {...register(item)}
-                          placeholder='Type content here . . .'
+                          placeholder={`Type ${item} here . . .`}
                           id={item}
                           className='flex-1'
                           disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
@@ -175,7 +188,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                       ) : item == 'gender' ? (
                         <Select
                           onValueChange={(value) => {
-                            setValue(item, value as PathValue<T, Path<T>>)
+                            setValue(item, value as PathValue<T, Path<T>>, { shouldValidate: true })
                           }}
                           value={watch(item)}
                           defaultValue={watch(item)}
@@ -195,7 +208,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                       ) : item == 'status' ? (
                         <Select
                           onValueChange={(value) => {
-                            setValue(item, value as PathValue<T, Path<T>>)
+                            setValue(item, value as PathValue<T, Path<T>>, { shouldTouch: true })
                           }}
                           value={watch(item)}
                           defaultValue={getValues(item)}
@@ -214,7 +227,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                         </Select>
                       ) : item == 'speciesId' ? (
                         <div className='flex-1 relative h-10' id={item}>
-                          <div className='absolute inset-0  z-10 rounded-md cursor-not-allowed'></div>
+                          {/* <div className='absolute inset-0  z-10 rounded-md cursor-not-allowed'></div> */}
                           <SelectSearch
                             query='animal-species'
                             form={form}
@@ -231,6 +244,17 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                             disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
                           />
                         </div>
+                      ) : item == 'weight' || item == 'height' || item == 'length' ? (
+                        <Input
+                          type='number'
+                          min={0}
+                          id={item}
+                          placeholder={`Type ${item} here . . .`}
+                          step={0.01}
+                          className='w-full'
+                          {...register(item)}
+                          disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
+                        />
                       ) : (
                         <Input
                           id={item}
@@ -257,7 +281,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
                         </svg>
                         <span className='sr-only'>Info</span>
                         <div>
-                          <span className='font-medium'>Danger alert!</span>
+                          <span className='font-medium'>Validation alert! </span>
                           {errors[item]?.message as string}
                         </div>
                       </div>

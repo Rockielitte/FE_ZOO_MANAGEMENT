@@ -30,14 +30,14 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import SpeciesPieChart from '@/components/SpeciesPieChart'
 import ModalConfirmUpdate from './news/components/ModalUpdateStatus'
-import useCheckRole from '@/hooks/useCheckRole'
+// import useCheckRole from '@/hooks/useCheckRole'
 const options = [
   { type: 'DAY', value: 'Day' },
   { type: 'MONTH', value: 'Month' },
   { type: 'YEAR', value: 'Year' }
 ]
 const Dashboard = () => {
-  const user = useCheckRole()
+  // const user = useCheckRole()
   const minYear = 1800
   const maxYear = 2023
   const new_data = useQueryCustom<NewType, []>({
@@ -230,95 +230,82 @@ const Dashboard = () => {
         <Error />
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
         <div className='flex-1 overflow-auto p-5 flex flex-col gap-4 h-full'>
-          <div className='sm:mx-auto my-10 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-x-8  gap-y-8  lg:mx-0 lg:max-w-none lg:grid-cols-4'>
+          <div className=' grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4'>
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
-              <div className='flex items-center justify-between gap-3'>
-                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+              <div className='flex items-center justify-between gap-3 bg-green-100 rounded-xl shadow-lg p-2'>
+                <div className='p-3 border-2 border-slate-200  bg-primary text-white shadow-lg w-fit rounded-[0.5rem]'>
                   <Icons.Home />
                 </div>
                 <Link
                   to='/dashboard/cages'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
+                  className='flex items-center  text-sm justify-between text-primary font-semibold '
                 >
                   View All <Icons.ArrowRight className='text-sm' />
                 </Link>
               </div>
-              <div className='p-5'>
-                <h3>Cage</h3>
+              <div className='p-2 py-4 text-md font-bold uppercase bg-secondary border-2  mt-2 rounded-lg '>
+                <h3>Cages</h3>
                 <h2>{ZooStatistics?.totalCage}</h2>
               </div>
             </div>
 
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
-              <div className='flex items-center justify-between gap-3'>
-                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+              <div className='flex items-center justify-between gap-3 bg-green-100 rounded-xl shadow-lg p-2'>
+                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem] bg-primary text-white shadow-lg'>
                   <Icons.MayIn />
                 </div>
                 <Link
                   to='/dashboard/areas'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
+                  className='flex items-center  text-sm justify-between  text-primary font-semibold '
                 >
                   View All <Icons.ArrowRight className='text-sm' />
                 </Link>
               </div>
-              <div className='p-5'>
-                <h3>Area</h3>
+              <div className='p-2 py-4 text-md font-bold uppercase border-2  mt-2 rounded-lg bg-secondary'>
+                <h3>Areas</h3>
                 <h2>{ZooStatistics?.totalArea}</h2>
               </div>
             </div>
 
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3'>
-              <div className='flex items-center justify-between gap-3'>
-                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+              <div className='flex items-center justify-between gap-3 bg-green-100 rounded-xl shadow-lg p-2'>
+                <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem] bg-primary text-white shadow-lg'>
                   <Icons.NewsPaper />
                 </div>
-                <Link to='/dashboard/news' className='flex items-center text-muted-foreground text-sm justify-between '>
+                <Link
+                  to='/dashboard/news'
+                  className='flex items-center text-primary font-semibold text-sm justify-between '
+                >
                   View All <Icons.ArrowRight className='text-sm' />
                 </Link>
               </div>
-              <div className='p-5'>
+              <div className='p-2 py-4 text-md font-bold uppercase border-2  mt-2 rounded-lg bg-secondary'>
                 <h3>Total News</h3>
                 <h2>{ZooStatistics?.totalNewsPublished}</h2>
               </div>
             </div>
             <div className='border-2 border-gray-200 rounded-[1rem] shadow-lg flex flex-col hover:cursor-pointer opacity-80 hover:opacity-100 transition-all p-3 '>
-              <div className='flex  items-start justify-between gap-3'>
-                <div className='flex items-start flex-col '>
-                  <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem]'>
+              <div className='flex items-center justify-between gap-3 bg-green-100 rounded-xl shadow-lg p-2'>
+                <div className='flex gap-5 items-center justify-center'>
+                  <div className='p-3 border-2 border-slate-200   w-fit rounded-[0.5rem] bg-primary text-white shadow-lg'>
                     <Icons.User2 />
                   </div>
-                  Human Resources
                 </div>
-                {user?.role && user.role === 'ADMIN' && (
-                  <Link
-                    to='/dashboard/accounts'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
-                  >
-                    View All <Icons.ArrowRight className='text-sm' />
-                  </Link>
-                )}
-                {user?.role && user.role === 'STAFF' && (
-                  <Link
-                    to='/dashboard/staffs'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
-                  >
-                    View All <Icons.ArrowRight className='text-sm' />
-                  </Link>
-                )}
+                <Link
+                  to='/dashboard/accounts'
+                  className='flex items-center text-primary font-semibold text-sm justify-between '
+                >
+                  View All <Icons.ArrowRight className='text-sm' />
+                </Link>
               </div>
-
-              <div className='p-5 flex items-start  gap-4   justify-between'>
-                {user?.role && user.role === 'ADMIN' && (
-                  <>
-                    <div className='justify-items-stretch'>
-                      <h3>Staff</h3>
-                      <h2>{ZooStatistics?.totalStaff}</h2>
-                    </div>
-                    <Separator orientation='vertical' className=' justify-self-center ' />
-                  </>
-                )}
-
-                <div className='justify-self-center'>
+              {/* flex items-center gap-4 sm:justify-between sm:flex-row xsm:flex-col xsm:justify-start */}
+              <div className='w-full flex gap-2 overflow-auto border-2  mt-2 rounded-lg bg-secondary '>
+                <div className='flex-1 p-2 py-4 text-md font-bold uppercase'>
+                  <h3>Staff</h3>
+                  <h2>{ZooStatistics?.totalStaff}</h2>
+                </div>
+                <Separator orientation='vertical' className='xsm:hidden justify-self-center sm:flex' />
+                <div className='flex-1 p-2 py-4 text-md font-bold uppercase'>
                   <h3>Trainer</h3>
                   <h2>{ZooStatistics?.totalTrainer}</h2>
                 </div>
@@ -333,16 +320,16 @@ const Dashboard = () => {
           <div className='grid  lg:grid-cols-3 grid-cols-1  gap-4   h-fit w-full '>
             {/* 
             News chart here */}
-            <div className='row-span-3 col-span-2 flex items-center justify-center min-w-full h-full rounded '>
+            <div className='row-span-4 col-span-2 flex items-center justify-center min-w-full h-full rounded '>
               <div className=' border w-full h-full p-5 rounded-[0.5rem] shadow-md border-gray-200'>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Unpublished news</p>
+                <div className='flex items-start justify-between  gap-14 bg-green-100 rounded-xl shadow-lg p-4 opacity-80 hover:opacity-100'>
+                  <div className='text-primary font-bold uppercase '>
+                    <p className=''>Unpublished news</p>
                     <h1>{BlogData?.length}</h1>
                   </div>
                   <Link
                     to='/dashboard/news'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
+                    className='flex items-center  text-sm justify-between  text-primary font-bold'
                   >
                     View All News
                     <Icons.ArrowRight className='text-sm' />
@@ -360,7 +347,7 @@ const Dashboard = () => {
                         return (
                           <article className=' mb-4 w-full overflow-auto' key={id}>
                             <time
-                              className=' hidden md:block relative z-10 order-first flex items-center text-sm text-zinc-400 dark:text-zinc-500'
+                              className=' hidden md:block relative z-10 order-first  items-center text-sm text-zinc-400 dark:text-zinc-500'
                               dateTime={getDate(el?.postedAt)}
                             >
                               {getDate(el?.postedAt)}
@@ -385,7 +372,7 @@ const Dashboard = () => {
                                     setNewUpdate(el)
                                     setShowDeleteDialog(true)
                                   }}
-                                  className=' z-10 flex items-start  text-sm font-medium text-teal-500 hover:bg-teal-300 rounded-sm duration-100 transition-all cursor-pointer p-2'
+                                  className=' z-10 flex items-start  text-sm  text-primary hover:bg-green-200 uppercase font-semibold rounded-sm duration-100 transition-all cursor-pointer p-2'
                                 >
                                   Publish
                                 </div>
@@ -416,15 +403,15 @@ const Dashboard = () => {
             pie chart here 
             grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3
             */}
-            <div className='flex flex-col md:row-span-1  lg:row-span-1   col-span-2 border md:col-span-1 lg:col-span-1   min-h-full rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
-              <div className='flex items-start justify-between  gap-14'>
-                <div className=''>
-                  <p className=' text-muted-foreground'>Animal Statistics</p>
-                  <h1 className='text-gray-700 font-medium '>{ZooStatistics?.totalAnimal}</h1>
+            <div className='flex flex-col h-[370px] md:row-span-2  lg:row-span-2   col-span-2 border md:col-span-1 lg:col-span-1 overflow-auto    min-h-full rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+              <div className='flex items-start justify-between  gap-14 bg-green-100 rounded-xl shadow-lg p-4 opacity-80 hover:opacity-100 '>
+                <div className='font-bold text-primary uppercase'>
+                  <p className=' '>Animal Statistics</p>
+                  <h1 className='font-medium '>{ZooStatistics?.totalAnimal}</h1>
                 </div>
                 <Link
                   to='/dashboard/animals'
-                  className='flex items-center text-muted-foreground text-sm justify-between '
+                  className='flex items-center text-sm justify-between font-bold text-primary'
                 >
                   View All <Icons.ArrowRight className='text-sm' />
                 </Link>
@@ -436,16 +423,16 @@ const Dashboard = () => {
 
             {/* 
             pie chart here */}
-            <div className=' flex flex-col md:row-span-1  lg:row-span-2   col-span-2 border md:col-span-1 lg:col-span-1  min-h-full rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
+            <div className=' flex flex-col h-[370px] md:row-span-2  lg:row-span-2   col-span-2 border md:col-span-1 lg:col-span-1  min-h-full rounded-[0.5rem] shadow-md  p-4  border-gray-200 '>
               <div className='flex flex-col w-full h-full mx-auto'>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Species Statistics</p>
-                    <h1 className='text-gray-700 font-medium '>{speciesStatic.length}</h1>
+                <div className='flex items-start justify-between  gap-14 bg-green-100 rounded-xl shadow-lg p-4 opacity-80 hover:opacity-100'>
+                  <div className='font-semibold text-primary uppercase'>
+                    <p className=' '>Species Statistics</p>
+                    <h1 className='font-medium '>{speciesStatic.length}</h1>
                   </div>
                   <Link
                     to='/dashboard/animal_species'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
+                    className='flex items-center t text-sm justify-between text-primary font-bold '
                   >
                     View All <Icons.ArrowRight className='text-sm' />
                   </Link>
@@ -462,14 +449,14 @@ const Dashboard = () => {
             Bar chart here */}
             <div className=' lg:col-span-2 col-span-1 block  rounded-[0.5rem]'>
               <div className='h-full   p-5 rounded-[0.5rem] border shadow-md border-gray-200 flex  flex-col w-full'>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Revenue Statistic</p>
+                <div className='flex items-start justify-between  gap-14  bg-green-100 rounded-xl shadow-lg p-4 opacity-80 hover:opacity-100'>
+                  <div className='font-bold text-primary uppercase'>
+                    <p className=' '>Revenue Statistic</p>
                     {/* <h1 className='text-gray-700 font-medium'>{ZooStatistics?.totalAnimal}</h1> */}
                   </div>
                   <Link
                     to='/dashboard/orders'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
+                    className='flex items-center  text-sm justify-between text-primary font-bold '
                   >
                     View Orders <Icons.ArrowRight className='text-sm' />
                   </Link>
@@ -624,14 +611,14 @@ const Dashboard = () => {
                ticket distribution here */}
             <div className='flex row-span-1   border  flex-col border-gray-200 p-5 rounded-[0.5rem] shadow-md '>
               <div className='flex   flex-col'>
-                <div className='flex items-start justify-between  gap-14'>
-                  <div className=''>
-                    <p className=' text-muted-foreground'>Ticket Distribution</p>
-                    <h1 className='text-gray-700 font-medium '>{ticketDistributionData?.length}</h1>
+                <div className='flex items-start justify-between  gap-14  bg-green-100 rounded-xl shadow-lg p-4 opacity-80 hover:opacity-100 '>
+                  <div className='text-primary uppercase font-bold'>
+                    <p className=' '>Ticket Distribution</p>
+                    <h1 className=' font-medium '>{ticketDistributionData?.length}</h1>
                   </div>
                   <Link
                     to='/dashboard/animals'
-                    className='flex items-center text-muted-foreground text-sm justify-between '
+                    className='flex items-center  text-sm justify-between text-primary font-bold '
                   >
                     View All <Icons.ArrowRight className='text-sm' />
                   </Link>

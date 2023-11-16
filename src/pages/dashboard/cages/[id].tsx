@@ -13,15 +13,21 @@ import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
-
 const regexPattern = /^[A-Za-z][0-9]{4}$/
+const regexNotSpaceFirst = /^(?:[^ ]|$)/
 const formSchema = z.object({
-  code: z.string().regex(regexPattern),
-  areaId: z.coerce.number(),
-  animalSpeciesId: z.coerce.number(),
+  code: z
+    .string()
+    .regex(regexPattern, 'Code should be followed format A0000')
+    .regex(regexNotSpaceFirst, 'First character is not a space'),
+  areaId: z.coerce.number({
+    invalid_type_error: 'Area is required'
+  }),
+  capacity: z.coerce.number().min(1, 'Capacity should be larger than or equal to 1'),
+  // animalSpeciesId: z.coerce.number(),
+  name: z.string().min(1, 'Name is required').regex(regexNotSpaceFirst, 'First character is not a space'),
   managedById: z.string().optional(),
-  description: z.string().optional(),
-  managerName: z.string().optional()
+  description: z.string().regex(regexNotSpaceFirst, 'First character is not a space').optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
 const DetailCage = () => {
@@ -49,7 +55,8 @@ const DetailCage = () => {
       return {
         code: data.code,
         areaId: data.area?.id,
-        animalSpeciesId: data?.animalSpecies?.id,
+        name: data.name,
+        capacity: data.capacity,
         managedById: data.managedBy?.id,
         description: data.description,
         managerName: data.managedBy?.email
@@ -87,7 +94,7 @@ const DetailCage = () => {
             <MealCage
               form={form}
               formMutation={formMutation}
-              fields={['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']}
+              fields={['name', 'code', 'areaId', 'capacity', 'managedById', 'description']}
             />
           ) : (
             <LoadingScreen></LoadingScreen>

@@ -140,11 +140,11 @@ export function SpeciesForm(props: Species) {
           <div className=' flex items-center justify-start flex-col space-y-4'>
             <Avatar className='w-60 h-60'>
               <AvatarImage src={preview} />
-              <AvatarFallback>Unknown</AvatarFallback>
+              <AvatarFallback>N/A</AvatarFallback>
             </Avatar>
             <FormItem>
               <FormLabel>
-                <p className={cn(buttonVariants({ variant: 'default' }))}>upload</p>
+                <p className={cn(buttonVariants({ variant: 'default' }))}>UPLOAD</p>
               </FormLabel>
               <FormControl>
                 <input

@@ -8,7 +8,7 @@ const GridSpecies: React.FC<{
   user: User
 }> = ({ data, user }) => {
   return (
-    <div className='grid grid-cols-1 gap-x-4 gap-y-7 lg:grid-cols-3 p-4'>
+    <div className='grid grid-cols-1 gap-x-4 gap-y-7 md:grid-cols-2 lg:grid-cols-3 py-2 px-1'>
       {data.getRowModel().rows.map((row) => {
         return (
           <SpeciesCard

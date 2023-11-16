@@ -16,16 +16,15 @@ export const CreateSpecies = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger style={{ margin: '0px' }}>
-        {' '}
-        <Button variant='default' className='flex items-center gap-1 hover:scale-105 transition-all ml-auto  '>
+        <Button variant='default' className='w-fit flex items-center gap-1 hover:scale-105 transition-all ml-auto  '>
           <Icons.PlusCircleIcon className='mr-2' />
-          Create Animal Species
+          <span className='uppercase'>Create species</span>
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='max-h-[80%] overflow-auto'>
         <DialogHeader>
           <DialogTitle>Create New Animal Species</DialogTitle>
-          <DialogDescription>some description ...</DialogDescription>
+          <DialogDescription>Fill below form's fields to finish process</DialogDescription>
         </DialogHeader>
         <SpeciesForm setOpen={setOpen} />
       </DialogContent>

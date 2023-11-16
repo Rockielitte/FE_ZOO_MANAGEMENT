@@ -3,7 +3,7 @@ import { DataTable, defaultColumn } from '@/components/testTable/Data-table'
 import { DataTableColumnHeader } from '@/components/testTable/TableHeader'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Checkbox } from '@/components/ui/checkbox'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,29 +32,29 @@ import useCheckRole from '@/hooks/useCheckRole'
 
 // type DataType = (typeof animalData)[0]
 const columns: ColumnDef<Animal>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        className='border-white'
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-        onClick={(e) => {
-          e.stopPropagation()
-        }}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
-  },
+  // {
+  //   id: 'select',
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       className='border-white'
+  //       checked={table.getIsAllPageRowsSelected()}
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label='Select all'
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label='Select row'
+  //       onClick={(e) => {
+  //         e.stopPropagation()
+  //       }}
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false
+  // },
   {
     accessorKey: 'id',
     header: ({ column }) => <DataTableColumnHeader column={column} title='ID' />,
@@ -200,8 +200,7 @@ export default function CageAnimalTable({
         <DataTable
           columns={columns}
           data={!cage_data.data ? [] : (cage_data.data.animals as Animal[])}
-          pathName={`/dashboard/animals/create?cageId=${cageId}&animalspeciesId=${cage_data.data?.animalSpecies
-            .id}&redirect=${`/dashboard/cages/${cageId}`}`}
+          pathName={`/dashboard/animals/create?cageId=${cageId}&redirect=${`/dashboard/cages/${cageId}`}`}
           canCreate={user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF)}
           navigate={`/dashboard/animals`}
         />

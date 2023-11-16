@@ -31,7 +31,7 @@ const useSideMutation = <T>({ query, queryKey, method = 'POST' }: Props<T>) => {
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.message)
+        toast.error(error.response?.data?.message || error.message)
       }
     }
   })

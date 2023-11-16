@@ -7,7 +7,7 @@ import { Label } from '@radix-ui/react-dropdown-menu'
 import { useState } from 'react'
 import { QrReader } from 'react-qr-reader'
 import { toast } from 'react-toastify'
-import bg from '@/assets/background/FullBg.png'
+import bg from '@/assets/background/zooBg2.avif'
 const Qrcode = () => {
   const [data, setData] = useState<string>('')
   const [error, setError] = useState<string>('')

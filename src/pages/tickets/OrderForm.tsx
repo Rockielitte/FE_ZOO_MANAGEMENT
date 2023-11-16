@@ -72,13 +72,13 @@ const OrderForm: React.FC<{
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='p-4'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='p-4 text-foreground'>
         <FormField
           control={form.control}
           name='name'
           render={({ field }) => (
             <FormItem className='mb-3'>
-              <Label>Name</Label>
+              <Label className='text-white'>Name</Label>
               <FormControl>
                 <Input placeholder='Your Name' autoComplete='off' {...field} />
               </FormControl>
@@ -91,7 +91,7 @@ const OrderForm: React.FC<{
           name='email'
           render={({ field }) => (
             <FormItem className='mb-3'>
-              <Label>Email</Label>
+              <Label className='text-white'>Email</Label>
               <FormControl>
                 <Input placeholder='Your Email' autoComplete='off' {...field} />
               </FormControl>
@@ -104,7 +104,7 @@ const OrderForm: React.FC<{
           name='phone'
           render={({ field }) => (
             <FormItem className='mb-3'>
-              <Label>Phone</Label>
+              <Label className='text-white'>Phone</Label>
               <FormControl>
                 <Input placeholder='Your phone' autoComplete='off' {...field} />
               </FormControl>
@@ -117,7 +117,7 @@ const OrderForm: React.FC<{
           name='visitDate'
           render={({ field }) => (
             <FormItem className='mb-3'>
-              <Label>Visit date</Label>
+              <Label className='text-white'>Visit date</Label>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
