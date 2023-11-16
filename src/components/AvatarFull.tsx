@@ -37,7 +37,7 @@ const AvatarFull = ({ profile }: AvatarFull) => {
                 <DropdownMenuItem>Profile</DropdownMenuItem>
               </Link>
             )}
-            {profile?.role && profile.role == RoleEnum.STAFF && (
+            {profile?.role && (profile.role == RoleEnum.STAFF || profile.role == RoleEnum.TRAINER) && (
               <Link to={`/dashboard/staffs/${profile?.id}`}>
                 <DropdownMenuItem>Profile</DropdownMenuItem>
               </Link>

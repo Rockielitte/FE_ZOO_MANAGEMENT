@@ -17,13 +17,20 @@ export const useUpdateAccount = <T extends FieldValues>(form: UseFormReturn<T>, 
     mutationFn: (data: AccountFormValues) => {
       return Account.updateAccount(data, id)
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success('Update Successfully')
 
       client.invalidateQueries({
         queryKey: ['accounts', id, 'accountDetail', 'trainers']
       })
-      navigate('/dashboard/accounts')
+      console.log('data: ' + data.data.role)
+      if (data.data.role == 'STAFF') {
+        navigate('/dashboard/staffs')
+      } else if (data.data.role == 'TRAINER') {
+        navigate('/dashboard/')
+      } else {
+        navigate('/dashboard/accounts')
+      }
       // window.location.reload()
     },
     onError: (error) => {
