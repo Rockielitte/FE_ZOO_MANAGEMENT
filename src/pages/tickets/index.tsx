@@ -34,7 +34,7 @@ today.setHours(0, 0, 0, 0)
 const phoneRegex = /(84|0[35789])+([0-9]{8})\b/
 const formOrderDetailSchema = z.object({
   ticketId: z.number(),
-  quantity: z.number().min(1).max(99)
+  quantity: z.number().min(1)
 })
 const formOrderSchema = z.object({
   email: z
