@@ -123,11 +123,7 @@ export enum AnimalStatusEnum {
   IN_DANGER = 'IN_DANGER',
   DEAD = 'DEAD'
 }
-export enum FoodTypeEnum {
-  PROTEIN = 'PROTEIN',
-  GRAIN_AND_CEREAL = 'GRAIN_AND_CEREAL',
-  FRUIT_AND_VEGETABLE = 'FRUIT_AND_VEGETABLE',
-}
+
 export enum NewsStatusEnum {
   HIDDEN = 'HIDDEN',
   PUBLISHED = 'PUBLISHED'
@@ -308,4 +304,34 @@ export type MealReCord = {
   createdAt: string
   updatedAt: string
   updatedBy: User
+}
+
+export type Food = {
+  id: number
+  type: FoodTypeEnum
+  name: string
+  unit: string
+  description: string
+}
+export type FoodsDetail = {
+  id: number
+  food?: Food
+  amount: number
+}
+export type AnimalMeal = {
+  id: number
+  time: string
+  details: FoodsDetail[]
+}
+export type AnimalMealRecord = {
+  id: number
+  meal: AnimalMeal
+  status: FeedStatusEnum
+  createdAt: string
+  updatedAt: string
+}
+export enum FoodTypeEnum {
+  PROTEIN = 'PROTEIN',
+  GRAIN_AND_CEREAL = 'GRAIN_AND_CEREAL',
+  FRUIT_AND_VEGETABLE = 'FRUIT_AND_VEGETABLE'
 }

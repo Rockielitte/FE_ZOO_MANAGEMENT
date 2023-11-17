@@ -12,7 +12,6 @@ type Props<T, X> = {
 }
 const useQueryCustom = <T, X>({ query, queryKey }: Props<T, X>) => {
   const token = useUserStore((state) => state.user)?.token
-  // const queryClient = useQueryClient()
   const data = useQuery<AxiosResponse<T[] | X>, unknown, T[] | X>({
     queryKey: queryKey,
     queryFn: () => {
