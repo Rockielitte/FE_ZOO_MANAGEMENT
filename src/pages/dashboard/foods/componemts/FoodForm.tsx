@@ -1,9 +1,11 @@
 // @flow
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, buttonVariants } from '@/components/ui/button';
+import { Command, CommandGroup, CommandItem } from '@/components/ui/command';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import useMutationCustom from '@/hooks/useMutationCustom';
@@ -11,11 +13,17 @@ import { cn } from '@/lib/utils';
 import { FoodTypeEnum, food } from '@/types';
 import LocalFile from '@/utils/api/LocalFile';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CaretSortIcon } from '@radix-ui/react-icons';
 import axios from 'axios';
+import { CheckIcon } from 'lucide-react';
 import * as React from 'react';
 import { Path, useForm } from 'react-hook-form';
 import { z } from 'zod';
-
+const typeFood = [
+    { label: 'Protein', value: 'PROTEIN' },
+    { label: 'Grain And Cereal', value: 'GRAIN_AND_CEREAL' },
+    { label: 'Fruit And Vegetable', value: 'FRUIT_AND_VEGETABLE' }
+] as const
 interface Food {
     id?: number
     foods?: food
@@ -64,14 +72,14 @@ export function FoodForm(props: Food) {
         query: `/foods/`,
         queryKey: ['foods', 'create'],
         form: form,
-        invalidQuery: ['animal-species'],
+        invalidQuery: ['foods'],
         data: {} as Food
     })
     const updateMutation = useMutationCustom({
         query: `/foods/${props.id}`,
         queryKey: ['foods', String(props.id)],
         form: form,
-        invalidQuery: ['animal-species'],
+        invalidQuery: ['foods'],
         data: {} as Food,
         method: 'PUT'
     })
@@ -128,7 +136,7 @@ export function FoodForm(props: Food) {
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder='Food name' {...field} />
+                                        <Input placeholder='Name' {...field} />
                                     </FormControl>
                                     <FormDescription>This is the name of food.</FormDescription>
                                     <FormMessage />
@@ -139,16 +147,54 @@ export function FoodForm(props: Food) {
                             control={form.control}
                             name='type'
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className='flex flex-col'>
                                     <FormLabel>Type</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder='Type' {...field} />
-                                    </FormControl>
-                                    <FormDescription>This is the type of food.</FormDescription>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <FormControl>
+                                                <Button
+                                                    variant='outline'
+                                                    role='combobox'
+                                                    className={cn(' justify-between', !field.value && 'text-muted-foreground')}
+                                                >
+                                                    {field.value
+                                                        ? typeFood.find((type) => type.value === field.value)?.label
+                                                        : 'Select Type'}
+                                                    <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className=' p-0'>
+                                            <Command>
+                                                {/* <CommandEmpty>No language found.</CommandEmpty> */}
+                                                <CommandGroup>
+                                                    {typeFood.map((type) => (
+                                                        <CommandItem
+                                                            value={type.label}
+                                                            key={type.value}
+                                                            onSelect={() => {
+                                                                form.setValue('type', type.value)
+                                                            }}
+                                                        >
+                                                            <CheckIcon
+                                                                className={cn(
+                                                                    'mr-2 h-4 w-4',
+                                                                    type.value === field.value ? 'opacity-100' : 'opacity-0'
+                                                                )}
+                                                            />
+                                                            {type.label}
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormDescription>This is the type of food</FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={form.control}
                             name='unit'

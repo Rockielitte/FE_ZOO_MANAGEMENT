@@ -7,6 +7,7 @@ import Fruit from '@/assets/fruit.jpg'
 import { Link } from 'react-router-dom';
 import { EditSpecies } from '../../Species/components/UpdateSpecies';
 import { buttonVariants } from '@/components/ui/button';
+import { UpdateFood } from './UpdateFood';
 type Props = { id: number; name: string; type: string, unit: string, description: string; user: User }
 export const FoodCard = (props: Props) => {
     let bgImage = Fruit
@@ -33,7 +34,7 @@ export const FoodCard = (props: Props) => {
                     <p className='font-extralight truncate-4 my-3'>{props.description}</p>
                 </div>
                 <div className='font-normal flex space-x-3 items-start p-4'>
-                    <EditSpecies id={props.id} />
+                    <UpdateFood id={props.id} />
                 </div>
             </div>
         </div>
