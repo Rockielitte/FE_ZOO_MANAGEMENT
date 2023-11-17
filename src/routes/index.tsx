@@ -31,6 +31,7 @@ const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/compo
 const NewDetail = Loadable({ loader: () => import('../pages/dashboard/news/components/NewDetail') })
 const UpdateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/UpdateNew') })
 const Dashboard = Loadable({ loader: () => import('../pages/dashboard/index') })
+
 const Blogs = Loadable({ loader: () => import('../pages/home/Blogs/index') })
 const BlogDetail = Loadable({ loader: () => import('../pages/home/Blogs/[id]') })
 
@@ -47,6 +48,8 @@ const SuccessOrderNotification = Loadable({ loader: () => import('../pages/ticke
 
 const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
+
+const Food = Loadable({ loader: () => import('../pages/dashboard/foods/index') })
 
 const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/index') })
 const Staffs = Loadable({ loader: () => import('../pages/dashboard/staff/index') })
@@ -170,6 +173,13 @@ const routes: RouteObject[] = [
             children: [
               { index: true, element: Species },
               { path: ':id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) }
+            ]
+          },
+          {
+            path: 'foods',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
+            children: [
+              { index: true, element: Food }
             ]
           },
           {
