@@ -7,10 +7,13 @@ import { UpdateFood } from './UpdateFood'
 type Props = { id: number; name: string; type: string; unit: string; description: string; user: User }
 export const FoodCard = (props: Props) => {
   let bgImage = Fruit
+  let typeFood = 'Fruit And Vegetable'
   if (props?.type === 'PROTEIN') {
     bgImage = Meat
+    typeFood = 'Protein'
   } else if (props?.type === 'GRAIN_AND_CEREAL') {
     bgImage = Grain
+    typeFood = 'Grain And Cereal'
   }
 
   //const bgImage = Lin
