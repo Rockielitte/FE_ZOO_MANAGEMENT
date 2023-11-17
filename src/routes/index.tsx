@@ -31,6 +31,7 @@ const CreateNew = Loadable({ loader: () => import('../pages/dashboard/news/compo
 const NewDetail = Loadable({ loader: () => import('../pages/dashboard/news/components/NewDetail') })
 const UpdateNew = Loadable({ loader: () => import('../pages/dashboard/news/components/UpdateNew') })
 const Dashboard = Loadable({ loader: () => import('../pages/dashboard/index') })
+
 const Blogs = Loadable({ loader: () => import('../pages/home/Blogs/index') })
 const BlogDetail = Loadable({ loader: () => import('../pages/home/Blogs/[id]') })
 
