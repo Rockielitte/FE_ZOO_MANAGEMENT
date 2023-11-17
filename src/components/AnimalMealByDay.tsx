@@ -81,7 +81,7 @@ const MealAnimalByDay = () => {
             <>
               <div className='flex-1  overflow-auto flex flex-col w-full'>
                 <>
-                  {(sortedData as AnimalMealRecord[]).length ? (
+                  {(sortedData as AnimalMealRecord[])?.length ? (
                     (sortedData as AnimalMealRecord[]).map((item) => {
                       // return <MealByDateForm mealItem={item} key={item.id} />
                       return <div>{item.id}</div>

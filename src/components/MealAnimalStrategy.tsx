@@ -72,7 +72,7 @@ const MealAnimalStrategy = () => {
 
               <div className='flex-1 h-full  overflow-auto'>
                 <>
-                  {(sortedData as AnimalMeal[]).length ? (
+                  {(sortedData as AnimalMeal[])?.length ? (
                     (sortedData as AnimalMeal[]).map((item) => (
                       <AnimalMealForm animalId={Number(animalId)} mealItem={item} key={item.id} />
                     ))
