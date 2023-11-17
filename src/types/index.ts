@@ -296,3 +296,29 @@ export type MealReCord = {
   updatedAt: string
   updatedBy: User
 }
+
+export type Food = {
+  id: number
+  type: FoodTypeEnum
+  name: string
+  unit: string
+  description: string
+}
+export type FoodsDetail = {
+  id: number
+  food?: Food
+  amount: number
+}
+export type AnimalMeal = {
+  id: number
+  time: string
+  details: FoodsDetail[]
+}
+export type AnimalMealRecord = {
+  id: number
+}
+export enum FoodTypeEnum {
+  PROTEIN = 'PROTEIN',
+  GRAIN_AND_CEREAL = 'GRAIN_AND_CEREAL',
+  FRUIT_AND_VEGETABLE = 'FRUIT_AND_VEGETABLE'
+}
