@@ -42,8 +42,8 @@ const MealAnimalByDay = () => {
     }
   }, [meals.data])
   return (
-    <div className='w-full h-full relative overflow-auto flex flex-col gap-2'>
-      <div className='w-full'>
+    <div className='w-full h-full relative  overflow-auto flex flex-col gap-2'>
+      <div className='w-full '>
         <Popover>
           <PopoverTrigger asChild id={date?.toLocaleString('sv').replace(' ', 'T') || 'date'}>
             <Button
@@ -75,32 +75,25 @@ const MealAnimalByDay = () => {
           Feeding
         </Button>
       </div>
-      <div
-        className='  flex flex-col py-2  rounded-lg   gap-2 flex-1 overflow-auto
-'
-      >
+      <div className='  flex flex-col py-2  rounded-lg   gap-2 flex-1 overflow-auto relative  '>
         {meals.isError ? (
           <Error />
         ) : meals.isLoading ? (
           <LoadingScreen />
         ) : (
-          <Accordion type='single' collapsible className='w-full flex-1 overflow-auto flex flex-col '>
-            <>
-              <div className='flex-1  overflow-auto flex flex-col w-full'>
-                <>
-                  {(sortedData as AnimalMealRecord[])?.length ? (
-                    (sortedData as AnimalMealRecord[]).map((item) => {
-                      return <AnimalMealDayForm mealRecordItem={item} key={item.id} />
-                    })
-                  ) : (
-                    <div className='w-full h-full flex justify-center items-center flex-col gap-4'>
-                      <MdOutlineNoMeals className={'text-6xl'} />
-                      No meal planned !
-                    </div>
-                  )}
-                </>
-              </div>
-            </>
+          <Accordion type='single' collapsible className='w-full flex flex-col h-full  '>
+            <div className='h-full  flex flex-col w-full'>
+              {(sortedData as AnimalMealRecord[])?.length ? (
+                (sortedData as AnimalMealRecord[]).map((item) => {
+                  return <AnimalMealDayForm mealRecordItem={item} key={item.id} />
+                })
+              ) : (
+                <div className='w-full h-full flex justify-center items-center flex-col gap-4'>
+                  <MdOutlineNoMeals className={'text-6xl'} />
+                  No meal planned !
+                </div>
+              )}
+            </div>
           </Accordion>
         )}
       </div>
