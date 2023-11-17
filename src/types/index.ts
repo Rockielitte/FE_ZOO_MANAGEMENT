@@ -32,6 +32,14 @@ export type dataSpecies = {
   description: string
   image: string
 }
+export type food = {
+  id: number
+  name: string
+  type: string
+  unit: string
+  description: string
+  image: string
+}
 export type credential = {
   clientId: string
   credential: string
@@ -114,6 +122,11 @@ export enum AnimalStatusEnum {
   SICK = 'SICK',
   IN_DANGER = 'IN_DANGER',
   DEAD = 'DEAD'
+}
+export enum FoodTypeEnum {
+  PROTEIN = 'PROTEIN',
+  GRAIN_AND_CEREAL = 'GRAIN_AND_CEREAL',
+  FRUIT_AND_VEGETABLE = 'FRUIT_AND_VEGETABLE',
 }
 export enum NewsStatusEnum {
   HIDDEN = 'HIDDEN',

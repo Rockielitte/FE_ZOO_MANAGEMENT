@@ -50,12 +50,12 @@ const AnimalSpecies = {
     }
   },
 
-  getCageBySpeciesId: async (id?: string | undefined) => {
-    const endpoint = `/cages/?speciesId=${id}`
+  getCageBySpeciesId: async (speciesId?: string | undefined) => {
+    const endpoint = `/cages/`
     const test = useAuthorizationHeader()
     try {
-      const response = await get(endpoint, {}, test.headers)
-
+      const response = await get(endpoint, { speciesId }, test.headers)
+      console.log(response)
       return response.data
     } catch (error) {
       console.log(error)

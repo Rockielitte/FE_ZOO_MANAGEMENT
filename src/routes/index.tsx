@@ -49,6 +49,8 @@ const SuccessOrderNotification = Loadable({ loader: () => import('../pages/ticke
 const Species = Loadable({ loader: () => import('../pages/dashboard/Species/index') })
 const SpeciesDetail = Loadable({ loader: () => import('../pages/dashboard/Species/components/SpeciesDetail') })
 
+const Food = Loadable({ loader: () => import('../pages/dashboard/foods/index') })
+
 const Accounts = Loadable({ loader: () => import('../pages/dashboard/accounts/index') })
 const Staffs = Loadable({ loader: () => import('../pages/dashboard/staff/index') })
 export const queryClient = new QueryClient({
@@ -171,6 +173,13 @@ const routes: RouteObject[] = [
             children: [
               { index: true, element: Species },
               { path: ':id', element: SpeciesDetail, loader: loaderSpeciesDetail(queryClient) }
+            ]
+          },
+          {
+            path: 'foods',
+            element: <AuthGuard allowedRoles={['ADMIN', 'STAFF']} />,
+            children: [
+              { index: true, element: Food }
             ]
           },
           {
