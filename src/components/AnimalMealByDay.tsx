@@ -16,6 +16,8 @@ import { CalendarIcon } from 'lucide-react'
 import { format } from 'date-fns'
 import { Calendar } from './ui/calendar'
 import _ from 'lodash'
+
+import AnimalMealDayForm from './AnimalMealDayForm'
 const MealAnimalByDay = () => {
   const animalId = useParams().id
   const [date, setDate] = useState(new Date())
@@ -30,7 +32,12 @@ const MealAnimalByDay = () => {
   const [sortedData, setSortedData] = useState(meals.data)
   useEffect(() => {
     if (meals.data) {
-      const data = _.sortBy(meals.data, ['time']) as AnimalMealRecord[]
+      const data = _.sortBy(meals.data, [
+        function (o) {
+          const temp = o as AnimalMealRecord
+          return temp?.meal?.time
+        }
+      ]) as AnimalMealRecord[]
       setSortedData(data)
     }
   }, [meals.data])
@@ -63,9 +70,9 @@ const MealAnimalByDay = () => {
       <div className='flex justify-items-center items-center font-extrabold  gap-2 uppercase text-center text-sm border p-2 rounded-lg shadow-xl'>
         <div className='w-2/12'>Time</div>
         <div className='flex-1'>Details</div>
-        <Button className='text-white flex items-center text-xs gap-1 ml-auto w-2/12'>
+        <Button className='text-white flex items-center text-xs gap-1 ml-auto w-2/12 uppercase'>
           <MdEdit className={'text-xl'} />
-          Edit
+          Feeding
         </Button>
       </div>
       <div
@@ -83,8 +90,7 @@ const MealAnimalByDay = () => {
                 <>
                   {(sortedData as AnimalMealRecord[])?.length ? (
                     (sortedData as AnimalMealRecord[]).map((item) => {
-                      // return <MealByDateForm mealItem={item} key={item.id} />
-                      return <div>{item.id}</div>
+                      return <AnimalMealDayForm mealRecordItem={item} key={item.id} />
                     })
                   ) : (
                     <div className='w-full h-full flex justify-center items-center flex-col gap-4'>

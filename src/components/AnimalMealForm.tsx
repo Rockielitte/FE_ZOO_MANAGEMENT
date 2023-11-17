@@ -1,4 +1,4 @@
-import { AnimalMeal } from '@/types'
+import { AnimalMeal, AnimalMealRecord, FeedStatusEnum } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useState } from 'react'
 import { useForm, SubmitHandler, Path, FieldErrors } from 'react-hook-form'
@@ -15,18 +15,22 @@ import axios from 'axios'
 import { SelectSearch } from './SelectSearch'
 import { IoCreate } from 'react-icons/io5'
 import AddNewFood from './ui/AddNewFood'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
 type Props = {
   mealItem?: AnimalMeal
   animalId: number
   createFn?: React.Dispatch<React.SetStateAction<boolean>>
   method?: string
+  isMealRecord?: boolean
+  mealRecord?: AnimalMealRecord
 }
 const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/
 // const regexNotSpaceFirst = /^(?:[^ ]|$)/
 const formSchema = z.object({
   time: z.string().regex(regex, 'Time is invalid format, ex: 08:21').length(5),
   id: z.coerce.number().min(0),
+  status: z.nativeEnum(FeedStatusEnum).default(FeedStatusEnum.NOT_FEED),
   details: z
     .object({
       id: z.coerce.number().min(0),
@@ -37,7 +41,7 @@ const formSchema = z.object({
     .min(1, 'Add at least one food to complete this process')
 })
 type formSchemaType = z.infer<typeof formSchema>
-const AnimalMealForm = ({ mealItem, animalId, createFn, method }: Props) => {
+const AnimalMealForm = ({ mealItem, animalId, createFn, method, isMealRecord = false, mealRecord }: Props) => {
   const queryClient = useQueryClient()
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
@@ -51,7 +55,8 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method }: Props) => {
         delete newItem.food
         return newItem
       }),
-      id: mealItem?.id
+      id: mealItem?.id,
+      status: mealRecord?.status
     }
   })
   const {
@@ -65,11 +70,12 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method }: Props) => {
     const newDetails = [...form.getValues('details')]
     newDetails.splice(index, 1)
     form.setValue('details', newDetails, {
-      shouldDirty: true
+      shouldDirty: true,
+      shouldValidate: true
     })
   }
   const formMutation = useSideMutation({
-    query: `/meals/${method == 'create' ? '' : mealItem?.id}`,
+    query: isMealRecord ? `/meal-records/${mealRecord?.id}` : `/meals/${method == 'create' ? '' : mealItem?.id}`,
     queryKey: ['meals', String(mealItem?.id)],
     returnType: {} as AnimalMeal,
     method: method == 'create' ? 'POST' : 'PUT'
@@ -87,6 +93,9 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method }: Props) => {
         {
           onSuccess: () => {
             queryClient.invalidateQueries(['meals', String(animalId)], { exact: true })
+            if (isMealRecord) {
+              queryClient.invalidateQueries(['meal-records', String(animalId)])
+            }
           }
         }
       )
@@ -125,7 +134,7 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method }: Props) => {
             <form onSubmit={handleSubmit(submitHandler)} className='w-full'>
               <div className='flex justify-items-center font-bold items-center gap-2 uppercase text-center text-sm border p-2 rounded-lg shadow-xl'>
                 <div className='w-3/12'>
-                  <Input placeholder='HH:MM' {...register('time')} />
+                  <Input placeholder='HH:MM' {...register('time')} readOnly={isMealRecord} />
                 </div>
                 <div className='flex-1 font-light'>
                   <AccordionTrigger className='w-full text-center flex justify-center gap-2 text-xs uppercase no-underline'>
@@ -138,31 +147,59 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method }: Props) => {
                     Save
                   </Button>
                 )}
+                {!isMealRecord ? (
+                  <Button
+                    className=' flex items-center text-xs gap-1'
+                    variant={method == 'create' ? 'outline' : 'destructive'}
+                    type='button'
+                    onClick={handleDelete}
+                  >
+                    {method !== 'create' ? (
+                      <AiTwotoneDelete className={'text-xl'} />
+                    ) : (
+                      <GiCancel className={'text-xl'} />
+                    )}
 
-                <Button
-                  className=' flex items-center text-xs gap-1'
-                  variant={method == 'create' ? 'outline' : 'destructive'}
-                  type='button'
-                  onClick={handleDelete}
-                >
-                  {method !== 'create' ? <AiTwotoneDelete className={'text-xl'} /> : <GiCancel className={'text-xl'} />}
-
-                  {method == 'create' ? 'Cancel' : 'Delete'}
-                </Button>
+                    {method == 'create' ? 'Cancel' : 'Delete'}
+                  </Button>
+                ) : (
+                  <Select
+                    defaultValue={FeedStatusEnum.NOT_FEED}
+                    value={form.watch('status')}
+                    onValueChange={(value) => {
+                      form.setValue('status', value as FeedStatusEnum, {
+                        shouldDirty: true
+                      })
+                    }}
+                  >
+                    <SelectTrigger className='w-4/12'>
+                      <SelectValue placeholder='Feeding status' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.keys(FeedStatusEnum).map((item) => (
+                        <SelectItem value={item} key={item} className='uppercase'>
+                          {item.replace('_', ' ')}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
 
               <AccordionContent className='w-full bg-secondary p-2 shadow-lg rounded-lg my-2 flex flex-col gap-2 overflow-visible '>
-                <Button
-                  className=' flex items-center text-xs gap-1 text-white w-full'
-                  variant={'default'}
-                  type='button'
-                  onClick={() => {
-                    setShowCreate(true)
-                  }}
-                >
-                  {<IoCreate className={'text-xl '} />}
-                  Add foods
-                </Button>
+                {!isMealRecord && (
+                  <Button
+                    className=' flex items-center text-xs gap-1 text-white w-full'
+                    variant={'default'}
+                    type='button'
+                    onClick={() => {
+                      setShowCreate(true)
+                    }}
+                  >
+                    {<IoCreate className={'text-xl '} />}
+                    Add foods
+                  </Button>
+                )}
                 {showCreate && (
                   <div>
                     <AddNewFood form={form} closeFuntion={setShowCreate}></AddNewFood>
@@ -172,7 +209,8 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method }: Props) => {
                   form.getValues('details').map((item, index) => {
                     return (
                       <div className='w-full flex gap-2 items-center'>
-                        <div className='flex-1 '>
+                        <div className='flex-1 relative '>
+                          {isMealRecord && <div className='absolute inset-0 z-20 cursor-not-allowed'></div>}
                           <SelectSearch
                             form={form}
                             query={`foods`}
@@ -180,10 +218,12 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method }: Props) => {
                             value={String(item.foodId)}
                             indexKey={index}
                             itemObject={item}
+                            // disabled={isMealRecord}
                           ></SelectSearch>
                         </div>
                         <div className='w-3/12'>
                           <Input
+                            readOnly={isMealRecord}
                             type='number'
                             step={0.01}
                             min={0.01}
@@ -198,20 +238,22 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method }: Props) => {
                             }}
                           />
                         </div>
-                        <Button
-                          className=' flex items-center text-xs gap-1'
-                          variant={method == 'create' ? 'outline' : 'destructive'}
-                          type='button'
-                          onClick={() => {
-                            handleDeleteFood(index)
-                          }}
-                        >
-                          {method !== 'create' ? (
-                            <AiTwotoneDelete className={'text-xl'} />
-                          ) : (
-                            <GiCancel className={'text-xl'} />
-                          )}
-                        </Button>
+                        {!isMealRecord && (
+                          <Button
+                            className=' flex items-center text-xs gap-1'
+                            variant={method == 'create' ? 'outline' : 'destructive'}
+                            type='button'
+                            onClick={() => {
+                              handleDeleteFood(index)
+                            }}
+                          >
+                            {method !== 'create' ? (
+                              <AiTwotoneDelete className={'text-xl'} />
+                            ) : (
+                              <GiCancel className={'text-xl'} />
+                            )}
+                          </Button>
+                        )}
                       </div>
                     )
                   })}

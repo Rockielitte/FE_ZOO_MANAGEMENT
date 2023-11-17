@@ -4,7 +4,7 @@ import { Label } from './ui/label'
 import { Input } from './ui/input'
 import axios, { AxiosError } from 'axios'
 import { Button } from './ui/button'
-import CageMealTabe from './CageMealTabe'
+
 import { SelectSearch } from './SelectSearch'
 import LoadingScreen from './Loading'
 import useCheckRole from '@/hooks/useCheckRole'
@@ -247,11 +247,11 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
           )}
         </form>
       </div>
-      <div className='md:h-full md:w-1/2 w-full p-2 shadow-2xl border rounded-lg '>
+      {/* <div className='md:h-full md:w-1/2 w-full p-2 shadow-2xl border rounded-lg '>
         <div className='flex w-full md:h-full flex-col gap-2 '>
           <CageMealTabe />
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

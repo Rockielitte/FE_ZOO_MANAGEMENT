@@ -69,7 +69,6 @@ const MealAnimalStrategy = () => {
                   />
                 </div>
               )}
-
               <div className='flex-1 h-full  overflow-auto'>
                 <>
                   {(sortedData as AnimalMeal[])?.length ? (

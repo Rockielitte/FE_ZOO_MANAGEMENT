@@ -56,7 +56,7 @@ const AddNewFood = <T extends FieldValues>({ form: bigForm, method = 'create', c
               type='number'
               step={0.01}
               min={0.01}
-              placeholder='Quantiy of food'
+              placeholder='Quantity of food'
               {...register('amount')}
               // value={item.amount}
               // onChange={(e) => {
