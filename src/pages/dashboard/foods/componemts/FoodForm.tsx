@@ -1,17 +1,14 @@
 // @flow
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Command, CommandGroup, CommandItem } from '@/components/ui/command';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import useMutationCustom from '@/hooks/useMutationCustom';
 import { cn } from '@/lib/utils';
-import { FoodTypeEnum, food } from '@/types';
-import LocalFile from '@/utils/api/LocalFile';
+import { food } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import axios from 'axios';

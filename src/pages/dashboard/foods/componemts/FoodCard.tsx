@@ -1,12 +1,8 @@
 // @flow
 import { User } from '@/types';
-import * as React from 'react';
 import Meat from '@/assets/meat.jpg'
 import Grain from '@/assets/grain.jpg'
 import Fruit from '@/assets/fruit.jpg'
-import { Link } from 'react-router-dom';
-import { EditSpecies } from '../../Species/components/UpdateSpecies';
-import { buttonVariants } from '@/components/ui/button';
 import { UpdateFood } from './UpdateFood';
 type Props = { id: number; name: string; type: string, unit: string, description: string; user: User }
 export const FoodCard = (props: Props) => {

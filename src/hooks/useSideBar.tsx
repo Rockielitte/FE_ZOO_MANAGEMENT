@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { AiFillHome } from 'react-icons/ai'
 import { GiBirdCage, GiCaveman, GiElephant, GiNestBirds } from 'react-icons/gi'
 import { ImManWoman } from 'react-icons/im'
+import { LuSalad } from "react-icons/lu";
 import { BsFillPinMapFill, BsTicketPerforated } from 'react-icons/bs'
 import { LiaFileInvoiceDollarSolid } from 'react-icons/lia'
 import { Icons } from '@/components/Icon'
@@ -72,7 +73,12 @@ const useSideBar = () => {
         name: 'Order',
         Icon: LiaFileInvoiceDollarSolid,
         href: 'orders'
-      }
+      },
+      {
+        name: 'Food',
+        Icon: LuSalad,
+        href: 'foods'
+      },
     ],
     []
   )
@@ -90,11 +96,6 @@ const useSideBar = () => {
         Icon: GiCaveman,
         href: 'staffs'
       },
-      // {
-      //   name: 'Account',
-      //   Icon: ImManWoman,
-      //   href: 'accounts'
-      // },
       {
         name: 'Animal',
         Icon: GiElephant,
@@ -119,6 +120,11 @@ const useSideBar = () => {
         name: 'News',
         Icon: Icons.NewsPaper,
         href: 'news'
+      },
+      {
+        name: 'Food',
+        Icon: LuSalad,
+        href: 'foods'
       },
       // {
       //   name: 'My News',

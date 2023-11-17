@@ -3,7 +3,6 @@ import useQueryCustom from '@/hooks/useQueryCustom';
 import Error from '@/pages/Error';
 import { User, food } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
-import * as React from 'react';
 import { useRouteLoaderData } from 'react-router-dom';
 import FoodTable from './componemts/FoodTable';
 import LoadingScreen from '@/components/Loading';

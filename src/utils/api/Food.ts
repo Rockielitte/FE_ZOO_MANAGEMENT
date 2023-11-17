@@ -1,5 +1,4 @@
 // @flow
-import * as React from 'react';
 import { useAuthorizationHeader } from '../authHeader';
 import { get } from '../apiCaller';
 import axios from 'axios';
