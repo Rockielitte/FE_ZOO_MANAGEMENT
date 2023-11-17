@@ -7,10 +7,13 @@ import { UpdateFood } from './UpdateFood';
 type Props = { id: number; name: string; type: string, unit: string, description: string; user: User }
 export const FoodCard = (props: Props) => {
     let bgImage = Fruit
+    let typeFood = 'Fruit And Vegetable'
     if (props?.type === 'PROTEIN') {
         bgImage = Meat
+        typeFood = 'Protein'
     } else if (props?.type === 'GRAIN_AND_CEREAL') {
         bgImage = Grain
+        typeFood = 'Grain And Cereal'
     }
 
 
@@ -25,8 +28,9 @@ export const FoodCard = (props: Props) => {
             <div className='flex justify-between h-fit p-3 '>
                 {/* <p className='text-black font-extralight'>{props.id}</p> */}
                 <div className='text-foreground my-4'>
-                    <h4 className='font-normal truncate text-2xl'>Name: {props.name} | Unit: {props.unit}</h4>
-                    <h5 className='font-normal truncate text-lg pt-3'>Type: {props.type}</h5>
+                    <h4 className='font-normal truncate text-2xl'>Name: {props.name} </h4>
+                    <h5 className='font-normal truncate text-lg pt-4'>Unit: {props.unit}</h5>
+                    <h5 className='font-normal truncate text-lg pt-2'>Type: {typeFood}</h5>
                     <p className='font-extralight truncate-4 my-3'>{props.description}</p>
                 </div>
                 <div className='font-normal flex space-x-3 items-start p-4'>
