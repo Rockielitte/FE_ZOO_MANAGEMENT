@@ -30,14 +30,16 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import SpeciesPieChart from '@/components/SpeciesPieChart'
 import ModalConfirmUpdate from './news/components/ModalUpdateStatus'
-// import useCheckRole from '@/hooks/useCheckRole'
+import useCheckRole from '@/hooks/useCheckRole'
+import DashboardTrainer from './DashboardTrainer'
 const options = [
   { type: 'DAY', value: 'Day' },
   { type: 'MONTH', value: 'Month' },
   { type: 'YEAR', value: 'Year' }
 ]
 const Dashboard = () => {
-  // const user = useCheckRole()
+  const user = useCheckRole()
+
   const minYear = 1800
   const maxYear = 2023
   const new_data = useQueryCustom<NewType, []>({
@@ -226,7 +228,9 @@ const Dashboard = () => {
 
   return (
     <section className='w-full  h-full flex flex-col shadow-2xl rounded-[0.5rem] border bg-background'>
-      {fetch_statistics.isError || sale_statistics.isError ? (
+      {user?.role && user.role == 'TRAINER' ? (
+        <DashboardTrainer />
+      ) : fetch_statistics.isError || sale_statistics.isError ? (
         <Error />
       ) : !fetch_statistics.isLoading || !sale_statistics.isLoading ? (
         <div className='flex-1 overflow-auto p-5 flex flex-col gap-4 h-full'>
@@ -291,20 +295,35 @@ const Dashboard = () => {
                     <Icons.User2 />
                   </div>
                 </div>
-                <Link
-                  to='/dashboard/accounts'
-                  className='flex items-center text-primary font-semibold text-sm justify-between '
-                >
-                  View All <Icons.ArrowRight className='text-sm' />
-                </Link>
+                {user?.role && user.role === 'ADMIN' && (
+                  <Link
+                    to='/dashboard/accounts'
+                    className='flex items-center text-muted-foreground text-sm justify-between '
+                  >
+                    View All <Icons.ArrowRight className='text-sm' />
+                  </Link>
+                )}
+                {user?.role && user.role === 'STAFF' && (
+                  <Link
+                    to='/dashboard/staffs'
+                    className='flex items-center text-muted-foreground text-sm justify-between '
+                  >
+                    View All <Icons.ArrowRight className='text-sm' />
+                  </Link>
+                )}
               </div>
               {/* flex items-center gap-4 sm:justify-between sm:flex-row xsm:flex-col xsm:justify-start */}
               <div className='w-full flex gap-2 overflow-auto border-2  mt-2 rounded-lg bg-secondary '>
-                <div className='flex-1 p-2 py-4 text-md font-bold uppercase'>
-                  <h3>Staff</h3>
-                  <h2>{ZooStatistics?.totalStaff}</h2>
-                </div>
-                <Separator orientation='vertical' className='xsm:hidden justify-self-center sm:flex' />
+                {user?.role && user.role === 'ADMIN' && (
+                  <>
+                    <div className='flex-1 p-2 py-4 text-md font-bold uppercase'>
+                      <h3>Staff</h3>
+                      <h2>{ZooStatistics?.totalStaff}</h2>
+                    </div>
+                    <Separator orientation='vertical' className=' justify-self-center ' />
+                  </>
+                )}
+
                 <div className='flex-1 p-2 py-4 text-md font-bold uppercase'>
                   <h3>Trainer</h3>
                   <h2>{ZooStatistics?.totalTrainer}</h2>
