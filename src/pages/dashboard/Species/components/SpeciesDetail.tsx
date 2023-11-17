@@ -6,12 +6,12 @@ import { useParams, useRouteLoaderData } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { SpeciesTable } from './SpeciesTable'
 import GridAnimal from './GridAnimal'
-import axios from 'axios'
-import GridCage from './GridCage'
+// import axios from 'axios'
+// import GridCage from './GridCage'
 import { ColumnDef } from '@tanstack/react-table'
-import { Animal, Cage, User } from '@/types'
-import Error from '@/pages/Error'
-import LoadingScreen from '@/components/Loading'
+import { Animal, User } from '@/types'
+// import Error from '@/pages/Error'
+// import LoadingScreen from '@/components/Loading'
 export interface IAppProps {}
 
 export const speciesDetailQuery = (id?: string) => ({
@@ -63,68 +63,80 @@ export default function SpeciesDetail() {
     }
   ]
 
-  const columnsCage: ColumnDef<Cage>[] = [
-    {
-      accessorKey: 'id',
-      header: 'ID',
-      cell: ({ row }) => <span>{parseInt(row.id) + 1}</span>
-    },
-    {
-      accessorKey: 'code',
-      header: 'Code',
+  // const columnsCage: ColumnDef<Cage>[] = [
+  //   {
+  //     accessorKey: 'id',
+  //     header: 'ID',
+  //     cell: ({ row }) => <span>{parseInt(row.id) + 1}</span>
+  //   },
+  //   {
+  //     accessorKey: 'name'
+  //   },
+  //   {
+  //     accessorKey: 'code',
+  //     header: 'Code',
 
-      cell: ({ row }) => (
-        <div className='flex items-center space-x-2 '>
-          <span>{row.getValue('code')}</span>
-        </div>
-      )
-    },
-    {
-      accessorKey: 'description',
-      header: 'Description',
-      cell: ({ row }) => <span>{row.getValue('description')}</span>
-    }
-  ]
+  //     cell: ({ row }) => (
+  //       <div className='flex items-center space-x-2 '>
+  //         <span>{row.getValue('code')}</span>
+  //       </div>
+  //     )
+  //   },
+  //   {
+  //     accessorKey: 'description',
+  //     header: 'Description',
+  //     cell: ({ row }) => <span>{row.getValue('description')}</span>
+  //   }
+  // ]
   const { id } = useParams()
-  const {
-    data: cage_data,
-    isError,
-    isLoading
-  } = useQuery({
-    queryKey: ['cages', 'speciesId', id],
-    queryFn: () => {
-      return AnimalSpecies.getCageBySpeciesId(id)
-    },
-    onSuccess: () => {},
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message)
-      }
-    },
-    select: (data) => {
-      return data
-    }
-  })
+  // const {
+  //   data: cage_data,
+  //   isError,
+  //   isLoading
+  // } = useQuery({
+  //   queryKey: ['cages', 'speciesId', id],
+  //   queryFn: () => {
+  //     return AnimalSpecies.getCageBySpeciesId(id)
+  //   },
+  //   onSuccess: () => {},
+  //   onError: (error) => {
+  //     if (axios.isAxiosError(error)) {
+  //       console.log(error.message)
+  //     }
+  //   },
+  //   select: (data) => {
+  //     return data
+  //   }
+  // })
 
   const { data: species } = useQuery(speciesDetailQuery(id))
 
   return (
-    <div className='w-full p-5 py-2 h-full flex  flex-col  shadow-2xl border rounded-[0.5rem]  '>
-      <div className='p-5'>
-        <h1 className='font-medium text-4xl'>{species.name}</h1>
-        <p className='font-extralight'>{species.description}</p>
-        <Separator />
+    <div className='w-full p-4 py-2 h-full flex  flex-col  shadow-2xl border rounded-[0.5rem]  '>
+      <div className=''>
+        <h1 className='font-bold text-3xl py-2'>{species.name}</h1>
+        <p className='font-sm'>{species.description}</p>
+        <Separator className='my-2' />
       </div>
-
-      <Tabs defaultValue='animal' className=' flex-1 flex-col flex overflow-auto'>
-        <TabsList className='grid w-full grid-cols-2'>
-          <TabsTrigger value='animal'>Animal {`(${species.animals.length})`}</TabsTrigger>
-          <TabsTrigger value='cage'>Cage {`(${cage_data?.length ? cage_data?.length : `...`})`}</TabsTrigger>
+      <Tabs defaultValue='animal' className=' flex-1 flex-col flex overflow-auto '>
+        <TabsList className='flex gap-2 w-fit'>
+          <TabsTrigger
+            value='animal'
+            className='uppercase  data-[state=active]:bg-primary data-[state=active]:text-white'
+          >
+            Animal {`(${species.animals.length})`}
+          </TabsTrigger>
+          {/* <TabsTrigger
+            value='cage'
+            className='uppercase  data-[state=active]:bg-primary data-[state=active]:text-white'
+          >
+            Cage {`(${cage_data?.length ? cage_data?.length : `...`})`}
+          </TabsTrigger> */}
         </TabsList>
-        <TabsContent value='animal' className='w-full h-full flex-auto flex-col overflow-auto'>
+        <TabsContent value='animal' className='w-full h-full flex-auto flex-col overflow-auto '>
           <SpeciesTable columns={columnsAnimal} data={species.animals} GridBox={GridAnimal} user={user} />
         </TabsContent>
-
+        {/* 
         <TabsContent value='cage' className='w-full h-full flex-auto flex-col overflow-auto'>
           {isError ? (
             <Error />
@@ -133,7 +145,7 @@ export default function SpeciesDetail() {
           ) : (
             <LoadingScreen></LoadingScreen>
           )}
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   )

@@ -12,10 +12,10 @@ import GridTicket from '@/components/GridTicket'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
 import useCheckRole from '@/hooks/useCheckRole'
-
+const regexNotSpaceFirst = /^(?:[^ ]|$)/
 const formSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().min(1),
+  name: z.string().min(1, 'Name is required').regex(regexNotSpaceFirst, 'First character is not a space'),
+  description: z.string().min(1, 'Description is required').regex(regexNotSpaceFirst, 'First character is not a space'),
   price: z.coerce.number().min(0),
   status: z.nativeEnum(TicketStatusEnum)
 })

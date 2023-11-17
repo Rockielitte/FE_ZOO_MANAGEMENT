@@ -33,10 +33,10 @@ export const EditSpecies = (props: Props) => {
         <DialogTrigger>
           <Button className={buttonVariants({ variant: 'default' })}>Edit</Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className='max-h-[80%] overflow-auto'>
           <DialogHeader>
             <DialogTitle>Update Animal Species</DialogTitle>
-            <DialogDescription>some description ...</DialogDescription>
+            <DialogDescription>Fill below form's fields to finish this process. </DialogDescription>
           </DialogHeader>
           <SpeciesForm setOpen={setOpen} id={species.id} species={species} />
         </DialogContent>

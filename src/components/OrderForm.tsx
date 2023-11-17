@@ -15,7 +15,7 @@ import { AiOutlineCloudUpload } from 'react-icons/ai'
 import { BsCart4, BsImages } from 'react-icons/bs'
 import { OrderStatusEnum, TicketStatusEnum, User } from '@/types'
 import { UseMutationResult } from 'react-query'
-import { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import LoadingScreen from './Loading'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TicketOrderTag from './TicketOrderTag'
@@ -80,6 +80,13 @@ const OrderForm = <T extends FieldValues, R>({
       {
         onSuccess: () => {
           navigate(`${queryParams.get('redirect') || '/dashboard/orders/'}`)
+        },
+        onError: (error) => {
+          if (axios.isAxiosError(error) && error.response?.data?.data) {
+            error.response.data.data.forEach(({ field, message }: { field: string; message: string }) =>
+              form.setError(field as Path<T>, { type: 'focus', message })
+            )
+          }
         }
       }
     )
@@ -198,7 +205,12 @@ const OrderForm = <T extends FieldValues, R>({
                             onSelect={(value) => {
                               setValue(item, value as PathValue<T, Path<T>>, { shouldValidate: true })
                             }}
-                            disabled={(date) => date < new Date()}
+                            disabled={(date) => {
+                              date.setHours(17, 0, 0, 0)
+                              console.log(date, 'LLAA', new Date(), 'resulkt', date <= new Date())
+
+                              return date <= new Date()
+                            }}
                             initialFocus
                           />
                         </PopoverContent>
@@ -270,7 +282,7 @@ const OrderForm = <T extends FieldValues, R>({
                       </svg>
                       <span className='sr-only'>Info</span>
                       <div>
-                        <span className='font-medium'>Danger alert!</span>
+                        <span className='font-medium'>Validation alert! </span>
                         {errors[item]?.message as string}
                       </div>
                     </div>

@@ -23,7 +23,7 @@ const CreateAccount: FC<CreateAccountProps> = () => {
           Create Trainer
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[475px]'>
+      <DialogContent className='max-h-[80%]'>
         <DialogHeader>
           <DialogTitle> Create Trainer</DialogTitle>
           <DialogDescription>Fill out the required fields in the registration form</DialogDescription>

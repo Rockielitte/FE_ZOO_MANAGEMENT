@@ -11,31 +11,55 @@ import Error from '@/pages/Error'
 import LoadingScreen from '@/components/Loading'
 import useQueryCustom from '@/hooks/useQueryCustom'
 import useMutationCustom from '@/hooks/useMutationCustom'
+const regexNotSpaceFirst = /^(?:[^ ]|$)/
 const formSchema = z.object({
-  name: z.string().min(1, { message: "This field can't be empty" }),
-  speciesId: z.coerce.number(),
-  cageId: z.coerce.number(),
+  name: z
+    .string()
+    .min(1, { message: "This field can't be empty" })
+    .regex(regexNotSpaceFirst, 'First character is not a space'),
+  speciesId: z.coerce
+    .number({
+      invalid_type_error: 'Species is required'
+    })
+    .min(1),
+  cageId: z.coerce.number().optional(),
   gender: z.nativeEnum(AnimalGenderEnum),
   status: z.nativeEnum(AnimalStatusEnum),
   dob: z.date().max(new Date(), { message: 'Please choose before current time' }),
-  nation: z.string().min(1, { message: "This field can't be empty" }),
+  nation: z
+    .string()
+    .min(1, { message: "This field can't be empty" })
+    .regex(regexNotSpaceFirst, 'First character is not a space'),
+  weight: z.coerce.number().min(0).optional(),
+  height: z.coerce.number().min(0).max(10).optional(),
+  length: z.coerce.number().min(0).optional(),
   description: z
     .string()
+    .regex(regexNotSpaceFirst, 'First character is not a space')
     .max(255, {
       message: "Description can't be exccess 255 characters"
     })
     .optional(),
   note: z
     .string()
+    .regex(regexNotSpaceFirst, 'First character is not a space')
     .max(255, {
       message: "Note can't be exccess 255 characters"
     })
+
     .optional(),
-  imageList: z.string().array().optional()
+  imageList: z.string().array().optional().default([]),
+  feedingGuide: z
+    .string()
+    .regex(regexNotSpaceFirst, 'First character is not a space')
+    .max(255, {
+      message: "Note can't be exccess 255 characters"
+    })
+
+    .optional()
 })
 export type FormSchemaType = z.infer<typeof formSchema>
 const AnimalDetail = () => {
-  // const token = useUserStore((state) => state.user)?.token
   const id = useParams().id
   const animal_data = useQueryCustom({
     query: `/animals/${id}`,
@@ -50,14 +74,18 @@ const AnimalDetail = () => {
       const animal: FormSchemaType = {
         name: data.name,
         speciesId: data.species.id,
-        cageId: data.cage.id,
+        cageId: data.cage?.id,
         gender: data.gender,
         status: data.status,
         dob: new Date(data.dob),
         nation: data.nation,
         description: data.description,
         note: data.note,
-        imageList: data.imageList
+        imageList: data.imageList,
+        weight: data.weight || undefined,
+        height: data.height || undefined,
+        length: data.length || undefined,
+        feedingGuide: data.feedingGuide || undefined
       }
       return animal
     }
@@ -85,7 +113,21 @@ const AnimalDetail = () => {
         <AnimalForm
           form={form}
           formMutation={formMutation}
-          fields={['name', 'cageId', 'speciesId', 'gender', 'status', 'dob', 'nation', 'description', 'note']}
+          fields={[
+            'name',
+            'speciesId',
+            'cageId',
+            'gender',
+            'status',
+            'dob',
+            'nation',
+            'weight',
+            'height',
+            'length',
+            'description',
+            'note',
+            'feedingGuide'
+          ]}
         ></AnimalForm>
       ) : (
         <LoadingScreen></LoadingScreen>

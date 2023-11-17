@@ -24,14 +24,20 @@ export const columns: ColumnDef<Cage>[] = [
     accessorKey: 'code'
   },
   {
+    accessorKey: 'name'
+  },
+  {
+    accessorKey: 'capacity'
+  },
+  {
     accessorFn: ({ description }) => description,
     id: 'infor'
   },
 
-  {
-    accessorFn: ({ animalSpecies }) => animalSpecies.name,
-    id: 'species'
-  },
+  // {
+  //   accessorFn: ({ animalSpecies }) => animalSpecies.name,
+  //   id: 'species'
+  // },
   {
     accessorFn: ({ managedBy }) => managedBy?.id,
     id: 'manageBy',
@@ -43,12 +49,12 @@ export const columns: ColumnDef<Cage>[] = [
     id: 'manager',
     filterFn: 'includesString'
   },
-  {
-    accessorFn: ({ animalSpecies }) => animalSpecies.id,
-    id: 'animalSpeciesId',
-    enableGlobalFilter: false,
-    enableColumnFilter: false
-  },
+  // {
+  //   accessorFn: ({ animalSpecies }) => animalSpecies.id,
+  //   id: 'animalSpeciesId',
+  //   enableGlobalFilter: false,
+  //   enableColumnFilter: false
+  // },
   {
     accessorFn: ({ animals }) => animals?.length,
     id: 'animalNum',
@@ -63,12 +69,20 @@ export const columns: ColumnDef<Cage>[] = [
   }
 ]
 const regexPattern = /^[A-Za-z][0-9]{4}$/
+const regexNotSpaceFirst = /^(?:[^ ]|$)/
 const formSchema = z.object({
-  code: z.string().regex(regexPattern),
-  areaId: z.coerce.number(),
-  animalSpeciesId: z.coerce.number(),
+  code: z
+    .string()
+    .regex(regexPattern, 'Code should be followed format A0000')
+    .regex(regexNotSpaceFirst, 'First character is not a space'),
+  areaId: z.coerce.number({
+    invalid_type_error: 'Area is required'
+  }),
+  capacity: z.coerce.number().min(1, 'Capacity should be larger than or equal to 1'),
+  // animalSpeciesId: z.coerce.number(),
+  name: z.string().min(1, 'Name is required').regex(regexNotSpaceFirst, 'First character is not a space'),
   managedById: z.string().optional(),
-  description: z.string().optional()
+  description: z.string().regex(regexNotSpaceFirst, 'First character is not a space').optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
 export default function DemoPage() {
@@ -83,7 +97,7 @@ export default function DemoPage() {
     queryKey: ['cages'],
     form: form,
     invalidQuery: ['cages'],
-    resetData: { code: '', animalSpeciesId: 0, areaId: 0, description: '', managedById: '' },
+    resetData: { code: '', name: '', areaId: 0, description: '', managedById: '', capacity: 1 },
     data: {} as Cage
   })
   const user = useCheckRole()
@@ -102,7 +116,7 @@ export default function DemoPage() {
               title: 'Create new cage',
               form,
               formMutation,
-              fields: ['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']
+              fields: ['name', 'code', 'areaId', 'capacity', 'managedById', 'description']
             }}
             canCreate={user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF)}
           />

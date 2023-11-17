@@ -22,13 +22,20 @@ import ModalForm from './ModalForm'
 import useMutationCustom from '@/hooks/useMutationCustom'
 import useCheckRole from '@/hooks/useCheckRole'
 const regexPattern = /^[A-Za-z][0-9]{4}$/
+const regexNotSpaceFirst = /^(?:[^ ]|$)/
 const formSchema = z.object({
-  code: z.string().regex(regexPattern),
-  areaId: z.coerce.number(),
-  animalSpeciesId: z.coerce.number(),
+  code: z
+    .string()
+    .regex(regexPattern, 'Code should be followed format A0000')
+    .regex(regexNotSpaceFirst, 'First character is not a space'),
+  areaId: z.coerce.number({
+    invalid_type_error: 'Area is required'
+  }),
+  capacity: z.coerce.number().min(1, 'Capacity should be larger than or equal to 1'),
+  // animalSpeciesId: z.coerce.number(),
+  name: z.string().min(1, 'Name is required').regex(regexNotSpaceFirst, 'First character is not a space'),
   managedById: z.string().optional(),
-  description: z.string().optional(),
-  managerName: z.string().optional()
+  description: z.string().regex(regexNotSpaceFirst, 'First character is not a space').optional()
 })
 export type formSchemaType = z.infer<typeof formSchema>
 const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
@@ -38,10 +45,10 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
     defaultValues: {
       code: row.getValue('code'),
       areaId: row.getValue('areaId'),
-      animalSpeciesId: row.getValue('animalSpeciesId'),
       managedById: row.getValue('manageBy'),
       description: row.getValue('infor'),
-      managerName: row.getValue('manager')
+      name: row.getValue('name'),
+      capacity: row.getValue('capacity')
     }
   })
   const formMutation = useMutationCustom({
@@ -56,10 +63,10 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
     form.reset({
       code: row.getValue('code'),
       areaId: row.getValue('areaId'),
-      animalSpeciesId: row.getValue('animalSpeciesId'),
       managedById: row.getValue('manageBy'),
       description: row.getValue('infor'),
-      managerName: row.getValue('manager')
+      name: row.getValue('name'),
+      capacity: row.getValue('capacity')
     })
   }, [row])
   const user = useCheckRole()
@@ -76,7 +83,7 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
           <h1 className='text-base tracking-wide font-extrabold uppercase'>
             <span>Cage </span> {form.getValues('code') || row.getValue('code')}
           </h1>
-          <span className='text-sm'>Species: {row.getValue('species')}</span>
+          <span className='text-sm'>Name: {row.getValue('name')}</span>
         </div>
         {user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF) && (
           <DropdownMenu>
@@ -96,7 +103,7 @@ const CageTag: React.FC<{ row: Row<Cage> }> = ({ row }) => {
                   title='Edit cage'
                   form={form}
                   formMutation={formMutation}
-                  fields={['code', 'areaId', 'animalSpeciesId', 'managedById', 'description']}
+                  fields={['name', 'code', 'areaId', 'capacity', 'managedById', 'description']}
                   Trigger={
                     <>
                       <AiFillEdit className='text-2xl pr-2' />

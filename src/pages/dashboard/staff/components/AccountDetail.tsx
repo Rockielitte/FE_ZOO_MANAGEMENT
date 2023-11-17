@@ -23,7 +23,7 @@ import LocalFile from '@/utils/api/LocalFile'
 // const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
 interface AccountDetailProps {}
 const roles = [
-  // { label: 'Staff', value: 'STAFF' },
+  { label: 'Staff', value: 'STAFF' },
   { label: 'Zoo Trainer', value: 'TRAINER' }
 ] as const
 const genders = [
@@ -138,11 +138,11 @@ const AccountDetail: FC<AccountDetailProps> = () => {
               <div className=' flex items-center justify-start flex-col space-y-4'>
                 <Avatar className='w-60 h-60'>
                   <AvatarImage src={preview} />
-                  <AvatarFallback>Unknown</AvatarFallback>
+                  <AvatarFallback>N/A</AvatarFallback>
                 </Avatar>
                 <FormItem>
                   <FormLabel>
-                    <p className={cn(buttonVariants({ variant: 'default' }))}>upload</p>
+                    <p className={cn(buttonVariants({ variant: 'default' }))}>UPLOAD</p>
                   </FormLabel>
                   <FormControl>
                     <input
@@ -256,6 +256,7 @@ const AccountDetail: FC<AccountDetailProps> = () => {
                                   <CommandItem
                                     value={role.label}
                                     key={role.value}
+                                    disabled={role.value === 'STAFF'}
                                     onSelect={() => {
                                       form.setValue('role', role.value)
                                     }}
