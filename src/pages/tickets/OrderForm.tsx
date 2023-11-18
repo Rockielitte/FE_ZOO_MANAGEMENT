@@ -153,11 +153,7 @@ const OrderForm: React.FC<{
         ) : (
           <Dialog>
             <DialogTrigger asChild>
-              <Button
-                type='submit'
-                className='w-full text-white uppercase text-xl font-bold flex gap-2 items-center'
-                variant='outline'
-              >
+              <Button type='submit' className='w-full text-white uppercase text-xl font-bold flex gap-2 items-center'>
                 <PiPaypalLogoBold />
                 Check out
               </Button>
