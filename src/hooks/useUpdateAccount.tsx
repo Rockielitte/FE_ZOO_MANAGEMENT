@@ -13,6 +13,7 @@ interface UseUpdateAccount {
 export const useUpdateAccount = <T extends FieldValues>(form: UseFormReturn<T>, id: string): UseUpdateAccount => {
   const client = useQueryClient()
   const navigate = useNavigate()
+
   const { mutateAsync: updateAccount } = useMutation({
     mutationFn: (data: AccountFormValues) => {
       return Account.updateAccount(data, id)

@@ -30,7 +30,7 @@ export const FoodCard = (props: Props) => {
         />
       </div>
 
-      <div className='flex gap-2 w-full flex-1 items-start bg-secondary justify-between border-t-4 border-dashed p-3  '>
+      <div className='flex gap-2 w-full flex-1 items-start bg-secondary justify-between flex-col border-t-4 border-dashed p-3  '>
         {/* <p className='text-black font-extralight'>{props.id}</p> */}
         <div className='gap-2 text-foreground my-4 flex-1 flex flex-col '>
           <h4 className='font-normal truncate text-2xl'>Name: {props.name} </h4>
@@ -38,7 +38,7 @@ export const FoodCard = (props: Props) => {
           <h5 className='font-normal truncate text-lg pt-2'>Type: {typeFood}</h5>
           <p className='font-light truncate-4 my-3'>{props.description}</p>
         </div>
-        <div className='w-4/12 font-normal flex items-start p-4'>
+        <div className=' font-normal flex items-start p-4'>
           <UpdateFood id={props.id} />
         </div>
       </div>
