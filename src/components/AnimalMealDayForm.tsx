@@ -8,8 +8,8 @@ const AnimalMealDayForm = ({ mealRecordItem }: Props) => {
   const animalId = useParams().id
   return (
     <div className='w-full'>
-      <div className='  rounded-md px-2 w-full    '>
-        <div className='flex-1 h-full '>
+      <div className='rounded-md px-2 w-full'>
+        <div className='w-full'>
           <AnimalMealForm
             isMealRecord={true}
             animalId={Number(animalId)}

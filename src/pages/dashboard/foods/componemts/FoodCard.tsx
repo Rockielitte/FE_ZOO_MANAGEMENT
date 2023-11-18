@@ -26,20 +26,19 @@ export const FoodCard = (props: Props) => {
         <img
           src={bgImage}
           alt={props.name}
-          className='h-full w-full object-cover rounded-lg overflow-hidden saturate-50 brightness-125 '
+          className='h-full w-full object-cover rounded-lg overflow-hidden  saturate-50 brightness-125 '
         />
       </div>
 
-      <div className='flex flex-col gap-2 w-full flex-1 bg-secondary items-start justify-between border-t-4 border-dashed p-3  '>
+      <div className='flex gap-2 w-full flex-1 items-start bg-secondary justify-between border-t-4 border-dashed p-3  '>
         {/* <p className='text-black font-extralight'>{props.id}</p> */}
         <div className='gap-2 text-foreground my-4 flex-1 flex flex-col '>
-          <h4 className='font-bold truncate text-lg uppercase'>
-            Name: {props.name} | Unit: {props.unit}
-          </h4>
-          <h5 className='font-normal truncate text-sm uppercase '>Type: {props.type}</h5>
-          <p className='text-xs truncate-4 '>{props.description}</p>
+          <h4 className='font-normal truncate text-2xl'>Name: {props.name} </h4>
+          <h5 className='font-normal truncate text-lg pt-4'>Unit: {props.unit}</h5>
+          <h5 className='font-normal truncate text-lg pt-2'>Type: {typeFood}</h5>
+          <p className='font-light truncate-4 my-3'>{props.description}</p>
         </div>
-        <div className='w-4/12 font-normal flex items-start '>
+        <div className='w-4/12 font-normal flex items-start p-4'>
           <UpdateFood id={props.id} />
         </div>
       </div>

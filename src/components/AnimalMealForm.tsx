@@ -30,7 +30,7 @@ const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/
 const formSchema = z.object({
   time: z.string().regex(regex, 'Time is invalid format, ex: 08:21').length(5),
   id: z.coerce.number().min(0),
-  status: z.nativeEnum(FeedStatusEnum).default(FeedStatusEnum.NOT_FEED),
+  status: z.nativeEnum(FeedStatusEnum),
   details: z
     .object({
       id: z.coerce.number().min(0),
@@ -93,9 +93,6 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method, isMealRecord = f
         {
           onSuccess: () => {
             queryClient.invalidateQueries(['meals', String(animalId)], { exact: true })
-            if (isMealRecord) {
-              queryClient.invalidateQueries(['meal-records', String(animalId)])
-            }
           }
         }
       )
@@ -112,6 +109,7 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method, isMealRecord = f
         reset(data)
         queryClient.invalidateQueries(['meals', String(animalId)], { exact: true })
         createFn && createFn(false)
+        if (isMealRecord) queryClient.invalidateQueries(['meal-records', String(animalId)])
       },
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response?.data?.data) {
