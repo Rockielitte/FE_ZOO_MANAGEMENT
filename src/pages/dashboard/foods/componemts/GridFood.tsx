@@ -7,8 +7,6 @@ import { FoodCard } from './FoodCard'
 const GridFood: React.FC<{
   data: Table<food>
   user: User
-  data: Table<food>
-  user: User
 }> = ({ data, user }) => {
   console.log('data: ', data)
   return (
