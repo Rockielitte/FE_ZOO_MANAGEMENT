@@ -142,6 +142,7 @@ const MealCage = <X, T extends FieldValues>({ form, formMutation, fields }: Prop
                           id={item}
                           className='col-span-1'
                           placeholder={`Type ${item} here . . .`}
+                          disabled={!(user.role && (user.role == RoleEnum.ADMIN || user.role == RoleEnum.STAFF))}
                           {...register(item)}
                           type='number'
                           hidden
