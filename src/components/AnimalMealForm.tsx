@@ -56,7 +56,7 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method, isMealRecord = f
         return newItem
       }),
       id: mealItem?.id,
-      status: mealRecord?.status
+      status: mealRecord?.status || FeedStatusEnum.NOT_FEED
     }
   })
   const {
@@ -101,6 +101,8 @@ const AnimalMealForm = ({ mealItem, animalId, createFn, method, isMealRecord = f
     }
   }
   const submitHandler: SubmitHandler<formSchemaType> = async (data) => {
+    console.log('save ne')
+
     const time = new Date().toISOString()
     const newTime = time.slice(0, 11) + data.time + ':23.769670Z'
     const body = { ...data, time: newTime, animalId: animalId }
