@@ -72,7 +72,7 @@ const Qrcode = () => {
                 console.info(error)
               }
             }}
-            constraints={{ facingMode: 'environment' }}
+            constraints={{ facingMode: 'user' }}
           />
 
           <div className='text-lg text-black p-2 rounded-md shadow-lg font-medium bg-primary w-full'>
@@ -80,10 +80,10 @@ const Qrcode = () => {
             {data && <Textarea className='text-[16px] text-foreground' value={data} />}
           </div>
         </div>
-        <div className='lg:w-1/2 w-full border-4 border-white shadow-xl lg:overflow-auto lg:h-full  rounded-lg backdrop-blur-md'>
+        <div className='lg:w-1/2 w-full border-4 border-white shadow-xl lg:overflow-auto lg:h-full flex flex-col  rounded-lg backdrop-blur-md'>
           <Button className='w-full uppercase text-xl text-white sticky top-0'>ORDER</Button>
           {error && (
-            <Button className='mt-[10px] bg-red-500 text-white hover:bg-red-500 uppercase p-2 mx-4'>{error}</Button>
+            <Button className='mt-[10px] bg-red-500 mx-auto text-white hover:bg-red-500 uppercase p-2 '>{error}</Button>
           )}
           <div className='p-2 mt-2 w-full px-[20px] py-[30px] border-t-2 border-white border-dashed min-h-[500px] '>
             {order && (

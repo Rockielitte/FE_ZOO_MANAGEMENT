@@ -24,7 +24,7 @@ const TicketCounter: React.FC<{
   const addOrderDetail = (details: OrderDetailBeforeSaving[], quantity: number): OrderDetailBeforeSaving[] => {
     return [...details, { ticketId: ticket.id, quantity: quantity, ticketName: ticket.name, ticketPrice: ticket.price }]
   }
-  const modifyOrderDetalQuantity = (
+  const modifyOrderDetailQuantity = (
     details: OrderDetailBeforeSaving[],
     quantity: number
   ): OrderDetailBeforeSaving[] => {
@@ -42,7 +42,7 @@ const TicketCounter: React.FC<{
       if (findOrderDetail.quantity == 1) {
         newOrder.details = deleteOrderDetail(newOrder.details)
       } else {
-        newOrder.details = modifyOrderDetalQuantity(newOrder.details, findOrderDetail.quantity - 1)
+        newOrder.details = modifyOrderDetailQuantity(newOrder.details, findOrderDetail.quantity - 1)
       }
       setOrder(newOrder)
       form.setValue('details', newOrder.details)
@@ -57,16 +57,12 @@ const TicketCounter: React.FC<{
     if (!findOrderDetail) {
       newOrder.details = addOrderDetail(order.details, 1)
     } else {
-      newOrder.details = modifyOrderDetalQuantity(
-        newOrder.details,
-        findOrderDetail.quantity + 1 > 99 ? 99 : findOrderDetail.quantity + 1
-      )
+      newOrder.details = modifyOrderDetailQuantity(newOrder.details, findOrderDetail.quantity + 1)
     }
     form.setValue('details', newOrder.details)
     form.trigger('details')
     setOrder(newOrder)
-    if (value >= 99) setValue(99)
-    else setValue(value + 1)
+    setValue(value + 1)
   }
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,16 +71,18 @@ const TicketCounter: React.FC<{
     if (!e.target.value || e.target.valueAsNumber == 0) {
       setValue(0)
       if (findOrderDetail) newOrder.details = deleteOrderDetail(newOrder.details)
-    } else if (e.target.valueAsNumber > 99) {
-      setValue(99)
+    }
+    // else if (e.target.valueAsNumber > 99) {
+    //     setValue(99)
+    //     if (findOrderDetail) {
+    //       newOrder.details = modifyOrderDetailQuantity(newOrder.details, 99)
+    //     } else {
+    //       newOrder.details = addOrderDetail(order.details, 99)
+    //     }
+    //   }
+    else {
       if (findOrderDetail) {
-        newOrder.details = modifyOrderDetalQuantity(newOrder.details, 99)
-      } else {
-        newOrder.details = addOrderDetail(order.details, 99)
-      }
-    } else {
-      if (findOrderDetail) {
-        newOrder.details = modifyOrderDetalQuantity(newOrder.details, e.target.valueAsNumber)
+        newOrder.details = modifyOrderDetailQuantity(newOrder.details, e.target.valueAsNumber)
       } else {
         newOrder.details = addOrderDetail(order.details, e.target.valueAsNumber)
       }

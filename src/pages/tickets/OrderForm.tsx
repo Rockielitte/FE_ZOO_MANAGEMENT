@@ -229,7 +229,7 @@ const OrderForm: React.FC<{
               </div>
               <DialogFooter>
                 <Button onClick={() => createOrderHandler()} type='button' disabled={loading}>
-                  {loading ? <Icons.loadingSpin className='mr-2 h-4 w-4 animate-spin' /> : 'Pay'}
+                  {loading ? <Icons.loadingSpin className='mr-2 h-4 w-4 animate-spin' /> : 'Continue'}
                 </Button>
               </DialogFooter>
             </DialogContent>

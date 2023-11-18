@@ -1,17 +1,18 @@
-// import { SpeciesCard } from '@/components/SpeciesCard'
 import { User, food } from '@/types'
 import { Table } from '@tanstack/react-table'
-// import Lin from '@/assets/image14.png'
+
 import React from 'react'
 import { FoodCard } from './FoodCard'
 
 const GridFood: React.FC<{
   data: Table<food>
   user: User
+  data: Table<food>
+  user: User
 }> = ({ data, user }) => {
   console.log('data: ', data)
   return (
-    <div className='grid grid-cols-1 gap-x-4 gap-y-7 lg:grid-cols-4 p-4'>
+    <div className='grid grid-cols-1 gap-4 lg:grid-cols-4 md:grid-cols-2 p-2'>
       {data.getRowModel().rows.map((row) => {
         return (
           <FoodCard

@@ -24,6 +24,7 @@ const useMutationCustom = <T, X extends FieldValues>({
   reset
 }: Props<T, X>) => {
   const token = useUserStore((state) => state.user)?.token
+
   const queryClient = useQueryClient()
   const formMutation = useMutation({
     mutationKey: queryKey,

@@ -17,25 +17,37 @@ type SelectMap<T extends FieldValues> = {
   item: Path<T>
   form: UseFormReturn<T>
   disabled?: boolean
+  value?: string
+  indexKey?: number
+  itemObject?: {
+    id: number
+    amount: number
+    foodId: number
+  }
 }
-export function SelectSearch<T extends FieldValues>({ query, item, form, disabled = false }: SelectMap<T>) {
+export function SelectSearch<T extends FieldValues>({
+  query,
+  item,
+  form,
+  disabled = false,
+  value,
+  itemObject
+}: SelectMap<T>) {
   const [search, setSearch] = React.useState('')
   const token = useUserStore((state) => state.user)?.token
   const select_data = useQuery<
-    AxiosResponse<{ id: string; name: string; code: string; animalSpecies?: Species; email?: string }[]>,
+    AxiosResponse<{ id: string; name: string; code: string; animalSpecies?: Species; email?: string; unit?: string }[]>,
     unknown,
-    { id: string; name: string; code: string; animalSpecies?: Species; email?: string }[]
+    { id: string; name: string; code: string; animalSpecies?: Species; email?: string; unit?: string }[]
   >({
     staleTime: 5000,
     queryKey: ['select', query],
     queryFn: () => {
-      return request<{ id: string; name: string; code: string; animalSpecies?: Species; email?: string }[]>(
-        `/${query}${query.indexOf('?') >= 0 ? '' : '/'}`,
-        'GET',
-        {
-          Authorization: `Bearer ${token} `
-        }
-      )
+      return request<
+        { id: string; name: string; code: string; animalSpecies?: Species; email?: string; unit?: string }[]
+      >(`/${query}${query.indexOf('?') >= 0 ? '' : '/'}`, 'GET', {
+        Authorization: `Bearer ${token} `
+      })
     },
     onSuccess: () => {},
     onError: (error) => {
@@ -48,7 +60,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
     }
   })
   const [selectMap, setSelectMap] = React.useState(() => {
-    const result: { value: string; label: string; speciesId?: string }[] = []
+    const result: { value: string; label: string; speciesId?: string; unit?: string }[] = []
     return !select_data.data
       ? []
       : select_data.data.reduce((prev, curr) => {
@@ -59,7 +71,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
                 ...prev,
                 {
                   value: `${String(curr.id)}`,
-                  label: `${curr.name || curr.code || curr.email} `,
+                  label: `${curr.name || curr.code || curr.email} ${curr.unit || ''}`,
                   speciesId: `${curr.animalSpecies?.id}`
                 }
               ]
@@ -76,7 +88,7 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
                 ...prev,
                 {
                   value: `${String(curr.id)}`,
-                  label: `${curr.name || curr.code || curr.email} `,
+                  label: `${curr.name || curr.code || curr.email} ${curr.unit ? `(${curr.unit})` : ''} `,
                   speciesId: `${curr.animalSpecies?.id}`
                 }
               ]
@@ -84,7 +96,6 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
       : []
     setSelectMap(data)
   }, [select_data.data, search])
-
   return (
     <div className='w-full overflow-auto h-full '>
       {select_data.isLoading ? (
@@ -92,29 +103,32 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
       ) : form.watch(item) ? (
         <Select
           disabled={disabled}
-          defaultValue={String(form.watch(item))}
-          value={String(form.watch(item))}
+          defaultValue={value || String(form.watch(item))}
+          value={value || String(form.watch(item))}
           onValueChange={(value) => {
-            // if (String(item) == 'cageId') {
-            //   const map = _.find(selectMap, { value: String(value) })
-            //   if (map) {
-            //     form.setValue('speciesId' as Path<T>, map.speciesId as PathValue<T, Path<T>>)
-            //   }
-            // }
-            // if (String(item) == 'speciesId') {
-            //   const map = _.find(selectMap, { value: String(value) })
-            //   if (map) {
-            //     form.setValue('speciesId' as Path<T>, map.speciesId as PathValue<T, Path<T>>)
-            //   }
-            // }
-            form.setValue(item, value as PathValue<T, Path<T>>, { shouldValidate: true })
+            switch (item) {
+              case 'details': {
+                const newDetails = form.getValues(item)
+                const index = _.findIndex(newDetails, { id: itemObject?.id })
+                if (index >= 0) {
+                  newDetails[index] = { ...itemObject, foodId: Number(value) }
+                  form.setValue(item, newDetails, {
+                    shouldDirty: true,
+                    shouldValidate: true
+                  })
+                }
+                break
+              }
+              default:
+                form.setValue(item, value as PathValue<T, Path<T>>, { shouldValidate: true, shouldDirty: true })
+            }
           }}
         >
           <SelectTrigger className='w-full' id={String(item)}>
             <SelectValue placeholder={`Select ${query.split('/?')[0]} . . .`} />
           </SelectTrigger>
-          <SelectContent className='h-[210px] w-full  font-normal '>
-            <div className='w-full h-full flex  flex-col overflow-auto gap-2 shadow-xl'>
+          <SelectContent className='max-h-[210px] w-full  font-normal  overflow-auto'>
+            <div className='w-full h-full flex  flex-col overflow-auto gap-2 shadow-xl relative'>
               <div className='shadow-lg w-full flex gap-2 items-center p-2 border rounded-lg sticky top-0 bg-primary z-30 '>
                 <SearchIcon className='text-white' />
                 <DebouncedInput
@@ -149,20 +163,29 @@ export function SelectSearch<T extends FieldValues>({ query, item, form, disable
         <Select
           disabled={disabled}
           onValueChange={(value) => {
-            // if (String(item) == 'cageId') {
-            //   const map = _.find(selectMap, { value: String(value) })
-            //   if (map) {
-            //     form.setValue('speciesId' as Path<T>, map.speciesId as PathValue<T, Path<T>>)
-            //   }
-            // }
-            form.setValue(item, value as PathValue<T, Path<T>>, { shouldValidate: true })
+            switch (item) {
+              case 'details': {
+                const newDetails = form.getValues(item)
+                const index = _.findIndex(newDetails, { id: itemObject?.id })
+                if (index >= 0) {
+                  newDetails[index] = { ...itemObject, foodId: Number(value) }
+                  form.setValue(item, newDetails, {
+                    shouldDirty: true,
+                    shouldValidate: true
+                  })
+                }
+                break
+              }
+              default:
+                form.setValue(item, value as PathValue<T, Path<T>>, { shouldValidate: true, shouldDirty: true })
+            }
           }}
         >
           <SelectTrigger className='w-full h-full' id={item}>
             <SelectValue placeholder={`Select ${query.split('/?')[0]} . . .`} />
           </SelectTrigger>
-          <SelectContent className='h-[210px] w-full  font-normal '>
-            <div className='w-full h-full flex  flex-col overflow-auto gap-2 shadow-xl'>
+          <SelectContent className='max-h-[210px] w-full  font-normal overflow-auto '>
+            <div className='w-full h-full flex  flex-col overflow-auto gap-2 shadow-xl relative'>
               <div className='shadow-lg w-full flex gap-2 items-center p-2 border rounded-lg sticky top-0 bg-primary z-30 '>
                 <SearchIcon className='text-white' />
                 <DebouncedInput
