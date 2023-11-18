@@ -114,6 +114,7 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
     })
   }
   const id = useParams().id
+  console.log(id, 'll')
 
   const user = useCheckRole()
   return (
@@ -311,12 +312,14 @@ const AnimalForm = <T extends FieldValues>({ form, formMutation, fields }: Anima
             >
               Images
             </TabsTrigger>
-            <TabsTrigger
-              value='meals'
-              className=' uppercase data-[state=active]:bg-primary data-[state=active]:text-white'
-            >
-              Meals
-            </TabsTrigger>
+            {id != undefined && (
+              <TabsTrigger
+                value='meals'
+                className=' uppercase data-[state=active]:bg-primary data-[state=active]:text-white'
+              >
+                Meals
+              </TabsTrigger>
+            )}
           </TabsList>
           <TabsContent value='image' className='w-full flex-1 overflow-auto'>
             <div className='w-full h-full  px-2 flex flex-col gap-4 overflow-auto py-2'>
