@@ -21,7 +21,7 @@ RUN npm run build
 FROM nginx:latest
 
 # Copy the build output from your local machine to the working directory in the container
-COPY --from=dist dist/ /usr/share/nginx/html
+COPY  dist/ /usr/share/nginx/html
 
 # Configure Nginx to serve your React app
 COPY nginx.conf /etc/nginx/conf.d/default.conf
