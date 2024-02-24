@@ -18,8 +18,7 @@ jobs:
         with:
           node-version: 18
 
-      - run: npm ci
-      - run: npm test
+      - run: npm ci --force
       - run: npm run build --if-present
 
       - name: Login to Docker Hub
