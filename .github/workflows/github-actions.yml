@@ -1,18 +1,23 @@
 name: Deploy
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+run-name: ${{ github.actor }} is testing out GitHub Actions 
+
 on:
   push:
     branches: [main]
+
 jobs:
   docker:
-     runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 18
+
       - run: npm ci
       - run: npm test
       - run: npm run build --if-present
@@ -38,6 +43,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+
       - name: Verify
         run: echo ${{ steps.docker_build.outputs.digest }}
 
@@ -48,8 +54,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-          #!/bin/bash
-          docker-compose stop
-          docker-compose rm -f
-          docker-compose pull
-          docker-compose up -d
+            #!/bin/bash
+            docker-compose stop
+            docker-compose rm -f
+            docker-compose pull
+            docker-compose up -d
