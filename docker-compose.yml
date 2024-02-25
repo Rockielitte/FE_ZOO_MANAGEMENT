@@ -1,0 +1,6 @@
+version: '3.3'
+services:
+  mywebsite:
+    image: minhpham11311/zms-fe:latest
+    ports:
+      - '8080:80'
