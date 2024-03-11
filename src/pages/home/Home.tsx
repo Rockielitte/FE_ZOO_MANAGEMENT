@@ -1,27 +1,26 @@
 import { FC } from 'react'
 import Banner from './banner/Banner'
-import { Icons } from '@/components/Icon'
-import Elephant from '@/assets/elephant1.png'
-import Banner2 from '@/assets/background/SWP2.png'
-import Banner3 from '@/assets/background/SWP1.png'
-import { Carousel } from 'flowbite-react'
-import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
-const images = [
-  'https://cdn.mos.cms.futurecdn.net/HjFE8NKWuCmgfHCcndJ3rK-1200-80.jpg',
-  'https://media.istockphoto.com/id/492611032/photo/the-african-king.jpg?s=612x612&w=0&k=20&c=SPP0WTaFwSTmB_QX7WrWbVBPXiKTg4e8ArZrUAo2G6k=',
-  'https://static.wixstatic.com/media/119740_c0df174c120f47e2a6928f13ee53f9c8~mv2.jpg/v1/fill/w_560,h_374,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/Ryan%20Kilpatrick.jpg',
-  'https://d1jyxxz9imt9yb.cloudfront.net/animal/219/meta_image/regular/20---IMG_0865_reduced.jpg',
-  'https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg'
-]
-interface HomeProps { }
+// import { Icons } from '@/components/Icon'
+// import Elephant from '@/assets/elephant1.png'
+// import Banner2 from '@/assets/background/SWP2.png'
+// import Banner3 from '@/assets/background/SWP1.png'
+// import { Carousel } from 'flowbite-react'
+// import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
+// const images = [
+//   'https://cdn.mos.cms.futurecdn.net/HjFE8NKWuCmgfHCcndJ3rK-1200-80.jpg',
+//   'https://media.istockphoto.com/id/492611032/photo/the-african-king.jpg?s=612x612&w=0&k=20&c=SPP0WTaFwSTmB_QX7WrWbVBPXiKTg4e8ArZrUAo2G6k=',
+//   'https://static.wixstatic.com/media/119740_c0df174c120f47e2a6928f13ee53f9c8~mv2.jpg/v1/fill/w_560,h_374,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/Ryan%20Kilpatrick.jpg',
+//   'https://d1jyxxz9imt9yb.cloudfront.net/animal/219/meta_image/regular/20---IMG_0865_reduced.jpg',
+//   'https://files.worldwildlife.org/wwfcmsprod/images/Tiger_resting_Bandhavgarh_National_Park_India/hero_small/6aofsvaglm_Medium_WW226365.jpg'
+// ]
+interface HomeProps {}
 const Home: FC<HomeProps> = () => {
   // const { setTheme } = useTheme()
 
   return (
     <div className='w-full h-full bg-primary'>
       <Banner />
-
-      <div className='flex flex-col items-center pt-14 bg-primary' id='about'>
+      {/* <div className='flex flex-col items-center pt-14 bg-primary' id='about'>
         <h1 className='mt-4 text-7xl font-bold tracking-tight text-white sm:text-6xl sm:pb-10 items-center'>About Our Zoo</h1>
 
         <div className='flex justify-between items-start lg:flex-row sm:flex-col-reverse sm:gap-4 p-24 gap-24'>
@@ -108,7 +107,7 @@ const Home: FC<HomeProps> = () => {
             <div className='bg-[url(@/assets/background/BgFooter.svg)] w-[1696px] h-[594px] relative -mx-4 overflow-hidden px-4 py-20 sm:-mx-6 sm:px-6 md:mx-0 md:rounded-5xl md:px-16 xl:px-24 xl:py-36 flex justify-center items-center align-middle'>
               {/* <img alt="" loading="lazy" width="919" height="1351" decoding="async" data-nimg="1" class="absolute left-1/2 top-0 translate-x-[-10%] translate-y-[-45%] lg:translate-x-[-32%]" style={{color:"transparent"}} src={Lin}/> */}
 
-              <div className='relative mx-auto grid max-w-2xl grid-cols-1 gap-x-36 gap-y-20 xl:max-w-none xl:grid-cols-2'>
+      {/* <div className='relative mx-auto grid max-w-2xl grid-cols-1 gap-x-36 gap-y-20 xl:max-w-none xl:grid-cols-2'>
                 <div>
                   <p className='font-display text-6xl font-medium tracking-tighter text-slate-50 sm:text-6xl'>
                     Stay up to date
@@ -155,11 +154,9 @@ const Home: FC<HomeProps> = () => {
             </div>
           </div>
         </section>
-      </div>
+      // </div> */}
     </div>
   )
-
 }
-
 
 export default Home
