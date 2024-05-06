@@ -11,7 +11,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId='934045492148-r2m81eqq4724ukrj1bs8jlp5gn585pc8.apps.googleusercontent.com'>
+    <GoogleOAuthProvider clientId='964055842588-hlq05p5frulh1jetq2qqngan7vnscbuh.apps.googleusercontent.com'>
       <App />
       <ToastContainer />
       <Toaster />

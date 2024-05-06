@@ -30,9 +30,13 @@ const Login: FC = () => {
 
   const usMutation = useMutation({
     mutationFn: (credentialResponse: CredentialResponse) => {
-      return apiCaller.get('/auth/login-google', credentialResponse)
+      return apiCaller.get('/auth/login-google', {
+        credential: credentialResponse.credential
+      })
     },
     onSuccess: (data) => {
+      console.log(data,"googlelogin");
+      
       setUser({ token: data.data.accessToken })
       // setUser(data.data)
       toast({
@@ -86,6 +90,8 @@ const Login: FC = () => {
                   //   setUser({ token: data.data })
                   // })
                   // const usProfile: dataCredential = jwt_decode(credentialResponse.credential as string)
+                  console.log(credentialResponse, 'lldsaflsadl')
+
                   usMutation.mutate(credentialResponse)
                   // if (token && isSuccess) navigate('/dashboard')
 
